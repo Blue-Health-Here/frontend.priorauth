@@ -79,8 +79,8 @@
   --color-gradiant-blue: var(--gradiant-blue);
 
   /* Font family */
-  --font-urbanist: var(--urbanist);
-  --font-dm-sans: var(--dm-sans);
+  --font-primary: var(--dm-sans);
+  --font-secondary: var(--urbanist);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -91,5 +91,5 @@
 }
 
 body {
-  font-family: var(--dm-sans);
+  font-family: var(--font-primary);
 }
