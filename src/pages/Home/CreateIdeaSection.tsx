@@ -3,7 +3,7 @@ import Button from '../../components/Button/Button';
 
 const CreateIdeaSection: React.FC = () => {
   return (
-    <div className="w-full flex flex-col items-center justify-center text-primary-white text-center px-8 py-20 md:py-48 relative">
+    <div className="w-full flex flex-col items-center justify-center text-primary-white text-center px-6 py-20 md:py-48 relative">
       <div
         className="absolute inset-0 z-0 bg-cover bg-center"
         style={{
