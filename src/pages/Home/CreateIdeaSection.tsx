@@ -3,14 +3,13 @@ import Button from '../../components/Button/Button';
 
 const CreateIdeaSection: React.FC = () => {
   return (
-    <div className="w-full flex flex-col items-center justify-center text-white text-center px-8 py-20 md:py-48 relative">
+    <div className="w-full flex flex-col items-center justify-center text-primary-white text-center px-8 py-20 md:py-48 relative">
       <div
         className="absolute inset-0 z-0 bg-cover bg-center"
         style={{
           backgroundImage: "url('/images/createidea-bg.png')" }}>
       </div>
-     <div className="flex flex-col items-center justify-center w-full h-full">
-     <div className="mx-auto relative z-10">
+      <div className="relative">
         <p className="text-base md:text-lg mb-2">Get An Idea Of The Application</p>
 
         <h1 className="text-2xl sm:text-3xl md:text-6xl font-semibold mb-10">
@@ -27,7 +26,6 @@ const CreateIdeaSection: React.FC = () => {
         </p>
         <Button title='Get A Free Demo' textColor='text-black' className="bg-white text-primary-black font-medium md:py-3.5 md:px-32" />
       </div>
-     </div>
     </div>
   );
 };
