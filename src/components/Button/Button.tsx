@@ -1,26 +1,34 @@
 import React from "react";
 
 interface ButtonProps {
-  title: string;
+  title?: string;
   className?: string;
   textColor?: string;
+  isSmall?: boolean; 
+  icon?: React.ReactNode; 
+  noHover?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
   title,
   className = "",
   textColor = "text-primary-white",
+  isSmall = false,
+  icon,
+  noHover = false,
 }) => {
   return (
     <button
       className={`
         ${className}
         ${textColor}
-        py-4 px-8 h-full
-        bg-primary-navy-blue hover:bg-primary-sky-blue
-        cursor-pointer rounded-md text-sm font-semibold shadow
+        ${isSmall ? "py-2 px-2 rounded-lg" : "py-4 px-8 text-sm  rounded-md"} 
+        h-full
+        bg-primary-navy-blue ${noHover ? "" : "hover:bg-primary-sky-blue"}
+        cursor-pointer font-semibold shadow
       `}
     >
+      {icon && <span className="text-xs md:text-sm">{icon}</span>} 
       {title}
     </button>
   );
