@@ -1,5 +1,6 @@
 import HomeLayout from "../../layouts/HomeLayout";
 import AboutSection from "./AboutSection";
+import CreateIdeaSection from "./CreateIdeaSection";
 import HeroSection from "./HeroSection";
 
 const Home = () => {
@@ -14,6 +15,7 @@ const Home = () => {
         <HeroSection />
       </div>
       <AboutSection />
+      <CreateIdeaSection />
     </HomeLayout>
   );
 };
