@@ -25,7 +25,7 @@ const CreateIdeaSection: React.FC = () => {
           molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla
           accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus.
         </p>
-        <Button title='Get A Free Demo' textColor='text-black' className="bg-white text-primary-black font-medium md:py-3.5 md:px-32" />
+        <Button title='Get A Free Demo' textColor='text-black' className="bg-white text-primary-black font-medium hover:!text-white md:py-3.5 md:px-32" />
       </div>
      </div>
     </div>
