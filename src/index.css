@@ -94,3 +94,11 @@ body {
 .theme-container {
   @apply max-w-[1520px] mx-auto;
 }
+
+.slick-list, .slick-track {
+  height: 100%;
+}
+
+.slick-slide > div {
+  height: 100%;
+}

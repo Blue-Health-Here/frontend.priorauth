@@ -24,3 +24,15 @@ export   const faqItems = [
       answer: "Qorem ipsum dolor sit amet, consectetur adipiscing elit."
     }
   ];
+
+  export const slidesData = [
+    {
+      heading: "Automate Specialty Medication Workflows.",
+      image: "/images/Dashboard 2.png"
+    },
+    {
+      heading: "Dashboard 2 Specialty Medication Workflows.",
+      image: "/images/Dashboard 2.png"
+    },
+
+  ];
