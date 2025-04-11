@@ -3,7 +3,7 @@ import { faqItems } from '../../constants';
 import Button from '../../components/Button/Button';
 import { FaMinus, FaPlus } from "react-icons/fa6";
 
-export default function FAQAccordion() {
+const FAQAccordion: React.FC = () => {
   const [openItems, setOpenItems] = useState<number[]>([]);
 
   const toggleItem = (index: number) => {
@@ -58,3 +58,4 @@ export default function FAQAccordion() {
     </div>
   );
 }
+export default FAQAccordion
