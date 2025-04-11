@@ -1,10 +1,13 @@
+import React from "react";
 import HomeLayout from "../../layouts/HomeLayout";
 import AboutSection from "./AboutSection";
+import ContactSection from "./ContactSection";
 import CreateIdeaSection from "./CreateIdeaSection";
 import FAQAccordion from "./FAQSection";
 import HeroSection from "./HeroSection";
+import FooterSection from "./FooterSection";
 
-const Home = () => {
+const Home: React.FC  = () => {
   return (
     <HomeLayout>
       <div
@@ -18,6 +21,8 @@ const Home = () => {
       <AboutSection />
       <FAQAccordion />
       <CreateIdeaSection />
+      <ContactSection />
+      <FooterSection />
     </HomeLayout>
   );
 };
