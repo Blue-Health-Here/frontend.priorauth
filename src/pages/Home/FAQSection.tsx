@@ -30,9 +30,9 @@ const FAQAccordion: React.FC = () => {
                   onClick={() => toggleItem(index)}
                 >
                   <h3 className="text-secondary-black text-sm sm:text-lg md:text-xl font-semibold">{item.question}</h3>
-                  <button className="flex items-center justify-center h-8 w-8 text-blue-500">
+                  <div className="flex items-center justify-center h-8 w-8 text-blue-500">
                     {openItems.includes(index) ? <Button noHover isSmall icon={<FaMinus />}/> : <Button className='bg-primary-sky-blue' isSmall icon={<FaPlus />}/> }
-                  </button>
+                  </div>
                 </div>
                 
                 {openItems.includes(index) && (
