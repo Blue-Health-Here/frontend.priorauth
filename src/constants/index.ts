@@ -1,4 +1,4 @@
-export   const faqItems = [
+export const faqItems = [
     {
       question: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, magna nec fringilla accumsan, nulla erat pulvinar quam, id hendrerit felis. Maecenas ligula consectetur vitae, ut amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per incepto himenaeos. Praesent auctor purus turpis, eget egestas, ac scelerisque urna pulvinar. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl."
@@ -34,5 +34,31 @@ export   const faqItems = [
       heading: "Dashboard 2 Specialty Medication Workflows.",
       image: "/images/Dashboard 2.png"
     },
+
+  ];
+
+  export 
+  const testimonials = [
+    {
+      id: 1,
+      name: "Kristin Watson",
+      designation: "Designation",
+      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar.",
+      image: "/images/testinomial.png"
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      designation: "Developer",
+      content: "Donec ut rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna. Curabitur vel bibendum lorem. Morbi convallis convallis diam sit amet lacinia. Aliquam in elementum tellus.",
+      image: "/images/testinomial.png"
+    },
+    {
+      id: 3,
+      name: "John Doe",
+      designation: "Designer",
+      content: "Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit.",
+      image: "/images/testinomial.png"
+    }
 
   ];
