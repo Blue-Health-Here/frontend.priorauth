@@ -1,27 +1,32 @@
-  import HomeLayout from "../../layouts/HomeLayout";
-  import AboutSection from "./AboutSection";
-  import CreateIdeaSection from "./CreateIdeaSection";
-  import FAQAccordion from "./FAQSection";
-  import HeroSection from "./HeroSection";
+import React from "react";
+import HomeLayout from "../../layouts/HomeLayout";
+import AboutSection from "./AboutSection";
+import ContactSection from "./ContactSection";
+import CreateIdeaSection from "./CreateIdeaSection";
+import FAQAccordion from "./FAQSection";
+import HeroSection from "./HeroSection";
+import FooterSection from "./FooterSection";
 import ServiceSection from "./ServiceSection";
 
-  const Home = () => {
-    return (
-      <HomeLayout>
-        <div
-          className="relative w-full bg-cover bg-center flex flex-col justify-between pt-20 overflow-hidden"
-          style={{
-            backgroundImage: `url(${"/images/herosection-bg-image.jpg"})`,
-          }}
-        >
+const Home: React.FC  = () => {
+  return (
+    <HomeLayout>
+      <div
+        className="relative w-full md:min-h-screen bg-cover bg-center flex flex-col justify-between pt-20 overflow-hidden"
+        style={{
+          backgroundImage: `url(${"/images/herosection-bg-image.jpg"})`,
+        }}
+      >
         <HeroSection />
-        </div>
-        <AboutSection />
-        <ServiceSection />
-        <CreateIdeaSection />
-        <FAQAccordion />
-      </HomeLayout>
-    );
-  };
+      </div>
+      <AboutSection />
+      <ServiceSection />
+      <FAQAccordion />
+      <CreateIdeaSection />
+      <ContactSection />
+      <FooterSection />
+    </HomeLayout>
+  );
+};
 
-  export default Home;
+export default Home;
