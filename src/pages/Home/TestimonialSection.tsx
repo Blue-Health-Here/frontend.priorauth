@@ -26,13 +26,13 @@ const TestimonialSection: React.FC = () => {
             <img
               src="/images/chevronleft.svg"
               alt=""
-              onClick={() => sliderRef.current?.slickNext()}
+              onClick={() => sliderRef.current?.slickPrev()}
               className="p-1 md:p-2 rounded-lg border border-tertiary-black hover:bg-quaternary-black cursor-pointer"
             />
             <img
               src="/images/chevronright.svg"
               alt=""
-              onClick={() => sliderRef.current?.slickPrev()}
+              onClick={() => sliderRef.current?.slickNext()}
               className="p-1 md:p-2 rounded-lg border border-tertiary-black hover:bg-quaternary-black cursor-pointer"
             />
           </div>
