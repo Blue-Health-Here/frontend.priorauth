@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../../components/Button/Button';
+import { TypeAnimation } from 'react-type-animation';
 
 const CreateIdeaSection: React.FC = () => {
   return (
@@ -12,12 +13,25 @@ const CreateIdeaSection: React.FC = () => {
       <div className="relative">
         <p className="text-base md:text-lg mb-2">Get An Idea Of The Application</p>
 
-        <h1 className="text-2xl sm:text-3xl md:text-6xl font-semibold mb-10">
+        {/* <h1 className="text-2xl sm:text-3xl md:text-6xl font-semibold mb-10">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           Etiam eu turpis molestie, dictum est a, mattis tellus. Sed
           dignissim, metus nec fringilla accumsan, risus sem
           sollicitudin lacus, ut interdum tellus elit sed risus.
-        </h1>
+        </h1> */}
+        <div data-aos="fade-up">
+          <TypeAnimation
+            sequence={[
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus.',
+              4000,
+            ]}
+            speed={90}
+            wrapper="h1"
+            cursor={true}
+            repeat={0}
+            className="text-2xl sm:text-3xl md:text-6xl font-semibold mb-10"
+          />
+        </div>
 
         <p className="text-lg sm:text-xl md:text-2xl md:max-w-4xl mx-auto mb-10">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis
