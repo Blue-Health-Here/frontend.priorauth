@@ -11,8 +11,8 @@ const BrandSlider: React.FC = () => {
     slidesToShow: 6,
     slidesToScroll: 1,
     autoplay: true,
-    speed: 3000,
-    autoplaySpeed: 3000,
+    speed: 2000,
+    autoplaySpeed: 2000,
     cssEase: "linear",
     arrows: false,
     responsive: [
