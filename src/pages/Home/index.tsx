@@ -5,6 +5,8 @@ import ContactSection from "./ContactSection";
 import CreateIdeaSection from "./CreateIdeaSection";
 import FAQAccordion from "./FAQSection";
 import HeroSection from "./HeroSection";
+import ServiceSection from "./ServiceSection";
+import TestimonialSection from "./TestimonialSection";
 import FooterSection from "./FooterSection";
 
 const Home: React.FC  = () => {
@@ -19,12 +21,14 @@ const Home: React.FC  = () => {
         <HeroSection />
       </div>
       <AboutSection />
+      <ServiceSection />
       <FAQAccordion />
       <CreateIdeaSection />
+      <TestimonialSection />
       <ContactSection />
       <FooterSection />
     </HomeLayout>
   );
 };
 
-  export default Home;
+export default Home;
