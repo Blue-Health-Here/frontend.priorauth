@@ -1,8 +1,9 @@
 import React from "react";
-import { brands } from "../../constants";
+import BrandSlider from "./BrandSlider";
 
 const AboutSection: React.FC = () => {
   return (
+    <>
     <section className="px-6 md:px-10 py-20 bg-primary-white">
       <div className="text-primary-black">
       <p className="text-base md:text-lg">About Priorauth Support</p>
@@ -32,24 +33,19 @@ const AboutSection: React.FC = () => {
             src={'/images/about-rectangle-one.png'}
             alt="Image 1"
             className="w-full h-full"
-          />
+            />
         </div>
         <div className="md:col-span-3">
           <img
             src={'/images/about-rectangle-two.png'}
             alt="Image 2"
             className="w-full h-full"
-          />
+            />
         </div>
       </div>
-      <div className="flex bg-quaternary-sky-blue">
-        {brands.map((brand, index) => (
-          <div key={index} className="">
-            <img src={brand} alt='' className="" />
-          </div>
-        ))}
-      </div>
     </section>
+    <BrandSlider />
+    </>
   );
 };
 

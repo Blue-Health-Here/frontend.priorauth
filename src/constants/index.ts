@@ -63,9 +63,9 @@ export const faqItems = [
   ];
 
   export const brands = [
-    "/images/amara.svg", 
-    "/images/earth2.svg",
-    "/images/hooks.svg",
-    "/images/liva.svg",
-    "/images/radiyal.svg",  
-    "/images/uilogo.svg",]
+    "/amara.svg", 
+    "/earth2.svg",
+    "/hooks.svg",
+    "/liva.svg",
+    "/radiyal.svg",  
+    "/uilogos.svg",]
