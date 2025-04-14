@@ -61,10 +61,9 @@ const ServiceSection: React.FC = () => {
               onClick={() => sliderRef.current?.slickNext()}
               className="p-2 rounded-2xl border border-tertiary-black hover:bg-quaternary-black"
             />
-           <img
-              src="/images/chevronright.svg"
-              alt=""
-              onClick={() => sliderRef.current?.slickPrev()}
+            <img
+              src="/images/chevronright.svg" alt=""
+              onClick={() => sliderRef.current?.slickNext()}
               className="p-2 rounded-2xl border border-tertiary-black hover:bg-quaternary-black"
             />
           </div>
