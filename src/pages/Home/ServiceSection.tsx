@@ -25,7 +25,7 @@ const ServiceSection: React.FC = () => {
         }
       },
       {
-        breakpoint: 768,
+        breakpoint: 767,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -54,23 +54,24 @@ const ServiceSection: React.FC = () => {
         </div>
         <div className="hidden sm:block lg:col-span-1"></div>
         <div className="col-span-12 md:col-span-2 lg:col-span-1 ">
-          <div className="flex gap-x-4 mt-6 md:mt-0">
+        <div className="flex gap-x-2 md:gap-x-4 mt-6 md:mt-0">
             <img
               src="/images/chevronleft.svg"
               alt=""
-              onClick={() => sliderRef.current?.slickNext()}
-              className="p-2 rounded-2xl border border-tertiary-black hover:bg-quaternary-sky-blue hover:border-primary-sky-blue cursor-pointer"
+              onClick={() => sliderRef.current?.slickPrev()}
+              className="p-1 md:p-2 rounded-lg border border-tertiary-black hover:bg-quaternary-black cursor-pointer"
             />
             <img
-              src="/images/chevronright.svg" alt=""
+              src="/images/chevronright.svg"
+              alt=""
               onClick={() => sliderRef.current?.slickNext()}
-              className="p-2 rounded-2xl border border-tertiary-black hover:bg-quaternary-sky-blue hover:border-primary-sky-blue cursor-pointer"
+              className="p-1 md:p-2 rounded-lg border border-tertiary-black hover:bg-quaternary-black cursor-pointer"
             />
           </div>
         </div>
       </div>
            
-      <div className="pl-4 sm:pl-8 pr-0">
+      <div className="pl-4 md:pl-8 pr-0">
         <div className="overflow-visible">
           <Slider ref={sliderRef} {...sliderSettings}>
             {services.map((service) => (

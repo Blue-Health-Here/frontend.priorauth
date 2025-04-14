@@ -16,9 +16,9 @@ const ContactSection: React.FC = () => {
     {/* contact form */}
     <div className="relative z-10 max-w-4xl p-4 pr-0 mr-0">
       <div className="bg-primary-sky-blue text-primary-white p-6 rounded-bl-3xl rounded-tl-3xl shadow-lg">
-        <div className="text-base md:text-lg  mb-4">Get Demo</div>
+        <div className="text-sm md:text-base lg:text-lg mb-4">Get Demo</div>
         
-        <h2 className="text-xl sm:text-3xl md:text-5xl font-semibold  mb-6">
+        <h2 className="text-lg sm:text-xl md:text-3xl lg:text-5xl font-semibold  mb-6">
           Want To See Prior Auth Support AI In Action?
         </h2>
         

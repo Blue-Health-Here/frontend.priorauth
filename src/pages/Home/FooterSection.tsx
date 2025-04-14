@@ -5,7 +5,7 @@ const FooterSection: React.FC = () => {
     <footer className="px-6 md:px-8 pt-24 bg-white">
       <div className="grid grid-cols-1 md:grid-cols-12 items-center gap-8 text-secondary-black mb-20">
         <div className="md:col-span-3">
-          <p className="text-lg sm:text-xl md:text-2xl">
+          <p className="text-base sm:text-xl md:text-2xl ">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </p>
         </div>

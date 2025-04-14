@@ -27,8 +27,8 @@ const HeroSection: React.FC = () => {
             <div className="grid grid-cols-1 xl:grid-cols-12">
               <div className="xl:col-span-1"></div>
               <div className="xl:col-span-10">
-                <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-8xl font-semibold text-blue-900 leading-tight">
-                  Automate Specialty Medication Workflows.
+                <h1 className="text-xl md:text-3xl lg:text-5xl xl:text-8xl font-semibold text-blue-900 leading-tight">
+                  {slide.heading}
                 </h1>
               </div>
             </div>
