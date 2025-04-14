@@ -21,7 +21,7 @@ const FooterSection: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 items-center gap-4 text-secondary-black text-sm sm:text-base md:text-lg mb-20">
-        <div className="md:col-span-9"></div> mb-20
+        <div className="md:col-span-9"></div>
         <div className="md:col-span-3 text-left md:text-right space-y-1">
           <p className="text-gray-600 text-sm">(205) 555-0100</p>
           <p className="text-gray-600 text-sm">info@priorauthsupport.com</p>
