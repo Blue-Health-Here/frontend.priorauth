@@ -36,3 +36,55 @@ export   const faqItems = [
     },
 
   ];
+
+  export const services = [
+    {
+      id: 1,
+      title: "PA Criteria",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
+      bgColor: "bg-blue-50",
+      imageUrl: "images/serviceslider1.png",
+    },
+    {
+      id: 2,
+      title: "CMM",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
+      bgColor: "bg-yellow-50",
+      imageUrl: "images/serviceslider1.png",
+    },
+    {
+      id: 3,
+      title: "Analytics",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
+      bgColor: "bg-blue-50",
+      imageUrl: "images/serviceslider1.png",
+    },
+    {
+      id: 4,
+      title: "Consulting",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
+      bgColor: "bg-yellow-50",
+      imageUrl: "images/serviceslider1.png",
+    },
+    {
+      id: 2,
+      title: "CMM",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
+      bgColor: "bg-yellow-50",
+      imageUrl: "images/serviceslider1.png",
+    },
+    {
+      id: 3,
+      title: "Analytics",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
+      bgColor: "bg-blue-50",
+      imageUrl: "images/serviceslider1.png",
+    },
+    {
+      id: 4,
+      title: "Consulting",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
+      bgColor: "bg-yellow-50",
+      imageUrl: "images/serviceslider1.png",
+    },
+  ];
