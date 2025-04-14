@@ -1,4 +1,5 @@
 import React from "react";
+import { brands } from "../../constants";
 
 const AboutSection: React.FC = () => {
   return (
@@ -40,6 +41,13 @@ const AboutSection: React.FC = () => {
             className="w-full h-full"
           />
         </div>
+      </div>
+      <div className="flex bg-quaternary-sky-blue">
+        {brands.map((brand, index) => (
+          <div key={index} className="">
+            <img src={brand} alt='' className="" />
+          </div>
+        ))}
       </div>
     </section>
   );

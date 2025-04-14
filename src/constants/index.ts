@@ -61,3 +61,11 @@ export const faqItems = [
       image: "/images/testinomial.png"
     }
   ];
+
+  export const brands = [
+    "/images/amara.svg", 
+    "/images/earth2.svg",
+    "/images/hooks.svg",
+    "/images/liva.svg",
+    "/images/radiyal.svg",  
+    "/images/uilogo.svg",]
