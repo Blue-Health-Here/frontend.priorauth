@@ -55,16 +55,16 @@ const ServiceSection: React.FC = () => {
         <div className="hidden sm:block lg:col-span-1"></div>
         <div className="col-span-12 md:col-span-2 lg:col-span-1 ">
           <div className="flex gap-x-4 mt-6 md:mt-0">
-          <img
+            <img
               src="/images/chevronleft.svg"
               alt=""
               onClick={() => sliderRef.current?.slickNext()}
-              className="p-2 rounded-2xl border border-tertiary-black hover:bg-quaternary-black"
+              className="p-2 rounded-2xl border border-tertiary-black hover:bg-quaternary-sky-blue hover:border-primary-sky-blue cursor-pointer"
             />
             <img
               src="/images/chevronright.svg" alt=""
               onClick={() => sliderRef.current?.slickNext()}
-              className="p-2 rounded-2xl border border-tertiary-black hover:bg-quaternary-black"
+              className="p-2 rounded-2xl border border-tertiary-black hover:bg-quaternary-sky-blue hover:border-primary-sky-blue cursor-pointer"
             />
           </div>
         </div>
