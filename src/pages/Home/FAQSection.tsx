@@ -4,14 +4,10 @@ import Button from '../../components/Button/Button';
 import { FaMinus, FaPlus } from "react-icons/fa6";
 
 const FAQAccordion: React.FC = () => {
-  const [openItems, setOpenItems] = useState<number[]>([]);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const toggleItem = (index: number) => {
-    if (openItems.includes(index)) {
-      setOpenItems(openItems.filter(item => item !== index));
-    } else {
-      setOpenItems([...openItems, index]);
-    }
+    setActiveIndex(index === activeIndex ? null : index);
   };
 
   return (
@@ -31,15 +27,16 @@ const FAQAccordion: React.FC = () => {
                 >
                   <h3 className="text-secondary-black text-sm sm:text-lg md:text-xl font-semibold">{item.question}</h3>
                   <div className="flex items-center justify-center h-8 w-8 text-blue-500">
-                    {openItems.includes(index) ? <Button noHover isSmall icon={<FaMinus />}/> : <Button className='bg-primary-sky-blue' isSmall icon={<FaPlus />}/> }
+                    {activeIndex === index ? <Button noHover isSmall icon={<FaMinus />}/> : <Button className='bg-primary-sky-blue' isSmall icon={<FaPlus />}/>}
                   </div>
                 </div>
-                
-                {openItems.includes(index) && (
+                <div
+                  className={`transition-all duration-300 ease-in-out ${activeIndex === index ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"} overflow-hidden`}
+                >
                   <div className="mt-2 text-xs sm:text-sm md:text-base font-secondary text-secondary-black">
                     {item.answer}
                   </div>
-                )}
+                </div>
               </div>
             ))}
           </div>
