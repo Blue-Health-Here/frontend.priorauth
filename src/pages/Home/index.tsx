@@ -3,6 +3,7 @@
   import CreateIdeaSection from "./CreateIdeaSection";
   import FAQAccordion from "./FAQSection";
   import HeroSection from "./HeroSection";
+import ServiceSection from "./ServiceSection";
 
   const Home = () => {
     return (
@@ -16,8 +17,9 @@
         <HeroSection />
         </div>
         <AboutSection />
-        <FAQAccordion />
+        <ServiceSection />
         <CreateIdeaSection />
+        <FAQAccordion />
       </HomeLayout>
     );
   };
