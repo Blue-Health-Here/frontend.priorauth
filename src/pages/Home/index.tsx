@@ -5,8 +5,9 @@ import ContactSection from "./ContactSection";
 import CreateIdeaSection from "./CreateIdeaSection";
 import FAQAccordion from "./FAQSection";
 import HeroSection from "./HeroSection";
-import FooterSection from "./FooterSection";
 import ServiceSection from "./ServiceSection";
+import TestimonialSection from "./TestimonialSection";
+import FooterSection from "./FooterSection";
 
 const Home: React.FC  = () => {
   return (
@@ -23,6 +24,7 @@ const Home: React.FC  = () => {
       <ServiceSection />
       <FAQAccordion />
       <CreateIdeaSection />
+      <TestimonialSection />
       <ContactSection />
       <FooterSection />
     </HomeLayout>
