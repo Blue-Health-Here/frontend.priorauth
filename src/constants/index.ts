@@ -112,3 +112,12 @@ export const services = [
     imageUrl: "images/serviceslider1.png",
   },
 ];
+
+export const brands = [
+  "/amara.svg", 
+  "/earth2.svg",
+  "/hooks.svg",
+  "/liva.svg",
+  "/radiyal.svg",  
+  "/uilogos.svg"
+];
