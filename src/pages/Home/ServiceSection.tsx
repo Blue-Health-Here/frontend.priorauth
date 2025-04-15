@@ -85,16 +85,19 @@ const ServiceSection: React.FC = () => {
                     />
                   </div>
                   <div
-                    className={`col-span-2 flex flex-col justify-between p-4 rounded-3xl shadow-md ${service.bgColor} h-auto md:h-48 lg:h-52`}
+                    className={`col-span-2 flex flex-col justify-between text-sm md:text-base p-4 rounded-3xl shadow-md ${service.bgColor} h-auto md:h-48 lg:h-52`}
                   >
-                    <h3 className="text-md font-semibold mb-2">{service.title}</h3>
+                    <h3 className="font-semibold mb-2">{service.title}</h3>
                     <div className="">
-                      <p className="text-secondary-black text-base mb-3 line-clamp-3">
+                      <p className="text-secondary-black mb-3 md:line-clamp-3">
                         {service.description}
                       </p>
-                      <div className="flex items-center text-primary-navy-blue font-semibold text-sm">
+                      <div className="flex items-center gap-x-3 text-primary-navy-blue font-semibold">
                         <span>Explore More</span>
-                        <span className="ml-1">↗</span>
+                        <img
+                          src="/right-up-arrow.svg"
+                          alt=""
+                        />
                       </div>
                     </div>
                   </div>
