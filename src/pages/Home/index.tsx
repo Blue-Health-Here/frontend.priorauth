@@ -1,4 +1,3 @@
-import React from "react";
 import HomeLayout from "../../layouts/HomeLayout";
 import AboutSection from "./AboutSection";
 import ContactSection from "./ContactSection";
@@ -13,12 +12,12 @@ const Home: React.FC  = () => {
   return (
     <HomeLayout>
       <div
-        className="relative w-full md:min-h-screen bg-cover bg-center flex flex-col justify-between pt-20 overflow-hidden"
+        className="relative w-full bg-cover bg-center flex flex-col justify-end pt-20 overflow-hidden lg:min-h-screen max-h-screen"
         style={{
           backgroundImage: `url(${"/images/herosection-bg-image.jpg"})`,
         }}
       >
-        <HeroSection />
+      <HeroSection />
       </div>
       <AboutSection />
       <ServiceSection />
