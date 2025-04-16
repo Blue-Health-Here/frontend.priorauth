@@ -38,13 +38,13 @@ const ServiceSection: React.FC = () => {
     <div className="w-full py-20 md:py-32">
       <div className="grid mb-12 grid-cols-12 px-4 sm:px-8">
         <div className="col-span-12 lg:col-span-1">
-          <span className="text-primary-black font-secondary text-base md:text-lg">
+          <span className="text-primary-black font-secondary text-sm sm:text-base md:text-lg">
             What We Offer?
           </span>
         </div>
         <div className="hidden sm:block lg:col-span-1"></div>
         <div className="col-span-12 md:col-span-7 lg:col-span-8 text-primary-black mt-4 sm:mt-0">
-          <h2 className="text-xl sm:text-3xl md:text-5xl">Our Services</h2>
+          <h2 className="text-xl sm:text-3xl md:text-5xl font-semibold">Our Services</h2>
           <p className="font-secondary text-sm md:text-base mt-2">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
             turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus

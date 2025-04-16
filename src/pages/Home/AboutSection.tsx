@@ -18,7 +18,7 @@ const AboutSection: React.FC = () => {
           wrapper="h1"
           cursor={false}
           repeat={Infinity}
-          className="text-lg md:text-3xl lg:text-5xl font-semibold min-h-[150px] inline-block"
+          className="text-xl md:text-3xl lg:text-5xl font-semibold min-h-[150px] inline-block"
         />
       </div>
       {/* <h1 className="text-xl sm:text-3xl md:text-5xl font-semibold">
