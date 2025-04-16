@@ -18,9 +18,9 @@ const Header: React.FC = () => {
     <div className={`fixed top-0 left-0 right-0 w-full sm:py-5 py-3 z-[999] px-5 md:px-10 ${isScrolled ? "bg-primary-white shadow-md" : "bg-transparent"}`}>
       <header className="flex justify-between items-center">
         <div className="flex-shrink-0">
-          <img src="/images/logo.svg" alt="PriorAuth Logo" className="h-10" />
+          <img src="/images/logo.svg" alt="PriorAuth Logo" className="h-7 sm:h-8 lg:h-10" />
         </div>
-        <nav className="hidden md:flex justify-center space-x-8 text-primary-navy-blue text-lg">
+        <nav className="hidden md:flex justify-center space-x-8 text-primary-navy-blue text-base lg:text-lg">
           {["About", "Services", "FAQs", "Contact"].map((item) => (
             <a
               key={item}
@@ -46,7 +46,7 @@ const Header: React.FC = () => {
         {/* mobile menu */}
         {isMenuOpen && (
           <div className="absolute top-full left-0 right-0 bg-primary-white border border-primary-sky-blue md:hidden py-4 px-5">
-            <nav className="flex flex-col space-y-4 text-primary-navy-blue">
+            <nav className="flex flex-col space-y-4 text-primary-navy-blue text-sm">
               {["About", "Services", "FAQs", "Contact"].map((item) => (
                 <a key={item} href="#" className="hover:text-primary-blue transition-colors">
                   {item}

@@ -17,7 +17,7 @@ const HeroSection: React.FC = () => {
   };
 
   return (
-    <div className="px-12 pt-12 gap-4 theme-s-padding relative w-full overflow-hidden mx-auto">
+    <div className="px-12 pt-36 lg::pt-12 gap-4 theme-s-padding relative w-full overflow-hidden mx-auto">
       <Slider {...sliderSettings} className="w-full h-full">
         {slidesData.map((slide, index) => (
           <div
@@ -33,16 +33,16 @@ const HeroSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-12 gap-4 mt-auto">
-              <div className="col-span-1"></div>
-              <div className="col-span-10">
+              <div className="grid grid-cols-12 gap-4 mt-auto">
+                <div className="col-span-1"></div>
+                <div className="col-span-10">
                 {" "}
-                <img
-                  src={slide.image}
-                  alt={`Dashboard ${index + 1}`}
-                  className="max-w-full w-full mt-auto"
-                />
-              </div>
+                  <img
+                    src={slide.image}
+                    alt={`Dashboard ${index + 1}`}
+                  className="max-w-full w-full h-auto md:h-full mt-auto"
+                  />
+                </div>
             </div>
           </div>
         ))}
