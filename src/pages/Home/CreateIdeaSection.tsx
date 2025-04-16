@@ -28,7 +28,7 @@ const CreateIdeaSection: React.FC = () => {
           wrapper="h1"
           cursor={false}
           repeat={0}
-          className="text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-semibold mb-10 min-h-[250px]"
+          className="text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-semibold mb-0 lg:mb-10 min-h-[250px]"
         />
 
         <p className="text-base sm:text-xl md:text-2xl lg:max-w-4xl mx-auto mb-10">

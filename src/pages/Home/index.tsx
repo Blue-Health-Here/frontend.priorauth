@@ -12,7 +12,7 @@ const Home: React.FC  = () => {
   return (
     <HomeLayout>
       <div
-        className="relative w-full bg-cover bg-center flex flex-col justify-between pt-20 overflow-hidden"
+        className="relative w-full bg-cover bg-center flex flex-col justify-end pt-20 overflow-hidden lg:min-h-screen max-h-screen"
         style={{
           backgroundImage: `url(${"/images/herosection-bg-image.jpg"})`,
         }}

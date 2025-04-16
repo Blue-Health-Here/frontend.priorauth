@@ -8,7 +8,7 @@ const AboutSection: React.FC = () => {
     <section className="px-6 md:px-10 py-20 bg-primary-white">
       <div className="text-primary-black">
       <p className="text-base md:text-lg">About Priorauth Support</p>
-      <div data-aos="fade-up" data-aos-duration="6000">
+      <div>
         <TypeAnimation
           sequence={[
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus.',
