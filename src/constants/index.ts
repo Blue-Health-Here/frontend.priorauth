@@ -43,21 +43,30 @@ export const testimonials = [
     name: "Kristin Watson",
     designation: "Designation",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar.",
-    image: "/images/testinomial.png"
+    image: "/images/testinomial.png",
+    profileLink: "#",
+    company: "TechCorp",
+    companyLink: "https://www.google.com/"
   },
   {
     id: 2,
     name: "Jane Smith",
     designation: "Developer",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar.",
-    image: "/images/testinomial.png"
+    image: "/images/testinomial.png",
+    profileLink: "#",
+    company: "DevStudio",
+    companyLink: "https://www.google.com/"
   },
   {
     id: 3,
     name: "John Doe",
     designation: "Designer",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar.",
-    image: "/images/testinomial.png"
+    image: "/images/testinomial.png",
+    profileLink: "#",
+    company: "CreativeHub",
+    companyLink: "https://www.google.com/"
   }
 ];
 

@@ -10,7 +10,7 @@ const LoginForm: React.FC = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
   return (
     <div className="flex h-screen w-full">
-      <div className="w-full md:w-1/2 flex flex-col justify-between py-10 px-6 md:px-8 bg-white">
+      <div className="w-full md:w-1/2 flex flex-col justify-between py-10 px-6 md:px-8 bg-primary-white">
         <div className="self-start mb-8">
           <img
             src="/images/logo.svg"
@@ -90,7 +90,7 @@ const LoginForm: React.FC = () => {
           </form>
         </div>
 
-        <div className="h-8"></div>
+        <div className="md:h-8"></div>
       </div>
 
       <div className="hidden md:block w-1/2">
@@ -105,3 +105,4 @@ const LoginForm: React.FC = () => {
 };
 
 export default LoginForm;
+
