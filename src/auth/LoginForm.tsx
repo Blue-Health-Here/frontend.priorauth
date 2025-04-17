@@ -76,7 +76,7 @@ const LoginForm: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full text-xs sm:text-sm md:text-base bg-primary-navy-blue text-white py-2 rounded-md mb-6 font-semibold"
+              className="w-full cursor-pointer text-xs sm:text-sm md:text-base bg-primary-navy-blue text-white py-2 rounded-md mb-6 font-semibold"
             >
               Login
             </button>

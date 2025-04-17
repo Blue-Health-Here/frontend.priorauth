@@ -33,7 +33,7 @@ const Header: React.FC = () => {
           ))}
         </nav>
         <div className="hidden md:block flex-shrink-0">
-          <Link to="/login-page">
+          <Link to="/login">
             <Button title="Sign In" />
           </Link>
         </div>
