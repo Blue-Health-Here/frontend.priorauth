@@ -6,7 +6,6 @@ import FAQAccordion from "./FAQSection";
 import HeroSection from "./HeroSection";
 import ServiceSection from "./ServiceSection";
 import TestimonialSection from "./TestimonialSection";
-import FooterSection from "./FooterSection";
 
 const Home: React.FC = () => {
   return (
@@ -25,7 +24,6 @@ const Home: React.FC = () => {
       <CreateIdeaSection />
       <TestimonialSection />
       <ContactSection />
-      <FooterSection />
     </HomeLayout>
   );
 };

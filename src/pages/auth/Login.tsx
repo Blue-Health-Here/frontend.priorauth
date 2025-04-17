@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import InputField from "../components/input/InputField";
-import CustomCheckbox from "../components/checkbox/CustomCheckbox";
+import InputField from "../../components/input/InputField";
+import CustomCheckbox from "../../components/checkbox/CustomCheckbox";
 
-const LoginForm: React.FC = () => {
+const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailFocused, setEmailFocused] = useState(false);
@@ -104,5 +104,5 @@ const LoginForm: React.FC = () => {
   );
 };
 
-export default LoginForm;
+export default Login;
 

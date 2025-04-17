@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "../pages/Home/Header";
+import FooterSection from "../pages/Home/FooterSection";
 
 const HomeLayout: React.FC<{ children: any }> = ({ children }) => {
   return (
@@ -11,6 +12,7 @@ const HomeLayout: React.FC<{ children: any }> = ({ children }) => {
         {children}
       </main>
 
+      <FooterSection />
       {/* Footer */}
       {/* <footer className="w-full py-4 text-center">
         <p>&copy; 2025 Prior Auth. All rights reserved.</p>
