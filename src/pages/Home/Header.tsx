@@ -21,20 +21,18 @@ const Header: React.FC = () => {
         <div className="flex-shrink-0">
           <img src="/images/logo.svg" alt="PriorAuth Logo" className="h-7 sm:h-8 lg:h-10" />
         </div>
-        <div className="col-span-4">
-          <nav className="hidden md:flex justify-center space-x-8 text-primary-navy-blue text-lg">
-            {["About", "Services", "FAQs", "Contact"].map((item) => (
-              <a
-                key={item}
-                href="#"
-                className="relative after:content-[''] after:block after:h-[2px] after:bg-primary-navy-blue after:scale-x-0 after:transition-transform after:duration-300 after:origin-left hover:after:scale-x-100 after:mt-[0.px]"
-              >
-                {item}
-              </a>
-            ))}
-          </nav>
-        </div>
-        <div className="hidden md:flex col-span-4 ml-auto">
+        <nav className="hidden md:flex justify-center space-x-8 text-primary-navy-blue text-lg">
+          {["About", "Services", "FAQs", "Contact"].map((item) => (
+            <a
+              key={item}
+              href="#"
+              className="relative after:content-[''] after:block after:h-[2px] after:bg-primary-navy-blue after:scale-x-0 after:transition-transform after:duration-300 after:origin-left hover:after:scale-x-100 after:mt-[0.px]"
+            >
+              {item}
+            </a>
+          ))}
+        </nav>
+        <div className="hidden md:block flex-shrink-0">
           <Link to="/login-page">
             <Button title="Sign In" />
           </Link>
