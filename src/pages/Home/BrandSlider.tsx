@@ -48,7 +48,7 @@ const BrandSlider: React.FC = () => {
         <Slider {...settings}>
           {brands.map((brand, index) => (
             <div key={index}>
-              <div className="flex items-center justify-center h-16 md:h-24">
+              <div className="flex items-center select-auto justify-center h-16 md:h-24">
                 <img 
                   src={brand} 
                   alt={`Brand ${index + 1}`} 
