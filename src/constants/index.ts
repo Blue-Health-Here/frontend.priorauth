@@ -43,21 +43,30 @@ export const testimonials = [
     name: "Kristin Watson",
     designation: "Designation",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar.",
-    image: "/images/testinomial.png"
+    image: "/images/testinomial.png",
+    profileLink: "#",
+    company: "TechCorp",
+    companyLink: "https://www.google.com/"
   },
   {
     id: 2,
     name: "Jane Smith",
     designation: "Developer",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar.",
-    image: "/images/testinomial.png"
+    image: "/images/testinomial.png",
+    profileLink: "#",
+    company: "DevStudio",
+    companyLink: "https://www.google.com/"
   },
   {
     id: 3,
     name: "John Doe",
     designation: "Designer",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar.",
-    image: "/images/testinomial.png"
+    image: "/images/testinomial.png",
+    profileLink: "#",
+    company: "CreativeHub",
+    companyLink: "https://www.google.com/"
   }
 ];
 
@@ -66,49 +75,49 @@ export const services = [
     id: 1,
     title: "PA Criteria",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
-    bgColor: "bg-blue-50",
+    bgColor: "bg-[#DEF0FC]",
     imageUrl: "images/serviceslider1.png",
   },
   {
     id: 2,
     title: "CMM",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
-    bgColor: "bg-yellow-50",
+    bgColor: "bg-[#FFF9E0]",
     imageUrl: "images/serviceslider1.png",
   },
   {
     id: 3,
     title: "Analytics",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
-    bgColor: "bg-blue-50",
+    bgColor: "bg-[#DEF0FC]",
     imageUrl: "images/serviceslider1.png",
   },
   {
     id: 4,
     title: "Consulting",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
-    bgColor: "bg-yellow-50",
+    bgColor: "bg-[#FFF9E0]",
     imageUrl: "images/serviceslider1.png",
   },
   {
     id: 2,
     title: "CMM",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
-    bgColor: "bg-yellow-50",
+    bgColor: "bg-[#FFF9E0]",
     imageUrl: "images/serviceslider1.png",
   },
   {
     id: 3,
     title: "Analytics",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
-    bgColor: "bg-blue-50",
+    bgColor: "bg-[#DEF0FC]",
     imageUrl: "images/serviceslider1.png",
   },
   {
     id: 4,
     title: "Consulting",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
-    bgColor: "bg-yellow-50",
+    bgColor: "bg-[#FFF9E0]",
     imageUrl: "images/serviceslider1.png",
   },
 ];
