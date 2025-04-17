@@ -133,15 +133,150 @@ export const brands = [
 
 
 export const adminSidebarItems = [
-  { name: "Dashboard", icon: "/sidebar-dashboard.svg", path: "/admin/dashboard" },
-  { name: "Pharmacies", icon: "/sidebar-pharmacy.svg", path: "/admin/pharmacies" },
-  { name: "Budget", icon: "/sidebar-Prescribers.svg", path: "/admin/budget" },
-  { name: "Checklist", icon: "/sidebar-requets.svg", path: "/admin/checklist" },
-  { name: "Courses", icon: "/sidebar-Initiations.svg", path: "/admin/courses" },
-  { name: "Marketing Materials", icon: "/sidebar-sent-to-plan.svg" ,path:"/admin/marketing"},
-  { name: "Categories", icon: "/sidebar-calling.svg", path: "/admin/categories" },
-  { name: "Profile", icon: "/sidebar-staff.svg", path: "/admin/profile" },
-  { name: "Marketing Materials", icon: "/sidebar-task-01.svg" ,path:"/admin/marketing"},
-  { name: "Categories", icon: "/sidebar-role&permission.svg", path: "/admin/categories" },
-  { name: "Profile", icon: "/sidebar-Settings.svg", path: "/admin/profile" }
+  { name: "Dashboard", icon: "/sidebar-dashboard.svg", path: "/" , active: true},
+  { name: "Pharmacies", icon: "/sidebar-pharmacy.svg", path: "/" },
+  { name: "Prescribers", icon: "/sidebar-Prescribers.svg", path: "/" },
+  { name: "Requests", icon: "/sidebar-requets.svg", path: "/" },
+  { name: "Initiations", icon: "/sidebar-Initiations.svg", path: "/" },
+  { name: "Send To Plan", icon: "/sidebar-sent-to-plan.svg" ,path:"/g"},
+  { name: "Calls", icon: "/sidebar-calling.svg", path: "/" },
+  { name: "Staff", icon: "/sidebar-staff.svg", path: "/" },
+  { name: "Tasks", icon: "/sidebar-task-01.svg" ,path:"/"},
+  { name: "Permissions", icon: "/sidebar-role&permission.svg", path: "/" },
+  { name: "Settings", icon: "/sidebar-Settings.svg", path: "/" }
+];
+
+
+
+export const prescribers = [
+  {
+    id: 1,
+    name: 'Wade Warren',
+    image: 'https://randomuser.me/api/portraits/men/2.jpg',
+    email: 'wade@me.com',
+    phone: '(217) 555-0113',
+    location: 'New York',
+  },
+  {
+    id: 2,
+    name: 'Brooklyn Simmons',
+    image: 'https://randomuser.me/api/portraits/women/1.jpg',
+    email: 'brooklyn@example.com',
+    phone: '(217) 555-0129',
+    location: 'New Jersey',
+  },
+  {
+    id: 3,
+    name: 'Theresa Webb',
+    image: 'https://randomuser.me/api/portraits/women/2.jpg',
+    email: 'twebbb@fastmail.com',
+    phone: '(220) 555-0404',
+    location: 'Pennsylvania',
+  },
+  {
+    id: 4,
+    name: 'Esther Howard',
+    image: 'https://randomuser.me/api/portraits/women/4.jpg',
+    email: 'esther@fastmail.com',
+    phone: '(320) 555-0917',
+    location: 'New York',
+  },
+];
+
+export const staff = [
+  {
+    id: 1,
+    name: 'Cody Fisher',
+    image: 'https://randomuser.me/api/portraits/men/1.jpg',
+    email: 'cody@me.com',
+    phone: '(217) 555-0113',
+    designation: 'Accounts',
+  },
+  {
+    id: 2,
+    name: 'Kristin Watson',
+    image: 'https://randomuser.me/api/portraits/women/5.jpg',
+    email: 'kristin@example.com',
+    phone: '(820) 555-0929',
+    designation: 'Admin',
+  },
+  {
+    id: 3,
+    name: 'Cameron Williamson',
+    image: 'https://randomuser.me/api/portraits/men/4.jpg',
+    email: 'cwilliamson@fastmail.com',
+    phone: '(220) 555-0404',
+    designation: 'Manager',
+  },
+  {
+    id: 4,
+    name: 'Theresa Webb',
+    image: 'https://randomuser.me/api/portraits/women/3.jpg',
+    email: 'twebb@fastmail.com',
+    phone: '(320) 555-0917',
+    designation: 'In-charge',
+  },
+];
+
+export const tasks = [
+  {
+    id: '5655',
+    medication: 'Invokana 50 mg Tab',
+    assignedTo: {
+      name: 'Cody Fisher',
+      image: 'https://randomuser.me/api/portraits/men/1.jpg',
+    },
+    prescriber: {
+      name: 'Wade Warren',
+      image: 'https://randomuser.me/api/portraits/men/2.jpg',
+    },
+    dateAssigned: '04/02/2025',
+    status: 'Updated (Progress Sent)',
+    pharmacy: { id: 1, name: 'Aldergrip Ltd', color: 'blue' },
+  },
+  {
+    id: '5656',
+    medication: 'Enbrel 500 mg Tab',
+    assignedTo: {
+      name: 'Kristin Watson',
+      image: 'https://randomuser.me/api/portraits/women/5.jpg',
+    },
+    prescriber: {
+      name: 'Brooklyn Simmons',
+      image: 'https://randomuser.me/api/portraits/women/1.jpg',
+    },
+    dateAssigned: '3/03/2025',
+    status: 'Progress (Need Respond)',
+    pharmacy: { id: 2, name: 'Big Kahuna Ltd', color: 'pink' },
+  },
+  {
+    id: '5657',
+    medication: 'Ventolin 2.5 mg Tab',
+    assignedTo: {
+      name: 'Cameron Williamson',
+      image: 'https://randomuser.me/api/portraits/men/4.jpg',
+    },
+    prescriber: {
+      name: 'Theresa Webb',
+      image: 'https://randomuser.me/api/portraits/women/2.jpg',
+    },
+    dateAssigned: '2/02/2025',
+    status: 'Queued for Call',
+    pharmacy: { id: 3, name: 'Acme Co.', color: 'indigo' },
+  },
+  {
+    id: '5658',
+    medication: 'Metformin 2.5 mg Pl',
+    assignedTo: {
+      name: 'Theresa Webb',
+      image: 'https://randomuser.me/api/portraits/women/3.jpg',
+    },
+    prescriber: {
+      name: 'Esther Howard',
+      image: 'https://randomuser.me/api/portraits/women/4.jpg',
+    },
+    dateAssigned: '01/01/2025',
+    status: 'Call Scheduled for 1/5',
+    pharmacy: { id: 4, name: 'Iceroni LLC', color: 'purple' },
+  },
 ];
