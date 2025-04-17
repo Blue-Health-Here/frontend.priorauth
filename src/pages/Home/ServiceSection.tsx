@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { services } from "../../constants";
+import FooterSection from "./FooterSection";
 
 const ServiceSection: React.FC = () => {
   const sliderRef = useRef<Slider>(null);
@@ -75,7 +76,7 @@ const ServiceSection: React.FC = () => {
         <div className="overflow-visible">
           <Slider ref={sliderRef} {...sliderSettings}>
             {services.map((service) => (
-              <div key={service.id} className="mb-8 pr-4">
+              <div key={service.id} className="mb-8 pr-4 select-auto">
                 <div className="grid grid-cols-5 gap-4">
                   <div className="col-span-3 rounded-3xl overflow-hidden shadow-md">
                     <img
@@ -92,13 +93,15 @@ const ServiceSection: React.FC = () => {
                       <p className="text-secondary-black mb-3 md:line-clamp-3">
                         {service.description}
                       </p>
-                      <div className="flex items-center gap-x-3 text-primary-navy-blue font-semibold">
+                      <a 
+                        href={`${<FooterSection/>}`} 
+                        className="flex items-center gap-x-3 text-primary-navy-blue font-semibold">
                         <span>Explore More</span>
                         <img
                           src="/right-up-arrow.svg"
                           alt=""
                         />
-                      </div>
+                      </a>
                     </div>
                   </div>
                 </div>
