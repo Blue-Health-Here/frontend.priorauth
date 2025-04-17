@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "../../components/Button/Button";
+import { Link } from "react-router-dom";
 
 const Header: React.FC = () => {
 
@@ -34,7 +35,9 @@ const Header: React.FC = () => {
           </nav>
         </div>
         <div className="hidden md:flex col-span-4 ml-auto">
-         <Button title="Sign In"/>
+          <Link to="/login-page">
+            <Button title="Sign In" />
+          </Link>
         </div>
       </header>
     </div>

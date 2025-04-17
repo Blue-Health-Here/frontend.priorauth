@@ -10,26 +10,25 @@ import TestimonialSection from "./TestimonialSection";
 import FooterSection from "./FooterSection";
 import LoginForm from "../../auth/LoginForm";
 
-const Home: React.FC  = () => {
+const Home: React.FC = () => {
   return (
-    // <HomeLayout>
-    //   <div
-    //     className="relative w-full md:min-h-screen bg-cover bg-center flex flex-col justify-between pt-20 overflow-hidden"
-    //     style={{
-    //       backgroundImage: `url(${"/images/herosection-bg-image.jpg"})`,
-    //     }}
-    //   >
-    //     <HeroSection />
-    //   </div>
-    //   <AboutSection />
-    //   <ServiceSection />
-    //   <FAQAccordion />
-    //   <CreateIdeaSection />
-    //   <TestimonialSection />
-    //   <ContactSection />
-    //   <FooterSection />
-    // </HomeLayout>
-    <LoginForm />
+    <HomeLayout>
+      <div
+        className="relative w-full md:min-h-screen bg-cover bg-center flex flex-col justify-between pt-20 overflow-hidden"
+        style={{
+          backgroundImage: `url(${"/images/herosection-bg-image.jpg"})`,
+        }}
+      >
+        <HeroSection />
+      </div>
+      <AboutSection />
+      <ServiceSection />
+      <FAQAccordion />
+      <CreateIdeaSection />
+      <TestimonialSection />
+      <ContactSection />
+      <FooterSection />
+    </HomeLayout>
   );
 };
 
