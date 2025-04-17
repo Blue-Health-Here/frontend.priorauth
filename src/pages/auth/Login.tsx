@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import InputField from "../../components/input/InputField";
 import CustomCheckbox from "../../components/checkbox/CustomCheckbox";
+import { Link } from "react-router-dom";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -9,7 +10,7 @@ const Login: React.FC = () => {
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [isChecked, setIsChecked] = useState<boolean>(false);
   return (
-    <div className="flex h-screen w-full">
+    <div className="flex min-h-screen w-full">
       <div className="w-full md:w-1/2 flex flex-col justify-between py-10 px-6 md:px-8 bg-primary-white">
         <div className="self-start mb-8">
           <img
@@ -57,21 +58,25 @@ const Login: React.FC = () => {
             </div>
 
             <div className="flex justify-between items-center mb-8">
-              <div className="flex items-center">
-              <CustomCheckbox
-                checked={isChecked}
-                onChange={(e) => setIsChecked(e.target.checked)}
-              />
-                <label
-                  htmlFor="remember"
-                  className="text-xs md:text-sm text-secondary-black ml-2 font-secondary"
-                >
+              <label
+                htmlFor="remember"
+                className="inline-flex items-center cursor-pointer"
+              >
+                <CustomCheckbox
+                  id="remember"
+                  checked={isChecked}
+                  onChange={(e) => setIsChecked(e.target.checked)}
+                />
+                <span className="text-xs md:text-sm text-secondary-black ml-2 font-secondary">
                   Remember me
-                </label>
-              </div>
-              <a href="#" className="text-xs md:text-sm text-erro-clip font-secondary">
+                </span>
+              </label>
+              <Link
+                to="#"
+                className="text-xs md:text-sm text-erro-clip font-secondary"
+              >
                 Forgot Password?
-              </a>
+              </Link>
             </div>
 
             <button
@@ -83,9 +88,9 @@ const Login: React.FC = () => {
 
             <div className="text-center text-xs sm:text-sm md:text-base text-secondary-black">
               Don't have an account?{"  "}
-              <a href="#" className="text-primary-black font-semibold">
+              <Link to="#" className="text-primary-black font-semibold">
                 Sign up for free
-              </a>
+              </Link>
             </div>
           </form>
         </div>
