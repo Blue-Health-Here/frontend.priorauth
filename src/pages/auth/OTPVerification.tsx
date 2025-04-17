@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
-const EmailVerification: React.FC = () => {
+const OTPVerification: React.FC = () => {
   const [otpValues, setOtpValues] = useState<string[]>(["", "", "", ""]);
 
   // Use proper typing for refs
@@ -116,4 +116,4 @@ const EmailVerification: React.FC = () => {
   );
 };
 
-export default EmailVerification;
+export default OTPVerification;
