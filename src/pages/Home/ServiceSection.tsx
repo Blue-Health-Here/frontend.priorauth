@@ -3,7 +3,6 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { services } from "../../constants";
-import FooterSection from "./FooterSection";
 
 const ServiceSection: React.FC = () => {
   const sliderRef = useRef<Slider>(null);
