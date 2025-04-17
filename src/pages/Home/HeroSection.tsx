@@ -27,7 +27,7 @@ const HeroSection: React.FC = () => {
             <div className="grid grid-cols-1 xl:grid-cols-12">
               <div className="xl:col-span-1"></div>
               <div className="xl:col-span-10">
-                <h1 className="text-2xl md:text-3xl lg:text-5xl xl:text-8xl font-semibold text-blue-900 leading-tight">
+                <h1 className="text-2xl md:text-3xl lg:text-5xl xl:text-8xl font-semibold text-primary-navy-blue leading-tigh select-text">
                   {slide.heading}
                 </h1>
               </div>

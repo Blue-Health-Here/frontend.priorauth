@@ -76,7 +76,7 @@ const ServiceSection: React.FC = () => {
         <div className="overflow-visible">
           <Slider ref={sliderRef} {...sliderSettings}>
             {services.map((service) => (
-              <div key={service.id} className="mb-8 pr-4 select-auto">
+              <div key={service.id} className="mb-8 pr-4 select-text">
                 <div className="grid grid-cols-5 gap-4">
                   <div className="col-span-3 rounded-3xl overflow-hidden shadow-md">
                     <img
@@ -94,7 +94,7 @@ const ServiceSection: React.FC = () => {
                         {service.description}
                       </p>
                       <a 
-                        href={`${<FooterSection/>}`} 
+                        href="#"
                         className="flex items-center gap-x-3 text-primary-navy-blue font-semibold">
                         <span>Explore More</span>
                         <img

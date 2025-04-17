@@ -54,7 +54,7 @@ const TestimonialSection: React.FC = () => {
                   <div className="col-span-12 md:col-span-3 px-6 md:px-0">
                     {testimonial.profileLink ? (
                       <a
-                        href={testimonial.profileLink}
+                        href="#"
                         aria-label={`View ${testimonial.name}'s profile`}
                       >
                         <img
@@ -80,7 +80,7 @@ const TestimonialSection: React.FC = () => {
                       <div>
                         {testimonial.profileLink ? (
                           <a
-                            href={testimonial.profileLink}
+                            href="#"
                             aria-label={`View ${testimonial.name}'s profile`}
                           >
                             <h3 className="font-semibold text-lg sm:text-xl md:text-3xl bot text-primary-black select-text">
@@ -98,7 +98,7 @@ const TestimonialSection: React.FC = () => {
                       </div>
                       {testimonial.companyLink ? (
                         <a
-                          href={testimonial.companyLink}
+                          href="#"
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`Visit ${
