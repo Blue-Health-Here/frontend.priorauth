@@ -8,7 +8,7 @@ import ServiceSection from "./ServiceSection";
 import TestimonialSection from "./TestimonialSection";
 import FooterSection from "./FooterSection";
 
-const Home: React.FC  = () => {
+const Home: React.FC = () => {
   return (
     <HomeLayout>
       <div
