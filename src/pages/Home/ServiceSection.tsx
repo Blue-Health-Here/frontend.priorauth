@@ -25,7 +25,7 @@ const ServiceSection: React.FC = () => {
         }
       },
       {
-        breakpoint: 768,
+        breakpoint: 767,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -38,13 +38,13 @@ const ServiceSection: React.FC = () => {
     <div className="w-full py-20 md:py-32">
       <div className="grid mb-12 grid-cols-12 px-4 sm:px-8">
         <div className="col-span-12 lg:col-span-1">
-          <span className="text-primary-black font-secondary text-base md:text-lg">
+          <span className="text-primary-black font-secondary text-sm sm:text-base md:text-lg">
             What We Offer?
           </span>
         </div>
         <div className="hidden sm:block lg:col-span-1"></div>
         <div className="col-span-12 md:col-span-7 lg:col-span-8 text-primary-black mt-4 sm:mt-0">
-          <h2 className="text-xl sm:text-3xl md:text-5xl">Our Services</h2>
+          <h2 className="text-xl sm:text-3xl md:text-5xl font-semibold">Our Services</h2>
           <p className="font-secondary text-sm md:text-base mt-2">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
             turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus
@@ -54,23 +54,24 @@ const ServiceSection: React.FC = () => {
         </div>
         <div className="hidden sm:block lg:col-span-1"></div>
         <div className="col-span-12 md:col-span-2 lg:col-span-1 ">
-          <div className="flex gap-x-4 mt-6 md:mt-0">
+        <div className="flex gap-x-2 md:gap-x-4 mt-6 md:mt-0">
             <img
               src="/images/chevronleft.svg"
               alt=""
-              onClick={() => sliderRef.current?.slickNext()}
-              className="p-2 rounded-2xl border border-tertiary-black hover:bg-quaternary-sky-blue hover:border-primary-sky-blue cursor-pointer"
+              onClick={() => sliderRef.current?.slickPrev()}
+              className="p-1 md:p-2 rounded-lg border border-tertiary-black hover:bg-quaternary-black cursor-pointer"
             />
             <img
-              src="/images/chevronright.svg" alt=""
+              src="/images/chevronright.svg"
+              alt=""
               onClick={() => sliderRef.current?.slickNext()}
-              className="p-2 rounded-2xl border border-tertiary-black hover:bg-quaternary-sky-blue hover:border-primary-sky-blue cursor-pointer"
+              className="p-1 md:p-2 rounded-lg border border-tertiary-black hover:bg-quaternary-black cursor-pointer"
             />
           </div>
         </div>
       </div>
            
-      <div className="pl-4 sm:pl-8 pr-0">
+      <div className="pl-4 md:pl-8 pr-0">
         <div className="overflow-visible">
           <Slider ref={sliderRef} {...sliderSettings}>
             {services.map((service) => (
@@ -84,16 +85,19 @@ const ServiceSection: React.FC = () => {
                     />
                   </div>
                   <div
-                    className={`col-span-2 flex flex-col justify-between p-4 rounded-3xl shadow-md ${service.bgColor} h-auto md:h-48 lg:h-52`}
+                    className={`col-span-2 flex flex-col justify-between text-sm md:text-base p-4 rounded-3xl shadow-md ${service.bgColor} h-auto md:h-48 lg:h-52`}
                   >
-                    <h3 className="text-md font-semibold mb-2">{service.title}</h3>
+                    <h3 className="font-semibold mb-2">{service.title}</h3>
                     <div className="">
-                      <p className="text-secondary-black text-base mb-3 line-clamp-3">
+                      <p className="text-secondary-black mb-3 md:line-clamp-3">
                         {service.description}
                       </p>
-                      <div className="flex items-center text-primary-navy-blue font-semibold text-sm">
+                      <div className="flex items-center gap-x-3 text-primary-navy-blue font-semibold">
                         <span>Explore More</span>
-                        <span className="ml-1">↗</span>
+                        <img
+                          src="/right-up-arrow.svg"
+                          alt=""
+                        />
                       </div>
                     </div>
                   </div>
