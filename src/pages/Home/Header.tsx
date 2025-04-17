@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "../../components/Button/Button";
+import { Link } from "react-router-dom";
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -20,7 +21,7 @@ const Header: React.FC = () => {
         <div className="flex-shrink-0">
           <img src="/images/logo.svg" alt="PriorAuth Logo" className="h-7 sm:h-8 lg:h-10" />
         </div>
-        <nav className="hidden md:flex justify-center space-x-8 text-primary-navy-blue text-base lg:text-lg">
+        <nav className="hidden md:flex justify-center space-x-8 text-primary-navy-blue text-lg">
           {["About", "Services", "FAQs", "Contact"].map((item) => (
             <a
               key={item}
@@ -32,9 +33,11 @@ const Header: React.FC = () => {
           ))}
         </nav>
         <div className="hidden md:block flex-shrink-0">
-          <Button title="Sign In" />
+          <Link to="/login-page">
+            <Button title="Sign In" />
+          </Link>
         </div>
-        <button 
+        <button
           className="md:hidden text-primary-navy-blue"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
@@ -53,7 +56,7 @@ const Header: React.FC = () => {
                 </a>
               ))}
               <div className="pt-2">
-                <Button title="Sign In" className="w-full"/>
+                <Button title="Sign In" className="w-full" />
               </div>
             </nav>
           </div>
