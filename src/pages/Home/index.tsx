@@ -7,7 +7,6 @@ import HeroSection from "./HeroSection";
 import ServiceSection from "./ServiceSection";
 import TestimonialSection from "./TestimonialSection";
 import FooterSection from "./FooterSection";
-import LoginForm from "../../auth/LoginForm";
 
 const Home: React.FC = () => {
   return (
