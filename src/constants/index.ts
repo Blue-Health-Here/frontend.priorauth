@@ -121,3 +121,18 @@ export const brands = [
   "/radiyal.svg",  
   "/uilogos.svg"
 ];
+
+
+export const adminSidebarItems = [
+  { name: "Dashboard", icon: "/sidebar-dashboard.svg", path: "/admin/dashboard" },
+  { name: "Pharmacies", icon: "/sidebar-pharmacy.svg", path: "/admin/pharmacies" },
+  { name: "Budget", icon: "/sidebar-Prescribers.svg", path: "/admin/budget" },
+  { name: "Checklist", icon: "/sidebar-requets.svg", path: "/admin/checklist" },
+  { name: "Courses", icon: "/sidebar-Initiations.svg", path: "/admin/courses" },
+  { name: "Marketing Materials", icon: "/sidebar-sent-to-plan.svg" ,path:"/admin/marketing"},
+  { name: "Categories", icon: "/sidebar-calling.svg", path: "/admin/categories" },
+  { name: "Profile", icon: "/sidebar-staff.svg", path: "/admin/profile" },
+  { name: "Marketing Materials", icon: "/sidebar-task-01.svg" ,path:"/admin/marketing"},
+  { name: "Categories", icon: "/sidebar-role&permission.svg", path: "/admin/categories" },
+  { name: "Profile", icon: "/sidebar-Settings.svg", path: "/admin/profile" }
+];
