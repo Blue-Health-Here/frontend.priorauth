@@ -21,7 +21,7 @@ const TestimonialSection: React.FC = () => {
     <div className="py-8 md:py-16 lg:py-32">
       <div className="grid grid-cols-12 gap-2 md:gap-4">
         <div className="col-span-1 hidden md:block"></div>
-        <div className="col-span-6 md:col-span-1 pl-4 md:pl-0">
+        <div className="col-span-6 md:col-span-1 pl-6 md:pl-0">
           <div className="flex gap-x-2 md:gap-x-4">
             <img
               src="/images/chevronleft.svg"
@@ -38,7 +38,7 @@ const TestimonialSection: React.FC = () => {
           </div>
         </div>
         <div className="col-span-0 md:col-span-2 hidden md:block"></div>
-        <div className="col-span-6 md:col-span-1 flex justify-end md:justify-start pr-4 md:pr-0">
+        <div className="col-span-6 md:col-span-1 flex justify-end md:justify-start pr-6 md:pr-0">
           <img src="/images/double-qotes-icon.svg" alt="" className="w-8 md:w-auto" />
         </div>
       </div>
@@ -51,28 +51,28 @@ const TestimonialSection: React.FC = () => {
                 <div className="grid grid-cols-12 gap-2 md:gap-4">
                   <div className="col-span-0 md:col-span-1 hidden md:block"></div>
                   
-                  <div className="col-span-12 md:col-span-3 px-4 md:px-0">
+                  <div className="col-span-12 md:col-span-3 px-6 md:px-0">
                     <img
                       src={testimonial.image}
                       alt={testimonial.name}
-                      className="w-full h-auto object-cover rounded max-h-64 md:max-h-none"
+                      className="w-full h-full object-cover rounded-lg"
                     />
                   </div>
                   
-                  <div className="col-span-12 md:col-span-7 flex flex-col h-full px-4 md:px-0 mt-4 md:mt-0">
-                    <p className="text-secondary-black text-base sm:text-xl md:text-2xl font-secondary">
+                  <div className="col-span-12 md:col-span-7 flex flex-col h-full px-6 md:px-0 mt-4 md:mt-0">
+                    <p className="text-secondary-black text-base sm:text-lg md:text-xl lg:text-2xl font-secondary">
                       {testimonial.content}
                     </p>
-                    <div className="mt-4 md:mt-auto flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                      <div className="mb-2 sm:mb-0">
-                        <h3 className="font-semibold text-lg sm:text-xl md:text-3xl text-primary-black">
+                    <div className="mt-4 md:mt-auto flex gap-y-3 flex-col sm:flex-row justify-between items-start sm:items-center">
+                      <div>
+                        <h3 className="font-semibold text-lg sm:text-xl md:text-3xl bot text-primary-black">
                           {testimonial.name}
                         </h3>
-                        <p className="text-secondary-black text-base sm:text-xl md:text-2xl font-secondary">
+                        <p className="text-secondary-black text-base sm:text-lg md:text-xl lg:text-2xlfont-secondary">
                           {testimonial.designation}
                         </p>
                       </div>
-                      <img src="/images/Group-icon.svg" alt="" className="mt-2 sm:mt-0" />
+                      <img src="/images/Group-icon.svg" alt="" />
                     </div>
                   </div>
                   
