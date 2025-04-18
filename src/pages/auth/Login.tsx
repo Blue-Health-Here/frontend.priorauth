@@ -7,10 +7,6 @@ import { signInInitialVals } from "../../utils/initialVals";
 import { signInValidationSchema } from "../../utils/validationSchema";
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailFocused, setEmailFocused] = useState(false);
-  const [passwordFocused, setPasswordFocused] = useState(false);
   const [isChecked, setIsChecked] = useState<boolean>(false);
   return (
     <div className="flex min-h-screen w-full">
