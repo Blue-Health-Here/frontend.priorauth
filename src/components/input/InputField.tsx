@@ -30,13 +30,18 @@ const InputField: React.FC<InputFieldProps> = ({
 
   if (variant === "contact") {
     return (
-      <input
-        type={type}
-        placeholder={placeholder}
-        className={`w-full bg-transparent border-b border-primary-white py-2 text-primary-white placeholder-primary-white font-secondary 
-        focus:outline-none focus:border-primary-white placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base ${className}`}
-        {...field}
-      />
+      <div>
+        <input
+          type={type}
+          placeholder={placeholder}
+          className={`w-full bg-transparent border-b border-primary-white py-2 text-primary-white placeholder-primary-white font-secondary 
+            focus:outline-none focus:border-primary-white placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base ${className}`}
+            {...field}
+        />
+        {meta.touched && meta.error && (
+          <p className="text-red-500 mt-1 text-xs font-secondary">{meta.error}</p>
+        )}
+      </div>
     );
   }
 
