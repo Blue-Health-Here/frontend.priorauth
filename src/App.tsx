@@ -2,7 +2,7 @@ import OTPVerification from "./pages/auth/OTPVerification";
 import Login from "./pages/auth/Login";
 import Home from "./pages/Home";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import AdminDashboard from "./pages/admin/dashboard/AdminDashboard";
+import AdminDashboard from "./pages/admin/dashboard/index";
 
 function App() {
   return (

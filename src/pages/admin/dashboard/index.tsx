@@ -77,7 +77,7 @@
 //                 </div>
 //               </div>
 //             </div>
-            
+
 //             <div className="bg-white p-4 rounded-lg shadow-sm">
 //               <h3 className="text-sm font-medium text-gray-600 mb-2">Total Trials</h3>
 //               <p className="text-sm text-gray-500">Total no. of Submissions/Visits Doctors need to attend</p>
@@ -90,7 +90,7 @@
 //                 </div>
 //               </div>
 //             </div>
-            
+
 //             <div className="bg-white p-4 rounded-lg shadow-sm">
 //               <h3 className="text-sm font-medium text-gray-600 mb-4">Total</h3>
 //               <div className="flex justify-center items-center h-32">
@@ -160,7 +160,7 @@
 //             <TasksTable/>
 //           </div>
 //         </div>
-        
+
 //         {/* Footer */}
 //         <div className="bg-white py-2 px-6 border-t border-gray-200 flex justify-center items-center text-xs text-gray-500">
 //           © Copyright Prior Auth 2023 - All Rights Reserved
@@ -178,6 +178,9 @@ import { Search, Bell, Home, FileText, Users, User, Inbox, HelpCircle, Calendar,
 import AdminSidebar from './AdminSidebar';
 import DashboardHeader from './DashboardHeader';
 import StatCard from './StatCard';
+import AdminLayout from '../../../layouts/AdminLayout';
+import StatsSection from './StatsSection';
+import PharmacyListing from './PharmacyListing';
 
 // Define TypeScript interfaces for our data
 interface Pharmacy {
@@ -225,22 +228,22 @@ interface Task {
 // Generate dummy data
 const pharmacies: Record<string, Pharmacy[]> = {
   'New York': [
-    { id: 1, name: 'Alchemya Ltd', phone: '(212) 555-0123' },
-    { id: 2, name: 'Big RxWorks Ltd', phone: '(620) 555-0352' },
-    { id: 3, name: 'Acme Co', phone: '(226) 555-0424' },
-    { id: 4, name: 'Breline LLC', phone: '(332) 555-0517' }
+    { id: 1, name: 'Alchemya Ltd', phone: '(212) 555-0123', color: 'blue' },
+    { id: 2, name: 'Big RxWorks Ltd', phone: '(620) 555-0352', color: 'green' },
+    { id: 3, name: 'Acme Co', phone: '(226) 555-0424', color: 'red' },
+    { id: 4, name: 'Breline LLC', phone: '(332) 555-0517', color: 'yellow' }
   ],
   'New Jersey': [
-    { id: 5, name: 'Alchemya Ltd', phone: '(717) 555-0123' },
-    { id: 6, name: 'Big RxWorks Ltd', phone: '(620) 555-0352' },
-    { id: 7, name: 'Acme Co', phone: '(226) 555-0424' },
-    { id: 8, name: 'Breline LLC', phone: '(332) 555-0517' }
+    { id: 5, name: 'Alchemya Ltd', phone: '(717) 555-0123', color: 'blue' },
+    { id: 6, name: 'Big RxWorks Ltd', phone: '(620) 555-0352', color: 'green' },
+    { id: 7, name: 'Acme Co', phone: '(226) 555-0424', color: 'red' },
+    { id: 8, name: 'Breline LLC', phone: '(332) 555-0517', color: 'yellow' }
   ],
   'Pennsylvania': [
-    { id: 9, name: 'Alchemya Ltd', phone: '(212) 555-0123' },
-    { id: 10, name: 'Big RxWorks Ltd', phone: '(620) 555-0352' },
-    { id: 11, name: 'Acme Co', phone: '(226) 555-0424' },
-    { id: 12, name: 'Breline LLC', phone: '(332) 555-0517' }
+    { id: 9, name: 'Alchemya Ltd', phone: '(212) 555-0123', color: 'blue' },
+    { id: 10, name: 'Big RxWorks Ltd', phone: '(620) 555-0352', color: 'green' },
+    { id: 11, name: 'Acme Co', phone: '(226) 555-0424', color: 'red' },
+    { id: 12, name: 'Breline LLC', phone: '(332) 555-0517', color: 'yellow' }
   ]
 };
 
@@ -332,31 +335,6 @@ const SidebarItem = ({ icon, text, active = false }) => {
 //   );
 // };
 
-const PharmacyCard = ({ region, pharmacies }) => {
-  return (
-    <div className="bg-white p-4 rounded-md shadow-sm">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="font-medium">Pharmacies ({region})</h2>
-        <button className="text-gray-400">
-          <Plus size={16} />
-        </button>
-      </div>
-      <div className="space-y-3">
-        {pharmacies.map((pharmacy) => (
-          <div key={pharmacy.id} className="flex items-center">
-            <div className={`w-6 h-6 rounded-full mr-3 flex items-center justify-center text-white ${getColorByIndex(pharmacy.id)}`}>
-              {getInitial(pharmacy.name)}
-            </div>
-            <div className="flex-1">
-              <div className="text-sm font-medium">{pharmacy.name}</div>
-              <div className="text-xs text-gray-500">{pharmacy.phone}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
 
 const RequestsTable = ({ requests }) => {
   return (
@@ -527,9 +505,9 @@ const getStatusStyle = (status) => {
 };
 
 // Chart component (simple implementation)
-const Chart = ({ value, total, color }) => {
+const Chart = ({ value, total, color }: any) => {
   const percentage = (value / total) * 100;
-  
+
   return (
     <div className="relative w-24 h-24">
       <svg viewBox="0 0 36 36" className="w-full h-full">
@@ -562,72 +540,18 @@ const Chart = ({ value, total, color }) => {
 // Main App Component
 const AdminDashboard = () => {
   return (
-    <div className="flex bg-gray-50 min-h-screen">
-      <AdminSidebar />
-      <div className="flex-1">
-        <DashboardHeader />
-        <div className="p-6">
-          <div className="grid grid-cols-4 gap-4 mb-6">
-            <StatCard subtitle='mehreen' title="Total no. of clinics registered on Prior Auth to provide their services" value="85" color="blue" />
-            <StatCard subtitle='mehreen' title="Total Doctor registered on platform, including individual & linked with clinics" value="48" />
-            <StatCard subtitle='mehreen' title="Total no. of requests on platform to prescribe" value="42K"  />
-            <StatCard subtitle='mehreen' title="Total no. of tasks created by the Admin" value="5K" />
+    <AdminLayout>
+<StatsSection/>
 
-            <div className="bg-white p-4 rounded-md shadow-sm">
-              <p className="text-sm text-gray-500">Prescribers</p>
-              <p className="text-sm text-gray-500">Total Doctor registered on platform, including individual & linked with clinics</p>
-              <p className="text-2xl font-bold mt-2">48</p>
-            </div>
-            <div className="bg-white p-4 rounded-md shadow-sm">
-              <p className="text-sm text-gray-500">Requests</p>
-              <p className="text-sm text-gray-500">Total no. of requests on platform to prescribe</p>
-              <p className="text-2xl font-bold mt-2">42K</p>
-            </div>
-            <div className="bg-white p-4 rounded-md shadow-sm">
-              <p className="text-sm text-gray-500">Tasks</p>
-              <p className="text-sm text-gray-500">Total no. of tasks created by the Admin</p>
-              <p className="text-2xl font-bold mt-2">5K</p>
-            </div>
-          </div>
 
-          <div className="grid grid-cols-4 gap-4 mb-6">
-            <div className="col-span-2 bg-white p-4 rounded-md shadow-sm">
-              <h2 className="font-medium mb-4">Total Requests</h2>
-              <div className="flex items-center justify-between">
-                <Chart value={870} total={1000} color="#4338ca" />
-                <div className="flex flex-col items-center">
-                  <div className="text-sm text-gray-500">Total</div>
-                  <div className="text-2xl font-bold">870</div>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="text-sm text-gray-500">New</div>
-                  <div className="text-2xl font-bold text-blue-600">870</div>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="text-sm text-gray-500">Completed</div>
-                  <div className="text-2xl font-bold text-green-600">870</div>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="text-sm text-gray-500">Declined</div>
-                  <div className="text-2xl font-bold text-pink-500">870</div>
-                </div>
-              </div>
-            </div>
-            <div className="col-span-2 bg-white p-4 rounded-md shadow-sm">
-              <h2 className="font-medium mb-4">Total Tasks</h2>
-              <div className="flex items-center justify-center">
-                <p className="text-4xl font-bold text-gray-800">$34K</p>
-              </div>
-            </div>
-          </div>
 
-          <div className="grid grid-cols-3 gap-4 mb-6">
-            <PharmacyCard region="New York" pharmacies={pharmacies['New York']} />
-            <PharmacyCard region="New Jersey" pharmacies={pharmacies['New Jersey']} />
-            <PharmacyCard region="Pennsylvania" pharmacies={pharmacies['Pennsylvania']} />
-          </div>
+      <div className="grid grid-cols-3 gap-4 pt-4">
+            <PharmacyListing region="New York" pharmacies={pharmacies['New York']} />
+            <PharmacyListing region="New Jersey" pharmacies={pharmacies['New Jersey']} />
+            <PharmacyListing region="Pennsylvania" pharmacies={pharmacies['Pennsylvania']} />
+        </div>
 
-          <div className="mb-6">
+          <div className="my-6">
             <RequestsTable requests={requests} />
           </div>
 
@@ -638,14 +562,9 @@ const AdminDashboard = () => {
 
           <div className="mb-6">
             <TasksTable tasks={tasks} />
-          </div>
-        </div>
-      </div>
+          </div> 
 
-      <div className="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg">
-        <HelpCircle size={20} />
-      </div>
-    </div>
+    </AdminLayout>
   );
 };
 

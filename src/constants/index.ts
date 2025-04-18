@@ -133,17 +133,17 @@ export const brands = [
 
 
 export const adminSidebarItems = [
-  { name: "Dashboard", icon: "/sidebar-dashboard.svg", path: "/" , active: true},
-  { name: "Pharmacies", icon: "/sidebar-pharmacy.svg", path: "/" },
-  { name: "Prescribers", icon: "/sidebar-Prescribers.svg", path: "/" },
-  { name: "Requests", icon: "/sidebar-requets.svg", path: "/" },
-  { name: "Initiations", icon: "/sidebar-Initiations.svg", path: "/" },
+  { name: "Dashboard", icon: "/sidebar-dashboard.svg", path: "/y" ,},
+  { name: "Pharmacies", icon: "/sidebar-pharmacy.svg", path: "/g" },
+  { name: "Prescribers", icon: "/sidebar-Prescribers.svg", path: "/g" },
+  { name: "Requests", icon: "/sidebar-requets.svg", path: "/h" },
+  { name: "Initiations", icon: "/sidebar-Initiations.svg", path: "/m" },
   { name: "Send To Plan", icon: "/sidebar-sent-to-plan.svg" ,path:"/g"},
-  { name: "Calls", icon: "/sidebar-calling.svg", path: "/" },
-  { name: "Staff", icon: "/sidebar-staff.svg", path: "/" },
-  { name: "Tasks", icon: "/sidebar-task-01.svg" ,path:"/"},
-  { name: "Permissions", icon: "/sidebar-role&permission.svg", path: "/" },
-  { name: "Settings", icon: "/sidebar-Settings.svg", path: "/" }
+  { name: "Calls", icon: "/sidebar-calling.svg", path: "/h" },
+  { name: "Staff", icon: "/sidebar-staff.svg", path: "/f" },
+  { name: "Tasks", icon: "/sidebar-task-01.svg" ,path:"/d"},
+  { name: "Permissions", icon: "/sidebar-role&permission.svg", path: "/s" },
+  { name: "Settings", icon: "/sidebar-Settings.svg", path: "/o" }
 ];
 
 
