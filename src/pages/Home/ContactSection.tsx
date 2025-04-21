@@ -1,6 +1,9 @@
 import React from "react"
 import Button from "../../components/Button/Button"
 import InputField from "../../components/input/InputField"
+import { Form, Formik } from "formik";
+import { contactUsInitialVals } from "../../utils/initialVals";
+import { contactUsValidationSchema } from "../../utils/validationSchema";
 
 const ContactSection: React.FC = () => {
   return (
@@ -19,17 +22,25 @@ const ContactSection: React.FC = () => {
           <h2 className="text-xl sm:text-3xl md:text-5xl font-semibold mb-6">
             Want To See Prior Auth Support AI In Action?
           </h2>
-
-          <form className="space-y-4">
-            <InputField variant="contact" type="text" placeholder="Full Name" />
-            <InputField variant="contact" type="tel" placeholder="Phone Number" />
-            <InputField variant="contact" type="email" placeholder="Email" />
-            <InputField variant="contact" type="text" placeholder="Message" />
-
-            <div className="pt-4">
-              <Button title="Submit" noHover textColor="text-black" className="bg-white text-primary-black font-medium px-6 py-2 " />
-            </div>
-          </form>
+          <Formik
+            initialValues={contactUsInitialVals}
+            validationSchema={contactUsValidationSchema}
+            onSubmit={(values) => {
+              console.log("Form submitted with values:", values);
+            }}
+          >
+            {() => (
+              <Form className="space-y-4">
+                <InputField variant="contact" type="text" placeholder="Full Name" name="fullname" />
+                <InputField variant="contact" type="tel" placeholder="Phone Number" name="phone" />
+                <InputField variant="contact" type="email" placeholder="Email" name="email" />
+                <InputField variant="contact" type="text" placeholder="Message" name="message" />
+                <div className="pt-4">
+                  <Button title="Submit" noHover textColor="text-black" className="bg-white text-primary-black font-medium px-6 py-2 " />
+                </div>
+              </Form>
+            )}
+          </Formik>
         </div>
       </div>
     </div>
