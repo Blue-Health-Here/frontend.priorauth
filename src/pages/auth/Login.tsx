@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import InputField from "../../components/input/InputField";
 import CustomCheckbox from "../../components/checkbox/CustomCheckbox";
 import { Link } from "react-router-dom";
+import { Form, Formik } from "formik";
+import { signInInitialVals } from "../../utils/initialVals";
+import { signInValidationSchema } from "../../utils/validationSchema";
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailFocused, setEmailFocused] = useState(false);
-  const [passwordFocused, setPasswordFocused] = useState(false);
   const [isChecked, setIsChecked] = useState<boolean>(false);
   return (
     <div className="flex min-h-screen w-full">
@@ -29,70 +28,70 @@ const Login: React.FC = () => {
               Welcome back! Please enter your details.
             </p>
           </div>
+          <Formik
+            initialValues={signInInitialVals}
+            validationSchema={signInValidationSchema}
+            onSubmit={(values) => {
+              console.log("Form submitted with values:", values);
+            }}
+          >
+            {() => (
+              <Form className="w-full">
+                <div className="mb-6">
 
-          <form className="w-full">
-            <div className="mb-6">
-              <InputField
-                id="email"
-                type="email"
-                label="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onFocus={() => setEmailFocused(true)}
-                onBlur={() => setEmailFocused(false)}
-                isFocused={emailFocused}
-              />
-            </div>
+                  <InputField
+                     name="email"
+                     type="email"
+                     label="Email"
+                   />
+                </div>
 
-            <div className="mb-4">
-              <InputField
-                id="password"
-                type="password"
-                label="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onFocus={() => setPasswordFocused(true)}
-                onBlur={() => setPasswordFocused(false)}
-                isFocused={passwordFocused}
-              />
-            </div>
+                <div className="mb-4">
+                  <InputField
+                    name="password"
+                    type="password"
+                    label="Password"
+                  />
+                </div>
 
-            <div className="flex justify-between items-center mb-8">
-              <label
-                htmlFor="remember"
-                className="inline-flex items-center cursor-pointer"
-              >
-                <CustomCheckbox
-                  id="remember"
-                  checked={isChecked}
-                  onChange={(e) => setIsChecked(e.target.checked)}
-                />
-                <span className="text-xs md:text-sm text-secondary-black ml-2 font-secondary">
-                  Remember me
-                </span>
-              </label>
-              <Link
-                to="#"
-                className="text-xs md:text-sm text-erro-clip font-secondary"
-              >
-                Forgot Password?
-              </Link>
-            </div>
+                <div className="flex justify-between items-center mb-8">
+                  <label
+                    htmlFor="remember"
+                    className="inline-flex items-center cursor-pointer"
+                  >
+                    <CustomCheckbox
+                      id="remember"
+                      checked={isChecked}
+                      onChange={(e) => setIsChecked(e.target.checked)}
+                    />
+                    <span className="text-xs md:text-sm text-secondary-black ml-2 font-secondary">
+                      Remember me
+                    </span>
+                  </label>
+                  <Link
+                    to="#"
+                    className="text-xs md:text-sm text-erro-clip font-secondary"
+                  >
+                    Forgot Password?
+                  </Link>
+                </div>
 
-            <button
-              type="submit"
-              className="w-full cursor-pointer text-xs sm:text-sm md:text-base bg-primary-navy-blue text-white py-2 rounded-md mb-6 font-semibold"
-            >
-              Login
-            </button>
+                <button
+                  type="submit"
+                  className="w-full cursor-pointer text-xs sm:text-sm md:text-base bg-primary-navy-blue text-white py-2 rounded-md mb-6 font-semibold"
+                >
+                  Login
+                </button>
 
-            <div className="text-center text-xs sm:text-sm md:text-base text-secondary-black">
-              Don't have an account?{"  "}
-              <Link to="#" className="text-primary-black font-semibold">
-                Sign up for free
-              </Link>
-            </div>
-          </form>
+                <div className="text-center text-xs sm:text-sm md:text-base text-secondary-black">
+                  Don't have an account?{"  "}
+                  <Link to="#" className="text-primary-black font-semibold">
+                    Sign up for free
+                  </Link>
+                </div>
+              </Form>
+            )}
+          </Formik>
         </div>
 
         <div className="md:h-8"></div>
@@ -110,4 +109,3 @@ const Login: React.FC = () => {
 };
 
 export default Login;
-
