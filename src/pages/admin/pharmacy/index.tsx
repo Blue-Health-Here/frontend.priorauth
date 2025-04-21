@@ -70,14 +70,12 @@ const AdminPharmacies: React.FC = () => {
           ))}
         </div>
       </div>
-      <div className="pt-3">
         <Pagination
           currentPage={currentPage}
           totalEntries={4}
           entriesPerPage={4}
           onPageChange={setCurrentPage}
         />
-      </div>
     </>
   );
 };

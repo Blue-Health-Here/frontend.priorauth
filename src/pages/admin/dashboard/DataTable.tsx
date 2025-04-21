@@ -4,9 +4,10 @@ interface DataTableProps {
     columns: any;
     data: any[];
     location?: string;
+    customHeader?: React.ReactNode;
 }
 
-const DataTable: React.FC<DataTableProps> = ({ title, columns, data, location }) => {
+const DataTable: React.FC<DataTableProps> = ({ title, columns, data, location, customHeader }) => {
     const renderCellContent = (cellData: any) => {
         if (!cellData) return '';
 
@@ -60,18 +61,24 @@ const DataTable: React.FC<DataTableProps> = ({ title, columns, data, location })
         return '';
     };
 
+    const DefaultHeader = () => (
+        <div className="flex justify-between items-center">
+          <h2 className="text-sm sm:text-lg md:text-xl font-semibold text-primary-black leading-[110%]">
+            {location ? `${title} (${location})` : title}
+          </h2>
+          <button className="border border-medium-stroke rounded-lg p-3 text-tertiary-white">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="1" />
+              <circle cx="12" cy="5" r="1" />
+              <circle cx="12" cy="19" r="1" />
+            </svg>
+          </button>
+        </div>
+      );
+
     return (
-        <div className="bg-primary-white rounded-2xl shadow-lg px-6 pb-4">
-            <div className="flex justify-between items-center px-6 pt-4">
-                <h2 className="text-sm sm:text-lg md:text-xl font-semibold text-primary-black leading-[110%]">{location ? `${title} (${location})` : title}</h2>
-                <button className="border border-medium-stroke rounded-lg p-3 text-tertiary-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="12" cy="12" r="1" />
-                        <circle cx="12" cy="5" r="1" />
-                        <circle cx="12" cy="19" r="1" />
-                    </svg>
-                </button>
-            </div>
+        <div className="bg-primary-white rounded-2xl shadow-lg px-6 py-4">
+           {customHeader ? customHeader : title && <DefaultHeader />}
 
             {/* table */}
             <div className="overflow-x-auto">

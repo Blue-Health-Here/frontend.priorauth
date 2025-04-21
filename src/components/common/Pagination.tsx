@@ -16,7 +16,7 @@ const Pagination: React.FC<PaginationProps> = ({
     const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
     return (
-        <div className="flex items-center gap-x-6 text-xs md:text-sm lg:text-base font-secondary text-secondary-black">
+        <div className="flex items-center gap-x-6 text-xs md:text-sm lg:text-base font-secondary text-secondary-black pt-3">
             <p className="">
                 Showing {currentPage} of {totalPages} entries
             </p>
