@@ -8,7 +8,7 @@ const StaffSection: React.FC = () => {
     columns={[
       { header: 'Name', key: 'name' },
       { header: 'Email', key: 'email' },
-      { header: 'Phone No.', key: 'phoneNo' },
+      { header: 'Phone No.', key: 'phone' },
       { header: 'Role', key: 'role' },
     ]}
     data={staffData}

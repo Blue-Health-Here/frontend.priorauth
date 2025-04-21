@@ -10,7 +10,7 @@ const PharmacySection: React.FC = () => {
         location="New York"
         columns={[
           { header: 'Pharmacy', key: 'pharmacy' },
-          { header: 'Phone No.', key: 'phoneNo' }
+          { header: 'Phone No.', key: 'phone' }
         ]}
         data={pharmacyData}
       />
@@ -20,7 +20,7 @@ const PharmacySection: React.FC = () => {
         location="New Jersey"
         columns={[
           { header: 'Pharmacy', key: 'pharmacy' },
-          { header: 'Phone No.', key: 'phoneNo' }
+          { header: 'Phone No.', key: 'phone' }
         ]}
         data={pharmacyData}
       />
@@ -30,7 +30,7 @@ const PharmacySection: React.FC = () => {
         location="Pennsylvania"
         columns={[
           { header: 'Pharmacy', key: 'pharmacy' },
-          { header: 'Phone No.', key: 'phoneNo' }
+          { header: 'Phone No.', key: 'phone' }
         ]}
         data={pharmacyData}
       />

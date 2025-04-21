@@ -9,7 +9,7 @@ const PrescribersSection: React.FC = () => {
       columns={[
         { header: 'Prescriber', key: 'prescriber' },
         { header: 'Email', key: 'email' },
-        { header: 'Phone No.', key: 'phoneNo' },
+        { header: 'Phone No.', key: 'phone' },
         { header: 'Location', key: 'location' },
       ]}
       data={prescribersData}
