@@ -22,7 +22,7 @@ const Button: React.FC<ButtonProps> = ({
       className={`
         ${className}
         ${textColor}
-        ${isSmall ? "p-1 sm:p-2 rounded-lg" : "py-4 px-8 text-xs sm:text-sm rounded-md h-full"} 
+        ${isSmall ? "p-2 rounded-lg" : "py-4 px-8 text-xs sm:text-sm rounded-md"} 
 
         bg-primary-navy-blue ${noHover ? "" : "hover:bg-primary-sky-blue"}
         cursor-pointer font-semibold shadow
