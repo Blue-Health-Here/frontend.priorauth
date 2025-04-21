@@ -5,6 +5,7 @@ import { Formik, Form } from 'formik';
 import Button from '../../../components/Button/Button';
 import SelectField from '../../../components/common/form/SelectField';
 import { pharmacies, tabs } from '../../../constants';
+import { Link } from 'react-router-dom';
 
 const AdminPharmacies: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -63,12 +64,13 @@ const AdminPharmacies: React.FC = () => {
             ))}
           </div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 p-3 md:p-6">
-          {pharmacies.map(pharmacy => (
-            <PharmacyCard key={pharmacy.id} pharmacy={pharmacy} />
-          ))}
-        </div>
+        <Link to="/admin/pharmacies/details">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 p-3 md:p-6">
+            {pharmacies.map(pharmacy => (
+              <PharmacyCard key={pharmacy.id} pharmacy={pharmacy} />
+            ))}
+          </div>
+        </Link>
       </div>
         <Pagination
           currentPage={currentPage}

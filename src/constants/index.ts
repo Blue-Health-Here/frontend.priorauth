@@ -727,3 +727,114 @@ export const requestsDumyLargeData = [
     status: { type: "badge", variant: "info", text: "Progress Notes Required" },
   },
 ]
+
+export const rquestDetailpageData = [
+  {
+    id: "1",
+    medication: "Ibsrela 50 mg Tab.",
+    patient: "Cody Fisher",
+    prescriber: "Wade Warren",
+    submittedOn: "01/02/2025",
+    pharmacy: {
+      type: "avatar",
+      image: "/images/Abstergo Ltd..png",
+      text: "Abstergo Ltd.",
+    },
+    status: {
+      type: "badge",
+      variant: "success",
+      text: "Updated Progress Sent",
+    },
+  },
+  {
+    id: "2",
+    medication: "Xifaxan 550 mg Tab.",
+    patient: "Kristin Watson",
+    prescriber: {
+      type: "avatar",
+      image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png",
+      text: "Brooklyn Simmons",
+    },
+    submittedOn: "31/03/2025",
+    pharmacy: {
+      type: "icon",
+      icon: "B",
+      color: "bg-pink-500",
+      text: "Big Kahuna Ltd.",
+    },
+    status: { type: "badge", variant: "info", text: "Progress Notes Required" },
+  },
+  {
+    id: "3",
+    medication: "Vemildy 25 mg Tab.",
+    patient: {
+      type: "avatar",
+      image: "/images/b4d87623d5204a1497c568683b4657f0.png",
+      text: "Cameron Williamson",
+    },
+    prescriber: {
+      type: "avatar",
+      image: "/images/d339be91b10aa7a7aad2a051dc5790cf.png",
+      text: "Theresa Webb",
+    },
+    submittedOn: "21/02/2025",
+    pharmacy: {
+      type: "avatar",
+      image: "/images/Acme Co..png",
+      text: "Acme Co.",
+    },
+    status: { type: "badge", variant: "gray", text: "Queued for Call" },
+  },
+  {
+    id: "4",
+    medication: "Mounjaro 2.5 mg Inj",
+    patient: "Theresa Webb",
+    prescriber: "Esther Howard",
+    submittedOn: "01/01/2025",
+    pharmacy: {
+      type: "avatar",
+      image: "/images/Barone LLC..png",
+      text: "Barone LLC.",
+    },
+    status: {
+      type: "badge",
+      variant: "warning",
+      text: "Not Enrolled in the Bill",
+    },
+  },
+  {
+    id: "5",
+    medication: "Ibsrela 50 mg Tab.",
+    patient: "Cody Fisher",
+    prescriber: "Wade Warren",
+    submittedOn: "01/02/2025",
+    pharmacy: {
+      type: "avatar",
+      image: "/images/Abstergo Ltd..png",
+      text: "Abstergo Ltd.",
+    },
+    status: {
+      type: "badge",
+      variant: "success",
+      text: "Updated Progress Sent",
+    },
+  },
+  {
+    id: "6",
+    medication: "Xifaxan 550 mg Tab.",
+    patient: "Kristin Watson",
+    prescriber: {
+      type: "avatar",
+      image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png",
+      text: "Brooklyn Simmons",
+    },
+    submittedOn: "31/03/2025",
+    pharmacy: {
+      type: "icon",
+      icon: "B",
+      color: "bg-pink-500",
+      text: "Big Kahuna Ltd.",
+    },
+    status: { type: "badge", variant: "info", text: "Progress Notes Required" },
+  },
+]
