@@ -13,7 +13,7 @@ const StatsSection: React.FC = () => {
       </div></div>
 
     <div className="col-span-3">
-      <div className="bg-primary-white p-4 rounded-2xl shadow-sm">
+      <div className="bg-primary-white p-4 rounded-2xl shadow-lg">
         <h2 className="font-medium mb-4">Total Requests</h2>
         <div className="flex items-center justify-between">
           Circle Chart
@@ -21,7 +21,7 @@ const StatsSection: React.FC = () => {
       </div>
     </div>
     <div className="col-span-3">
-      <div className="bg-primary-white p-4 rounded-2xl shadow-sm">
+      <div className="bg-primary-white p-4 rounded-2xl shadow-lg">
         <h2 className="font-medium mb-4">Total Requests</h2>
         <div className="flex items-center justify-between">
           Bubble Charet
