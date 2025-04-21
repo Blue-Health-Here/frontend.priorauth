@@ -21,7 +21,7 @@ const AdminPharmacies: React.FC = () => {
               initialValues={{ category: "", search: "" }}
               onSubmit={() => { }}
             >
-              {({ isSubmitting }) => (
+              {() => (
                 <Form className="flex md:min-w-64 flex-wrap pb-6 text-grey gap-2 [&>input]:mb-3 [&>input]:placeholder:text-themeLight [&>input]:placeholder:text-[12px]">
                   <SelectField
                     className="border border-medium-stroke rounded-lg p-2 font-medium min-w-48"
