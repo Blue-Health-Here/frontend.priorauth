@@ -34,13 +34,13 @@ const Sidebar: React.FC = () => {
       {isSidebarOpen && <div className="fixed inset-0 z-[98] bg-black bg-opacity-50 lg:hidden" />}
       <aside className={asideClass}>
           {isSidebarOpen && (
-          <span onClick={() => setIsSidebarOpen(false)} className="absolute top-4 right-4 cursor-pointer">
+          <span onClick={() => setIsSidebarOpen(false)} className="absolute top-4 right-4 cursor-pointer ">
             {/* <RxCross2 size={20} /> */} X
             </span>
           )}
         <img src="/images/logo.svg" alt="PriorAuth Logo" className="h-7 sm:h-8 lg:h-10" />
 
-        <div className="h-[calc(100vh-15rem)] overflow-y-auto pb-4">
+        <div className="h-[calc(100vh-15rem)] overflow-y-auto pb-4 mt-8">
           <ul className="flex flex-col gap-y-2 text-[15px]">
             {adminSidebarItems.map((item, index) => (
               <NavLink
