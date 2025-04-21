@@ -1,3 +1,5 @@
+import { Pharmacy } from "../utils/types";
+
 export const faqItems = [
   {
     question: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -146,7 +148,7 @@ export const adminSidebarItems = [
   { name: "Pharmacies", icon: "/sidebar-pharmacy.svg", path: "/admin/pharmacies" },
   { name: "Prescribers", icon: "/sidebar-Prescribers.svg", path: "/admin/requests" },
   { name: "Requests", icon: "/sidebar-requets.svg", path: "/admin/initiations" },
-  { name: "Initiations", icon: "/sidebar-Initiations.svg", path: "/admin/dashboard" },
+  { name: "Initiations", icon: "/sidebar-Initiations.svg", path: "/admin/initiations" },
   { name: "Send To Plan", icon: "/sidebar-sent-to-plan.svg", path: "/g" },
   { name: "Calls", icon: "/sidebar-calling.svg", path: "/h" },
   { name: "Staff", icon: "/sidebar-staff.svg", path: "/f" },
@@ -480,4 +482,63 @@ export const tasksData = [
       text: "Barone LLC.",
     },
   },
+];
+
+
+export const pharmacies: Pharmacy[] = [
+  {
+    id: '1',
+    name: 'Abstergo Ltd.',
+    image: "/images/Abstergo Ltd..png",
+    type: 'pharmacy',
+    phone: '(217) 555-0113',
+    lastRequests: {
+      date: '10/03/2023',
+      approved: 42,
+      denied: 12
+    },
+  },
+  {
+    id: '2',
+    name: 'Big Kahuna Ltd.',
+    image: "/images/Big Kahuna Ltd..png",
+    type: 'pharmacy',
+    phone: '(217) 555-0113',
+    lastRequests: {
+      date: '10/03/2023',
+      approved: 42,
+      denied: 12
+    },
+  },
+  {
+    id: '3',
+    name: 'Barone LLC.',
+    image: "/images/Barone LLC..png",
+    type: 'pharmacy',
+    phone: '(217) 555-0113',
+    lastRequests: {
+      date: '10/03/2023',
+      approved: 42,
+      denied: 12
+    },
+  },
+  {
+    id: '4',
+    name: 'Acme Co.',
+    image: "/images/Acme Co..png",
+    type: 'pharmacy',
+    phone: '(217) 555-0113',
+    lastRequests: {
+      date: '10/03/2023',
+      approved: 42,
+      denied: 12
+    },
+  }
+];
+
+export const tabs = [
+  { id: 'all', label: 'All Pharmacies', active: true },
+  { id: 'ny', label: 'Pharmacies (New York)', active: false },
+  { id: 'nj', label: 'Pharmacies (New Jersey)', active: false },
+  { id: 'pa', label: 'Pharmacies (Pennsylvania)', active: false }
 ];
