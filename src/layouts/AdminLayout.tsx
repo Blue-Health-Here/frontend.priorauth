@@ -9,7 +9,7 @@ const AdminLayout: React.FC = () => {
     <Sidebar  />
     <div className="w-full">
       <Topbar  />
-      <div className="ml-auto lg:ml-[250px] xl:ml-[260px] pl-4 pt-[4.7rem] pb-36 overflow-hidden">
+      <div className="ml-auto lg:ml-[250px] xl:ml-[260px] lg:pl-4 pt-[4.7rem] pb-14 overflow-hidden">
       <Outlet />
       </div>
     </div>

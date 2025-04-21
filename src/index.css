@@ -94,7 +94,7 @@ body {
 .theme-container {
   @apply max-w-[1520px] mx-auto;
 }
-.gradiant-class {
+.gradient-class {
   @apply bg-gradient-to-br from-[#1594CC] to-[#163066] 
 }
 .slick-list, .slick-track {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { adminSidebarItems } from '../../constants';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 const Sidebar: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

@@ -61,7 +61,7 @@ const DataTable: React.FC<DataTableProps> = ({ title, columns, data, location })
     };
 
     return (
-        <div className="bg-primary-white rounded-2xl shadow-lg">
+        <div className="bg-primary-white rounded-2xl shadow-lg px-6 pb-4">
             <div className="flex justify-between items-center px-6 pt-4">
                 <h2 className="text-sm sm:text-lg md:text-xl font-semibold text-primary-black leading-[110%] ">{location ? `${title} (${location})` : title}</h2>
                 <button className="border border-medium-stroke rounded-lg p-3 text-tertiary-white">
@@ -74,7 +74,7 @@ const DataTable: React.FC<DataTableProps> = ({ title, columns, data, location })
             </div>
 
             {/* table */}
-            <div className="overflow-x-auto px-6 pb-4">
+            <div className="overflow-x-auto">
                 <table className="w-full">
                     <thead>
                         <tr className="border-b border-light-stroke ">

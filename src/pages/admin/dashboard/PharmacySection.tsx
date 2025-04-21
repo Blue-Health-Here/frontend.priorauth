@@ -4,7 +4,7 @@ import { pharmacyData } from '../../../constants'
 
 const PharmacySection: React.FC = () => {
   return (
-    <div className="grid grid-cols-3 gap-4 pt-4">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 pt-4">
       <DataTable
         title="Pharmacies"
         location="New York"
