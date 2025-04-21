@@ -14,12 +14,12 @@ const AdminRequests: React.FC = () => {
             <DataTable
                 title="Requests"
                 columns={[
-                    { header: 'Medication', key: 'medication' },
-                    { header: 'Patient', key: 'patient' },
-                    { header: 'Prescriber', key: 'prescriber' },
-                    { header: 'Submitted On', key: 'submittedOn' },
-                    { header: 'Pharmacy', key: 'pharmacy' },
-                    { header: 'Status', key: 'status' },
+                    { header: 'Medication', key: 'medication', width: '20%' },
+                    { header: 'Patient', key: 'patient', width: '20%' },
+                    { header: 'Prescriber', key: 'prescriber', width: '20%' },
+                    { header: 'Submitted On', key: 'submittedOn', width: '20%' },
+                    { header: 'Pharmacy', key: 'pharmacy', width: '20%' },
+                    { header: 'Status', key: 'status', width: '20%' },
                 ]}
                 data={requestsDumyLargeData}
                 customHeader={<div className="flex flex-col md:flex-col lg:flex-row gap-4 pt-1">
