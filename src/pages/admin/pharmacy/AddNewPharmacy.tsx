@@ -6,13 +6,13 @@ import InputField, {
 import Button from "../../../components/common/Button";
 
 const AddNewPharmacy: React.FC = () => {
-  const [logo, setLogo] = useState<File | null>(null);
+  // const [logo, setLogo] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string>("");
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setLogo(file);
+      // setLogo(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setLogoPreview(reader.result as string);
