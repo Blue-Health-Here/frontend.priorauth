@@ -43,6 +43,7 @@ const Login: React.FC = () => {
                      name="email"
                      type="email"
                      label="Email"
+                     variant="FloatingLabel"
                    />
                 </div>
 
@@ -51,6 +52,7 @@ const Login: React.FC = () => {
                     name="password"
                     type="password"
                     label="Password"
+                    variant="FloatingLabel"
                   />
                 </div>
 

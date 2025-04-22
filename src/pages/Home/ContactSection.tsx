@@ -1,6 +1,6 @@
 import React from "react"
 import Button from "../../components/common/Button"
-import InputField from "../../components/common/form/InputField"
+import InputField, { inputStyles } from "../../components/common/form/InputField"
 import { Form, Formik } from "formik";
 import { contactUsInitialVals } from "../../utils/initialVals";
 import { contactUsValidationSchema } from "../../utils/validationSchema";
@@ -31,10 +31,10 @@ const ContactSection: React.FC = () => {
           >
             {() => (
               <Form className="space-y-4">
-                <InputField variant="contact" type="text" placeholder="Full Name" name="fullname" />
-                <InputField variant="contact" type="tel" placeholder="Phone Number" name="phone" />
-                <InputField variant="contact" type="email" placeholder="Email" name="email" />
-                <InputField variant="contact" type="text" placeholder="Message" name="message" />
+                <InputField className={inputStyles.contactInput} type="text" placeholder="Full Name" name="fullname" />
+                <InputField className={inputStyles.contactInput} type="tel" placeholder="Phone Number" name="phone" />
+                <InputField className={inputStyles.contactInput} type="email" placeholder="Email" name="email" />
+                <InputField className={inputStyles.contactInput} type="text" placeholder="Message" name="message" />
                 <div className="pt-4">
                   <Button title="Submit" noHover textColor="text-black" className="bg-white text-primary-black font-medium sm:w-24" />
                 </div>

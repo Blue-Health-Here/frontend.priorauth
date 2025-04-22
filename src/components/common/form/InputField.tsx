@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useField } from "formik";
+import { Label } from "../Label";
 
 interface InputFieldProps {
   id?: string;
@@ -8,9 +9,16 @@ interface InputFieldProps {
   type?: string;
   label?: string;
   placeholder?: string;
-  variant?: "default" | "contact";
+  variant?: "default" | "FloatingLabel";
   className?: string;
 }
+
+export const inputStyles = {
+  defaultInput:
+    "w-full border-b border-medium-stroke font-secondary pb-2 pt-1 placeholder-primary-black focus:outline-none focus:border-dark-stroke placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base",
+  contactInput:
+    "w-full bg-transparent border-b border-primary-white py-2 text-primary-white placeholder-primary-white font-secondary focus:outline-none focus:border-primary-white placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base",
+};
 
 const InputField: React.FC<InputFieldProps> = ({
   id,
@@ -26,54 +34,54 @@ const InputField: React.FC<InputFieldProps> = ({
 
   const showLabelUp = isFocused || field.value;
 
-  if (variant === "contact") {
+  if (variant === "FloatingLabel") {
     return (
-      <div>
+      <div className="relative">
+        {label && (
+          <label
+            htmlFor={id}
+            className={`absolute transition-all duration-200 font-secondary ${showLabelUp
+                ? "text-xs md:text-sm text-tertiary-black top-0"
+                : "text-xs sm:text-sm md:text-base text-tertiary-black top-7"
+              }`}
+          >
+            {label}
+          </label>
+        )}
+
         <input
+          id={id}
           type={type}
           placeholder={placeholder}
-          className={`w-full bg-transparent border-b border-primary-white py-2 text-primary-white placeholder-primary-white font-secondary 
-            focus:outline-none focus:border-primary-white placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base ${className}`}
-            {...field}
+          {...field}
+          onFocus={() => setIsFocused(true)}
+          onBlur={(e) => {
+            setIsFocused(false);
+            field.onBlur(e);
+          }}
+          className={`w-full border-b border-dark-stroke font-secondary pb-2 pt-6 placeholder-primary-black focus:outline-none focus:border-dark-stroke 
+          placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base ${className}`}
         />
+
         {meta.touched && meta.error && (
-          <p className="text-red-500 mt-1 text-xs font-secondary">{meta.error}</p>
+          <p className="text-red-500 text-xs mt-1 font-secondary">{meta.error}</p>
         )}
       </div>
     );
   }
 
-  return (
-    <div className="relative">
-      {label && (
-        <label
-          htmlFor={id}
-          className={`absolute transition-all duration-200 font-secondary ${
-            showLabelUp
-              ? "text-xs md:text-sm text-tertiary-black top-0"
-              : "text-xs sm:text-sm md:text-base text-tertiary-black top-7"
-          }`}
-        >
-          {label}
-        </label>
-      )}
 
+  return (
+    <div>
+      {label && <Label className="text-tertiary-black text-xs md:text-base">{label}</Label>}
       <input
-        id={id}
         type={type}
         placeholder={placeholder}
+        className={`${inputStyles.defaultInput} ${className}`}
         {...field}
-        onFocus={() => setIsFocused(true)}
-        onBlur={(e) => {
-          setIsFocused(false);
-          field.onBlur(e);
-        }}
-        className={`w-full border-b border-dark-stroke font-secondary pb-2 pt-6 placeholder-accent focus:outline-none focus:border-dark-stroke 
-        placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base ${className}`}
       />
-
       {meta.touched && meta.error && (
-        <p className="text-red-500 text-xs mt-1 font-secondary">{meta.error}</p>
+        <p className="text-red-500 mt-1 text-xs font-secondary">{meta.error}</p>
       )}
     </div>
   );

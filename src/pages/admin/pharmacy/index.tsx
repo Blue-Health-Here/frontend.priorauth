@@ -42,7 +42,9 @@ const AdminPharmacies: React.FC = () => {
                       { value: "operational", label: "Operational" },
                     ]}
                   />
-                  <Button title="Add Pharmacy" className="w-full sm:w-48" isSmall />
+                  <Link to="/admin/pharmacies/add">
+                   <Button title="Add Pharmacy" className="w-full sm:w-48" />
+                  </Link>
                 </Form>
               )}
             </Formik>
