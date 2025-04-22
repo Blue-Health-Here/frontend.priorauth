@@ -5,9 +5,10 @@ interface DataTableProps {
     data: any[];
     location?: string;
     customHeader?: React.ReactNode;
+    className?: string;
 }
 
-const DataTable: React.FC<DataTableProps> = ({ title, columns, data, location, customHeader }) => {
+const DataTable: React.FC<DataTableProps> = ({ title, columns, data, location, customHeader, className }) => {
     const renderCellContent = (cellData: any) => {
         if (!cellData) return '';
 
@@ -20,15 +21,10 @@ const DataTable: React.FC<DataTableProps> = ({ title, columns, data, location, c
             switch (cellData.type) {
                 case 'avatar':
                     return (
-                        // <div className="flex items-center">
-                        //     <img src={cellData.image} alt="" className="w-8 h-8 rounded-full mr-2" />
-                        //     <span>{cellData.text}</span>
-                        // </div>
                         <div className="flex items-center min-w-[120px]">
-  <img src={cellData.image} alt="" className="w-8 h-8 rounded-full mr-2 shrink-0" />
-  <span className="truncate">{cellData.text}</span>
-</div>
-
+                            <img src={cellData.image} alt="" className="w-8 h-8 rounded-full mr-2 shrink-0" />
+                            <span className="truncate">{cellData.text}</span>
+                        </div>
                     );
                 case 'icon':
                     return (
@@ -82,7 +78,7 @@ const DataTable: React.FC<DataTableProps> = ({ title, columns, data, location, c
     );
 
     return (
-        <div className="bg-primary-white rounded-2xl shadow-lg px-6 py-4">
+        <div className={`bg-primary-white rounded-2xl shadow-lg px-6 py-4 ${className}`}>
             {customHeader ? customHeader : title && <DefaultHeader />}
 
             {/* table */}
