@@ -42,7 +42,7 @@ const PharmacyCard: React.FC<PharmacyCardProps> = ({ pharmacy }) => {
         {stats.map((item, idx) => (
           <div key={idx} className="flex items-center gap-3">
             <div className={`${item.bg} rounded-lg p-2 flex items-center justify-center`}>
-              <img src={item.icon} alt={item.label} className="w-3 h-3 sm:h-4 sm:w-4 md:w-5 md:h-5" />
+              <img src={item.icon} alt={item.label} className="w-4 h-4 md:w-5 md:h-5" />
             </div>
             <div className="text-secondary-black">
               <p className="text-xs">{item.label}</p>

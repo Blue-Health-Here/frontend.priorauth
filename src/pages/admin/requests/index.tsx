@@ -31,7 +31,7 @@ const AdminRequests: React.FC = () => {
                         onSubmit={() => { }}
                     >
                         {() => (
-                            <Form className="flex md:min-w-64 flex-wrap pb-6 text-grey gap-2 [&>input]:mb-3 [&>input]:placeholder:text-themeLight [&>input]:placeholder:text-[12px]">
+                            <Form className="flex md:min-w-64 flex-wrap pb-6 text-grey gap-3 [&>input]:mb-3 [&>input]:placeholder:text-themeLight [&>input]:placeholder:text-[12px]">
                                 <SelectField
                                     className="border border-medium-stroke rounded-lg p-2 font-medium min-w-48"
                                     parentClassName="flex-1"
