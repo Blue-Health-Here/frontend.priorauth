@@ -2,7 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { slidesData } from "../../constants";
+import { slidesData } from "../../utils/constant";
 
 const HeroSection: React.FC = () => {
   const sliderSettings = {
@@ -34,7 +34,7 @@ const HeroSection: React.FC = () => {
             </div>
 
             <img src={slide.image} alt={`Dashboard ${index + 1}`}
-              className="max-w-full w-full h-auto md:h-full mt-auto min-h-[280px] object-cover object-left" />
+              className="max-w-full w-full h-auto md:h-full mt-auto min-h-[280px]" />
           </div>
         ))}
       </Slider>

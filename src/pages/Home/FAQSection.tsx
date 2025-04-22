@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { faqItems } from '../../constants';
-import Button from '../../components/Button/Button';
+import Button from '../../components/common/Button';
 import { FaMinus, FaPlus } from "react-icons/fa6";
+import { faqItems } from '../../utils/constant';
 
 const FAQAccordion: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);

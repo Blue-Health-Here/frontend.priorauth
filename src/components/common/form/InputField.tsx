@@ -1,5 +1,3 @@
-// components/InputField.tsx
-
 import React, { useState } from "react";
 import { useField } from "formik";
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Button from "../../components/Button/Button";
+import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
 
 const Header: React.FC = () => {
@@ -34,7 +34,7 @@ const Header: React.FC = () => {
         </nav>
         <div className="hidden md:block flex-shrink-0">
           <Link to="/login">
-            <Button title="Sign In" />
+            <Button title="Sign In" className="sm:w-24" />
           </Link>
         </div>
         <button

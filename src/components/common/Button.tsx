@@ -22,13 +22,13 @@ const Button: React.FC<ButtonProps> = ({
       className={`
         ${className}
         ${textColor}
-        ${isSmall ? "p-2 rounded-lg" : "text-xs sm:text-sm rounded-md h-12"} 
+        ${isSmall ? "p-2 rounded-lg" : "rounded-md h-12"} 
 
         bg-primary-navy-blue w-full ${noHover ? "" : "hover:bg-primary-sky-blue"}
         cursor-pointer font-semibold shadow text-xs sm:text-sm 
       `}
     >
-      {icon && <span className="text-xs md:text-sm">{icon}</span>} 
+      {icon && <span className="text-sm">{icon}</span>} 
       {title}
     </button>
   );

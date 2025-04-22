@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import InputField from "../../components/input/InputField";
-import CustomCheckbox from "../../components/checkbox/CustomCheckbox";
+import InputField from "../../components/common/form/InputField";
+import CustomCheckbox from "../../components/common/form/CustomCheckbox";
 import { Link } from "react-router-dom";
 import { Form, Formik } from "formik";
 import { signInInitialVals } from "../../utils/initialVals";
