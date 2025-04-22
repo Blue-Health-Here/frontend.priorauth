@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import DataTable from '../dashboard/DataTable'
-import { requestsDumyLargeData } from '../../../constants'
 import { Form, Formik } from 'formik'
 import SelectField from '../../../components/common/form/SelectField'
-import Button from '../../../components/Button/Button'
+import Button from '../../../components/common/Button'
 import Pagination from '../../../components/common/Pagination'
+import { requestsDumyLargeData } from '../../../utils/constant'
 
 const AdminRequests: React.FC = () => {
       const [currentPage, setCurrentPage] = useState(1);

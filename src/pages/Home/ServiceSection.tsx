@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { services } from "../../constants";
+import { services } from "../../utils/constant";
 
 const ServiceSection: React.FC = () => {
   const sliderRef = useRef<Slider>(null);

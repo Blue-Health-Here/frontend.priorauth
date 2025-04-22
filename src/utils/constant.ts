@@ -1,4 +1,4 @@
-import { Pharmacy } from "../utils/types";
+import { Pharmacy } from "./types";
 
 export const faqItems = [
   {

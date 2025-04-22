@@ -1,19 +1,18 @@
 import { Form, Formik } from 'formik'
 import React, { useState } from 'react'
 import SelectField from '../../../components/common/form/SelectField'
-import Button from '../../../components/Button/Button'
-import { rquestDetailpageData } from '../../../constants'
+import Button from '../../../components/common/Button'
 import Pagination from '../../../components/common/Pagination'
 import DataTable from '../dashboard/DataTable'
 import PharmacyDetailsCrad from './PharmacyDetailsCrad'
+import { rquestDetailpageData } from '../../../utils/constant'
 
 const PharmacyDetails: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   return (
     <div className="min-h-[calc(100vh-15rem)]">
-
-                <PharmacyDetailsCrad />
+      <PharmacyDetailsCrad />
       <DataTable
         className="rounded-b-2xl rounded-t-none"
         title="Requests"

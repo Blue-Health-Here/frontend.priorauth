@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../../../components/Button/Button";
+import Button from "../../../components/common/Button";
 
 const PharmacyDetailsCard: React.FC<any> = () => {
     const pharmacy: any = [

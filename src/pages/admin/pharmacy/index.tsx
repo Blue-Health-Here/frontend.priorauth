@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import PharmacyCard from './PharmacyCard';
 import Pagination from '../../../components/common/Pagination';
 import { Formik, Form } from 'formik';
-import Button from '../../../components/Button/Button';
+import Button from '../../../components/common/Button';
 import SelectField from '../../../components/common/form/SelectField';
-import { pharmacies, tabs } from '../../../constants';
 import { Link } from 'react-router-dom';
+import { pharmacies, tabs } from '../../../utils/constant';
 
 const AdminPharmacies: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,7 +42,9 @@ const AdminPharmacies: React.FC = () => {
                       { value: "operational", label: "Operational" },
                     ]}
                   />
-                  <Button title="Add Pharmacy" className="w-full sm:w-48" isSmall />
+                  <Link to="/admin/pharmacies/add">
+                   <Button title="Add Pharmacy" className="w-full sm:w-48" />
+                  </Link>
                 </Form>
               )}
             </Formik>

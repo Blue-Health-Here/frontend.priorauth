@@ -1,6 +1,6 @@
 import React from 'react'
 import DataTable from './DataTable'
-import { requestsData } from '../../../constants'
+import { requestsData } from '../../../utils/constant'
 
 const RequestsSection: React.FC = () => {
   return (
