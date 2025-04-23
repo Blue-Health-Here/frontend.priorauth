@@ -8,6 +8,7 @@ import AdminPharmacies from "./pages/admin/pharmacy";
 import AdminRequests from "./pages/admin/requests";
 import PharmacyDetails from "./pages/admin/pharmacy/PharmacyDetails";
 import AddNewPharmacy from "./pages/admin/pharmacy/AddNewPharmacy";
+import AdminSettings from "./pages/admin/settings";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="pharmacies/details" element={<PharmacyDetails />}/> 
           <Route path="pharmacies/add" element={<AddNewPharmacy />}/>   
           <Route path="requests" element={<AdminRequests />} />
+          <Route path="settings" element={<AdminSettings />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
