@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaBars } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Topbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -40,9 +41,11 @@ const Topbar: React.FC = () => {
               <img src="/search-icon.svg" alt="search icon" />
             </span>
           </div>
-          <div className="border border-medium-stroke rounded-lg p-2 sm:block hidden">
-            <img src="/bell-icon.svg" alt="notification" className='h-5 w-5' />
-          </div>
+            <div className="border border-medium-stroke rounded-lg p-2 sm:block hidden">
+          <Link to="/admin/notifications" className="cursor-pointer">
+              <img src="/bell-icon.svg" alt="notification" className='h-5 w-5' />
+          </Link>
+            </div>
           <div className='rounded-full object-cover shadow-sm overflow-hidden w-9 h-9 md:w-12  md:h-12 flex items-center justify-center'>
             <img src="/images/profile-image.png" alt="" className='w-full h-full rounded-full' width={30} height={30} />
           </div>
