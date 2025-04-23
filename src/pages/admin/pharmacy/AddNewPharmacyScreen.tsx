@@ -6,7 +6,7 @@ import InputField, {
 import Button from "../../../components/common/Button";
 import FileUpload from "../../../components/common/form/FileUpload";
 
-const AddNewPharmacy: React.FC = () => {
+const AddNewPharmacyScreen: React.FC = () => {
   return (
     <div className="rounded-2xl bg-primary-white shadow-lg p-5 min-h-[calc(100vh-20rem)]">
       <h2 className="text-lg md:text-xl font-semibold mb-4 flex items-center justify-center md:block">Add Pharmacy</h2>
@@ -70,4 +70,4 @@ const AddNewPharmacy: React.FC = () => {
   );
 };
 
-export default AddNewPharmacy;
+export default AddNewPharmacyScreen;

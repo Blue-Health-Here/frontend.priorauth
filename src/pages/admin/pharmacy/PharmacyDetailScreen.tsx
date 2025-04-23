@@ -7,7 +7,7 @@ import DataTable from '../dashboard/DataTable'
 import PharmacyDetailsCrad from './PharmacyDetailsCrad'
 import { rquestDetailpageData } from '../../../utils/constant'
 
-const PharmacyDetails: React.FC = () => {
+const PharmacyDetailScreen: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   return (
@@ -68,4 +68,4 @@ const PharmacyDetails: React.FC = () => {
   )
 }
 
-export default PharmacyDetails
+export default PharmacyDetailScreen
