@@ -4,9 +4,9 @@ import { notification } from "../utils/constants";
 const NotificationScreen: React.FC = () => {
     return (
         <div className="min-h-[calc(100vh-17rem)] bg-primary-white rounded-2xl shadow-lg pt-7 px-4 sm:px-6 pb-4">
-            <h2 className="text-lg md:text-xl font-semibold md:block px-4 py-2">Notifications</h2>
+            <h2 className="text-lg md:text-xl font-semibold md:block py-2">Notifications</h2>
 
-            <div className="flex flex-row justify-between items-center cursor-pointer px-0 sm:px-4 py-2">
+            <div className="flex flex-row justify-between items-center cursor-pointer px-0 py-2">
                 <p className="text-tertiary-black text-sm md:text-base font-secondary">Today</p>
                 <h3 className="text-primary-navy-blue text-xs md:text-sm font-semibold">
                     Mark All As Read
