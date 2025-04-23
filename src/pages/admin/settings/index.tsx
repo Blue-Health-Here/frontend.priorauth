@@ -2,6 +2,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 import FileUpload from "../../../components/common/form/FileUpload";
 import Button from "../../../components/common/Button";
+import { Link } from "react-router-dom";
 
 const AdminSettings: React.FC = () => {
   const details = {
@@ -34,12 +35,13 @@ const AdminSettings: React.FC = () => {
         </Formik>
       </div>
         <div className="flex flex-col sm:flex-row items-start justify-start gap-3 ">
-          <Button
+          <Link to="/admin/settings/change-password">
+            <Button
             title="Change Password"
             textColor="text-primary-sky-blue"
             className="w-full sm:w-auto px-6 bg-primary-white border border-primary-sky-blue hover:bg-primary-sky-blue hover:text-primary-white"
             noHover
-          />
+          /></Link>
           <Button title="Edit Details" className="w-full sm:w-auto px-6" />
         </div>
 
