@@ -7,6 +7,7 @@ interface ButtonProps {
   isSmall?: boolean; 
   icon?: React.ReactNode; 
   noHover?: boolean;
+  noBackground?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -16,6 +17,7 @@ const Button: React.FC<ButtonProps> = ({
   isSmall = false,
   icon,
   noHover = false,
+  noBackground
 }) => {
   return (
     <button
@@ -24,7 +26,8 @@ const Button: React.FC<ButtonProps> = ({
         ${textColor}
         ${isSmall ? "p-2 rounded-lg" : "rounded-md h-12"} 
 
-        bg-primary-navy-blue w-full ${noHover ? "" : "hover:bg-primary-sky-blue"}
+        w-full ${noHover ? "" : "hover:bg-primary-sky-blue"}
+        ${noBackground ? "border-none" : "bg-primary-navy-blue"}
         cursor-pointer font-semibold shadow text-xs sm:text-sm 
       `}
     >

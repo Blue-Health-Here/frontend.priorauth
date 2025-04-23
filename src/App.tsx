@@ -9,6 +9,7 @@ import AdminRequests from "./pages/admin/requests";
 import PharmacyDetails from "./pages/admin/pharmacy/PharmacyDetails";
 import AddNewPharmacy from "./pages/admin/pharmacy/AddNewPharmacy";
 import NotificationScreen from "./components/NotificationScreen";
+import AdminRolesAndPermissions from "./pages/permissions";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="pharmacies/add" element={<AddNewPharmacy />}/>   
           <Route path="requests" element={<AdminRequests />} />
           <Route path="notifications" element={<NotificationScreen />}/>   
+          <Route path="permissions" element={<AdminRolesAndPermissions />}/>   
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
