@@ -2,7 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { slidesData } from "../../utils/constant";
+import { slidesData } from "../../utils/constants";
 
 const HeroSection: React.FC = () => {
   const sliderSettings = {

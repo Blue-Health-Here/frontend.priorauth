@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { FaBars } from 'react-icons/fa';
+import NotificationDropDown from '../NotificationDropDown';
 
 const Topbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isNotifyDropdownOpen, setIsNotifyDropdownOpen] = useState<boolean>(false);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,10 +19,14 @@ const Topbar: React.FC = () => {
     };
   }, []);
 
+  const handleToggleDropdown = () => {
+    setIsNotifyDropdownOpen(!isNotifyDropdownOpen);
+  };
+
   return (
     <div className={`fixed top-0 left-0 lg:left-[264px] xl:left-[276px] right-0 p-4 z-50 transition-all duration-300`}>
       <nav
-        className={`topbar flex justify-between items-center transition-all duration-300 
+        className={`topbar flex justify-between relative items-center transition-all duration-300 
           ${isScrolled ? 'bg-white shadow-lg rounded-lg p-4 ' : 'bg-transparent'}`}
       >
         <div className='hidden md:md:block'>
@@ -40,9 +47,16 @@ const Topbar: React.FC = () => {
               <img src="/search-icon.svg" alt="search icon" />
             </span>
           </div>
-          <div className="border border-medium-stroke rounded-lg p-2 sm:block hidden">
+<div className="relative">
+<div className="border border-medium-stroke rounded-lg p-2"
+            onClick={handleToggleDropdown}>
             <img src="/bell-icon.svg" alt="notification" className='h-5 w-5' />
           </div>
+          {isNotifyDropdownOpen && (
+                <NotificationDropDown />
+            )}
+</div>
+
           <div className='rounded-full object-cover shadow-sm overflow-hidden w-9 h-9 md:w-12  md:h-12 flex items-center justify-center'>
             <img src="/images/profile-image.png" alt="" className='w-full h-full rounded-full' width={30} height={30} />
           </div>

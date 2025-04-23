@@ -2,7 +2,7 @@ import React from 'react';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { brands } from '../../utils/constant';
+import { brands } from '../../utils/constants';
 
 const BrandSlider: React.FC = () => {
   const settings = {
