@@ -838,3 +838,48 @@ export const rquestDetailpageData = [
     status: { type: "badge", variant: "info", text: "Progress Notes Required" },
   },
 ]
+
+
+
+export const notification = [
+  {
+    icon: "/images/notify1.png",
+    message: "Your ad Lorem Ipsum dolor has published to screens.",
+    time:"18 min ago"
+  },
+  {
+    icon: "/images/notify2.png",
+    message: "Your ad Lorem Ipsum dolor has published to screens.",
+    time:"18 min ago"
+  },
+  {
+    icon: "/images/notify3.png",
+    message: "Your ad Lorem Ipsum dolor has published to screens.",
+    time:"18 min ago"
+  },
+  {
+    icon: "/images/notify4.png",
+    message: "Your ad Lorem Ipsum dolor has published to screens.",
+    time:"18 min ago"
+  },
+  {
+    icon: "/images/notify5.png",
+    message: "Your ad Lorem Ipsum dolor has published to screens.",
+    time:"18 min ago"
+  },
+  {
+    icon: "/images/notify1.png",
+    message: "Your ad Lorem Ipsum dolor has published to screens.",
+    time:"18 min ago"
+  },
+  {
+    icon: "/images/notify2.png",
+    message: "Your ad Lorem Ipsum dolor has published to screens.",
+    time:"18 min ago"
+  },
+  {
+    icon: "/images/notify3.png",
+    message: "Your ad Lorem Ipsum dolor has published to screens.",
+    time:"18 min ago"
+  },
+];
