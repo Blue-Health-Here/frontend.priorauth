@@ -5,7 +5,7 @@ import Button from '../../../components/common/Button'
 import Pagination from '../../../components/common/Pagination'
 import DataTable from '../dashboard/DataTable'
 import PharmacyDetailsCrad from './PharmacyDetailsCrad'
-import { rquestDetailpageData } from '../../../utils/constant'
+import { rquestDetailpageData } from '../../../utils/constants'
 
 const PharmacyDetails: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
