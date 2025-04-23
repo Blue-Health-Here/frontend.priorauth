@@ -4,7 +4,7 @@ import { Form, Formik } from 'formik'
 import SelectField from '../../../components/common/form/SelectField'
 import Button from '../../../components/common/Button'
 import Pagination from '../../../components/common/Pagination'
-import { requestsDumyLargeData } from '../../../utils/constant'
+import { requestsDumyLargeData } from '../../../utils/constants'
 
 const AdminRequests: React.FC = () => {
       const [currentPage, setCurrentPage] = useState(1);

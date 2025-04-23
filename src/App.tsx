@@ -10,10 +10,10 @@ import PharmacyDetailScreen from "./pages/admin/pharmacy/PharmacyDetailScreen";
 import AddNewPharmacyScreen from "./pages/admin/pharmacy/AddNewPharmacyScreen";
 import AdminSettings from "./pages/admin/settings";
 import ChangePasswordScreen from "./pages/admin/settings/ChangePasswordScreen";
+import NotificationScreen from "./components/NotificationScreen";
 
 function App() {
   return (
-
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -28,11 +28,11 @@ function App() {
           <Route path="requests" element={<AdminRequests />} />
           <Route path="settings" element={<AdminSettings />} />
           <Route path="settings/change-password" element={<ChangePasswordScreen/>} />
+          <Route path="notifications" element={<NotificationScreen />}/>   
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
-
   );
 }
 
