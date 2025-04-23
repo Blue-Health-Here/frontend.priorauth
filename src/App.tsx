@@ -9,6 +9,7 @@ import AdminRequests from "./pages/admin/requests";
 import PharmacyDetailScreen from "./pages/admin/pharmacy/PharmacyDetailScreen";
 import AddNewPharmacyScreen from "./pages/admin/pharmacy/AddNewPharmacyScreen";
 import AdminSettings from "./pages/admin/settings";
+import ChangePasswordScreen from "./pages/admin/settings/ChangePasswordScreen";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="pharmacies/add" element={<AddNewPharmacyScreen />}/>   
           <Route path="requests" element={<AdminRequests />} />
           <Route path="settings" element={<AdminSettings />} />
+          <Route path="settings/change-password" element={<ChangePasswordScreen/>} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
