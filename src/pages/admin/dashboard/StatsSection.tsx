@@ -1,7 +1,9 @@
 import React from 'react'
 import StatCard from './StatCard'
+import { DonutChart } from '../../../components/DonutChart'
 
 const StatsSection: React.FC = () => {
+  
   return (
     <div className="grid lg:grid-cols-12 gap-4">
     <div className="col-span-6">
@@ -14,15 +16,18 @@ const StatsSection: React.FC = () => {
 
     <div className="col-span-6 md:col-span-3">
       <div className="bg-primary-white p-4 rounded-2xl shadow-lg">
-        <h2 className="font-medium mb-4">Total Requests</h2>
-        <div className="flex items-center justify-between">
-          Circle Chart
+      <h2 className="text-sm md:text-base lg:text-lg text-secondary-black font-secondary">Total Requests</h2>
+      <p className="text-tertiary-black xt-xs md:text-sm lg:text-base leading-[120%] mt-2">
+        Total no. of Sessions/sessions Doctors need to attend.
+      </p>
+        <div className="flex items-center justify-center">
+          <DonutChart completed={80} upcoming={80} total={80} />
         </div>
       </div>
     </div>
     <div className="col-span-6 md:col-span-3">
       <div className="bg-primary-white p-4 rounded-2xl shadow-lg">
-        <h2 className="font-medium mb-4">Total Requests</h2>
+        <h2 className="font-medium mb-4">Total Tasks</h2>
         <div className="flex items-center justify-between">
           Bubble Charet
         </div>
