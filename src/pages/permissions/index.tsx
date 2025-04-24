@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import CustomCheckbox from '../../components/common/form/CustomCheckbox';
-import Button from '../../components/common/Button';
 
 interface Permission {
     id: string;
