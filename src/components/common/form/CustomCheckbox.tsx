@@ -4,7 +4,7 @@ interface CustomCheckboxProps {
   checked: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
-  id: string;
+  id?: string;
 }
 
 const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ checked, onChange, id }) => {
@@ -25,17 +25,7 @@ const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ checked, onChange, id }
       }`}
     >
       {checked && (
-        <svg
-          className="w-[12px] h-[12px] text-white"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="3"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
+        <img src="/check-box-icon.svg" alt="check" className='h-3 w-3' />
       )}
     </span>
   </label>

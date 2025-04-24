@@ -11,6 +11,7 @@ import AddNewPharmacyScreen from "./pages/admin/pharmacy/AddNewPharmacyScreen";
 import AdminSettings from "./pages/admin/settings";
 import ChangePasswordScreen from "./pages/admin/settings/ChangePasswordScreen";
 import NotificationScreen from "./components/NotificationScreen";
+import AdminRolesAndPermissions from "./pages/permissions";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="settings" element={<AdminSettings />} />
           <Route path="settings/change-password" element={<ChangePasswordScreen/>} />
           <Route path="notifications" element={<NotificationScreen />}/>   
+          <Route path="permissions" element={<AdminRolesAndPermissions />}/>   
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

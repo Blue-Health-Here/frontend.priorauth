@@ -153,7 +153,7 @@ export const adminSidebarItems = [
   { name: "Calls", icon: "/sidebar-calling.svg", path: "/h" },
   { name: "Staff", icon: "/sidebar-staff.svg", path: "/f" },
   { name: "Tasks", icon: "/sidebar-task-01.svg", path: "/d" },
-  { name: "Permissions", icon: "/sidebar-role&permission.svg", path: "/s" },
+  { name: "Permissions", icon: "/sidebar-role&permission.svg", path: "/admin/permissions" },
   { name: "Settings", icon: "/sidebar-Settings.svg", path: "/admin/settings" },
 ];
 
