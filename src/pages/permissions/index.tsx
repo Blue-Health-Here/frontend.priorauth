@@ -64,9 +64,12 @@ const RolesAndPermissions: React.FC = () => {
     };
 
     return (
-        <div className="min-h-[calc(100vh-17rem)] bg-primary-white rounded-2xl shadow-lg px-4 sm:px-6 pt-9 pb-4">
+        <div className="min-h-[calc(100vh-17rem)] bg-primary-white rounded-2xl shadow-lg px-4 sm:px-6 pt-6 pb-4">
             <div className="flex justify-between items-center">
-                <h1 className="text-base sm:text-lg md:text-xl font-semibold text-primary-black">Roles & Permissions</h1>
+                <div className="flex justify-between items-center w-full">
+                    <h1 className="text-base sm:text-lg md:text-xl font-semibold text-primary-black">Roles & Permissions</h1>
+                    <button className="text-primary-navy-blue hover:text-primary-sky-blue font-semibold text-xs sm:text-sm  cursor-pointer">+Add Permission</button>
+                </div>
                 <div className="sm:hidden block text-center">
                     <div className="text-primary-navy-blue hover:text-primary-sky-blue font-semibold text-xs sm:text-sm  cursor-pointer">+Add Role</div>
                 </div>
@@ -102,9 +105,6 @@ const RolesAndPermissions: React.FC = () => {
                     ))}
                 </div>
             ))}
-            <div className="flex-shrink-0 pt-2">
-                <button className="text-primary-navy-blue hover:text-primary-sky-blue font-semibold text-xs sm:text-sm  cursor-pointer">+Add Permission</button>
-            </div>
         </div>
     );
 };
