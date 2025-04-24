@@ -66,27 +66,34 @@ const RolesAndPermissions: React.FC = () => {
 
     return (
         <div className="min-h-[calc(100vh-17rem)] bg-primary-white rounded-2xl shadow-lg px-4 sm:px-6 pt-9 pb-4">
-            <h1 className="text-lg sm:text-xl font-semibold text-primary-black">Roles & Permissions</h1>
-            <div className="w-4xl">
-                <div className="flex border-b border-light-stroke py-2">
-                    <div className="w-1/3 text-tertiary-black text-xs sm:text-sm md:text-base">Roles</div>
-                    {roles.map(role => (
-                        <div key={role} className="w-1/3 text-center text-tertiary-black text-xs sm:text-sm md:text-base">{role}</div>
-                    ))}
+            <div className="flex justify-between items-center">
+                <h1 className="text-base sm:text-lg md:text-xl font-semibold text-primary-black">Roles & Permissions</h1>
+                <div className="sm:hidden block text-center">
+                    <div className="text-primary-navy-blue hover:text-primary-sky-blue font-semibold text-xs sm:text-sm  cursor-pointer">+Add Role</div>
                 </div>
-                <div className="flex-shrink-0">
-                    <button className="text-primary-navy-blue hover:text-primary-sky-blue font-semibold text-xs sm:text-sm ">+Add Role</button>
+            </div>
+            <div className="pt-3">
+                <div className="flex items-center border-b border-light-stroke py-2">
+                   <div className="flex justify-between sm:justify-normal  items-center w-4xl">
+                   <div className="w-1/2 text-tertiary-black text-xs sm:text-sm md:text-base">Roles</div>
+                    {roles.map(role => (
+                        <div key={role} className="w-1/6 text-center text-tertiary-black text-xs sm:text-sm md:text-base">{role}</div>
+                    ))}
+                <div className="hidden sm:block flex-shrink-0 w-1/6 text-center">
+                    <div className="text-primary-navy-blue hover:text-primary-sky-blue font-semibold text-xs sm:text-sm  cursor-pointer">+Add Role</div>
+                </div>
+                   </div>
                 </div>
             </div>
 
             {permissionGroups.map(group => (
-                <div key={group.name} className="pt-2 md:w-4xl">
+                <div key={group.name} className="pt-2 xl:w-4xl">
                     <div className="text-tertiary-black text-xs sm:text-sm">{group.name}</div>
                     {group.permissions.map(permission => (
-                        <div key={permission.id} className="flex items-center border-b border-light-stroke py-4">
-                            <div className="w-1/3 text-secondary-black text-xs sm:text-sm md:text-base">{permission.label}</div>
+                        <div key={permission.id} className="flex justify-between sm:justify-normal border-b border-light-stroke py-4">
+                            <div className="w-1/2 text-secondary-black text-xs sm:text-sm md:text-base">{permission.label}</div>
                             {roles.map(role => (
-                                <div key={`${role}-${permission.id}`} className="w-1/3 flex justify-center">
+                                <div key={`${role}-${permission.id}`} className="w-1/6 flex justify-center">
                                     <CustomCheckbox
                                         checked={permissionMatrix[role][permission.id] || false}
                                         onChange={() => togglePermission(role, permission.id)} id={''} />
@@ -96,8 +103,8 @@ const RolesAndPermissions: React.FC = () => {
                     ))}
                 </div>
             ))}
-            <div className="flex-shrink-0">
-                <button className="text-primary-navy-blue hover:text-primary-sky-blue font-semibold text-xs sm:text-sm">+Add Permission</button>
+            <div className="flex-shrink-0 pt-2">
+                <button className="text-primary-navy-blue hover:text-primary-sky-blue font-semibold text-xs sm:text-sm  cursor-pointer">+Add Permission</button>
             </div>
         </div>
     );
