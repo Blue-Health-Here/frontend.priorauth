@@ -1,76 +1,3 @@
-// import React from 'react';
-// import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-// import { Doughnut } from 'react-chartjs-2';
-// ChartJS.register(ArcElement, Tooltip, Legend);
-
-// interface DonutChartProps {
-//   totalRequests: number;
-//   completedRequests: number;
-// }
-
-// const DonutChart: React.FC<DonutChartProps> = ({ totalRequests, completedRequests }) => {
-//   const upcomingRequests = totalRequests - completedRequests;
-  
-//   const data = {
-//     datasets: [
-//       {
-//         data: [upcomingRequests, completedRequests],
-//         backgroundColor: ['#192f59', '#1a9bd8'],
-//         borderWidth: 0,
-//         cutout: '75%'
-//       }
-//     ]
-//   };
-
-//   const options = {
-//     responsive: true,
-//     maintainAspectRatio: false,
-//     plugins: {
-//       legend: {
-//         display: false
-//       },
-//       tooltip: {
-//         enabled: true
-//       }
-//     }
-//   };
-
-//   return (
-//     <div className="w-full bg-primary-white rounded-2xl p-5 shadow-lg">
-//       <h2 className="text-sm md:text-base lg:text-lg text-secondary-black font-secondary">Total Requests</h2>
-//       <p className="text-tertiary-black xt-xs md:text-sm lg:text-base leading-[120%] mt-2">
-//         Total no. of Sessions/sessions Doctors need to attend.
-//       </p>
-      
-//       <div className="relative h-64 w-full">
-//         <Doughnut data={data} options={options} />
-//         <div className="absolute inset-0 flex flex-col items-center justify-center">
-//           <span className="text-gray-500 text-sm">Total request of this week</span>
-//           <span className="text-4xl font-bold text-gray-800">{totalRequests}</span>
-//         </div>
-//       </div>  
-//       <div className="flex items-center justify-center mt-4 space-x-4 text-tertiary-black">
-//         <div className="flex items-center">
-//           <div className="h-3 w-3 rounded-full bg-gray-200"></div>
-//           <span className="ml-1 text-sm">Total</span>
-//         </div>
-//         <div className="flex items-center">
-//           <div className="h-3 w-3 rounded-full bg-[#192f59]"></div>
-//           <span className="ml-1 text-sm">Upcoming</span>
-//         </div>
-//         <div className="flex items-center">
-//           <div className="h-3 w-3 rounded-full bg-[#1a9bd8]"></div>
-//           <span className="ml-1 text-sm">Completed</span>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default DonutChart
-
-
-
 import { Doughnut } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -79,17 +6,21 @@ import {
   Legend,
   ChartOptions,
 } from 'chart.js';
+import { useRef, useEffect } from 'react';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 type DonutChartProps = {
   completed: number;
   upcoming: number;
-  total: number;
 };
 
-export const DonutChart = ({ completed, upcoming, total }: DonutChartProps) => {
-const data = {
+export const DonutChart = ({ completed, upcoming}: DonutChartProps) => {
+  const chartRef = useRef<any>(null);
+
+  const actualTotal =  completed + upcoming;
+  
+  const data = {
     labels: [
       'Total',
       'Upcoming',
@@ -97,7 +28,7 @@ const data = {
     ],
     datasets: [{
       label: 'data',
-      data: [total, upcoming,completed],
+      data: [actualTotal, upcoming,completed],
       backgroundColor: ['#163066', '#1594CC','#EBF1FF'],
       borderWidth: 0,
       cutout: '75%',
@@ -105,7 +36,8 @@ const data = {
       spacing: 0,
     }]
   };
-const options: ChartOptions<'doughnut'> = {
+
+  const options: ChartOptions<'doughnut'> = {
     responsive: true,
     plugins: {
       legend: {
@@ -119,7 +51,7 @@ const options: ChartOptions<'doughnut'> = {
           font: {
             size: 14, 
           },
-          color: '#6B7280',
+          color: '##9E9E9E',
         },
       },
       tooltip: {
@@ -128,9 +60,56 @@ const options: ChartOptions<'doughnut'> = {
     },
   };
 
+  useEffect(() => {
+    const centerTextPlugin = {
+      id: 'centerText',
+      afterDraw: (chart: any) => {
+        const width = chart.width;
+        const height = chart.height;
+        const ctx = chart.ctx;
+        
+        ctx.restore();
+        ctx.font = 'bold 24px Arial';
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#4B5563';
+        
+        const text = actualTotal.toString();
+        const textX = width / 2;
+        const textY = height / 2;
+        
+        ctx.fillText(text, textX, textY);
+        
+        ctx.font = '12px Arial';
+        ctx.fillStyle = '##525252';
+        ctx.fillText('Total request of this week', textX, textY - 25);
+        ctx.save();
+      }
+    };
+
+    if (chartRef.current) {
+      const chart = chartRef.current;
+      const registeredPlugin = ChartJS.registry.plugins.get('centerText');
+      if (!registeredPlugin) {
+        ChartJS.register(centerTextPlugin);
+      }
+      
+      if (chart.chart) {
+        chart.chart.update();
+      }
+    }
+    
+    return () => {
+      const registeredPlugin = ChartJS.registry.plugins.get('centerText');
+      if (registeredPlugin) {
+        ChartJS.unregister(registeredPlugin);
+      }
+    };
+  }, [actualTotal]);
+
   return (
-    <div className="max-h-48 max-w-48 ">
-        <Doughnut data={data} options={options} />
+    <div className="max-h-80 max-w-80 ">
+        <Doughnut ref={chartRef}   data={data} options={options} />
     </div>
   );
 };
