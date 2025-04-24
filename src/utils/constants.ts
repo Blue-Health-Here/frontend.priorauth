@@ -154,7 +154,7 @@ export const adminSidebarItems = [
   { name: "Staff", icon: "/sidebar-staff.svg", path: "/f" },
   { name: "Tasks", icon: "/sidebar-task-01.svg", path: "/d" },
   { name: "Permissions", icon: "/sidebar-role&permission.svg", path: "/admin/permissions" },
-  { name: "Settings", icon: "/sidebar-Settings.svg", path: "/o" },
+  { name: "Settings", icon: "/sidebar-Settings.svg", path: "/admin/settings" },
 ];
 
 // pharmacy data
