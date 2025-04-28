@@ -107,7 +107,12 @@ const DataTable: React.FC<DataTableProps> = ({ title, columns, data, location, c
               <circle cx="12" cy="19" r="1" />
             </svg>
           </button>
-          <MoreOptionsMenu items={menuItems} isOpen={isOpenMenu} onClose={() => setIsOpenMenu(false)} />
+                <MoreOptionsMenu
+                    items={menuItems}
+                    isOpen={isOpenMenu}
+                    onClose={() => setIsOpenMenu(false)}
+                    headerText={location ? `${title} Options (${location})` : `${title} Options`}
+                />
         </div>
       </div>
     );

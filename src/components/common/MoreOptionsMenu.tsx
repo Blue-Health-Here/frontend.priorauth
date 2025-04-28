@@ -3,15 +3,16 @@
     interface MenuItem {
     label: string;
     onClick: () => void;
-    }
+}
 
-    interface MoreOptionsMenuProps {
+interface MoreOptionsMenuProps {
     items: MenuItem[];
     isOpen: boolean;
     onClose: () => void;
+    headerText?: string
     }
 
-    const MoreOptionsMenu: React.FC<MoreOptionsMenuProps> = ({ items, isOpen, onClose }) => {
+    const MoreOptionsMenu: React.FC<MoreOptionsMenuProps> = ({ items, isOpen, onClose, headerText = "Options" }) => {
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -37,7 +38,10 @@
 
     return (
         <div className="absolute right-0 w-40 sm:w-50  border border-light-stroke bg-primary-white rounded-lg shadow-lg z-50" ref={dropdownRef}>
-        <ul className="py-3">
+            <div className="text-left px-4 py-2 text-xs sm:text-sm lg:text-base text-primary-white border-b border-light-stroke bg-primary-sky-blue rounded-t-lg">
+                {headerText}
+            </div>
+        <ul className="pb-3">
             {items.map((item, index) => (
             <li key={index}>
                 <button
