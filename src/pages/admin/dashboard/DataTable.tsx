@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import MoreOptionsMenu from '../../../components/common/MoreOptionsMenu';
 interface DataTableProps {
     title: string;
     columns: any;
@@ -9,6 +10,34 @@ interface DataTableProps {
 }
 
 const DataTable: React.FC<DataTableProps> = ({ title, columns, data, location, customHeader, className }) => {
+
+    const [isOpenMenu, setIsOpenMenu] = useState(false);
+    const menuItems = [
+        {
+            label: `View All ${title}`,
+            onClick: () => { },
+        },
+        {
+            label: `Add New ${title}`,
+            onClick: () => { },
+        },
+        {
+            label: 'Export List',
+            onClick: () => { },
+        },
+        {
+            label: 'View Analytics',
+            onClick: () => { },
+        },
+        {
+            label: 'Refresh List',
+            onClick: () => { },
+        },
+    ];
+
+  const toggleDropdown = () => {
+    setIsOpenMenu(!isOpenMenu);
+  }
     const renderCellContent = (cellData: any) => {
         if (!cellData) return '';
 
@@ -36,7 +65,7 @@ const DataTable: React.FC<DataTableProps> = ({ title, columns, data, location, c
                         </div>
                     );
                 case 'badge':
-                    let badgeClass = 'px-3 py-1 rounded-full  text-xs sm:text-sm lg:text-base font-seccondary';
+                    let badgeClass = 'px-3 py-1 rounded-full text-xs sm:text-sm lg:text-base font-seccondary';
                     switch (cellData.variant) {
                         case 'success':
                             badgeClass += ' bg-success-chip-bg-color text-success-chip';
@@ -63,18 +92,29 @@ const DataTable: React.FC<DataTableProps> = ({ title, columns, data, location, c
     };
 
     const DefaultHeader = () => (
-        <div className="flex justify-between items-center">
-            <h2 className="text-sm sm:text-lg md:text-xl font-semibold text-primary-black leading-[110%]">
-                {location ? `${title} (${location})` : title}
-            </h2>
-            <button className="border border-medium-stroke rounded-lg p-3 text-tertiary-white">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="1" />
-                    <circle cx="12" cy="5" r="1" />
-                    <circle cx="12" cy="19" r="1" />
-                </svg>
-            </button>
+        <div className="flex justify-between items-center relative">
+        <h2 className="text-sm sm:text-lg md:text-xl font-semibold text-primary-black leading-[110%]">
+          {location ? `${title} (${location})` : title}
+        </h2>
+        <div className="relative">
+          <button
+            className="border border-medium-stroke rounded-lg p-3 text-tertiary-white cursor-pointer"
+            onClick={toggleDropdown}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="1" />
+              <circle cx="12" cy="5" r="1" />
+              <circle cx="12" cy="19" r="1" />
+            </svg>
+          </button>
+                <MoreOptionsMenu
+                    items={menuItems}
+                    isOpen={isOpenMenu}
+                    onClose={() => setIsOpenMenu(false)}
+                    headerText={location ? `${title} Options (${location})` : `${title} Options`}
+                />
         </div>
+      </div>
     );
 
     return (
