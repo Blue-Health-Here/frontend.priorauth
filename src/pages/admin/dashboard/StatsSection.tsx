@@ -12,7 +12,7 @@ const StatsSection: React.FC = () => {
   }
 
   return (
-  <div className="grid lg:grid-cols-12 gap-4">
+  <div className="grid xl:grid-cols-12 gap-4">
   <div className="col-span-6">
     <div className="grid md:grid-cols-2 gap-4 h-full">
       <StatCard subtitle='Pharmacies' title="Total no. of clinics registered on Prior Auth to provide their services." value="85" bgColor='gradient-class'  />
@@ -22,7 +22,7 @@ const StatsSection: React.FC = () => {
     </div>
   </div>
   
-  <div className="col-span-6 lg:col-span-3 h-full">
+  <div className="col-span-6 xl:col-span-3 h-full">
     <div className="bg-primary-white p-6 rounded-2xl shadow-lg h-full flex flex-col">
       <h2 className="text-sm md:text-base lg:text-lg text-secondary-black font-secondary">Total Requests</h2>
       <p className="text-tertiary-black xt-xs md:text-sm lg:text-base leading-[120%] mt-2">
@@ -33,42 +33,36 @@ const StatsSection: React.FC = () => {
       </div>
     </div>
   </div>
+  
+   <div className="col-span-6 xl:col-span-3 h-full">
+  <div className="bg-primary-white p-6 rounded-2xl shadow-lg flex flex-col h-full">
+    <h2 className="text-sm md:text-base lg:text-lg text-secondary-black font-secondary">
+      Total Tasks
+    </h2>
+    <p className="text-tertiary-black text-xs md:text-sm lg:text-base leading-[120%] mt-2">
+      Total no. of Sessions/sessions Doctors need to attend.
+    </p>
 
-  <div className="col-span-6 lg:col-span-3 h-full">
-    <div className="bg-primary-white p-6 rounded-2xl shadow-lg flex flex-col h-full">
-      <h2 className="text-sm md:text-base lg:text-lg text-secondary-black font-secondary">Total Requests</h2>
-      <p className="text-tertiary-black xt-xs md:text-sm lg:text-base leading-[120%] mt-2">
-        Total no. of Sessions/sessions Doctors need to attend.
-      </p>
-      <div className="relative flex-grow flex items-center justify-center">
-        <div className="absolute left-10 top-10">
-          <div className="bg-quaternary-navy-blue rounded-full w-36 h-36 md:h-40 md:w-40 flex flex-col justify-center items-center">
-            <p className="font-secondary text-xs">Total Tasks</p>
-            <p className="text-3xl font-bold">
-              {stats.currency}{(stats.totalTasks / 1000).toFixed(0)}K
-            </p>
-          </div>
+    <div className="flex-grow flex items-center justify-center mt-6">
+      <div className="relative w-full max-w-[350px] aspect-square">
+        <div className="bg-quaternary-navy-blue rounded-full flex flex-col justify-center items-center w-[60%] h-[60%] absolute top-1/3 left-[40%] -translate-x-1/2 -translate-y-1/2 p-4">
+          <p className="font-secondary text-xs">Total Tasks</p>
+          <p className="text-2xl md:text-3xl font-bold">
+            {stats.currency}{(stats.totalTasks / 1000).toFixed(0)}K
+          </p>
         </div>
-        
-        <div className="absolute right-10 top-1/4">
-          <div className="bg-success-chip-bg-color text-secondary-black rounded-full w-28 h-28 md:h-32 md:w-32 flex flex-col justify-center items-center">
-            <p className="font-secondary text-xs">Completed Tasks</p>
-            <p className="text-3xl font-bold">
-              {stats.completedTasks}
-            </p>
-          </div>
+        <div className="bg-success-chip-bg-color text-secondary-black rounded-full flex flex-col justify-center items-center w-[45%] h-[45%] absolute top-[40%] left-[80%] -translate-x-1/2 -translate-y-1/2 z-10">
+          <p className="font-secondary text-xs text-center">Completed Tasks</p>
+          <p className="text-xl md:text-2xl font-bold">{stats.completedTasks}</p>
         </div>
-        <div className="absolute right-1/3 bottom-12">
-          <div className="bg-error-chip-bg-color rounded-full w-24 h-24 md:h-28 md:w-28 flex flex-col justify-center items-center">
-            <p className="font-secondary text-xs">Pending Tasks</p>
-            <p className="text-3xl font-bold">
-              {stats.pendingTasks}
-            </p>
-          </div>
+        <div className="bg-error-chip-bg-color rounded-full flex flex-col justify-center items-center w-[40%] h-[40%] absolute top-[70%] left-[60%] -translate-x-1/2 -translate-y-1/2 z-10">
+          <p className="font-secondary text-xs text-center">Pending Tasks</p>
+          <p className="text-xl md:text-2xl font-bold">{stats.pendingTasks}</p>
         </div>
       </div>
     </div>
   </div>
+</div> 
 </div>
   )
 }
