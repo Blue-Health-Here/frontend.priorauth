@@ -1,10 +1,8 @@
-// NavbarProfileDropdown.tsx
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { adminSidebarItems } from "../../utils/constants";
 
 interface NavbarProfileDropdownProps {
-    onClose: () => void; // <-- added
-    role?: string;
+    onClose: () => void;
 }
 
 const NavbarProfileDropdown: React.FC<NavbarProfileDropdownProps> = ({ onClose }) => {
@@ -14,7 +12,7 @@ const NavbarProfileDropdown: React.FC<NavbarProfileDropdownProps> = ({ onClose }
                 <NavLink
                     to={item.path}
                     key={index}
-                    onClick={onClose} // <-- close dropdown on route click
+                    onClick={onClose}
                     className={({ isActive }) =>
                         `group flex items-center gap-x-3 p-3 h-9 md:h-11 mb-1 rounded-lg cursor-pointer transition font-secondary ${isActive
                             ? 'bg-primary-sky-blue text-primary-white'
@@ -38,7 +36,7 @@ const NavbarProfileDropdown: React.FC<NavbarProfileDropdownProps> = ({ onClose }
             ))}
             <hr className='mb-1' />
             <button
-                onClick={onClose} // optional: also close on logout click
+                onClick={onClose}
                 className='flex items-center gap-x-2 p-2 rounded-md text-sm text-primary-black cursor-pointer transition'
             >
                 <svg className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none">
