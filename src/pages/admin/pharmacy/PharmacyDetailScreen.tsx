@@ -3,7 +3,6 @@ import Pagination from '../../../components/common/Pagination'
 import DataTable from '../dashboard/DataTable'
 import PharmacyDetailsCrad from './PharmacyDetailsCrad'
 import { rquestDetailpageData } from '../../../utils/constants'
-import AskAIButton from '../../../components/common/AskAIButton'
 
 const PharmacyDetailScreen: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
