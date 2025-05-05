@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import NavbarProfileDropdown from './NavbarProfileDropdown';
 
 const Topbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,6 +21,24 @@ const Topbar: React.FC = () => {
     };
   }, []);
 
+  // Function to toggle the dropdown
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className={`fixed top-0 left-0 lg:left-[264px] xl:left-[276px] right-0 p-4 z-60 transition-all duration-300`}>
       <nav
@@ -26,9 +48,9 @@ const Topbar: React.FC = () => {
         <div className='hidden md:md:block'>
           <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-semibold text-primary-black">Welcome back!</p>
           <p className='text-tertiary-black text-xs md:text-sm lg:text-base'>Dashboard</p>
-          </div>
+        </div>
         <div className="md:hidden block">
-          <FaBars size={22} className='text-primary-sky-blue block lg:hidden'/>
+          <FaBars size={22} className='text-primary-sky-blue block lg:hidden' />
         </div>
         <div className="flex justify-end items-center gap-x-4 pl-4 sm:pl-0 cursor-pointer">
           <div className="relative">
@@ -41,13 +63,22 @@ const Topbar: React.FC = () => {
               <img src="/search-icon.svg" alt="search icon" />
             </span>
           </div>
-            <div className="border border-medium-stroke rounded-lg p-2 sm:block hidden">
-          <Link to="/admin/notifications" className="cursor-pointer">
+          <div className="border border-medium-stroke rounded-lg p-2 sm:block hidden">
+            <Link to="/admin/notifications" className="cursor-pointer">
               <img src="/bell-icon.svg" alt="notification" className='h-5 w-5' />
-          </Link>
+            </Link>
+          </div>
+          <div className="relative" ref={dropdownRef}>
+
+            <div
+              onClick={toggleDropdown}
+              className='rounded-full object-cover shadow-sm overflow-hidden w-9 h-9 md:w-12  md:h-12 flex items-center justify-center'>
+              <img src="/images/profile-image.png" alt="" className='w-full h-full rounded-full' width={30} height={30} />
             </div>
-          <div className='rounded-full object-cover shadow-sm overflow-hidden w-9 h-9 md:w-12  md:h-12 flex items-center justify-center'>
-            <img src="/images/profile-image.png" alt="" className='w-full h-full rounded-full' width={30} height={30} />
+            {isDropdownOpen && (
+              <NavbarProfileDropdown onClose={() => setIsDropdownOpen(false)} />
+            )}
+
           </div>
         </div>
       </nav>
