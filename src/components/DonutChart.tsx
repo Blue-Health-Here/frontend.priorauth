@@ -10,11 +10,7 @@ import { useRef, useEffect } from 'react';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-type DonutChartProps = {
-  completed: number;
-  upcoming: number;
-};
-export const DonutChart = ({ completed, upcoming }: DonutChartProps) => {
+export const DonutChart = ({ completed, upcoming, labelSize }:any) => {
   const chartRef = useRef<any>(null);
 
   const actualTotal = completed + upcoming;
@@ -44,7 +40,7 @@ export const DonutChart = ({ completed, upcoming }: DonutChartProps) => {
           boxWidth: 10,
           boxHeight: 10,
           padding: 15,
-          font: { size: 14 },
+          font: { size: labelSize },
           color: '#9E9E9E',
         },
       },
@@ -61,7 +57,13 @@ export const DonutChart = ({ completed, upcoming }: DonutChartProps) => {
         const ctx = chart.ctx;
         
         ctx.restore();
-        ctx.font = 'bold 24px Arial';
+        
+        // Calculate responsive font sizes based on chart dimensions
+        const smallerDimension = Math.min(width, height);
+        const mainFontSize = Math.max(smallerDimension * 0.09, 12); // Min font size 12px
+        const subFontSize = Math.max(smallerDimension * 0.04, 8); // Min font size 8px
+        
+        ctx.font = `bold ${mainFontSize}px Arial`;
         ctx.textBaseline = 'middle';
         ctx.textAlign = 'center';
         ctx.fillStyle = '#4B5563';
@@ -72,19 +74,33 @@ export const DonutChart = ({ completed, upcoming }: DonutChartProps) => {
         
         ctx.fillText(text, textX, textY);
 
-        ctx.font = '12px Arial';
-        ctx.fillStyle = '##525252';
-        ctx.fillText('Total request of this week', textX, textY - 25);
+        ctx.font = `${subFontSize}px Arial`;
+        ctx.fillStyle = '#525252';
+        
+        const labelText = 'Total request of this week';
+        
+        // foe small screens, break text into multiple lines
+        if (width < 150) {
+          const words = labelText.split(' ');
+          const line1 = words.slice(0, 2).join(' ');
+          const line2 = words.slice(2).join(' ');
+          ctx.fillText(line1, textX, textY - mainFontSize * 0.8);
+          ctx.fillText(line2, textX, textY - mainFontSize * 0.8 + subFontSize * 1.2);
+        } else {
+          ctx.fillText(labelText, textX, textY - mainFontSize * 0.8);
+        }
+        
         ctx.save();
       }
     };
 
     if (chartRef.current) {
       const chart = chartRef.current;
-      const registeredPlugin = ChartJS.registry.plugins.get('centerText');
-      if (!registeredPlugin) {
-        ChartJS.register(centerTextPlugin);
-      }
+      const existingPlugin = ChartJS.registry.plugins.get('centerText');
+      if (existingPlugin) {
+        ChartJS.unregister(existingPlugin);
+      }     
+      ChartJS.register(centerTextPlugin);
       
       if (chart.chart) {
         chart.chart.update();
@@ -94,7 +110,7 @@ export const DonutChart = ({ completed, upcoming }: DonutChartProps) => {
     return () => {
       const registeredPlugin = ChartJS.registry.plugins.get('centerText');
       if (registeredPlugin) {
-        ChartJS.unregister(registeredPlugin);
+          ChartJS.unregister(registeredPlugin);
       }
     };
   }, [actualTotal]);

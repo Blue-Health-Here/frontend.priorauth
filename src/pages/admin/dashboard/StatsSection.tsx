@@ -1,8 +1,10 @@
 import React from 'react'
 import StatCard from './StatCard'
 import { DonutChart } from '../../../components/DonutChart'
+import useWindowSize from '../../../hooks/useWindowSize';
 
 const StatsSection: React.FC = () => {
+  const { width } = useWindowSize();
 
   const stats = {
     totalTasks: 34000,
@@ -29,7 +31,7 @@ const StatsSection: React.FC = () => {
         Total no. of Sessions/sessions Doctors need to attend.
       </p>
       <div className="flex items-center justify-center py-2 flex-grow">
-        <DonutChart completed={350} upcoming={520} />
+        <DonutChart completed={350} upcoming={520} labels={width > 1400 ? 12 : width > 1200 ? 11 : width > 600 ? 10 : 8} />
       </div>
     </div>
   </div>
