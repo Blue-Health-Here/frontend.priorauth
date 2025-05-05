@@ -7,7 +7,7 @@ interface NavbarProfileDropdownProps {
 
 const NavbarProfileDropdown: React.FC<NavbarProfileDropdownProps> = ({ onClose }) => {
     return (
-        <div className="absolute md:right-0 -right-16 top-full p-4 w-52 md:w-64 bg-white rounded-lg shadow-lg z-50">
+        <div className="absolute right-0 -right-16 top-full p-4 w-52 md:w-64 bg-white rounded-lg shadow-lg z-50">
             {adminSidebarItems.map((item, index) => (
                 <NavLink
                     to={item.path}
