@@ -17,7 +17,7 @@ const StatCard: React.FC<StatCardProps> = ({
   textColor = 'text-white',
 }) => {
   return (
-    <div className={`min-h-[170px] w-full rounded-2xl p-5 shadow-lg ${bgColor} ${bgColor === bgColor ? 'text-primary-white' : 'text-secondary-black'}`}>
+    <div className={`min-h-[170px] h-full w-full rounded-2xl p-5 shadow-lg ${bgColor} ${bgColor === bgColor ? 'text-primary-white' : 'text-secondary-black'}`}>
       <div className="font-secondary">
         <p className={`text-sm md:text-base lg:text-lg ${bgColor === 'bg-white' ? 'text-secondary-black' : 'text-primary-white'}`}>
           {subtitle}
