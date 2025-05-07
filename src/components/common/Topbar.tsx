@@ -40,9 +40,9 @@ const Topbar: React.FC = () => {
   }, []);
 
   return (
-    <div className={`fixed top-0 left-0 lg:left-[264px] xl:left-[276px] right-0 p-4 z-60 transition-all duration-300 ${isScrolled ? 'bg-white border-b border-medium-stroke' : 'bg-transparent border-none'}`}>
+    <div className={`fixed top-0 left-0 right-0 p-4 z-60 transition-all duration-300 ${isScrolled ? 'bg-white border-b border-medium-stroke' : 'bg-transparent border-none'}`}>
       <nav
-        className={`topbar flex justify-between items-center transition-all duration-300`}
+        className={`topbar flex justify-between items-center transition-all duration-300 pl-0 lg:pl-[264px] xl:pl-[276px]`}
       >
         <div className='hidden md:md:block'>
           <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-semibold text-primary-black">Welcome back!</p>
