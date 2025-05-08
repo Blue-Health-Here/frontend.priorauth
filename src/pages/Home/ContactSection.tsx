@@ -31,10 +31,10 @@ const ContactSection: React.FC = () => {
           >
             {() => (
               <Form className="space-y-4">
-                <InputField className={inputStyles.contactInput} type="text" placeholder="Full Name" name="fullname" />
-                <InputField className={inputStyles.contactInput} type="tel" placeholder="Phone Number" name="phone" />
-                <InputField className={inputStyles.contactInput} type="email" placeholder="Email" name="email" />
-                <InputField className={inputStyles.contactInput} type="text" placeholder="Message" name="message" />
+                <InputField className={inputStyles.contactInput} errorColor="text-red-700" type="text" placeholder="Full Name" name="fullname" />
+                <InputField className={inputStyles.contactInput} errorColor="text-red-700" type="tel" placeholder="Phone Number" name="phone" />
+                <InputField className={inputStyles.contactInput} errorColor="text-red-700" type="email" placeholder="Email" name="email" />
+                <InputField className={inputStyles.contactInput} errorColor="text-red-700" type="text" placeholder="Message" name="message" />
                 <div className="pt-4">
                   <Button title="Submit" noHover textColor="text-black" className="bg-white text-primary-black font-medium sm:w-24" />
                 </div>

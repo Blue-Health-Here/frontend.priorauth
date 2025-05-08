@@ -62,7 +62,7 @@ const Sidebar: React.FC = () => {
                       className={`transition duration-200 ${isActive ? 'brightness-0 invert' : 'group-hover:brightness-0 group-hover:invert'
                         }`}
                     />
-                    <span className="text-xs sm:text-sm xl:text-[16px] transition-colors duration-200 group-hover:text-primary-white">
+                    <span className="text-xs sm:text-sm xl:text-base transition-colors duration-200 group-hover:text-primary-white">
                       {item.name}
                     </span>
                   </>

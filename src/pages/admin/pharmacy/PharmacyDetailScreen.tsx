@@ -8,8 +8,9 @@ const PharmacyDetailScreen: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   return (
-    <div className="min-h-[calc(100vh-15rem)]">
-      <PharmacyDetailsCrad />
+    <>
+    <div className="shadow-lg rounded-b-2xl">
+     <PharmacyDetailsCrad />
       <DataTable
         className="rounded-b-2xl rounded-t-none"
         title="Requests"
@@ -23,13 +24,15 @@ const PharmacyDetailScreen: React.FC = () => {
         ]}
         data={rquestDetailpageData}
         customHeader
-      />
-        <Pagination
+        isShadow={false}
+        />
+    </div>
+    <Pagination
           currentPage={currentPage}
           totalEntries={4}
           entriesPerPage={4}
           onPageChange={setCurrentPage} />
-    </div>
+        </>
   )
 }
 

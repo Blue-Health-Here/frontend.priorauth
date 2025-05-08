@@ -1,54 +1,10 @@
 import React from "react";
 import Button from "../../../components/common/Button";
+import { pharmacyDetail } from "../../../utils/constants";
 
 const PharmacyDetailsCard: React.FC<any> = () => {
-    const pharmacy: any = [
-        {
-            icon: "/created.svg",
-            label: "Created On",
-            value: "31/03/2025",
-            bg: "bg-quaternary-sky-blue",
-        },
-        {
-            icon: "/Call.svg",
-            label: "Phone Number",
-            value: "(217) 555-0113",
-            bg: "bg-quaternary-sky-blue",
-        },
-        {
-            icon: "/Mail.svg",
-            label: "Email",
-            value: "abstergo@icloud.com",
-            bg: "bg-quaternary-sky-blue",
-        },
-        {
-            icon: "/location.svg",
-            label: "Location",
-            value: "New York",
-            bg: "bg-quaternary-sky-blue",
-        },
-        {
-            icon: "/calendar.svg",
-            label: "Last Requests",
-            value: "31/03/2025",
-            bg: "bg-quaternary-sky-blue",
-        },
-        {
-            icon: "/check.svg",
-            label: "Approve Requests",
-            value: 42,
-            bg: "bg-[#E3F6DF]",
-        },
-        {
-            icon: "/cancel.svg",
-            label: "Denied Requests",
-            value: 42,
-            bg: "bg-[#FFE4E4]",
-        },
-    ];
-
     return (
-        <div className="bg-primary-white p-5 rounded-t-2xl">
+        <div className="bg-primary-white p-5 rounded-t-2xl shadow-lg">
             <div className="border-b pb-4 border-light-stroke">
                 <div className="flex flex-col-reverse md:flex-row justify-between gap-4 mb-6">
                     <div className="flex items-center gap-x-2 mt-4 md:mt-0">
@@ -76,7 +32,7 @@ const PharmacyDetailsCard: React.FC<any> = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-4 mt-4">
-                    {pharmacy.map((item: any, idx: number) => (
+                    {pharmacyDetail.map((item: any, idx: number) => (
                         <div key={idx} className="flex items-center gap-3 p-2">
                             <div className={`${item.bg} rounded-lg p-2 h-10 w-10 min-w-10 min-h-10  flex items-center justify-center`}>
                                 <img

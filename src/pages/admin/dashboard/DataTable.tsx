@@ -16,6 +16,8 @@ interface DataTableProps {
     paginator?: boolean;
     rows?: number;
     rowsPerPageOptions?: number[];
+    isShadow?: boolean;
+    customHeaderButtonText?:string;
 }
 
 const DataTable: React.FC<DataTableProps> = ({
@@ -27,7 +29,9 @@ const DataTable: React.FC<DataTableProps> = ({
     className,
     paginator = false,
     rows = 10,
-    rowsPerPageOptions = [5, 10, 25, 50]
+    rowsPerPageOptions = [5, 10, 25, 50],
+    isShadow = true,
+    customHeaderButtonText,
 }) => {
     const [isOpenMenu, setIsOpenMenu] = useState(false);
 
@@ -168,7 +172,7 @@ const DataTable: React.FC<DataTableProps> = ({
                                 { value: "operational", label: "Operational" },
                             ]}
                         />
-                        <Button title="Add Request" className="w-full sm:w-40" />
+                        <Button title={customHeaderButtonText} className="w-full sm:w-40" />
                     </Form>
                 )}
             </Formik>
@@ -176,7 +180,7 @@ const DataTable: React.FC<DataTableProps> = ({
     );
 
     return (
-        <div className={`bg-primary-white rounded-2xl shadow-lg px-6 py-4 ${className}`}>            
+        <div className={`bg-primary-white rounded-2xl ${isShadow? 'shadow-lg' : ''} px-6 py-4 ${className}`}>            
             {customHeader ? title &&  <CustomHeader /> : title && <DefaultHeader />}
 
             <PrimeDataTable

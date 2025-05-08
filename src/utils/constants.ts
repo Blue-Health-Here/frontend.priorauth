@@ -883,3 +883,48 @@ export const notification = [
     time:"18 min ago"
   },
 ];
+
+export const pharmacyDetail: any = [
+  {
+      icon: "/created.svg",
+      label: "Created On",
+      value: "31/03/2025",
+      bg: "bg-quaternary-sky-blue",
+  },
+  {
+      icon: "/Call.svg",
+      label: "Phone Number",
+      value: "(217) 555-0113",
+      bg: "bg-quaternary-sky-blue",
+  },
+  {
+      icon: "/Mail.svg",
+      label: "Email",
+      value: "abstergo@icloud.com",
+      bg: "bg-quaternary-sky-blue",
+  },
+  {
+      icon: "/location.svg",
+      label: "Location",
+      value: "New York",
+      bg: "bg-quaternary-sky-blue",
+  },
+  {
+      icon: "/calendar.svg",
+      label: "Last Requests",
+      value: "31/03/2025",
+      bg: "bg-quaternary-sky-blue",
+  },
+  {
+      icon: "/check.svg",
+      label: "Approve Requests",
+      value: 42,
+      bg: "bg-[#E3F6DF]",
+  },
+  {
+      icon: "/cancel.svg",
+      label: "Denied Requests",
+      value: 42,
+      bg: "bg-[#FFE4E4]",
+  },
+];
