@@ -38,9 +38,9 @@ const FileUpload: React.FC<FileUploadProps> = ({ title }) => {
           htmlFor="logo-upload"
           className="cursor-pointer p-5 flex flex-col items-center justify-center text-center gap-2 w-full h-full"
         >
-          <img src="/upload.svg" alt="Upload Icon" className="w-8 h-8" />
+          <img src="/upload.svg" alt="Upload Icon" className="w-10 h-10" />
           <div className="leading-[110%]">
-            <p className="text-sm md:text-base lg:text-lg font-medium text-primary-black">
+            <p className="text-sm md:text-base leading-[120%] font-medium text-primary-black">
               {title}
             </p>
             <p className="text-xs sm:text-sm  text-secondary-black">

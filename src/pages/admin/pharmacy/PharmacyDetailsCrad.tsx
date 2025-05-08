@@ -4,7 +4,7 @@ import { pharmacyDetail } from "../../../utils/constants";
 
 const PharmacyDetailsCard: React.FC<any> = () => {
     return (
-        <div className="bg-primary-white p-5 rounded-t-2xl shadow-lg">
+        <div className="bg-primary-white p-5 rounded-t-2xl">
             <div className="border-b pb-4 border-light-stroke">
                 <div className="flex flex-col-reverse md:flex-row justify-between gap-4 mb-6">
                     <div className="flex items-center gap-x-2 mt-4 md:mt-0">
