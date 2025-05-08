@@ -1,5 +1,7 @@
+import { RxDashboard } from "react-icons/rx";
 import { Pharmacy } from "./types";
-
+import { FiUser} from 'react-icons/fi';
+import { IoSettingsOutline } from "react-icons/io5";
 export const faqItems = [
   {
     question: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -157,6 +159,11 @@ export const adminSidebarItems = [
   { name: "Settings", icon: "/sidebar-Settings.svg", path: "/admin/settings" },
 ];
 
+export const profileMenu = [
+  { name: "Dashboard", icon: RxDashboard, path: "/admin/dashboard" },
+  { name: "Profile", icon: FiUser, path: "/admin/settings" },
+  { name: "Settings", icon: IoSettingsOutline, path: "/admin/settings" },
+];
 // pharmacy data
 export const pharmacyData = [
   {
