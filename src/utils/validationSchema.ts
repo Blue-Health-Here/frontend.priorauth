@@ -24,3 +24,14 @@ export const contactUsValidationSchema = Yup.object().shape({
       .required("Message is required")
       .min(10, "Message must be at least 10 characters"),
   });
+
+export const changePasswordValidationSchema = Yup.object().shape({
+  currentPassword: Yup.string()
+    .required('Current password is required'),
+  newPassword: Yup.string()
+    .required('New password is required')
+    .min(8, 'Password must be at least 8 characters'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('newPassword')], 'Passwords must match')
+    .required('Please confirm your new password'),
+});

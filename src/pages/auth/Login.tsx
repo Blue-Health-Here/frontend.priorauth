@@ -11,13 +11,13 @@ const Login: React.FC = () => {
   return (
     <div className="flex min-h-screen w-full">
       <div className="w-full md:w-1/2 flex flex-col justify-between py-10 px-6 md:px-8 bg-primary-white">
-        <div className="self-start mb-8">
+        <Link to="/" className="self-start mb-8">
           <img
             src="/images/logo.svg"
             alt="Prior Auth Support Logo"
             className="h-7 sm:h-8 md:h-10"
           />
-        </div>
+        </Link>
 
         <div className="flex-grow flex flex-col justify-center items-center w-full max-w-md mx-auto">
           <div className="mb-8 text-center">

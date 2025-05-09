@@ -8,6 +8,7 @@ interface ButtonProps {
   icon?: React.ReactNode; 
   noHover?: boolean;
   noBackground?: boolean;
+  onClick?: () => void; 
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -17,7 +18,8 @@ const Button: React.FC<ButtonProps> = ({
   isSmall = false,
   icon,
   noHover = false,
-  noBackground
+  noBackground,
+  onClick,
 }) => {
   return (
     <button
@@ -25,11 +27,11 @@ const Button: React.FC<ButtonProps> = ({
         ${className}
         ${textColor}
         ${isSmall ? "p-2 rounded-lg" : "rounded-md h-12"} 
-
         w-full ${noHover ? "" : "hover:bg-primary-sky-blue"}
         ${noBackground ? "border-none" : "bg-primary-navy-blue"}
         cursor-pointer font-semibold shadow text-xs sm:text-sm 
       `}
+      onClick={onClick}
     >
       {icon && <span className="text-sm">{icon}</span>} 
       {title}

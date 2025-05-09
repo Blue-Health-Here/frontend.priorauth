@@ -935,3 +935,10 @@ export const pharmacyDetail: any = [
       bg: "bg-[#FFE4E4]",
   },
 ];
+
+export const homeSections = [
+  {title: "About", path: "about"},
+  {title: "Services", path: "services"},
+  {title: "Contact", path: "contact"},
+  {title: "FAQs", path: "faqs"}
+]

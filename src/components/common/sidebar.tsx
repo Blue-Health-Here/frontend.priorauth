@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { adminSidebarItems } from '../../utils/constants';
 
 const Sidebar: React.FC = () => {
@@ -33,13 +33,14 @@ const Sidebar: React.FC = () => {
     <>
       {isSidebarOpen && <div className="fixed inset-0 z-[98] bg-black bg-opacity-50 lg:hidden" />}
       <aside className={asideClass}>
-          {isSidebarOpen && (
+        {isSidebarOpen && (
           <span onClick={() => setIsSidebarOpen(false)} className="absolute top-4 right-4 cursor-pointer ">
             {/* <RxCross2 size={20} /> */} X
-            </span>
-          )}
-        <img src="/images/logo.svg" alt="PriorAuth Logo" className="h-7 sm:h-8 lg:h-10" />
-
+          </span>
+        )}
+        <Link to='/'>
+          <img src="/images/logo.svg" alt="PriorAuth Logo" className="h-7 sm:h-8 lg:h-10" />
+        </Link>
         <div className="h-[calc(100vh-15rem)] overflow-y-auto pb-4 mt-8">
           <ul className="flex flex-col gap-y-2 text-[15px]">
             {adminSidebarItems.map((item, index) => (
@@ -47,8 +48,7 @@ const Sidebar: React.FC = () => {
                 to={item.path}
                 key={index}
                 className={({ isActive }) =>
-                  `group flex items-center gap-x-3 p-3 h-9 md:h-11 rounded-lg cursor-pointer transition font-secondary ${
-                    isActive
+                  `group flex items-center gap-x-3 p-3 h-9 md:h-11 rounded-lg cursor-pointer transition font-secondary ${isActive
                     ? 'bg-primary-sky-blue text-primary-white'
                     : 'hover:bg-primary-sky-blue hover:text-primary-white'
                   }`
