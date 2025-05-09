@@ -7,7 +7,7 @@ import { contactUsValidationSchema } from "../../utils/validationSchema";
 
 const ContactSection: React.FC = () => {
   return (
-    <div className="w-full min-h-screen relative flex items-center justify-end">
+    <section className="w-full min-h-screen relative flex items-center justify-end" id="contact">
       <div className="absolute inset-0 z-0 bg-gray-800 overflow-hidden">
         <img
           src="/images/contact-section.png"
@@ -43,7 +43,7 @@ const ContactSection: React.FC = () => {
           </Formik>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

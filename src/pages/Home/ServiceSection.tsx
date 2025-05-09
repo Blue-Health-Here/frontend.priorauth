@@ -35,7 +35,7 @@ const ServiceSection: React.FC = () => {
   };
 
   return (
-    <div className="w-full py-20 md:py-32">
+    <section className="w-full py-20 md:py-32" id="services">
       <div className="grid mb-12 grid-cols-12 px-4 sm:px-8">
         <div className="col-span-12 lg:col-span-1">
           <span className="text-primary-black font-secondary text-sm sm:text-base md:text-lg">
@@ -109,7 +109,7 @@ const ServiceSection: React.FC = () => {
           </Slider>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
