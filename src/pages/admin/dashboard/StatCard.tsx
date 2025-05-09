@@ -1,32 +1,26 @@
-import React from 'react';
+import React from "react";
 
 interface StatCardProps {
+  description: string;
   title: string;
-  subtitle: string;
   value: string;
-  bgColor?: string;
-  textColor?: string;
-  borderColor?: string;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ 
-  title, 
-  subtitle, 
-  value, 
-  bgColor = 'bg-white',
-  textColor = 'text-white',
-}) => {
+const StatCard: React.FC<StatCardProps> = ({ description, title, value }) => {
   return (
-    <div className={`min-h-[170px] h-full w-full rounded-2xl p-5 shadow-lg ${bgColor} ${bgColor === bgColor ? 'text-primary-white' : 'text-secondary-black'}`}>
+    <div
+      className="group min-h-[170px] h-full w-full rounded-2xl p-5 shadow-lg bg-white
+             transition-colors transition-background duration-700 ease-in-out  hover:bg-gradient-to-br hover:from-[#1594CC] hover:to-[#163066]"
+    >
       <div className="font-secondary">
-        <p className={`text-sm md:text-base lg:text-lg ${bgColor === 'bg-white' ? 'text-secondary-black' : 'text-primary-white'}`}>
-          {subtitle}
-        </p>
-        <h3 className={`text-xs md:text-sm lg:text-base mt-2 ${bgColor === 'bg-white' ? 'text-tertiary-black' : textColor}`}>
+        <p className="text-sm md:text-base lg:text-lg text-secondary-black group-hover:text-white transition-colors duration-800 ease-in-out">
           {title}
+        </p>
+        <h3 className="text-xs md:text-sm lg:text-base mt-2 text-tertiary-black group-hover:text-white transition-colors duration-800 ease-in-out">
+          {description}
         </h3>
       </div>
-      <div className={`text-xl md:text-3xl lg:text-5xl font-semibold mt-5 ${bgColor === 'bg-white' ? 'text-primary-black' : textColor}`}>
+      <div className="text-xl md:text-3xl lg:text-5xl font-semibold mt-5 text-primary-black group-hover:text-white transition-colors duration-800 ease-in-out">
         {value}
       </div>
     </div>

@@ -14,7 +14,7 @@ const AdminPharmacies: React.FC = () => {
     <>
       <div className="bg-primary-background rounded-2xl shadow-xs min-h-[calc(100vh-15rem)]">
         <div className="bg-primary-white p-5 rounded-t-2xl">
-          <div className="flex flex-col md:flex-col lg:flex-row gap-4">
+          <div className="flex flex-col md:flex-col lg:flex-row gap-4 pt-1">
             <h1 className="text-lg md:text-xl font-semibold flex-1 text-nowrap lg:text-2xl">
               Pharmacies
             </h1>
@@ -42,9 +42,7 @@ const AdminPharmacies: React.FC = () => {
                       { value: "operational", label: "Operational" },
                     ]}
                   />
-                  <Link to="/admin/pharmacies/add">
-                   <Button title="Add Pharmacy" className="w-full sm:w-48" />
-                  </Link>
+                  <Button title="Add Pharmacy" className="w-full sm:w-40" />
                 </Form>
               )}
             </Formik>
@@ -74,12 +72,12 @@ const AdminPharmacies: React.FC = () => {
           </div>
         </Link>
       </div>
-        <Pagination
-          currentPage={currentPage}
-          totalEntries={4}
-          entriesPerPage={4}
-          onPageChange={setCurrentPage}
-        />
+      <Pagination
+        currentPage={currentPage}
+        totalEntries={4}
+        entriesPerPage={4}
+        onPageChange={setCurrentPage}
+      />
     </>
   );
 };

@@ -11,7 +11,7 @@ const FAQAccordion: React.FC = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 gap-y-12 lg:grid-cols-12 bg-quaternary-navy-blue px-6 md:px-8 py-20 md:py-48">
+    <section className="grid grid-cols-1 gap-y-12 lg:grid-cols-12 bg-quaternary-navy-blue px-6 md:px-8 py-20 md:py-48" id="faqs">
       <div className="md:col-span-8">
         <div className="md:pr-8">
           <div className="text-primary-black">
@@ -52,7 +52,7 @@ const FAQAccordion: React.FC = () => {
           />
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 export default FAQAccordion

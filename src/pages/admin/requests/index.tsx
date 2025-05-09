@@ -20,6 +20,7 @@ const AdminRequests: React.FC = () => {
                 ]}
                 data={requestsDumyLargeData}
                 customHeader
+                customHeaderButtonText='Add Request'
             />
             <Pagination      
              currentPage={currentPage}

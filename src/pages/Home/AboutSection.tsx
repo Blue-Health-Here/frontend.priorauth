@@ -4,8 +4,8 @@ import BrandSlider from "./BrandSlider";
 
 const AboutSection: React.FC = () => {
   return (
-    <>
-    <section className="px-6 md:px-10 py-20 bg-primary-white">
+    <section id="about">
+    <div className="px-6 md:px-10 py-20 bg-primary-white">
       <div className="text-primary-black">
       <p className="text-base md:text-lg">About Priorauth Support</p>
       <div>
@@ -57,9 +57,9 @@ const AboutSection: React.FC = () => {
             />
         </div>
       </div>
-    </section>
+    </div>
     <BrandSlider />
-    </>
+    </section>
   );
 };
 
