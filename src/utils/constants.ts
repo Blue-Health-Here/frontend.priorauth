@@ -161,7 +161,7 @@ export const adminSidebarItems = [
 
 export const profileMenu = [
   { name: "Dashboard", icon: RxDashboard, path: "/admin/dashboard" },
-  { name: "Profile", icon: FiUser, path: "/admin/settings" },
+  { name: "Profile", icon: FiUser, path: "/admin/profile" },
   { name: "Settings", icon: IoSettingsOutline, path: "/admin/settings" },
 ];
 // pharmacy data

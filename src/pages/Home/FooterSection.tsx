@@ -1,6 +1,7 @@
 import React from "react";
 import { Link as ScrollLink } from 'react-scroll';
 import { homeSections } from "../../utils/constants";
+import { Link } from "react-router-dom";
 
 const FooterSection: React.FC = () => {
   return (
@@ -15,7 +16,7 @@ const FooterSection: React.FC = () => {
         <div className="md:col-span-6 lg:col-span-4">
           <div className="flex justify-start md:justify-end flex-wrap gap-4 md:gap-8 text-sm md:text-base lg:text-lg">
             {homeSections.map((item) => (
-              <ScrollLink to={item.path} smooth={true} duration={800} className="cursor-pointer hover:text-primary-sky-blue">{item.path}</ScrollLink>
+              <ScrollLink to={item.path} smooth={true} duration={800} className="cursor-pointer hover:text-primary-sky-blue">{item.title}</ScrollLink>
             ))}
           </div>
         </div>
@@ -23,11 +24,11 @@ const FooterSection: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-12 items-center gap-4 text-secondary-black text-sm md:text-base lg:text-lg mb-20">
         <div className="md:col-span-8"></div>
-        <div className="md:col-span-4 text-left text-sm text-secondary-black md:text-right space-y-1">
-        <a href="tel:+12055550100" className="hover:text-primary-sky-blue"><p>(205) 555-0100</p></a>
-        <a href="mailto:info@priorauthsupport.com" className="hover:text-primary-sky-blue"><p>info@priorauthsupport.com</p></a>
-          <p>
-            4140 Parker Rd, Allentown, New Mexico 31134
+        <div className="md:col-span-4 text-left text-sm text-secondary-black md:text-right flex flex-col gap-2">
+          <Link to="tel:+12055550100" className="hover:text-primary-sky-blue text-lg">(205) 555-0100</Link>
+          <Link to="mailto:info@priorauthsupport.com" className="hover:text-primary-sky-blue text-lg">info@priorauthsupport.com</Link>
+          <p className="text-lg">
+            4140 Parker Rd, Allentown,<br /> New Mexico 31134
           </p>
         </div>
       </div>
@@ -50,7 +51,7 @@ const FooterSection: React.FC = () => {
       </div>
 
       <div className="w-full border-t border-primary-navy-blue my-4" />
-      <img src="images/priorauth.svg" alt="" className="w-full"/>
+      <img src="images/priorauth.svg" alt="" className="w-full" />
     </footer>
   );
 };

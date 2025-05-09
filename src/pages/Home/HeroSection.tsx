@@ -17,7 +17,7 @@ const HeroSection: React.FC = () => {
   };
 
   return (
-    <div className="px-6 xl:px-12 gap-4 theme-s-padding relative w-full overflow-hidden mx-auto" id="hero">
+    <div className="px-6 xl:px-12 gap-4 theme-s-padding relative w-full overflow-hidden mx-auto">
       <Slider {...sliderSettings} className="w-full h-full">
         {slidesData.map((slide, index) => (
           <div
