@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface StatCardProps {
   description: string;
@@ -7,10 +8,13 @@ interface StatCardProps {
 }
 
 const StatCard: React.FC<StatCardProps> = ({ description, title, value }) => {
+  const navigate = useNavigate();
   return (
     <div
-      className="group min-h-[170px] h-full w-full rounded-2xl p-5 shadow-lg bg-white
-             transition-colors transition-background duration-700 ease-in-out  hover:bg-gradient-to-br hover:from-[#1594CC] hover:to-[#163066]"
+      onClick={() => {
+        navigate(`/admin/${title.toLowerCase()}`);
+      }}
+      className="cursor-pointer group min-h-[170px] h-full w-full rounded-2xl p-5 shadow-lg bg-white transition-colors transition-background duration-700 ease-in-out  hover:bg-gradient-to-br hover:from-[#1594CC] hover:to-[#163066]"
     >
       <div className="font-secondary">
         <p className="text-sm md:text-base lg:text-lg text-secondary-black group-hover:text-white transition-colors duration-800 ease-in-out">

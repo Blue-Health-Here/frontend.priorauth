@@ -210,7 +210,11 @@ export const requestsData = [
     id: "1",
     medication: "Ibsrela 50 mg Tab.",
     patient: "Cody Fisher",
-    prescriber: "Wade Warren",
+    prescriber: {
+      type: "avatar",
+      image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png",
+      text: "Wade Warren",
+    },
     submittedOn: "01/02/2025",
     pharmacy: {
       type: "avatar",
@@ -266,7 +270,11 @@ export const requestsData = [
     id: "4",
     medication: "Mounjaro 2.5 mg Inj",
     patient: "Theresa Webb",
-    prescriber: "Esther Howard",
+    prescriber: {
+      type: "avatar",
+      image: "/images/d339be91b10aa7a7aad2a051dc5790cf.png",
+      text: "Esther Howard",
+    },
     submittedOn: "01/01/2025",
     pharmacy: {
       type: "avatar",
@@ -287,8 +295,7 @@ export const prescribersData = [
     id: "1",
     prescriber: {
       type: "avatar",
-      image:
-        "https://s3-alpha-sig.figma.com/img/8fbd/6f61/f39ff349b5658a83f92ab24990b4be08?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=JODYxVS8sFeFcw1k36DvwNw8Oj4niqsMvrz1CBBSj69aFwfqlc-0pYncc2j~~NBBj8wITAWAr2On1gw8G0kZUi10sA6Qcq1VYrw4za3U7DvCws7z48ouZ96eC7GX-68UCPWNjetuOzWigGIa3CjSVfB~WuQeGRtnqSp6oSZ7~kmyjFLW-IBXHg3jw5OyW1RYb8VPWIxgJhFvyMc6G5Vq9Op-BV0Lbhqh0tn-~Fpv2N080H4L5BY26Me2IQ2H-QaVUrU3f1FTfv5RxzzkFW3oO49eS05ZjbpEqRPCT1M89rcs-0Ws00F51Qb9NqzU3nX1DiA-pIaJX4pYNbiCwXTPAw__",
+      image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png",
       text: "Wade Warren",
     },
     email: "evans@me.com",
@@ -321,8 +328,7 @@ export const prescribersData = [
     id: "4",
     prescriber: {
       type: "avatar",
-      image:
-        "https://s3-alpha-sig.figma.com/img/d042/4272/21a2018b63769bbfa5a39ab72e2d84ab?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=txlrcgNDi-d5nLaMg7gmtmXqCUCWArPaQAE8SaA0lO7vew6FrXBVSFxvdoQCZnP2B7AVRWdKecFd4R2Up1rqHyVKN8V9pRUWWQiyWss0Ea1ISDeQTpdEVeryRr51WntWkUZi2nZky1khw9sPw8Abz8zRkIpKobr3lrm4JRQNCc1PqZ2jf36Fg~LcCz9gMT~Dez1~bTovcLfcteZohZ~fIj7mklRer2vAArRa8-4g9tz8J7THx8Nb9XPiHn3nehcwx-GMLef5zjtaYnTIZcgukbjOAFKcfMYeKTgMc2GGJNVJb9QCU7NI86Og12VWOlD7-IiHkV6Zf~R5IlyP~Ex32Q__",
+      image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png",
       text: "Esther Howard",
     },
     email: "blixem@aol.com",
@@ -337,8 +343,7 @@ export const staffData = [
     id: "1",
     name: {
       type: "avatar",
-      image:
-        "https://s3-alpha-sig.figma.com/img/e86a/eb8b/ac9546fc15e4d7f839fdca74952797d8?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T7B-rcF65cV4t7M9QJT7C7edN-2pd9GCsgdw5nme0sn2Ierzd0kvptgXEDR3wXgZPPF4sHJdfjSeu-IImlirvQkfHdjTuywqZ9qq09Q72L6S1UzCC8xseNbL8Xyrtk0yehyM9u3lDE2QbtCsUwdUs0-dHjkzvqC9JRfxh7iWk7J0AMjCEpcN5o~cUsZIuTJ-REqztgsQQCxSwXf0hGry7u-Ua226Tkqh8ZzSwNOMcZZByKe1azfLUM2dKvryQZmcQcQI2LoXAHZK6ePq8g5RkXoHfBx~vgaLc~kPezskP4OYbt~BtSgLkRcFeW~xFNl-N~mrPVjtOVeW6g5dCz1rYQ__",
+      image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png",
       text: "Cody Fisher",
     },
     email: "evans@me.com",
@@ -349,8 +354,7 @@ export const staffData = [
     id: "2",
     name: {
       type: "avatar",
-      image:
-        "https://s3-alpha-sig.figma.com/img/d327/8480/e4633338fff5e1eb174e6492f45d4f0b?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=mZ6-hdfTJ3Hn13us5GOr0PiYPNu2HqhxxgXQIzp5d0eVgTBSdMw8IB-DG8cPr3z~EON99Tc1OHCb4KuQpIPMSjvfKtpJHgVA2QvfSsCzQFufw7CvtTBT5VXd2TBN30VsJDQJIezKIanf1dMh5JfCCGTO9jr1aM4NDuqTdTuHhSxxgEXRLzRjqA0vQ9Nu50WVyxZk3SBznAp9Uog8TdRugVRA0bErMTXVG9AUjLCFM76HCkJ5pgNuMYv9bNDmmaXuLLljvTcM9bBcWb85g-mVI7681W11RjOE-MgGXth4PuHnJQuYQ0iTTwjMdrfwLmmdARZO4o5gBr1NZDmjRIpjFA__",
+      image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png",
       text: "Kristin Watson",
     },
     email: "wikinerd@verizon.net",
@@ -361,8 +365,7 @@ export const staffData = [
     id: "3",
     name: {
       type: "avatar",
-      image:
-        "https://s3-alpha-sig.figma.com/img/10e5/a204/b4d87623d5204a1497c568683b4657f0?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=ibi8oXqAt942V-0yYUpRHMIsUAhvJCxzUTQ1vNFXghnZG-4GhtPlNIv3kB-uMhatFCtfSBnyaxwT2dlQ1cUYA2A-RsEMtWxtBihn0lcL69LULnwQXBxZSOOhCOanc1rj8m7NpoVa~66Kt7-FfUKvg3NmykwMYNOYRbypjUxOd9P4kv~VtuShk2LpKGqnkdJnvuc4sS7imZ0JP9B0661~2orIY3sXrP84kJv2fi4HsvBwEyeMRA2Ceo9cCmFNRB35U7cA3Chqu3zakZeTt6dqnbf-rsfhhSeYc8CNsVHw6YCXpio2s12JkGu8BuhbCBQXSxzKyqEAe4Osn3r8Pa0Hhg__",
+      image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png",
       text: "Cameron Williamson",
     },
     email: "ianbuck@icloud.com",
@@ -373,8 +376,7 @@ export const staffData = [
     id: "4",
     name: {
       type: "avatar",
-      image:
-        "https://s3-alpha-sig.figma.com/img/78f7/b7a3/18df513937d2f016404c0d556f696294?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=VUUGazxbbqbm2lRzCYzfZA7nkyZxS6p-KpaX~RKCCDfkQDpUnY3zhCyNrSRFjQrAsz6yxYoSxs9Y7ocT9Zw32e0snQhAkJ6Ti8F47C~389e2jqPFvGfS5p~t8cEjfZ822Od04iGy8GcqLgbu1QN8kcGSNWc--G1GWz5o9Lnm4L-7~yExrYdBoWz9b-bTlvg8KoK~B-TmAFIjwKHqSk4pf5BfYDtmYg9GqzRbo7G3i7a~NHGPnwVKPMbWBfDQIf7Z6cmC~rH~XQnAs~dDNRoBSZmWVa8OVZFnRPRn0v~j6qwhJKHfE3y8JR9~i3n9Q4vfdR-~yeE5UFbzsD6WDVElRQ__",
+      image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png",
       text: "Theresa Webb",
     },
     email: "blixem@aol.com",
@@ -390,14 +392,12 @@ export const tasksData = [
     medication: "Ibsrela 50 mg Tab.",
     assignedTo: {
       type: "avatar",
-      image:
-        "https://s3-alpha-sig.figma.com/img/d327/8480/e4633338fff5e1eb174e6492f45d4f0b?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=mZ6-hdfTJ3Hn13us5GOr0PiYPNu2HqhxxgXQIzp5d0eVgTBSdMw8IB-DG8cPr3z~EON99Tc1OHCb4KuQpIPMSjvfKtpJHgVA2QvfSsCzQFufw7CvtTBT5VXd2TBN30VsJDQJIezKIanf1dMh5JfCCGTO9jr1aM4NDuqTdTuHhSxxgEXRLzRjqA0vQ9Nu50WVyxZk3SBznAp9Uog8TdRugVRA0bErMTXVG9AUjLCFM76HCkJ5pgNuMYv9bNDmmaXuLLljvTcM9bBcWb85g-mVI7681W11RjOE-MgGXth4PuHnJQuYQ0iTTwjMdrfwLmmdARZO4o5gBr1NZDmjRIpjFA__",
+      image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png",
       text: "Cody Fisher",
     },
     prescriber: {
       type: "avatar",
-      image:
-        "https://s3-alpha-sig.figma.com/img/e86a/eb8b/ac9546fc15e4d7f839fdca74952797d8?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T7B-rcF65cV4t7M9QJT7C7edN-2pd9GCsgdw5nme0sn2Ierzd0kvptgXEDR3wXgZPPF4sHJdfjSeu-IImlirvQkfHdjTuywqZ9qq09Q72L6S1UzCC8xseNbL8Xyrtk0yehyM9u3lDE2QbtCsUwdUs0-dHjkzvqC9JRfxh7iWk7J0AMjCEpcN5o~cUsZIuTJ-REqztgsQQCxSwXf0hGry7u-Ua226Tkqh8ZzSwNOMcZZByKe1azfLUM2dKvryQZmcQcQI2LoXAHZK6ePq8g5RkXoHfBx~vgaLc~kPezskP4OYbt~BtSgLkRcFeW~xFNl-N~mrPVjtOVeW6g5dCz1rYQ__",
+      image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png",
       text: "Wade Warren",
     },
     assignedOn: "01/02/2025",
@@ -418,14 +418,12 @@ export const tasksData = [
     medication: "Xifaxan 550 mg Tab.",
     assignedTo: {
       type: "avatar",
-      image:
-        "https://s3-alpha-sig.figma.com/img/78f7/b7a3/18df513937d2f016404c0d556f696294?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=VUUGazxbbqbm2lRzCYzfZA7nkyZxS6p-KpaX~RKCCDfkQDpUnY3zhCyNrSRFjQrAsz6yxYoSxs9Y7ocT9Zw32e0snQhAkJ6Ti8F47C~389e2jqPFvGfS5p~t8cEjfZ822Od04iGy8GcqLgbu1QN8kcGSNWc--G1GWz5o9Lnm4L-7~yExrYdBoWz9b-bTlvg8KoK~B-TmAFIjwKHqSk4pf5BfYDtmYg9GqzRbo7G3i7a~NHGPnwVKPMbWBfDQIf7Z6cmC~rH~XQnAs~dDNRoBSZmWVa8OVZFnRPRn0v~j6qwhJKHfE3y8JR9~i3n9Q4vfdR-~yeE5UFbzsD6WDVElRQ__",
+      image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png",
       text: "Kristin Watson",
     },
     prescriber: {
       type: "avatar",
-      image:
-        "https://s3-alpha-sig.figma.com/img/78f7/b7a3/18df513937d2f016404c0d556f696294?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=VUUGazxbbqbm2lRzCYzfZA7nkyZxS6p-KpaX~RKCCDfkQDpUnY3zhCyNrSRFjQrAsz6yxYoSxs9Y7ocT9Zw32e0snQhAkJ6Ti8F47C~389e2jqPFvGfS5p~t8cEjfZ822Od04iGy8GcqLgbu1QN8kcGSNWc--G1GWz5o9Lnm4L-7~yExrYdBoWz9b-bTlvg8KoK~B-TmAFIjwKHqSk4pf5BfYDtmYg9GqzRbo7G3i7a~NHGPnwVKPMbWBfDQIf7Z6cmC~rH~XQnAs~dDNRoBSZmWVa8OVZFnRPRn0v~j6qwhJKHfE3y8JR9~i3n9Q4vfdR-~yeE5UFbzsD6WDVElRQ__",
+      image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png",
       text: "Brooklyn Simmons",
     },
     assignedOn: "31/03/2025",
@@ -442,14 +440,12 @@ export const tasksData = [
     medication: "Vemildy 25 mg Tab.",
     assignedTo: {
       type: "avatar",
-      image:
-        "https://s3-alpha-sig.figma.com/img/78f7/b7a3/18df513937d2f016404c0d556f696294?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=VUUGazxbbqbm2lRzCYzfZA7nkyZxS6p-KpaX~RKCCDfkQDpUnY3zhCyNrSRFjQrAsz6yxYoSxs9Y7ocT9Zw32e0snQhAkJ6Ti8F47C~389e2jqPFvGfS5p~t8cEjfZ822Od04iGy8GcqLgbu1QN8kcGSNWc--G1GWz5o9Lnm4L-7~yExrYdBoWz9b-bTlvg8KoK~B-TmAFIjwKHqSk4pf5BfYDtmYg9GqzRbo7G3i7a~NHGPnwVKPMbWBfDQIf7Z6cmC~rH~XQnAs~dDNRoBSZmWVa8OVZFnRPRn0v~j6qwhJKHfE3y8JR9~i3n9Q4vfdR-~yeE5UFbzsD6WDVElRQ__",
+      image: "/images/b4d87623d5204a1497c568683b4657f0.png",
       text: "Cameron Williamson",
     },
     prescriber: {
       type: "avatar",
-      image:
-        "https://s3-alpha-sig.figma.com/img/78f7/b7a3/18df513937d2f016404c0d556f696294?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=VUUGazxbbqbm2lRzCYzfZA7nkyZxS6p-KpaX~RKCCDfkQDpUnY3zhCyNrSRFjQrAsz6yxYoSxs9Y7ocT9Zw32e0snQhAkJ6Ti8F47C~389e2jqPFvGfS5p~t8cEjfZ822Od04iGy8GcqLgbu1QN8kcGSNWc--G1GWz5o9Lnm4L-7~yExrYdBoWz9b-bTlvg8KoK~B-TmAFIjwKHqSk4pf5BfYDtmYg9GqzRbo7G3i7a~NHGPnwVKPMbWBfDQIf7Z6cmC~rH~XQnAs~dDNRoBSZmWVa8OVZFnRPRn0v~j6qwhJKHfE3y8JR9~i3n9Q4vfdR-~yeE5UFbzsD6WDVElRQ__",
+      image: "/images/d339be91b10aa7a7aad2a051dc5790cf.png",
       text: "Theresa Webb",
     },
     assignedOn: "21/02/2025",
@@ -466,8 +462,7 @@ export const tasksData = [
     medication: "Mounjaro 2.5 mg Inj",
     assignedTo: {
       type: "avatar",
-      image:
-        "https://s3-alpha-sig.figma.com/img/78f7/b7a3/18df513937d2f016404c0d556f696294?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=VUUGazxbbqbm2lRzCYzfZA7nkyZxS6p-KpaX~RKCCDfkQDpUnY3zhCyNrSRFjQrAsz6yxYoSxs9Y7ocT9Zw32e0snQhAkJ6Ti8F47C~389e2jqPFvGfS5p~t8cEjfZ822Od04iGy8GcqLgbu1QN8kcGSNWc--G1GWz5o9Lnm4L-7~yExrYdBoWz9b-bTlvg8KoK~B-TmAFIjwKHqSk4pf5BfYDtmYg9GqzRbo7G3i7a~NHGPnwVKPMbWBfDQIf7Z6cmC~rH~XQnAs~dDNRoBSZmWVa8OVZFnRPRn0v~j6qwhJKHfE3y8JR9~i3n9Q4vfdR-~yeE5UFbzsD6WDVElRQ__",
+      image: "/images/d339be91b10aa7a7aad2a051dc5790cf.png",
       text: "Theresa Webb",
     },
     prescriber: {
