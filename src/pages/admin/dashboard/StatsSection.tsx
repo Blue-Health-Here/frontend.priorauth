@@ -17,10 +17,10 @@ const StatsSection: React.FC = () => {
     <div className="grid xl:grid-cols-12 gap-4">
       <div className="col-span-6">
         <div className="grid md:grid-cols-2 gap-4 h-full">
-          <StatCard subtitle='Pharmacies' title="Total no. of clinics registered on Prior Auth to provide their services." value="85" bgColor='gradient-class' />
-          <StatCard subtitle='Prescribers' title="Total Doctor registered on platform including individual & linked with clinics." value="48" />
-          <StatCard subtitle='Requests' title="Total no of requests on platform to avail services." value="42K" />
-          <StatCard subtitle='Tasks' title="Total no of tasks created by the Admin." value="5K" />
+          <StatCard title='Pharmacies' description="Total no. of clinics registered on Prior Auth to provide their services." value="85"/>
+          <StatCard title='Prescribers' description="Total Doctor registered on platform including individual & linked with clinics." value="48"  />
+          <StatCard title='Requests' description="Total no of requests on platform to avail services." value="42K"  />
+          <StatCard title='Tasks' description="Total no of tasks created by the Admin." value="5K"  />
         </div>
       </div>
 

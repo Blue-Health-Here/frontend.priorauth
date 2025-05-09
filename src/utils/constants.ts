@@ -1,5 +1,7 @@
+import { RxDashboard } from "react-icons/rx";
 import { Pharmacy } from "./types";
-
+import { FiUser} from 'react-icons/fi';
+import { IoSettingsOutline } from "react-icons/io5";
 export const faqItems = [
   {
     question: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -157,6 +159,11 @@ export const adminSidebarItems = [
   { name: "Settings", icon: "/sidebar-Settings.svg", path: "/admin/settings" },
 ];
 
+export const profileMenu = [
+  { name: "Dashboard", icon: RxDashboard, path: "/admin/dashboard" },
+  { name: "Profile", icon: FiUser, path: "/admin/profile" },
+  { name: "Settings", icon: IoSettingsOutline, path: "/admin/settings" },
+];
 // pharmacy data
 export const pharmacyData = [
   {
@@ -883,3 +890,55 @@ export const notification = [
     time:"18 min ago"
   },
 ];
+
+export const pharmacyDetail: any = [
+  {
+      icon: "/created.svg",
+      label: "Created On",
+      value: "31/03/2025",
+      bg: "bg-quaternary-sky-blue",
+  },
+  {
+      icon: "/Call.svg",
+      label: "Phone Number",
+      value: "(217) 555-0113",
+      bg: "bg-quaternary-sky-blue",
+  },
+  {
+      icon: "/Mail.svg",
+      label: "Email",
+      value: "abstergo@icloud.com",
+      bg: "bg-quaternary-sky-blue",
+  },
+  {
+      icon: "/location.svg",
+      label: "Location",
+      value: "New York",
+      bg: "bg-quaternary-sky-blue",
+  },
+  {
+      icon: "/calendar.svg",
+      label: "Last Requests",
+      value: "31/03/2025",
+      bg: "bg-quaternary-sky-blue",
+  },
+  {
+      icon: "/check.svg",
+      label: "Approve Requests",
+      value: 42,
+      bg: "bg-[#E3F6DF]",
+  },
+  {
+      icon: "/cancel.svg",
+      label: "Denied Requests",
+      value: 42,
+      bg: "bg-[#FFE4E4]",
+  },
+];
+
+export const homeSections = [
+  {title: "About", path: "about"},
+  {title: "Services", path: "services"},
+  {title: "Contact", path: "contact"},
+  {title: "FAQs", path: "faqs"}
+]

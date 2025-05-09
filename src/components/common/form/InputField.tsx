@@ -5,12 +5,12 @@ import { Label } from "../Label";
 interface InputFieldProps {
   id?: string;
   name: string;
-
   type?: string;
   label?: string;
   placeholder?: string;
   variant?: "default" | "FloatingLabel";
   className?: string;
+  errorColor?: string;
 }
 
 export const inputStyles = {
@@ -28,6 +28,7 @@ const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   variant = "default",
   className = "",
+  errorColor ="text-red-500",
 }) => {
   const [field, meta] = useField(name);
   const [isFocused, setIsFocused] = useState(false);
@@ -81,7 +82,7 @@ const InputField: React.FC<InputFieldProps> = ({
         {...field}
       />
       {meta.touched && meta.error && (
-        <p className="text-red-500 mt-1 text-xs font-secondary">{meta.error}</p>
+        <p className={`${errorColor} mt-1 text-xs font-secondary`}>{meta.error}</p>
       )}
     </div>
   );

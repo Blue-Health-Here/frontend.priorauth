@@ -10,13 +10,14 @@ import TestimonialSection from "./TestimonialSection";
 const Home: React.FC = () => {
   return (
     <HomeLayout>
-      <div
+      <div 
+        id="hero"
         className="relative w-full bg-cover bg-center flex flex-col justify-end pt-20 overflow-hidden lg:min-h-screen max-h-screen"
         style={{
           backgroundImage: `url(${"/images/herosection-bg-image.jpg"})`,
         }}
       >
-      <HeroSection />
+        <HeroSection />
       </div>
       <AboutSection />
       <ServiceSection />

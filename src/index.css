@@ -131,3 +131,11 @@ a:focus {
   color: var(--secondary-black, #344054);
   font-size: 14px;
 }
+
+.placeholder-primary-black::placeholder {
+  color: #000000 !important;
+}
+
+.placeholder-primary-white::placeholder {
+  color: #ffffff !important;
+}
