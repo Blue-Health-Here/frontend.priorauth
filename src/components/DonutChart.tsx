@@ -22,7 +22,7 @@ export const DonutChart = ({ completed, upcoming, labelSize }:any) => {
       data: [actualTotal, upcoming, completed],
       backgroundColor: ['#163066', '#1594CC', '#EBF1FF'],
       borderWidth: 0,
-      cutout: '75%',
+      cutout: '80%',
       borderRadius: 10,
       spacing: 0,
     }]
@@ -39,7 +39,7 @@ export const DonutChart = ({ completed, upcoming, labelSize }:any) => {
           usePointStyle: true,
           boxWidth: 10,
           boxHeight: 10,
-          padding: 15,
+          padding: 25,
           font: { size: labelSize },
           color: '#9E9E9E',
         },
@@ -116,7 +116,7 @@ export const DonutChart = ({ completed, upcoming, labelSize }:any) => {
   }, [actualTotal]);
 
   return (
-    <div className="w-60 md:w-full h-52 sm:h-64 md:h-80 lg:h-96 relative">
+    <div className="w-60 md:w-full h-52 sm:h-64 md:h-80 relative">
       <Doughnut ref={chartRef} data={data} options={options} />
     </div>
   );
