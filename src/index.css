@@ -94,11 +94,48 @@ body {
 .theme-container {
   @apply max-w-[1520px] mx-auto;
 }
-
+.gradient-class {
+  @apply bg-gradient-to-br from-[#1594CC] to-[#163066] 
+}
 .slick-list, .slick-track {
   height: 100%;
 }
 
 .slick-slide > div {
   height: 100%;
+}
+
+a:focus {
+  outline: none;
+}
+
+/* primetable css */
+
+.p-datatable .p-datatable-thead > tr > th {
+  background: transparent;
+  color: var(--tertiary-black, #667085);
+  font-weight: normal;
+  font-size: 14px;
+  border-bottom: 1px solid var(--light-stroke, #F0F1F3);
+  text-align: left;
+  padding: 1rem;
+}
+
+.p-datatable .p-datatable-tbody > tr {
+  border-bottom: 1px solid var(--light-stroke, #F0F1F3);
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  padding: 1rem;
+  text-align: left;
+  color: var(--secondary-black, #344054);
+  font-size: 14px;
+}
+
+.placeholder-primary-black::placeholder {
+  color: #000000 !important;
+}
+
+.placeholder-primary-white::placeholder {
+  color: #ffffff !important;
 }

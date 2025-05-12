@@ -7,6 +7,8 @@ interface ButtonProps {
   isSmall?: boolean; 
   icon?: React.ReactNode; 
   noHover?: boolean;
+  noBackground?: boolean;
+  onClick?: () => void; 
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -16,19 +18,22 @@ const Button: React.FC<ButtonProps> = ({
   isSmall = false,
   icon,
   noHover = false,
+  noBackground,
+  onClick,
 }) => {
   return (
     <button
       className={`
         ${className}
         ${textColor}
-        ${isSmall ? "p-1 sm:p-2 rounded-lg" : "py-4 px-8 text-xs sm:text-sm rounded-md h-full"} 
-
-        bg-primary-navy-blue ${noHover ? "" : "hover:bg-primary-sky-blue"}
-        cursor-pointer font-semibold shadow
+        ${isSmall ? "p-2 rounded-lg" : "rounded-md h-12"} 
+        w-full ${noHover ? "" : "hover:bg-primary-sky-blue"}
+        ${noBackground ? "border-none" : "bg-primary-navy-blue"}
+        cursor-pointer font-semibold shadow text-xs sm:text-sm 
       `}
+      onClick={onClick}
     >
-      {icon && <span className="text-xs md:text-sm">{icon}</span>} 
+      {icon && <span className="text-sm">{icon}</span>} 
       {title}
     </button>
   );
