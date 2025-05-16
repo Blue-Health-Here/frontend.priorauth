@@ -9,7 +9,7 @@ const FooterSection: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-12 items-center gap-4 text-secondary-black mb-20">
         <div className="md:col-span-4 lg:col-span-3">
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+           Learn how PriorAuth powers digital operations in the enterprise.
           </p>
         </div>
         <div className="md:col-span-2 lg:col-span-5 hidden md:block"></div>

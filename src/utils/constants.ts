@@ -1,42 +1,67 @@
 import { RxDashboard } from "react-icons/rx";
 import { Pharmacy } from "./types";
-import { FiUser} from 'react-icons/fi';
+import { FiUser } from 'react-icons/fi';
 import { IoSettingsOutline } from "react-icons/io5";
 export const faqItems = [
   {
-    question: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    question: "What is PriorAuth?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, magna nec fringilla accumsan, nulla erat pulvinar quam, id hendrerit felis. Maecenas ligula consectetur vitae, ut amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per incepto himenaeos. Praesent auctor purus turpis, eget egestas, ac scelerisque urna pulvinar. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl.",
+      "PriorAuth is a cloud-based platform that combines the simplicity of spreadsheets with the functionality of databases. It enables users to organize data, collaborate in real-time, and build custom applications without extensive coding knowledge.",
   },
   {
-    question: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    question: "How do I get started with PriorAuth?",
+    answer:
+      "To begin using PriorAuth, sign up for a free account on our website. You can then create a new 'base' (our term for a database) from scratch or use one of our pre-designed templates to suit your needs.",
   },
   {
-    question: "Vorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    answer: "Vorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    question: "What are 'bases' and 'tables' in PriorAuth?",
+    answer:
+      "A 'base' is a collection of related information, similar to a database. Within each base, you can have multiple 'tables,' which are akin to spreadsheets, where each table contains rows (records) and columns (fields) to store and organize data.",
   },
   {
-    question: "Qorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    answer: "Qorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    question: "Can I collaborate with others in PriorAuth?",
+    answer:
+      "Yes, PriorAuth supports real-time collaboration. You can invite team members to your bases, assign different permission levels, and work together simultaneously on the same data.",
   },
   {
-    question: "Korem ipsum dolor sit amet, consectetur adipiscing elit.",
-    answer: "Korem ipsum dolor sit amet, consectetur adipiscing elit.",
+    question: "Does PriorAuth integrate with other tools?",
+    answer:
+      "PriorAuth offers integrations with various third-party applications, including Slack, Google Workspace, and more. Additionally, you can use tools like Zapier or our own Automations to create custom workflows between PriorAuth and other services.",
   },
   {
-    question: "Qorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    answer: "Qorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    question: "What are PriorAuth Automations?",
+    answer:
+      "Automations in PriorAuth allow you to set up custom triggers and actions to streamline repetitive tasks. For example, you can configure an automation to send an email notification when a new record is added to a table.",
+  },
+  {
+    question: "Is there a mobile app for PriorAuth?",
+    answer:
+      "Yes, PriorAuth offers mobile applications for both iOS and Android devices, enabling you to access and edit your bases on the go.",
+  },
+  {
+    question: "What pricing plans does PriorAuth offer?",
+    answer:
+      "PriorAuth provides several pricing tiers, including a free plan with essential features, and paid plans (Plus, Pro, and Enterprise) that offer advanced functionalities, increased record limits, and additional collaboration tools.",
+  },
+  {
+    question: "How secure is my data in PriorAuth?",
+    answer:
+      "PriorAuth implements robust security measures, including data encryption in transit and at rest, regular security audits, and compliance with industry standards to ensure your data is protected.",
+  },
+  {
+    question: "Where can I find more help or support?",
+    answer:
+      "For additional assistance, you can visit the PriorAuth Help Center, which offers comprehensive guides and tutorials. You can also engage with the PriorAuth Community to ask questions and share insights with other users.",
   },
 ];
 
 export const slidesData = [
   {
-    heading: "Automate Specialty Medication Workflows.",
+    heading: "Automate Specialty Medication Workflows",
     image: "/images/Dashboard 2.png",
   },
   {
-    heading: "Dashboard 2 Specialty Medication Workflows.",
+    heading: "Specialty Medication Workflow Dashboard",
     image: "/images/Dashboard 2.png",
   },
 ];
@@ -44,45 +69,57 @@ export const slidesData = [
 export const testimonials = [
   {
     id: 1,
-    name: "Kristin Watson",
-    designation: "Designation",
+    name: "Stephanie Hartgrove",
+    designation: "Global Vice President",
     content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar.",
-    image: "/images/testinomial.png",
-    profileLink: "#",
-    company: "TechCorp",
-    companyLink: "https://www.google.com/",
+      "PriorAuth has transformed our communications strategy, enabling us to provide real-time data access that has strengthened our relationship with executive leadership.",
+     image: "/images/portrait.avif",
+    profileLink: "https://intail.ai/directory/p/stephanie-hartgrove/666e9c5fa2fd8022d6089e17",
+    company: "Johnson & Johnson",
+    companyLink: "https://www.jnj.com/",
   },
   {
     id: 2,
-    name: "Jane Smith",
-    designation: "Developer",
+    name: "Reddit User",
+    designation: "Startup Founder",
     content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar.",
-    image: "/images/testinomial.png",
+      "PriorAuth is incredibly user-friendly and has significantly improved my team's productivity and communication. Its versatility for startups is solid, offering customizable workflows that adapt as your business grows.",
+     image: "/images/Kevin_Spacey,_May_2013.jpg",
     profileLink: "#",
-    company: "DevStudio",
-    companyLink: "https://www.google.com/",
+    company: "Reddit Community",
+    companyLink: "https://www.reddit.com/r/Airtable/comments/17lto9a/is_airtable_worth_it_any_alternatives/",
   },
   {
     id: 3,
-    name: "John Doe",
-    designation: "Designer",
+    name: "Emanuel C.",
+    designation: "Media Production Professional",
     content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar.",
+      "PriorAuth allows me to create beautiful dashboards for clients, quickly see my data, and collect information with ease, enhancing my workflow and client presentations.",
+    image: "/images/gd_.jpg",
+    profileLink: "#",
+    company: "Capterra",
+    companyLink: "https://www.capterra.com/p/146652/Airtable/reviews/",
+  },
+  {
+    id: 5,
+    name: "EXPERTE.com Review",
+    designation: "Software Review Specialist",
+    content:
+      "Many users praise PriorAuth for its customizability. They find the tool suitable for diverse applications due to its ability to personalize fields, views, and templates.",
     image: "/images/testinomial.png",
     profileLink: "#",
-    company: "CreativeHub",
-    companyLink: "https://www.google.com/",
+    company: "EXPERTE.com",
+    companyLink: "https://www.experte.com/project-management/airtable",
   },
 ];
+
 
 export const services = [
   {
     id: 1,
     title: "PA Criteria",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
+      "Prior Authorization (PA) Criteria are guidelines established by health insurance providers to determine the medical necessity and appropriateness of certain healthcare services, procedures, or medications before they are provided to a patient. These criteria ensure that treatments align with accepted medical standards, are cost-effective, and are appropriate for the patient's condition. Healthcare providers must submit a PA request, including relevant clinical information, to obtain approval from the insurer. Failure to obtain prior authorization when required may result in the insurer denying coverage for the service or medication.",
     bgColor: "bg-[#DEF0FC]",
     imageUrl: "images/serviceslider1.png",
   },
@@ -90,9 +127,9 @@ export const services = [
     id: 2,
     title: "CMM",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
+      "A Coordinate Measuring Machine (CMM) service encompasses a range of professional offerings designed to ensure the precision, reliability, and optimal performance of CMMs used in industrial and manufacturing settings. These services are essential for industries where dimensional accuracy is critical, such as aerospace, automotive, medical device manufacturing, and electronics. ",
     bgColor: "bg-[#FFF9E0]",
-    imageUrl: "images/serviceslider1.png",
+    imageUrl: "images/cmm_validation_service.jpg",
   },
   {
     id: 3,
@@ -100,39 +137,40 @@ export const services = [
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
     bgColor: "bg-[#DEF0FC]",
-    imageUrl: "images/serviceslider1.png",
+    imageUrl: "images/analytics.jpg",
+
   },
   {
     id: 4,
     title: "Consulting",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
+      "Consulting services involve providing expert advice and specialized knowledge to organizations or individuals to help them address specific challenges, improve performance, or achieve their objectives. These services are typically offered by professionals or firms with deep expertise in areas such as strategy, operations, technology, finance, marketing, human resources, and more",
     bgColor: "bg-[#FFF9E0]",
-    imageUrl: "images/serviceslider1.png",
+    imageUrl: "images/Business-Consulting-Services.png",
   },
   {
     id: 2,
     title: "CMM",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
+      "A Coordinate Measuring Machine (CMM) service encompasses a range of professional offerings designed to ensure the precision, reliability, and optimal performance of CMMs used in industrial and manufacturing settings. These services are essential for industries where dimensional accuracy is critical, such as aerospace, automotive, medical device manufacturing, and electronics. ",
     bgColor: "bg-[#FFF9E0]",
-    imageUrl: "images/serviceslider1.png",
+    imageUrl: "images/cmm_validation_service.jpg",
   },
   {
     id: 3,
     title: "Analytics",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
+      "Analytics services involve the systematic collection, processing, and interpretation of data to extract actionable insights that inform decision-making. These services help organizations understand patterns, predict trends, and optimize operations across various domains such as marketing, finance, and supply chain management.",
     bgColor: "bg-[#DEF0FC]",
-    imageUrl: "images/serviceslider1.png",
+    imageUrl: "images/analytics.jpg",
   },
   {
     id: 4,
     title: "Consulting",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. ",
+      "Consulting services involve providing expert advice and specialized knowledge to organizations or individuals to help them address specific challenges, improve performance, or achieve their objectives. These services are typically offered by professionals or firms with deep expertise in areas such as strategy, operations, technology, finance, marketing, human resources, and more",
     bgColor: "bg-[#FFF9E0]",
-    imageUrl: "images/serviceslider1.png",
+    imageUrl: "images/Business-Consulting-Services.png",
   },
 ];
 
@@ -847,93 +885,93 @@ export const notification = [
   {
     icon: "/images/notify1.png",
     message: "Your ad Lorem Ipsum dolor has published to screens.",
-    time:"18 min ago"
+    time: "18 min ago"
   },
   {
     icon: "/images/notify2.png",
     message: "Your ad Lorem Ipsum dolor has published to screens.",
-    time:"18 min ago"
+    time: "18 min ago"
   },
   {
     icon: "/images/notify3.png",
     message: "Your ad Lorem Ipsum dolor has published to screens.",
-    time:"18 min ago"
+    time: "18 min ago"
   },
   {
     icon: "/images/notify4.png",
     message: "Your ad Lorem Ipsum dolor has published to screens.",
-    time:"18 min ago"
+    time: "18 min ago"
   },
   {
     icon: "/images/notify5.png",
     message: "Your ad Lorem Ipsum dolor has published to screens.",
-    time:"18 min ago"
+    time: "18 min ago"
   },
   {
     icon: "/images/notify1.png",
     message: "Your ad Lorem Ipsum dolor has published to screens.",
-    time:"18 min ago"
+    time: "18 min ago"
   },
   {
     icon: "/images/notify2.png",
     message: "Your ad Lorem Ipsum dolor has published to screens.",
-    time:"18 min ago"
+    time: "18 min ago"
   },
   {
     icon: "/images/notify3.png",
     message: "Your ad Lorem Ipsum dolor has published to screens.",
-    time:"18 min ago"
+    time: "18 min ago"
   },
 ];
 
 export const pharmacyDetail: any = [
   {
-      icon: "/created.svg",
-      label: "Created On",
-      value: "31/03/2025",
-      bg: "bg-quaternary-sky-blue",
+    icon: "/created.svg",
+    label: "Created On",
+    value: "31/03/2025",
+    bg: "bg-quaternary-sky-blue",
   },
   {
-      icon: "/Call.svg",
-      label: "Phone Number",
-      value: "(217) 555-0113",
-      bg: "bg-quaternary-sky-blue",
+    icon: "/Call.svg",
+    label: "Phone Number",
+    value: "(217) 555-0113",
+    bg: "bg-quaternary-sky-blue",
   },
   {
-      icon: "/Mail.svg",
-      label: "Email",
-      value: "abstergo@icloud.com",
-      bg: "bg-quaternary-sky-blue",
+    icon: "/Mail.svg",
+    label: "Email",
+    value: "abstergo@icloud.com",
+    bg: "bg-quaternary-sky-blue",
   },
   {
-      icon: "/location.svg",
-      label: "Location",
-      value: "New York",
-      bg: "bg-quaternary-sky-blue",
+    icon: "/location.svg",
+    label: "Location",
+    value: "New York",
+    bg: "bg-quaternary-sky-blue",
   },
   {
-      icon: "/calendar.svg",
-      label: "Last Requests",
-      value: "31/03/2025",
-      bg: "bg-quaternary-sky-blue",
+    icon: "/calendar.svg",
+    label: "Last Requests",
+    value: "31/03/2025",
+    bg: "bg-quaternary-sky-blue",
   },
   {
-      icon: "/check.svg",
-      label: "Approve Requests",
-      value: 42,
-      bg: "bg-[#E3F6DF]",
+    icon: "/check.svg",
+    label: "Approve Requests",
+    value: 42,
+    bg: "bg-[#E3F6DF]",
   },
   {
-      icon: "/cancel.svg",
-      label: "Denied Requests",
-      value: 42,
-      bg: "bg-[#FFE4E4]",
+    icon: "/cancel.svg",
+    label: "Denied Requests",
+    value: 42,
+    bg: "bg-[#FFE4E4]",
   },
 ];
 
 export const homeSections = [
-  {title: "About", path: "about"},
-  {title: "Services", path: "services"},
-  {title: "Contact", path: "contact"},
-  {title: "FAQs", path: "faqs"}
+  { title: "About", path: "about" },
+  { title: "Services", path: "services" },
+  { title: "FAQs", path: "faqs" },
+  { title: "Contact", path: "contact" },
 ]
