@@ -60,23 +60,23 @@ const TestimonialSection: React.FC = () => {
                         <img
                           src={testimonial.image}
                           alt={testimonial.name}
-                          className="w-full h-full object-cover rounded-lg hover:opacity-90 transition-opacity"
+                          className="w-full h-full object-cover rounded-lg hover:opacity-90 transition-opacity max-w-[350px] min-h-[350px] max-h-[350px] m-auto"
                         />
                       </a>
                     ) : (
                       <img
                         src={testimonial.image}
                         alt={testimonial.name}
-                        className="w-full h-full object-cover rounded-lg"
+                        className="w-full h-full object-cover rounded-lg  max-w-[350px] min-h-[350px] max-h-[350px] m-auto"
                       />
                     )}
                   </div>
 
-                  <div className="col-span-12 md:col-span-7 flex flex-col h-full px-6 md:px-0 mt-4 md:mt-0">
+                  <div className="col-span-12 md:col-span-7 flex flex-col h-full px-6 md:px-0 mt-4 md:mt-0 relative">
                     <p className="text-secondary-black text-base sm:text-lg md:text-xl lg:text-2xl font-secondary select-text">
                       {testimonial.content}
                     </p>
-                    <div className="mt-4 md:mt-auto flex gap-y-3 flex-col sm:flex-row justify-between items-start sm:items-center">
+                    <div className="mt-10 flex gap-y-3 flex-col sm:flex-row justify-between items-start sm:items-center">
                       <div>
                         {testimonial.profileLink ? (
                           <a
@@ -100,6 +100,7 @@ const TestimonialSection: React.FC = () => {
                         <a
                           href="#"
                           target="_blank"
+                          className="absolute bottom-0 right-6 md:right-0"
                           rel="noopener noreferrer"
                           aria-label={`Visit ${
                             testimonial.company || "company"
@@ -108,11 +109,11 @@ const TestimonialSection: React.FC = () => {
                           <img
                             src="/images/Group-icon.svg"
                             alt={testimonial.company || "Company logo"}
-                            className="hover:opacity-90 transition-opacity"
+                            className="hover:opacity-90 transition-opacity h-16 md:h-32 w-auto"
                           />
                         </a>
                       ) : (
-                        <img src="/images/Group-icon.svg" alt="" />
+                        <img src="/images/Group-icon.svg" alt="" className="h-16 md:h-32 w-auto"/>
                       )}
                     </div>
                   </div>
