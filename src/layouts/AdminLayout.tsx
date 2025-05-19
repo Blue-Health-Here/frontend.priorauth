@@ -4,7 +4,6 @@ import Footer from "../components/common/Footer";
 import Sidebar from "../components/common/sidebar";
 import Topbar from "../components/common/Topbar";
 import { useEffect } from "react";
-import { Toaster } from "react-hot-toast";
 
 const AdminLayout: React.FC = () => {
   const navigate = useNavigate();

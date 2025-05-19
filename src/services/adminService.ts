@@ -4,7 +4,6 @@ import { AppDispatch } from "../store";
 import { setIsLoading } from "../store/features/global/globalSlice";
 import { FormikValues } from "formik";
 import { setUser } from "../store/features/auth/authSlice";
-import { redirect } from "react-router-dom";
 
 // Types
 type ApiMethod = 'get' | 'post' | 'put' | 'delete';
