@@ -1,13 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputField from "../../components/common/form/InputField";
 import CustomCheckbox from "../../components/common/form/CustomCheckbox";
-import { Link } from "react-router-dom";
-import { Form, Formik } from "formik";
+import { Link, useNavigate } from "react-router-dom";
+import { Form, Formik, FormikValues } from "formik";
 import { signInInitialVals } from "../../utils/initialVals";
 import { signInValidationSchema } from "../../utils/validationSchema";
+import { submitLogin } from "../../services/adminService";
+import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 
 const Login: React.FC = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    const token = userData ? JSON.parse(userData) : null;
+
+    if (token) {
+      navigate("/admin")
+      return;
+    }
+  }, []);
+
+  const handleSubmit = async (values: FormikValues) => {
+    try {
+      const response = await submitLogin(dispatch, values);
+      if (response) {
+        navigate("/admin");
+      }
+    } catch (error: any) {
+      toast.error(error?.message);
+    }
+  }
+
   return (
     <div className="flex min-h-screen w-full">
       <div className="w-full md:w-1/2 flex flex-col justify-between py-10 px-6 md:px-8 bg-primary-white">
@@ -31,20 +58,18 @@ const Login: React.FC = () => {
           <Formik
             initialValues={signInInitialVals}
             validationSchema={signInValidationSchema}
-            onSubmit={(values) => {
-              console.log("Form submitted with values:", values);
-            }}
+            onSubmit={handleSubmit}
           >
             {() => (
               <Form className="w-full">
                 <div className="mb-6">
 
                   <InputField
-                     name="email"
-                     type="email"
-                     label="Email"
-                     variant="FloatingLabel"
-                   />
+                    name="userName"
+                    type="text"
+                    label="Username"
+                    variant="FloatingLabel"
+                  />
                 </div>
 
                 <div className="mb-4">
