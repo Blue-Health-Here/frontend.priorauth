@@ -5,9 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { Form, Formik, FormikValues } from "formik";
 import { signInInitialVals } from "../../utils/initialVals";
 import { signInValidationSchema } from "../../utils/validationSchema";
-import { submitLogin } from "../../services/adminService";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
+import { submitLogin } from "../../services/authService";
 
 const Login: React.FC = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
