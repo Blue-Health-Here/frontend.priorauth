@@ -1,7 +1,9 @@
 import toast from "react-hot-toast";
-import { axiosAdmin } from "../api/instance";
+import api from "../api/instance";
 import { AppDispatch } from "../store";
-import { setIsLoading, setProfileData } from "../store/features/global/globalSlice";
+import { setIsLoading } from "../store/features/global/globalSlice";
+import { FormikValues } from "formik";
+import { setUser } from "../store/features/auth/authSlice";
 
 // Types
 type ApiMethod = 'get' | 'post' | 'put' | 'delete';
@@ -62,22 +64,22 @@ const apiHandler = async <T = any>(
         // Make API call
         let response: ApiResponse<T>;
 
-        console.log(url, data, method, config, "rdler");
+        // console.log(url, data, method, config, "rdler");
         switch (method) {
             case 'get':
-                response = await axiosAdmin.get(url, config);
+                response = await api.get(url, config);
                 break;
             case 'post':
-                response = await axiosAdmin.post(url, data, config);
+                response = await api.post(url, data, config);
                 break;
             case 'put':
-                response = await axiosAdmin.put(url, data, config);
+                response = await api.put(url, data, config);
                 break;
             case 'delete':
-                response = await axiosAdmin.delete(url, config);
+                response = await api.delete(url, config);
                 break;
         }
-        console.log(response, "response api handler");
+        // console.log(response, "response api handler");
         // Handle success
         if (response?.status === 200 || response?.data?.success || response?.status === 201) {
             if (successMessage) {
@@ -124,14 +126,20 @@ const apiHandler = async <T = any>(
     }
 };
 
-// ============= Dashboard & Profile =============
+// ============= Auth Screens & Logout =============
 
-export const fetchProfileData = async (dispatch: AppDispatch) => {
-    return apiHandler(dispatch, 'get', '/auth/profile', {
-        successMessage: "Profile has fetched successfully!",
+export const submitLogin = async (dispatch: AppDispatch, values?: FormikValues) => {
+    return apiHandler(dispatch, 'post', '/auth/login', {
+        data: values,
+        successMessage: "User has logged in successfully!",
         onSuccess: (data) => {
-            dispatch(setProfileData(data))
+            localStorage.setItem("user", JSON.stringify(data));
+            dispatch(setUser(data))
         },
-        onError: () => dispatch(setProfileData(null))
-    })
+        onError: () => dispatch(setUser(null))
+    });
+};
+
+export const handleLogout = async () => {
+    localStorage.clear();
 }

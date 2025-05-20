@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import NavbarProfileDropdown from './NavbarProfileDropdown';
-import { handleLogout } from '../../services/adminService';
+import { handleLogout } from '../../services/authService';
 
 const Topbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
