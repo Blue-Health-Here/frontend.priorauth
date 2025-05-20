@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DataTable as PrimeDataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import MoreOptionsMenu from '../../../components/common/MoreOptionsMenu';
+import MoreOptionsMenu from './MoreOptionsMenu';
 import { Formik, Form } from 'formik';
-import SelectField from '../../../components/common/form/SelectField';
-import Button from '../../../components/common/Button';
+import SelectField from './form/SelectField';
+import Button from './Button';
+import Pagination from './Pagination';
+import { Dropdown } from 'primereact/dropdown';
+import { getReqBgStatusStyle, getReqStatusTextColor, getStatusStyle } from '../../utils/helper';
+import { reqStatusOptions } from '../../utils/constants';
+import { Link } from 'react-router-dom';
 
 interface DataTableProps {
     title: string;
@@ -17,7 +22,10 @@ interface DataTableProps {
     rows?: number;
     rowsPerPageOptions?: number[];
     isShadow?: boolean;
-    customHeaderButtonText?:string;
+    customHeaderButtonText?: string;
+    customHeaderButtonLink?: string;
+    isPagination?: boolean;
+    onStatusChange?: (rowData: any, newStatus: string) => void;
 }
 
 const DataTable: React.FC<DataTableProps> = ({
@@ -32,8 +40,17 @@ const DataTable: React.FC<DataTableProps> = ({
     rowsPerPageOptions = [5, 10, 25, 50],
     isShadow = true,
     customHeaderButtonText,
+    customHeaderButtonLink,
+    isPagination = false,
+    onStatusChange
 }) => {
     const [isOpenMenu, setIsOpenMenu] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [tableData, setTableData] = useState<any[]>([]);
+
+    useEffect(() => {
+        setTableData(data);
+    }, [data]);
 
     const menuItems = [
         {
@@ -62,12 +79,68 @@ const DataTable: React.FC<DataTableProps> = ({
         setIsOpenMenu(!isOpenMenu);
     };
 
+    const handleStatusChange = (rowData: any, newStatus: any) => {
+        // console.log(newStatus, rowData, "Dasdsad");
+        // Create a copy of the table data
+        const updatedData = tableData.map(item => {
+            // Find the row that was updated
+            if (item.id === rowData.id) {
+                // Return a new object with the updated status
+                return { ...item, request_status: newStatus };
+            }
+            return item;
+        });
+
+        // Update the table data state
+        setTableData(updatedData);
+
+        // Call the parent component's onStatusChange callback if provided
+        if (onStatusChange) {
+            onStatusChange(rowData, newStatus);
+        }
+    };
+
+    const optionTemplate = (option: any) => {
+        return (
+            <span>{option.label}</span>
+        );
+    };
+
+    const valueTemplate = (option: any, props: any) => {
+        if (option) {
+            return (
+                <span className={`mr-4 text-sm ${getReqStatusTextColor(option.value)}`}>{option.label}</span>
+            );
+        }
+        return <span className="text-muted">{props.placeholder}</span>;
+    };
+
     const renderCellContent = (rowData: any, column: any) => {
         const cellData = rowData[column.key];
-
         if (!cellData) return '';
 
+        if (column.key === 'request_status') {
+            const selectedOption = reqStatusOptions.find(option => option.value === cellData);
+            return (
+                <div className="flex items-center">
+                    <Dropdown
+                        value={selectedOption?.value}
+                        options={reqStatusOptions}
+                        onChange={(e) => handleStatusChange(rowData, e.value)}
+                        className={`w-full max-w-[230px] ${getReqBgStatusStyle(cellData)}`}
+                        placeholder="Select Status"
+                        optionGroupTemplate={optionTemplate}
+                        valueTemplate={valueTemplate}
+                    />
+                </div>
+            );
+        }
+
         if (typeof cellData === 'string' || typeof cellData === 'number') {
+            // Check if the column is a status column
+            if (column.key.toLowerCase().includes('status')) {
+                return <span className={getStatusStyle(cellData.toString())}>{cellData}</span>;
+            }
             return cellData;
         }
 
@@ -119,9 +192,9 @@ const DataTable: React.FC<DataTableProps> = ({
 
     const DefaultHeader = () => (
         <div className="flex justify-between items-center relative">
-                <h2 className="text-sm sm:text-lg md:text-xl font-semibold text-primary-black leading-[110%]">
-                    {location ? `${title} (${location})` : title}
-                </h2>
+            <h2 className="text-sm sm:text-lg md:text-xl font-semibold text-primary-black leading-[110%]">
+                {location ? `${title} (${location})` : title}
+            </h2>
             <div className="relative">
                 <button
                     className="border border-medium-stroke rounded-lg p-3 text-tertiary-white cursor-pointer"
@@ -142,18 +215,18 @@ const DataTable: React.FC<DataTableProps> = ({
             </div>
         </div>
     );
-    
+
     const CustomHeader = () => (
-        <div className="flex flex-col md:flex-col lg:flex-row gap-4 pt-1">
+        <div className="flex flex-col md:flex-col lg:flex-row gap-4 pb-2">
             <h1 className="text-lg md:text-xl font-semibold flex-1 text-nowrap lg:text-2xl">
-               {location ? `${title} (${location})` : title} 
+                {location ? `${title} (${location})` : title}
             </h1>
             <Formik
                 initialValues={{ category: "", search: "" }}
                 onSubmit={() => { }}
             >
                 {() => (
-                    <Form className="flex md:min-w-64 flex-wrap pb-6 text-grey gap-3 [&>input]:mb-3 [&>input]:placeholder:text-themeLight [&>input]:placeholder:text-[12px]">
+                    <Form className="flex md:min-w-64 flex-wrap text-grey gap-3 [&>input]:mb-3 [&>input]:placeholder:text-themeLight [&>input]:placeholder:text-[12px]">
                         <SelectField
                             className="border border-medium-stroke rounded-lg p-2 font-medium min-w-48"
                             parentClassName="flex-1"
@@ -172,25 +245,25 @@ const DataTable: React.FC<DataTableProps> = ({
                                 { value: "operational", label: "Operational" },
                             ]}
                         />
-                        <Button title={customHeaderButtonText} className="w-full sm:w-40" />
                     </Form>
                 )}
             </Formik>
+            {customHeaderButtonText && <Link to={customHeaderButtonLink ?? ""}><Button title={customHeaderButtonText} className="w-full sm:w-40" /></Link>}
         </div>
     );
 
     return (
-        <div className={`bg-primary-white rounded-2xl ${isShadow? 'shadow-lg' : ''} px-6 py-4 ${className}`}>            
-            {customHeader ? title &&  <CustomHeader /> : title && <DefaultHeader />}
+        <div className={`bg-primary-white rounded-2xl ${isShadow ? 'shadow-lg' : ''} px-6 py-4 ${className}`}>
+            {customHeader ? title && <CustomHeader /> : title && <DefaultHeader />}
 
             <PrimeDataTable
-                value={data}
+                value={tableData}
                 paginator={paginator}
                 rows={rows}
                 rowsPerPageOptions={rowsPerPageOptions}
                 globalFilterFields={columns.map(col => col.key)}
                 emptyMessage="No records found"
-                className="mt-2"
+                className="mt-2 pb-4"
                 resizableColumns
                 columnResizeMode="fit"
                 tableStyle={{ minWidth: '100%' }}
@@ -200,14 +273,21 @@ const DataTable: React.FC<DataTableProps> = ({
                         key={i}
                         field={col.key}
                         header={col.header}
-                        sortable
-                        filter
+                        sortable={col.key !== 'request_status'}
+                        filter={col.key !== 'request_status'}
                         filterPlaceholder={`Search ${col.header}`}
                         style={{ width: col.width || 'auto' }}
                         body={(rowData) => renderCellContent(rowData, col)}
                     />
                 ))}
             </PrimeDataTable>
+            {tableData?.length > 0 && isPagination && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalEntries={4}
+                    entriesPerPage={4}
+                    onPageChange={setCurrentPage} />
+            )}
         </div>
     );
 };

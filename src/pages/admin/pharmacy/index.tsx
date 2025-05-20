@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PharmacyCard from './PharmacyCard';
 import Pagination from '../../../components/common/Pagination';
 import { Formik, Form } from 'formik';
@@ -6,9 +6,26 @@ import Button from '../../../components/common/Button';
 import SelectField from '../../../components/common/form/SelectField';
 import { Link } from 'react-router-dom';
 import { pharmacies, tabs } from '../../../utils/constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store';
+import { fetchAllPharmacies } from '../../../services/adminService';
 
 const AdminPharmacies: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const { adminPharmacies } = useSelector((state: RootState) => state.adminPharmacies);
+  const isReqsFetched = useRef(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!isReqsFetched.current) {
+      (async () => {
+        await fetchAllPharmacies(dispatch);
+      })();
+      isReqsFetched.current = true;
+    }
+  }, []);
+
+  console.log(adminPharmacies, "adminPharmacies")
 
   return (
     <>
@@ -42,10 +59,10 @@ const AdminPharmacies: React.FC = () => {
                       { value: "operational", label: "Operational" },
                     ]}
                   />
-                  <Button title="Add Pharmacy" className="w-full sm:w-40" />
                 </Form>
               )}
             </Formik>
+            <Link to="/admin/pharmacies/add"><Button title="Add Pharmacy" className="w-full sm:w-40" /></Link>
           </div>
 
           <div className="flex flex-wrap overflow-x-auto whitespace-nowrap">

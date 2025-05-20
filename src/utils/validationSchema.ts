@@ -36,3 +36,15 @@ export const changePasswordValidationSchema = Yup.object().shape({
     .oneOf([Yup.ref('newPassword')], 'Passwords must match')
     .required('Please confirm your new password'),
 });
+
+export const pharmacyValidationSchema = Yup.object({
+  name: Yup.string().required("Name is required"),
+  email: Yup.string()
+    .required("Email is required")
+    .email("Invalid email address"),
+  phoneNumber: Yup.string()
+    .required("Phone number is required")
+    .matches(/^\d{10,15}$/, "Phone number must be 10 to 15 digits"),
+  location: Yup.string().required("Location is required")
+})
+

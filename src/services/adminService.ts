@@ -2,6 +2,8 @@ import toast from "react-hot-toast";
 import { axiosAdmin } from "../api/instance";
 import { AppDispatch } from "../store";
 import { setIsLoading, setProfileData } from "../store/features/global/globalSlice";
+import { setRequestsData } from "../store/features/admin/requests/requestsSlice";
+import { setPharmaciesData } from "../store/features/admin/pharmacies/pharmaciesSlice";
 
 // Types
 type ApiMethod = 'get' | 'post' | 'put' | 'delete';
@@ -77,7 +79,7 @@ const apiHandler = async <T = any>(
                 response = await axiosAdmin.delete(url, config);
                 break;
         }
-        console.log(response, "response api handler");
+        // console.log(response, "response api handler");
         // Handle success
         if (response?.status === 200 || response?.data?.success || response?.status === 201) {
             if (successMessage) {
@@ -95,14 +97,14 @@ const apiHandler = async <T = any>(
     } catch (error: any) {
         // Handle 404 differently in some cases
         if (error?.status === 404) {
-            if (error?.response?.data?.detail) {
-                toast.success(error.response.data.detail);
+            if (errorMessage) {
+                toast.success(errorMessage);
             }
 
             if (onError) {
                 onError(error);
             }
-        } if (error?.status === 409) {
+        } else if (error?.status === 409) {
             if (error?.response?.data?.detail) {
                 toast.success(error.response.data.detail);
             }
@@ -135,3 +137,46 @@ export const fetchProfileData = async (dispatch: AppDispatch) => {
         onError: () => dispatch(setProfileData(null))
     })
 }
+
+// ============= Pharmacies =============
+
+export const fetchAllPharmacies = async (dispatch: AppDispatch) => {
+    return apiHandler(dispatch, 'post', '/pharmacy/get_all', {
+        data: {},
+        successMessage: "Pharmacies have been fetched successfully!",
+        onSuccess: (data) => dispatch(setPharmaciesData(data)),
+        onError: (error) => {
+            if (error.status === 404) {
+                dispatch(setPharmaciesData([]));
+            }
+        },
+        errorMessage: "Requests not found."
+    })
+}
+
+export const addNewPharmacy = async (dispatch: AppDispatch, data: any) => {
+    return apiHandler(dispatch, 'post', '/pharmacy/add', {
+        data,
+        successMessage: "Pharmacy has been created successfully!",
+        // onSuccess: () => fetchAllPharmacies(dispatch)
+    })
+}
+
+// ============= Requests =============
+
+export const fetchAllRequests = async (dispatch: AppDispatch) => {
+    return apiHandler(dispatch, 'post', '/request/get_all', {
+        data: {},
+        successMessage: "Requests have been fetched successfully!",
+        onSuccess: (data) => {
+            dispatch(setRequestsData(data))
+        },
+        onError: (error) => {
+            if (error.status === 404) {
+                dispatch(setRequestsData([]));
+            }
+        },
+        errorMessage: "Requests not found."
+    })
+}
+

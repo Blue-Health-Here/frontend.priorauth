@@ -1,5 +1,5 @@
 import React from 'react'
-import DataTable from './DataTable'
+import DataTable from '../../../components/common/DataTable'
 import { pharmacyData } from '../../../utils/constants'
 
 const PharmacySection: React.FC = () => {
