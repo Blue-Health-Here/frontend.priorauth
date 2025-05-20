@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import NavbarProfileDropdown from './NavbarProfileDropdown';
+import { handleLogout } from '../../services/adminService';
 
 const Topbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -75,9 +76,11 @@ const Topbar: React.FC = () => {
               <img src="/images/profile-image.png" alt="" className='w-full h-full rounded-full' width={30} height={30} />
             </div>
             {isDropdownOpen && (
-              <NavbarProfileDropdown onClose={() => navigate('/')} />
+              <NavbarProfileDropdown onClose={() => {
+                handleLogout();
+                navigate("/login");
+              }} />
             )}
-
           </div>
         </div>
       </nav>

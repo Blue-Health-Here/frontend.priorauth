@@ -1,9 +1,23 @@
 
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Footer from "../components/common/Footer";
 import Sidebar from "../components/common/sidebar";
 import Topbar from "../components/common/Topbar";
+import { useEffect } from "react";
+
 const AdminLayout: React.FC = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    const token = userData ? JSON.parse(userData) : null;
+
+    if (!token) {
+      navigate("/login")
+      return;
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-primary-background overflow-x-hidden p-4">
       <Sidebar />
@@ -15,7 +29,6 @@ const AdminLayout: React.FC = () => {
       </div>
       <Footer />
     </div>
-
   );
 };
 

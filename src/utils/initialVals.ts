@@ -1,5 +1,5 @@
 export const signInInitialVals = {
-    email: "",
+    userName: "",
     password: ""
 };
 

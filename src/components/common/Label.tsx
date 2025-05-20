@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "../../lib/utils";
+import { cn } from "../../utils/helper";
 type LabelSize = "xs" | "sm" | "base";
 
 interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
