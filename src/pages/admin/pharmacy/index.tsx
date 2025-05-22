@@ -12,7 +12,7 @@ import { fetchAllPharmacies } from '../../../services/adminService';
 
 const AdminPharmacies: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { adminPharmacies } = useSelector((state: RootState) => state.adminPharmacies);
+  const { pharmaciesData } = useSelector((state: RootState) => state.adminPharmacies);
   const isReqsFetched = useRef(false);
   const dispatch = useDispatch();
 
@@ -24,8 +24,6 @@ const AdminPharmacies: React.FC = () => {
       isReqsFetched.current = true;
     }
   }, []);
-
-  console.log(adminPharmacies, "adminPharmacies")
 
   return (
     <>
@@ -81,13 +79,11 @@ const AdminPharmacies: React.FC = () => {
             ))}
           </div>
         </div>
-        <Link to="/admin/pharmacies/details">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 p-3 md:p-6">
-            {pharmacies.map(pharmacy => (
-              <PharmacyCard key={pharmacy.id} pharmacy={pharmacy} />
-            ))}
-          </div>
-        </Link>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 p-3 md:p-6">
+          {[...pharmaciesData].map(item => ({ ...item, lastRequests: { date: '10/03/2023', approved: 42, denied: 12 } })).map(pharmacy => (
+            <PharmacyCard key={pharmacy.id} pharmacy={pharmacy} />
+          ))}
+        </div>
       </div>
       <Pagination
         currentPage={currentPage}
