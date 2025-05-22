@@ -97,7 +97,7 @@ const Login: React.FC = () => {
                   </label>
                   <Link
                     to="#"
-                    className="text-xs md:text-sm text-erro-clip font-secondary"
+                    className="text-xs md:text-sm text-error-clip font-secondary"
                   >
                     Forgot Password?
                   </Link>

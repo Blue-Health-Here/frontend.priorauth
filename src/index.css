@@ -28,7 +28,7 @@
   --medium-stroke: #CCCCCC;
   --dark-stroke: #A8A8A8;
   --blue-navigation-link-button:#007AFF;
-  --erro-clip: #FF2E37;
+  --error-clip: #FF2E37;
   --success-chip: #47D477;
   --information-chip: #41B1FC;
   --warning-chip: #FFD828;
@@ -66,7 +66,7 @@
   --color-medium-stroke: var(--medium-stroke);
   --color-dark-stroke: var(--dark-stroke);
   --color-blue-navigation-link-button: var(--blue-navigation-link-button);
-  --color-erro-clip: var(--erro-clip);  
+  --color-error-clip: var(--error-clip);  
   --color-success-chip: var(--success-chip);
   --color-information-chip: var(--information-chip);
   --color-warning-chip: var(--warning-chip);
@@ -138,4 +138,17 @@ a:focus {
 
 .placeholder-primary-white::placeholder {
   color: #ffffff !important;
+}
+
+.requests-table .p-inputtext {
+  padding: 0;
+}
+.requests-table .p-dropdown {
+  border: none;
+}
+.requests-table .p-dropdown .p-dropdown-trigger {
+  width: max-content;
+}
+.requests-table .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  padding: 10px !important;
 }

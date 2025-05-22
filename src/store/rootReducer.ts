@@ -3,8 +3,8 @@ import authReducer from "./features/auth/authSlice";
 import globalReducer from "./features/global/globalSlice"
 
 // Admin Imports
-// import adminDashboardReducer from "./features/admin/dashboard/adminDashboardSlice";
-// import adminCourseReducer from "./features/admin/course/adminCourseSlice";
+import adminReqsReducer from "./features/admin/requests/requestsSlice";
+import adminPharmacyReducer from "./features/admin/pharmacies/pharmaciesSlice";
 // import adminChecklistReducer from "./features/admin/checklist/adminChecklistSlice"
 // import adminMarketingReducer from "./features/admin/marketing/adminMarketingSlice"
 // import adminCategoryReducer from "./features/admin/category/adminCategorySlice"
@@ -16,8 +16,8 @@ const rootReducer = combineReducers({
     global: globalReducer,
 
     // Admin Reducers
-    // adminDashboard: adminDashboardReducer,
-    // course: adminCourseReducer,
+    adminReqs: adminReqsReducer,
+    adminPharmacies: adminPharmacyReducer,
     // checklist: adminChecklistReducer,
     // marketing: adminMarketingReducer,
     // category: adminCategoryReducer,

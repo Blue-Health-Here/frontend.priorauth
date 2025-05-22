@@ -9,3 +9,11 @@ export const contactUsInitialVals = {
     email: "",
     message: "",
 };
+
+export const addNewPharmacyInitialVals = { 
+    name: "", 
+    email: "", 
+    phoneNumber: "", 
+    location: "" 
+};
+
