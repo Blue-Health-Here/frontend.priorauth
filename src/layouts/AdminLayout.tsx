@@ -8,15 +8,15 @@ import { useEffect } from "react";
 const AdminLayout: React.FC = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const userData = localStorage.getItem("user");
-    const token = userData ? JSON.parse(userData) : null;
+  // useEffect(() => {
+  //   const userData = localStorage.getItem("user");
+  //   const token = userData ? JSON.parse(userData) : null;
 
-    if (!token) {
-      navigate("/login")
-      return;
-    }
-  }, []);
+  //   if (!token) {
+  //     navigate("/login")
+  //     return;
+  //   }
+  // }, []);
 
   return (
     <div className="min-h-screen bg-primary-background overflow-x-hidden p-4">
