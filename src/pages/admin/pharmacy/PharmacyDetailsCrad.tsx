@@ -2,19 +2,37 @@ import React from "react";
 import Button from "../../../components/common/Button";
 import { pharmacyDetail } from "../../../utils/constants";
 
-const PharmacyDetailsCard: React.FC<any> = () => {
+const PharmacyDetailsCard: React.FC<{ 
+    details: any 
+}> = ({ details }) => {
+    if (!details) return;
+    const labelFieldMap: any = {
+        "Created On": () => new Date(details.createdAt).toLocaleDateString("en-GB"),
+        "Phone Number": () => details.phoneNumber,
+        "Email": () => details.email,
+        "Location": () => details.location,
+    };
+
+    const mergedData = pharmacyDetail.map((item: any) => {
+        const getNewValue = labelFieldMap[item.label];
+        return {
+            ...item,
+            value: getNewValue ? getNewValue() : item.value,
+        };
+    });
+
     return (
         <div className="bg-primary-white p-5 rounded-t-2xl">
             <div className="border-b pb-4 border-light-stroke">
                 <div className="flex flex-col-reverse md:flex-row justify-between gap-4 mb-6">
                     <div className="flex items-center gap-x-2 mt-4 md:mt-0">
                         <img
-                            src="/images/Abstergo Ltd..png"
+                            src={details.pharmacyLogo || "/images/Abstergo Ltd..png"}
                             alt="Abstergo logo"
                             className="w-12 h-12 md:w-16 md:h-16 rounded-full"
                         />
                         <h2 className='text-sm md:text-lg lg:text-xl font-semibold text-primary-black leading-[110%]'>
-                            Abstergo Ltd.
+                            {details.name}
                         </h2>
                     </div>
                     <div className="flex flex-col sm:flex-row items-center gap-3">
@@ -32,7 +50,7 @@ const PharmacyDetailsCard: React.FC<any> = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-4 mt-4">
-                    {pharmacyDetail.map((item: any, idx: number) => (
+                    {mergedData.map((item: any, idx: number) => (
                         <div key={idx} className="flex items-center gap-3 p-2">
                             <div className={`${item.bg} rounded-lg p-2 h-10 w-10 min-w-10 min-h-10  flex items-center justify-center`}>
                                 <img

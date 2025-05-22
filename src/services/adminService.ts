@@ -162,6 +162,13 @@ export const addNewPharmacy = async (dispatch: AppDispatch, data: any) => {
     })
 }
 
+export const fetchPharmacyDetails = async (dispatch: AppDispatch, id?: string) => {
+    return apiHandler(dispatch, 'get', '/pharmacy/get_by_id/' + id, {
+        successMessage: "Pharmacy has been fetched successfully!",
+        // onSuccess: () => fetchAllPharmacies(dispatch)
+    })
+}
+
 // ============= Requests =============
 
 export const fetchAllRequests = async (dispatch: AppDispatch) => {
