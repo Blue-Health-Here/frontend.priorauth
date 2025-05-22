@@ -5,7 +5,7 @@ import { Formik, Form } from 'formik';
 import Button from '../../../components/common/Button';
 import SelectField from '../../../components/common/form/SelectField';
 import { Link } from 'react-router-dom';
-import { pharmacies, tabs } from '../../../utils/constants';
+import { tabs } from '../../../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { fetchAllPharmacies } from '../../../services/adminService';
