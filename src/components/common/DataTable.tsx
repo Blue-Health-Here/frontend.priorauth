@@ -1,67 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { DataTable as PrimeDataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import MoreOptionsMenu from './MoreOptionsMenu';
-import { Formik, Form } from 'formik';
-import SelectField from './form/SelectField';
-import Button from './Button';
 import Pagination from './Pagination';
 import { Dropdown } from 'primereact/dropdown';
 import { getReqBgStatusStyle, getReqStatusTextColor, getStatusStyle } from '../../utils/helper';
 import { reqStatusOptions } from '../../utils/constants';
-import { Link } from 'react-router-dom';
 import { DataTableProps } from '../../utils/types';
+import { Link } from 'react-router-dom';
 
 const DataTable: React.FC<DataTableProps> = ({
-    title,
     columns,
     data,
-    location,
-    customHeader,
     className,
     paginator = false,
     rows = 10,
     rowsPerPageOptions = [5, 10, 25, 50],
     isShadow = true,
-    customHeaderButtonText,
-    customHeaderButtonLink,
     isPagination = false,
-    onStatusChange
+    onStatusChange,
+    headerComponent
 }) => {
-    const [isOpenMenu, setIsOpenMenu] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [tableData, setTableData] = useState<any[]>([]);
 
     useEffect(() => {
         setTableData(data);
     }, [data]);
-
-    const menuItems = [
-        {
-            label: `View All ${title}`,
-            onClick: () => { },
-        },
-        {
-            label: `Add New ${title}`,
-            onClick: () => { },
-        },
-        {
-            label: 'Export List',
-            onClick: () => { },
-        },
-        {
-            label: 'View Analytics',
-            onClick: () => { },
-        },
-        {
-            label: 'Refresh List',
-            onClick: () => { },
-        },
-    ];
-
-    const toggleDropdown = () => {
-        setIsOpenMenu(!isOpenMenu);
-    };
 
     const handleStatusChange = (rowData: any, newStatus: any) => {
         // console.log(newStatus, rowData, "Dasdsad");
@@ -123,7 +87,18 @@ const DataTable: React.FC<DataTableProps> = ({
         if (typeof cellData === 'string' || typeof cellData === 'number') {
             // Check if the column is a status column
             if (column.key.toLowerCase().includes('status')) {
-                return <span className={getStatusStyle(cellData.toString())}>{cellData}</span>;
+                return (
+                    <Link to={'/admin/requests/' + rowData.id + '/request-details'}>
+                        <span className={getStatusStyle(cellData.toString())}>{cellData}</span>
+                    </Link>
+                )
+            }
+            if (column.key === 'medication') {
+                return (
+                    <Link to={'/admin/requests/' + rowData.id + '/request-details'}>
+                        <span className={getStatusStyle(cellData.toString())}>{cellData}</span>
+                    </Link>
+                )
             }
             return cellData;
         }
@@ -174,72 +149,10 @@ const DataTable: React.FC<DataTableProps> = ({
         return '';
     };
 
-    const DefaultHeader = () => (
-        <div className="flex justify-between items-center relative">
-            <h2 className="text-sm sm:text-lg md:text-xl font-semibold text-primary-black leading-[110%]">
-                {location ? `${title} (${location})` : title}
-            </h2>
-            <div className="relative">
-                <button
-                    className="border border-medium-stroke rounded-lg p-3 text-tertiary-white cursor-pointer"
-                    onClick={toggleDropdown}
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="12" cy="12" r="1" />
-                        <circle cx="12" cy="5" r="1" />
-                        <circle cx="12" cy="19" r="1" />
-                    </svg>
-                </button>
-                <MoreOptionsMenu
-                    items={menuItems}
-                    isOpen={isOpenMenu}
-                    onClose={() => setIsOpenMenu(false)}
-                    headerText={location ? `${title} (${location})` : `${title} Options`}
-                />
-            </div>
-        </div>
-    );
-
-    const CustomHeader = () => (
-        <div className="flex flex-col md:flex-col lg:flex-row gap-4 pb-2">
-            <h1 className="text-lg md:text-xl font-semibold flex-1 text-nowrap lg:text-2xl">
-                {location ? `${title} (${location})` : title}
-            </h1>
-            <Formik
-                initialValues={{ category: "", search: "" }}
-                onSubmit={() => { }}
-            >
-                {() => (
-                    <Form className="flex md:min-w-64 flex-wrap text-grey gap-3 [&>input]:mb-3 [&>input]:placeholder:text-themeLight [&>input]:placeholder:text-[12px]">
-                        <SelectField
-                            className="border border-medium-stroke rounded-lg p-2 font-medium min-w-48"
-                            parentClassName="flex-1"
-                            name="sort"
-                            options={[
-                                { value: "sortby", label: "Sort By" },
-                                { value: "operational", label: "Operational" },
-                            ]}
-                        />
-                        <SelectField
-                            className="border border-medium-stroke rounded-lg p-2 font-medium min-w-48"
-                            parentClassName="flex-1"
-                            name="filter"
-                            options={[
-                                { value: "filterby", label: "Filter By" },
-                                { value: "operational", label: "Operational" },
-                            ]}
-                        />
-                    </Form>
-                )}
-            </Formik>
-            {customHeaderButtonText && <Link to={customHeaderButtonLink ?? ""}><Button title={customHeaderButtonText} className="w-full sm:w-40" /></Link>}
-        </div>
-    );
-
     return (
         <>
-            <div className={`bg-primary-white rounded-2xl ${isShadow ? 'shadow-lg' : ''} px-6 py-4 ${className}`}>
-                {customHeader ? title && <CustomHeader /> : title && <DefaultHeader />}
+            <div className={`bg-primary-white rounded-2xl ${isShadow ? 'shadow-lg' : ''} px-4 py-4 lg:p-6 ${className}`}>
+                {headerComponent}
                 <PrimeDataTable
                     value={tableData}
                     paginator={paginator}
@@ -247,7 +160,7 @@ const DataTable: React.FC<DataTableProps> = ({
                     rowsPerPageOptions={rowsPerPageOptions}
                     globalFilterFields={columns.map(col => col.key)}
                     emptyMessage="No records found"
-                    className="mt-2 pb-4"
+                    className="mt-2 border rounded-lg overflow-hidden border-quaternary-navy-blue"
                     resizableColumns
                     columnResizeMode="fit"
                     tableStyle={{ minWidth: '100%' }}
@@ -257,9 +170,6 @@ const DataTable: React.FC<DataTableProps> = ({
                             key={i}
                             field={col.key}
                             header={col.header}
-                            sortable={col.key !== 'request_status'}
-                            filter={col.key !== 'request_status'}
-                            filterPlaceholder={`Search ${col.header}`}
                             style={{ width: col.width || 'auto' }}
                             body={(rowData) => renderCellContent(rowData, col)}
                         />

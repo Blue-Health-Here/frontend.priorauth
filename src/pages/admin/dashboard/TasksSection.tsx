@@ -1,11 +1,13 @@
 import React from 'react'
 import DataTable from '../../../components/common/DataTable'
 import { tasksData } from '../../../utils/constants'
+import TableHeader from '../../../components/common/TableHeader'
 
 const TasksSection: React.FC = () => {
   return (
     <div className="pt-4">
       <DataTable
+        headerComponent={<TableHeader title='Tasks' />}
         title="Tasks"
         columns={[
           { header: 'ID', key: 'id' },

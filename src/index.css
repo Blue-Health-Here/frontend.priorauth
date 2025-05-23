@@ -108,6 +108,9 @@ body {
 a:focus {
   outline: none;
 }
+.rounded-theme-r {
+  @apply rounded-lg;
+}
 
 /* primetable css */
 
@@ -151,4 +154,12 @@ a:focus {
 }
 .requests-table .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
   padding: 10px !important;
+}
+.p-datatable-thead {
+  background-color: var(--quaternary-navy-blue);
+}
+.p-datatable-thead > tr > th {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  color: var(--primary-black) !important;
 }
