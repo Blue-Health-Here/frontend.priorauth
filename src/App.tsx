@@ -15,6 +15,7 @@ import NotificationScreen from "./components/NotificationScreen";
 import AdminRolesAndPermissions from "./pages/permissions";
 import ThemeProvider from "./layouts/ThemeProvider";
 import { Toaster } from "react-hot-toast";
+import RequestDetails from "./pages/admin/requests/RequestDetails";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
                 <Route path="pharmacies/:pharmacyId" element={<PharmacyDetailScreen />}/> 
                 <Route path="pharmacies/add" element={<AddNewPharmacyScreen />}/>   
                 <Route path="requests" element={<AdminRequests />} />
+                <Route path="requests/:id/request-details" element={<RequestDetails />} />
                 <Route path="settings" element={<AdminSettings />} />
                 <Route path="settings/change-password" element={<ChangePasswordScreen/>} />
                 <Route path="notifications" element={<NotificationScreen />}/>   
@@ -51,4 +53,3 @@ function App() {
 }
 
 export default App;
-

@@ -17,3 +17,4 @@ export interface Pharmacy {
 export interface PharmacyCardProps {
   pharmacy: Pharmacy;
 }
+
