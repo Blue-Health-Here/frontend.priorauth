@@ -10,23 +10,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { getReqBgStatusStyle, getReqStatusTextColor, getStatusStyle } from '../../utils/helper';
 import { reqStatusOptions } from '../../utils/constants';
 import { Link } from 'react-router-dom';
-
-interface DataTableProps {
-    title: string;
-    columns: any[];
-    data: any[];
-    location?: string;
-    customHeader?: React.ReactNode;
-    className?: string;
-    paginator?: boolean;
-    rows?: number;
-    rowsPerPageOptions?: number[];
-    isShadow?: boolean;
-    customHeaderButtonText?: string;
-    customHeaderButtonLink?: string;
-    isPagination?: boolean;
-    onStatusChange?: (rowData: any, newStatus: string) => void;
-}
+import { DataTableProps } from '../../utils/types';
 
 const DataTable: React.FC<DataTableProps> = ({
     title,
@@ -253,34 +237,35 @@ const DataTable: React.FC<DataTableProps> = ({
     );
 
     return (
-        <div className={`bg-primary-white rounded-2xl ${isShadow ? 'shadow-lg' : ''} px-6 py-4 ${className}`}>
-            {customHeader ? title && <CustomHeader /> : title && <DefaultHeader />}
-
-            <PrimeDataTable
-                value={tableData}
-                paginator={paginator}
-                rows={rows}
-                rowsPerPageOptions={rowsPerPageOptions}
-                globalFilterFields={columns.map(col => col.key)}
-                emptyMessage="No records found"
-                className="mt-2 pb-4"
-                resizableColumns
-                columnResizeMode="fit"
-                tableStyle={{ minWidth: '100%' }}
-            >
-                {columns.map((col, i) => (
-                    <Column
-                        key={i}
-                        field={col.key}
-                        header={col.header}
-                        sortable={col.key !== 'request_status'}
-                        filter={col.key !== 'request_status'}
-                        filterPlaceholder={`Search ${col.header}`}
-                        style={{ width: col.width || 'auto' }}
-                        body={(rowData) => renderCellContent(rowData, col)}
-                    />
-                ))}
-            </PrimeDataTable>
+        <>
+            <div className={`bg-primary-white rounded-2xl ${isShadow ? 'shadow-lg' : ''} px-6 py-4 ${className}`}>
+                {customHeader ? title && <CustomHeader /> : title && <DefaultHeader />}
+                <PrimeDataTable
+                    value={tableData}
+                    paginator={paginator}
+                    rows={rows}
+                    rowsPerPageOptions={rowsPerPageOptions}
+                    globalFilterFields={columns.map(col => col.key)}
+                    emptyMessage="No records found"
+                    className="mt-2 pb-4"
+                    resizableColumns
+                    columnResizeMode="fit"
+                    tableStyle={{ minWidth: '100%' }}
+                >
+                    {columns.map((col, i) => (
+                        <Column
+                            key={i}
+                            field={col.key}
+                            header={col.header}
+                            sortable={col.key !== 'request_status'}
+                            filter={col.key !== 'request_status'}
+                            filterPlaceholder={`Search ${col.header}`}
+                            style={{ width: col.width || 'auto' }}
+                            body={(rowData) => renderCellContent(rowData, col)}
+                        />
+                    ))}
+                </PrimeDataTable>
+            </div>
             {tableData?.length > 0 && isPagination && (
                 <Pagination
                     currentPage={currentPage}
@@ -288,7 +273,7 @@ const DataTable: React.FC<DataTableProps> = ({
                     entriesPerPage={4}
                     onPageChange={setCurrentPage} />
             )}
-        </div>
+        </>
     );
 };
 

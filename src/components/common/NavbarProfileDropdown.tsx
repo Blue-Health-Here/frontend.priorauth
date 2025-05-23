@@ -9,7 +9,7 @@ const NavbarProfileDropdown: React.FC<NavbarProfileDropdownProps> = ({
   onClose,
 }) => {
   return (
-    <div className="absolute right-0 top-full p-3 w-52 md:w-60 bg-white rounded-lg shadow-lg z-50">
+    <div className="absolute right-4 top-full p-3 w-52 md:w-60 bg-white rounded-lg shadow-lg z-50">
       {profileMenu.map((item, index) => {
         const Icon = item.icon;
         return (
