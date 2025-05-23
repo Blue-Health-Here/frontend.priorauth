@@ -18,7 +18,8 @@ const AddNewPharmacyScreen: React.FC = () => {
   const handleSubmit = async (values: FormikValues) => {
     try {
       const response = await addNewPharmacy(dispatch, {
-        companyId: "8ebc95eb-a742-4454-a596-a758bbdd1174",
+        companyId: "6414b19d-5a7e-4a8a-a632-f41b158839fe",
+        // companyId: "8ebc95eb-a742-4454-a596-a758bbdd1174",
         pharmacyLogo: "",
         ...values
       });

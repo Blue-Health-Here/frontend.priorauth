@@ -31,7 +31,7 @@ function App() {
                 <Route index element={<Navigate to="dashboard" replace />} />
                 <Route path="dashboard" element={<AdminDashboard />} />
                 <Route path="pharmacies" element={<AdminPharmacies />} />
-                <Route path="pharmacies/details" element={<PharmacyDetailScreen />}/> 
+                <Route path="pharmacies/:pharmacyId" element={<PharmacyDetailScreen />}/> 
                 <Route path="pharmacies/add" element={<AddNewPharmacyScreen />}/>   
                 <Route path="requests" element={<AdminRequests />} />
                 <Route path="requests/:id/request-details" element={<RequestDetails />} />
