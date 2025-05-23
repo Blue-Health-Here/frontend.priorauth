@@ -1,14 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 // import { FaBars } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import NavbarProfileDropdown from './NavbarProfileDropdown';
 import { handleLogout } from '../../services/authService';
+import { getPageTitle } from '../../utils/getPageTitle';
 
 const Topbar: React.FC = () => {
   // const [isScrolled, setIsScrolled] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const pageTitle = getPageTitle(location.pathname);
 
   // useEffect(() => {
   //   const handleScroll = () => {
@@ -47,7 +50,9 @@ const Topbar: React.FC = () => {
         className={`topbar flex justify-between items-center transition-all duration-300 pl-0`}
       >
         <div className='hidden md:md:block'>
-          <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-semibold text-primary-black">Dashboard</p>
+          <p className="text-lg md:text-xl lg:text-2xl font-semibold text-primary-black">
+            {pageTitle}
+          </p>
         </div>
         {/* <div className="md:hidden block">
           <FaBars size={22} className='text-primary-sky-blue block lg:hidden' />
@@ -55,7 +60,7 @@ const Topbar: React.FC = () => {
         <div className="relative">
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Search here"
             className=" w-full md:w-96 pl-10 pr-4 py-2 border border-medium-stroke rounded-lg text-xs md:text-sm focus:outline-none placeholder:text-tertiary-white"
           />
           <span className="absolute left-3 top-2.5 text-gray-500 cursor-pointer">

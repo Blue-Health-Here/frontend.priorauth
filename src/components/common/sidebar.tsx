@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { adminSidebarItems } from '../../utils/constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { setIsSidebarCollapsed } from '../../store/features/global/globalSlice';
 
 const Sidebar: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
   const pathName = location.pathname;
+  const dispatch = useDispatch();
+  const { isSidebarCollapsed } = useSelector((state: RootState) => state.global);
 
   useEffect(() => {
     if (window.innerWidth < 1024) {
@@ -25,6 +30,10 @@ const Sidebar: React.FC = () => {
     };
   }, [isSidebarOpen]);
 
+  const handleSidebarCollapse = () => {
+    dispatch(setIsSidebarCollapsed(!isSidebarCollapsed));
+  }
+
   const asideClass = isSidebarOpen
     ? 'max-w-[250px] min-w-[250px] xl:min-w-[260px] xl:max-w-[260px] block bg-primary-white text-secondary-black fixed top-0 bottom-0 z-[99]'
     : 'max-w-[250px] min-w-[250px] xl:min-w-[260px] xl:max-w-[260px] hidden lg:flex bg-primary-white text-secondary-black flex-col fixed top-0 bottom-0 z-[99]';
@@ -40,9 +49,13 @@ const Sidebar: React.FC = () => {
         )} */}
         <div className='py-4 px-4 flex min-h-[81px] justify-between items-center border-r border-gray-100'>
           <Link to='/' className='pl-2'>
-            <img src="/images/logo.svg" alt="PriorAuth Logo" className="h-7 sm:h-8 lg:h-8" />
+            {isSidebarCollapsed ? (
+              <img src="/bh-fav.svg" alt="bh fav" className="h-7 sm:h-8 lg:h-8" />
+            ) : (
+              <img src="/images/logo.svg" alt="PriorAuth Logo" className="h-7 sm:h-8 lg:h-8" />
+            )}
           </Link>
-          <img src='/header-left-logo-arrow.svg' alt='header left logo arrow' className='w-8 h-8 bg-gray-100 p-2 rounded-lg cursor-pointer' />
+          <img onClick={handleSidebarCollapse} src='/header-left-logo-arrow.svg' alt='header left logo arrow' className='w-8 h-8 bg-gray-100 p-2 rounded-lg cursor-pointer' />
         </div>
         <div className="overflow-y-auto flex flex-col flex-1 px-4 py-10 border-t border-r border-gray-100">
           <ul className="flex flex-col gap-y-2 text-[15px]">

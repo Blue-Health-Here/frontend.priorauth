@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 
 export interface Pharmacy {
   id: string;
@@ -34,4 +35,5 @@ export interface DataTableProps {
   customHeaderButtonLink?: string;
   isPagination?: boolean;
   onStatusChange?: (rowData: any, newStatus: string) => void;
+  headerComponent?: ReactNode
 }
