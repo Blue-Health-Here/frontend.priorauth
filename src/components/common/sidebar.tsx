@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { adminSidebarItems } from '../../utils/constants';
-import { HiArrowNarrowLeft } from "react-icons/hi";
 
 const Sidebar: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
