@@ -41,28 +41,28 @@ const Topbar: React.FC = () => {
   }, []);
 
   return (
-    <div className={`fixed top-0 left-0 right-0 p-4 z-60 transition-all duration-300 ${isScrolled ? 'bg-white border-b border-medium-stroke' : 'bg-transparent border-none'}`}>
+    <div className={`fixed top-0 left-[250px] xl:left-[260px] right-0 p-4 z-60 transition-all duration-300 bg-white border-b border-gray-100`}>
       <nav
-        className={`topbar flex justify-between items-center transition-all duration-300 pl-0 lg:pl-[264px] xl:pl-[276px]`}
+        //  lg:pl-[264px] xl:pl-[276px]
+        className={`topbar flex justify-between items-center transition-all duration-300 pl-0`}
       >
         <div className='hidden md:md:block'>
-          <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-semibold text-primary-black">Welcome back!</p>
-          <p className='text-tertiary-black text-xs md:text-sm lg:text-base'>Dashboard</p>
+          <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-semibold text-primary-black">Dashboard</p>
         </div>
-        <div className="md:hidden block">
+        {/* <div className="md:hidden block">
           <FaBars size={22} className='text-primary-sky-blue block lg:hidden' />
+        </div> */}
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search"
+            className=" w-full md:w-96 pl-10 pr-4 py-2 border border-medium-stroke rounded-lg text-xs md:text-sm focus:outline-none placeholder:text-tertiary-white"
+          />
+          <span className="absolute left-3 top-2.5 text-gray-500 cursor-pointer">
+            <img src="/search-icon.svg" alt="search icon" />
+          </span>
         </div>
         <div className="flex justify-end items-center gap-x-4 pl-4 sm:pl-0 cursor-pointer">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search"
-              className=" w-full md:w-96 pl-10 pr-4 py-2 border border-medium-stroke rounded-lg text-xs md:text-sm focus:outline-none placeholder:text-tertiary-white"
-            />
-            <span className="absolute left-3 top-2.5 text-gray-500 cursor-pointer">
-              <img src="/search-icon.svg" alt="search icon" />
-            </span>
-          </div>
           <div className="border border-medium-stroke rounded-lg p-2 sm:block hidden">
             <Link to="/admin/notifications" className="cursor-pointer">
               <img src="/bell-icon.svg" alt="notification" className='h-5 w-5' />

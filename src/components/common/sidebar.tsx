@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { adminSidebarItems } from '../../utils/constants';
+import { HiArrowNarrowLeft, HiOutlineArrowNarrowLeft } from "react-icons/hi";
 
 const Sidebar: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -26,22 +27,28 @@ const Sidebar: React.FC = () => {
   }, [isSidebarOpen]);
 
   const asideClass = isSidebarOpen
-    ? 'max-w-[250px] min-w-[250px] xl:min-w-[260px] xl:max-w-[260px] block bg-primary-white shadow-lg rounded-2xl text-secondary-black pt-8 pb-8 pl-4 pr-4 fixed z-[99]'
-    : 'max-w-[250px] min-w-[250px] xl:min-w-[260px] xl:max-w-[260px] hidden lg:block bg-primary-white shadow-lg rounded-2xl text-secondary-black pt-8 pb-8 pl-4 pr-4 fixed z-[99]';
+    ? 'max-w-[250px] min-w-[250px] xl:min-w-[260px] xl:max-w-[260px] block bg-primary-white text-secondary-black fixed top-0 bottom-0 z-[99]'
+    : 'max-w-[250px] min-w-[250px] xl:min-w-[260px] xl:max-w-[260px] hidden lg:block bg-primary-white text-secondary-black fixed top-0 bottom-0 z-[99]';
 
   return (
     <>
       {isSidebarOpen && <div className="fixed inset-0 z-[98] bg-black bg-opacity-50 lg:hidden" />}
       <aside className={asideClass}>
-        {isSidebarOpen && (
+        {/* {isSidebarOpen && (
           <span onClick={() => setIsSidebarOpen(false)} className="absolute top-4 right-4 cursor-pointer ">
-            {/* <RxCross2 size={20} /> */} X
+            <RxCross2 size={20} /> X
           </span>
-        )}
-        <Link to='/'>
-          <img src="/images/logo.svg" alt="PriorAuth Logo" className="h-7 sm:h-8 lg:h-10" />
-        </Link>
-        <div className="h-[calc(100vh-15rem)] overflow-y-auto pb-4 mt-8">
+        )} */}
+        <div className='p-4 flex min-h-[81px] justify-between items-center border-r border-gray-100'>
+          <Link to='/'>
+            <img src="/images/logo.svg" alt="PriorAuth Logo" className="h-7 sm:h-8 lg:h-8" />
+          </Link>
+          <button type='button' className='px-2 py-1.5 rounded-md bg-gray-100 h-max'>
+            {/* <HiOutlineArrowNarrowLeft className='text-3xl' /> */}
+            <HiArrowNarrowLeft className='text-2xl' />
+          </button>
+        </div>
+        <div className="overflow-y-auto px-6 pt-10 border-t border-r border-gray-100">
           <ul className="flex flex-col gap-y-2 text-[15px]">
             {adminSidebarItems.map((item, index) => (
               <NavLink
