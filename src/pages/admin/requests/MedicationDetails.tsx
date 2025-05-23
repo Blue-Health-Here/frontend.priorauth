@@ -17,12 +17,10 @@ export const MedicationDetails: React.FC<MedicationDetailsProps> = ({
 }) => {
   return (
     <div className={`border border-gray-200 rounded-lg overflow-hidden ${className}`}>
-      {/* Header - Reduced padding */}
-      <div className="bg-[#EBF1FF] px-3 py-1">
-        <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+      <div className="bg-[#EBF1FF] px-3 py-0.5">
+        <h3 className="text-md font-semibold text-gray-800">{title}</h3>
       </div>
       
-      {/* Data grid - Reduced spacing */}
       <div className="p-2">
         {data.map((row, rowIndex) => (
           <div
