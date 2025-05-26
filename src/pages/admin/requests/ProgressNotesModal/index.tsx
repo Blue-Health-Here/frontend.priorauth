@@ -4,7 +4,6 @@ import ModalHeader from "./ModalHeader";
 import FileDropzone from "./FileDropzone";
 import UploadFileList from "./UploadFileList";
 import GradientSidebarButton from "./GradientSidebarButton";
-import GradientCircleContent from "./GradientCircleContent";
 import { UploadedFile } from "../../../../utils/types";
 
 interface ProgressNotesModalProps {
