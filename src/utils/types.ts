@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 
 export interface Pharmacy {
   id: string;
@@ -14,7 +15,25 @@ export interface Pharmacy {
     denied: number;
   };
 }
+
 export interface PharmacyCardProps {
   pharmacy: Pharmacy;
 }
 
+export interface DataTableProps {
+  title: string;
+  columns: any[];
+  data: any[];
+  location?: string;
+  customHeader?: React.ReactNode;
+  className?: string;
+  paginator?: boolean;
+  rows?: number;
+  rowsPerPageOptions?: number[];
+  isShadow?: boolean;
+  customHeaderButtonText?: string;
+  customHeaderButtonLink?: string;
+  isPagination?: boolean;
+  onStatusChange?: (rowData: any, newStatus: string) => void;
+  headerComponent?: ReactNode
+}

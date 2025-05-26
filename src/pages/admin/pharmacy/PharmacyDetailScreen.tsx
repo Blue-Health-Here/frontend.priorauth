@@ -26,10 +26,10 @@ const PharmacyDetailScreen: React.FC = () => {
   }, []);
 
   return (
-    <div className="shadow-lg rounded-b-2xl">
+    <div>
       <PharmacyDetailsCrad details={pharmacyDetails} />
       <DataTable
-        className="rounded-b-2xl rounded-t-none"
+        className="rounded-2xl shadow-lg"
         title="Requests"
         columns={[
           { header: 'Medication', key: 'medication', width: '20%' },

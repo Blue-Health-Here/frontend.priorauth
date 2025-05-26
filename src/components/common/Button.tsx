@@ -1,14 +1,14 @@
 import React from "react";
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   title?: string;
   className?: string;
   textColor?: string;
-  isSmall?: boolean; 
-  icon?: React.ReactNode; 
+  isSmall?: boolean;
+  icon?: React.ReactNode;
   noHover?: boolean;
   noBackground?: boolean;
-  onClick?: () => void; 
+  onClick?: () => void;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -20,9 +20,11 @@ const Button: React.FC<ButtonProps> = ({
   noHover = false,
   noBackground,
   onClick,
+  ...rest
 }) => {
   return (
     <button
+      {...rest}
       className={`
         ${className}
         ${textColor}

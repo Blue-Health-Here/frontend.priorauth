@@ -73,7 +73,7 @@ export const testimonials = [
     designation: "Global Vice President",
     content:
       "PriorAuth has transformed our communications strategy, enabling us to provide real-time data access that has strengthened our relationship with executive leadership.",
-     image: "/images/portrait.avif",
+    image: "/images/portrait.avif",
     profileLink: "https://intail.ai/directory/p/stephanie-hartgrove/666e9c5fa2fd8022d6089e17",
     company: "Johnson & Johnson",
     companyLink: "https://www.jnj.com/",
@@ -84,7 +84,7 @@ export const testimonials = [
     designation: "Startup Founder",
     content:
       "PriorAuth is incredibly user-friendly and has significantly improved my team's productivity and communication. Its versatility for startups is solid, offering customizable workflows that adapt as your business grows.",
-     image: "/images/Kevin_Spacey,_May_2013.jpg",
+    image: "/images/Kevin_Spacey,_May_2013.jpg",
     profileLink: "#",
     company: "Reddit Community",
     companyLink: "https://www.reddit.com/r/Airtable/comments/17lto9a/is_airtable_worth_it_any_alternatives/",
@@ -194,7 +194,6 @@ export const adminSidebarItems = [
   { name: "Staff", icon: "/sidebar-staff.svg", path: "/f" },
   { name: "Tasks", icon: "/sidebar-task-01.svg", path: "/d" },
   { name: "Permissions", icon: "/sidebar-role&permission.svg", path: "/admin/permissions" },
-  { name: "Settings", icon: "/sidebar-Settings.svg", path: "/admin/settings" },
 ];
 
 export const profileMenu = [
@@ -202,6 +201,19 @@ export const profileMenu = [
   { name: "Profile", icon: FiUser, path: "/admin/profile" },
   { name: "Settings", icon: IoSettingsOutline, path: "/admin/settings" },
 ];
+
+export const requestsTabs = [
+  "Active Requests",
+  "All Requests",
+  "Processing Requests",
+  "Progress Requests",
+  "Awaiting Requests",
+  "Error Requests",
+  "Updated Requests",
+  "Cancelled Requests",
+  "Call Requests",
+];
+
 // pharmacy data
 export const pharmacyData = [
   {
@@ -989,3 +1001,28 @@ export const homeSections = [
   { title: "FAQs", path: "faqs" },
   { title: "Contact", path: "contact" }
 ];
+
+export const menuItems = (title: string) => {
+  return [
+    {
+      label: `View All ${title}`,
+      onClick: () => { },
+    },
+    {
+      label: `Add New ${title}`,
+      onClick: () => { },
+    },
+    {
+      label: 'Export List',
+      onClick: () => { },
+    },
+    {
+      label: 'View Analytics',
+      onClick: () => { },
+    },
+    {
+      label: 'Refresh List',
+      onClick: () => { },
+    },
+  ]
+}
