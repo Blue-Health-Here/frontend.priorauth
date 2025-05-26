@@ -201,6 +201,19 @@ export const profileMenu = [
   { name: "Profile", icon: FiUser, path: "/admin/profile" },
   { name: "Settings", icon: IoSettingsOutline, path: "/admin/settings" },
 ];
+
+export const requestsTabs = [
+  "Active Requests",
+  "All Requests",
+  "Processing Requests",
+  "Progress Requests",
+  "Awaiting Requests",
+  "Error Requests",
+  "Updated Requests",
+  "Cancelled Requests",
+  "Call Requests",
+];
+
 // pharmacy data
 export const pharmacyData = [
   {

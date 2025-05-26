@@ -22,7 +22,7 @@ const AdminLayout: React.FC = () => {
   // }, []);
 
   const mainContentClass = isSidebarCollapsed ? `
-    ml-auto lg:ml-[40px]
+    ml-auto lg:ml-[80px]
   ` : 'ml-auto lg:ml-[250px] xl:ml-[260px]'
 
   return (
@@ -30,11 +30,10 @@ const AdminLayout: React.FC = () => {
       <Sidebar />
       <div className="w-full">
         <Topbar />
-        <div className={`${mainContentClass} pt-[81px] sm:pt-[121px] px-10 pb-10 overflow-hidden`}>
+        <div className={`${mainContentClass} pt-[81px] transition-all duration-500 sm:pt-[121px] px-10 pb-10 overflow-hidden`}>
           <Outlet />
         </div>
       </div>
-      {/* <Footer /> */}
     </div>
   );
 };
