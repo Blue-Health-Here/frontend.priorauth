@@ -12,7 +12,7 @@ interface UploadedFile {
   type: string;
   lastModified: number;
   progress: number;
-  status: 'uploading' | 'completed' | 'error';
+  status: "uploading" | "completed" | "error";
 }
 
 const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
@@ -23,17 +23,21 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
-    if (!isOpen || !uploadedFiles.some(file => file.status === 'uploading')) return;
-    
+    if (!isOpen || !uploadedFiles.some((file) => file.status === "uploading"))
+      return;
+
     const interval = setInterval(() => {
-      setUploadedFiles(prevFiles => 
-        prevFiles.map(file => {
-          if (file.status === 'uploading') {
-            const newProgress = Math.min(file.progress + Math.random() * 20, 100);
+      setUploadedFiles((prevFiles) =>
+        prevFiles.map((file) => {
+          if (file.status === "uploading") {
+            const newProgress = Math.min(
+              file.progress + Math.random() * 20,
+              100
+            );
             return {
               ...file,
               progress: newProgress,
-              status: newProgress >= 100 ? 'completed' : 'uploading'
+              status: newProgress >= 100 ? "completed" : "uploading",
             };
           }
           return file;
@@ -47,16 +51,16 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const newFiles = Array.from(e.target.files).map(file => ({
+      const newFiles = Array.from(e.target.files).map((file) => ({
         id: Math.random().toString(36).substring(2, 9),
         name: file.name,
         size: file.size,
         type: file.type,
         lastModified: file.lastModified,
         progress: 0,
-        status: 'uploading' as const
+        status: "uploading" as const,
       }));
-      setUploadedFiles(prev => [...prev, ...newFiles]);
+      setUploadedFiles((prev) => [...prev, ...newFiles]);
     }
   };
 
@@ -72,31 +76,31 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      const newFiles = Array.from(e.dataTransfer.files).map(file => ({
+      const newFiles = Array.from(e.dataTransfer.files).map((file) => ({
         id: Math.random().toString(36).substring(2, 9),
         name: file.name,
         size: file.size,
         type: file.type,
         lastModified: file.lastModified,
         progress: 0,
-        status: 'uploading' as const
+        status: "uploading" as const,
       }));
-      setUploadedFiles(prev => [...prev, ...newFiles]);
+      setUploadedFiles((prev) => [...prev, ...newFiles]);
     }
   };
 
   const removeFile = (id: string) => {
-    setUploadedFiles(prev => prev.filter(file => file.id !== id));
+    setUploadedFiles((prev) => prev.filter((file) => file.id !== id));
   };
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
   };
 
   return (
@@ -105,7 +109,6 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
         className="relative bg-white rounded-lg shadow-xl border border-gray-300 w-full max-w-8xl h-[90vh] mx-4 overflow-hidden z-50"
         style={{ maxHeight: "calc(100vh - 4rem)" }}
       >
-        {/* Header */}
         <div className="flex justify-between items-center border-b border-gray-200 px-6 py-4">
           <h3 className="text-lg font-semibold text-gray-800">AI Analysis</h3>
           <button
@@ -128,11 +131,8 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
           </button>
         </div>
 
-        {/* Content Area */}
         <div className="relative p-6 h-[calc(100%-72px)] overflow-hidden">
-          {/* Gray Sidebar - fixed behind everything */}
           <div className="absolute top-0 left-0 w-1/4 h-full bg-[#F8FAFF] z-0 flex flex-col">
-            {/* Add this button container at the bottom of the sidebar */}
             <div className="mt-auto mb-4 ml-5 mr-5">
               <div className="relative rounded-lg p-[1px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B]">
                 <div className="bg-white rounded-lg p-4 py-3">
@@ -140,7 +140,6 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                     <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
                       Start AI Analysis
                     </p>
-                    
                   </div>
                 </div>
               </div>
@@ -157,12 +156,43 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
               }}
             >
               <div
-                className="bg-white rounded-full w-full h-full flex items-center justify-center p-8"
+                className="bg-white rounded-full w-full h-full flex items-center justify-center p-8 relative"
                 style={{
-                  boxShadow: "inset 0 0 30px #A16CF9",
+                  boxShadow: `
+          inset 0 4px 12px rgba(166, 108, 249, 0.5),
+          inset 0 -2px 6px rgba(246, 101, 104, 0.3)
+        `,
                 }}
               >
-                <h2 className="text-3xl font-bold text-center">
+                <div
+                  className="absolute inset-0 rounded-full"
+                  style={{
+                    background: `radial-gradient(
+            circle at 50% 80%,
+            transparent 65%,
+            rgba(166, 108, 249, 0.15) 70%,
+            rgba(166, 108, 249, 0.3) 75%,
+            rgba(166, 108, 249, 0.1) 85%,
+            transparent 90%
+          )`,
+                    filter: "blur(1px)",
+                  }}
+                ></div>
+
+                <div
+                  className="absolute inset-0 rounded-full opacity-70"
+                  style={{
+                    background: `radial-gradient(
+            circle at 50% 20%,
+            transparent 85%,
+            rgba(246, 101, 104, 0.1) 90%,
+            transparent 95%
+          )`,
+                    mixBlendMode: "overlay",
+                  }}
+                ></div>
+
+                <h2 className="text-3xl font-bold text-center relative z-10">
                   <span className="bg-gradient-to-r from-[#F66568] to-[#A163F9] bg-clip-text text-transparent">
                     Upload Progress
                   </span>
@@ -175,8 +205,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
             </div>
           </div>
 
-          {/* White container for both upload and files sections */}
-          <div 
+          <div
             className="bg-white rounded-xl border border-gray-200"
             style={{
               width: "340px",
@@ -184,15 +213,14 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
               left: "1rem",
               top: "1rem",
               padding: "0.7rem",
-              zIndex: 10
+              zIndex: 10,
             }}
           >
-            {/* Upload File Section */}
             <div
               className={`flex justify-center px-6 py-10 border-2 border-dashed rounded-lg ${
-                isDragging 
-                  ? 'border-blue-500 bg-blue-50' 
-                  : 'border-[#a8ddf3] bg-[#F2FBFF]'
+                isDragging
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-[#a8ddf3] bg-[#F2FBFF]"
               }`}
               style={{
                 height: "196px",
@@ -241,7 +269,6 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
               </div>
             </div>
 
-            {/* Uploaded Files Section */}
             {uploadedFiles.length > 0 && (
               <div className="mt-4">
                 <div className="px-2 py-2">
@@ -251,8 +278,8 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                 </div>
                 <div className="space-y-3 max-h-60 overflow-y-auto">
                   {uploadedFiles.map((file) => (
-                    <div 
-                      key={file.id} 
+                    <div
+                      key={file.id}
                       className="border border-gray-200 rounded-lg p-2 shadow-sm"
                     >
                       <div className="flex items-center justify-between mb-1">
@@ -286,7 +313,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                           className="text-[#1E1E1E]"
                           onClick={() => removeFile(file.id)}
                         >
-                          {file.status === 'uploading' ? (
+                          {file.status === "uploading" ? (
                             <svg
                               className="h-5 w-5"
                               fill="none"
@@ -317,13 +344,12 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                           )}
                         </button>
                       </div>
-                      
-                      {/* Progress bar - only shown during upload */}
-                      {file.status === 'uploading' && (
+
+                      {file.status === "uploading" && (
                         <>
                           <div className="w-full bg-gray-200 rounded-full h-2.5">
-                            <div 
-                              className="h-2.5 rounded-full bg-blue-500" 
+                            <div
+                              className="h-2.5 rounded-full bg-blue-500"
                               style={{ width: `${file.progress}%` }}
                             ></div>
                           </div>
