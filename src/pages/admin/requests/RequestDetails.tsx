@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { MedicationDetails } from "./MedicationDetails";
 import { DataGrid } from "./MedicationDetails";
+import ProgressNotesModal from "./ProgressNotesModal";
 
 const RequestDetails: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const medicationData: DataGrid = [
     [
       ["Rx#", "669516-0"],
@@ -65,15 +68,28 @@ const RequestDetails: React.FC = () => {
     ],
   ];
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
-    <div className="p-4 sm:p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+    <div className="p-4 sm:p-6 bg-white rounded-lg shadow-sm border border-gray-200 relative">
+      <ProgressNotesModal isOpen={isModalOpen} onClose={closeModal} />
+
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
         <h2 className="text-lg font-bold text-gray-800">UBRELVY 50MG TAB</h2>
         <div className="flex gap-3 self-end sm:self-auto">
           <button className="text-secondary-navy-blue bg-[#EBF1FF] hover:bg-blue-100 font-semibold text-xs sm:text-sm cursor-pointer rounded-md px-3 sm:px-4 py-2 transition-colors border-0">
             Open Portal
           </button>
-          <button className="text-white bg-primary-navy-blue hover:bg-blue-800 text-xs sm:text-sm cursor-pointer rounded-md px-4 sm:px-6 py-2 sm:py-3.5 transition-colors">
+          <button
+            onClick={openModal}
+            className="text-white bg-primary-navy-blue hover:bg-blue-800 text-xs sm:text-sm cursor-pointer rounded-md px-4 sm:px-6 py-2 sm:py-3.5 transition-colors"
+          >
             Submit Progress Notes
           </button>
         </div>
@@ -231,7 +247,6 @@ const RequestDetails: React.FC = () => {
                 </div>
               </div>
 
-              {/* Adjust file attachment layout for mobile */}
               <div className="space-y-2">
                 <p className="text-sm text-[#7A7A7A]">
                   Fax Form To Be Signed By MD
