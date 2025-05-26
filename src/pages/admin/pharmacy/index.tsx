@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PharmacyCard from './PharmacyCard';
 // import Pagination from '../../../components/common/Pagination';
 import { Formik, Form } from 'formik';
@@ -24,6 +24,7 @@ const AdminPharmacies: React.FC = () => {
     }
   }, []);
 
+  console.log(pharmaciesData, "pharmaciesData");
   return (
     <>
       {/* <div className="bg-primary-background rounded-2xl shadow-xs min-h-[calc(100vh-15rem)]"> */}
