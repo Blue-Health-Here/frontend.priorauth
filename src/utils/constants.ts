@@ -1026,3 +1026,18 @@ export const menuItems = (title: string) => {
     },
   ]
 }
+
+export const notesAiAnalysisData = [
+  { 
+    label: "Diagnosis", status: "Criteria Not Met", statusCode: 'error',
+    description: "The patient has type 2 diabetes mellitus without complications (E11.9), hyperuricemia (E79.0), essential hypertension (110), chronic rhinitis (J31.0), and fatty liver disease (K76.0). Elevated glucose levels were noted." },
+  { 
+    label: "Treatment Notes", status: "Criteria Met", statusCode: 'success',
+    description: "The patient underwent blood work which showed elevated glucose levels. No other imaging studies or specific treatment outcomes are detailed in the provided notes." },
+  { 
+    label: "Current Medications", status: "Criteria Met", statusCode: 'success',
+    description: "The patient is currently taking alcohol pads, Allegra-D, atorvastatin 10mg, azelastine, benzonatate, flonase, FreeStyle Lite device and strips, lancets, Rybelsus 7mg, valsartan 160mg, Vascepa, and vitamin D3." },
+  { 
+    label: "Previous Medications", status: "Criteria Partially Met", statusCode: 'warning',
+    description: "The patient previously used amlodipine, atorvastatin (10mg and 20mg), fenofibrate, metformin (500mg and 1000mg), Ozempic (0.25mg/0.5mg and 1mg), paxlovid, valsartan (80mg and 160mg), and vitamin D3. The duration of use and patient response to these medications is not specified in the notes except for the discontinuation of Ozempic." },
+];

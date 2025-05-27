@@ -8,7 +8,7 @@ interface UploadFileListProps {
 }
 
 const UploadFileList: React.FC<UploadFileListProps> = ({ files, removeFile }) => (
-    <div className="space-y-3">
+    <div className="space-y-3 overflow-y-auto max-h-96">
         {files.map((file) => (
             <UploadFileItem key={file.id} file={file} removeFile={(id) => removeFile(id)} />
         ))}

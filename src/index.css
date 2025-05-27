@@ -31,11 +31,20 @@
   --error-clip: #FF2E37;
   --success-chip: #47D477;
   --information-chip: #41B1FC;
+  --ai-animation: #F8A8AA;
   --warning-chip: #FFD828;
   --error-chip-bg-color: #FFE0E2;
   --success-chip-bg-color: #DBFFE7;
   --information-chip-bg-color: #DEF0FC;
   --warning-chip-bg-color: #FFF9E0;
+
+  --status-error-text-color: #C2410C;
+  --status-error-bg-color: #FFE5E0;
+  --status-success-text-color: #065F46;
+  --status-success-bg-color: #D1FAE5;
+  --status-warning-text-color: #A16207;
+  --status-warning-bg-color: #FFEDD5;
+
   --urbanist: "Urbanist", "sans-serif";
   --dm-sans: "DM Sans", "sans-serif";
 }
@@ -74,6 +83,13 @@
   --color-success-chip-bg-color: var(--success-chip-bg-color);
   --color-information-chip-bg-color: var(--information-chip-bg-color);
   --color-warning-chip-bg-color: var(--warning-chip-bg-color); 
+  --color-ai-animation: var(--ai-animation);
+  --color-status-error-text-color: var(--status-error-text-color);
+  --color-status-error-bg-color: var(--status-error-bg-color);
+  --color-status-success-text-color: var(--status-success-text-color);
+  --color-status-success-bg-color: var(--status-success-bg-color);
+  --color-status-warning-text-color: var(--status-warning-text-color);
+  --color-status-warning-bg-color: var(--status-warning-bg-color);
 
   /* Font family */
   --font-primary: var(--dm-sans);
@@ -97,6 +113,9 @@ body {
 .gradient-class {
   @apply bg-gradient-to-br from-[#1594CC] to-[#163066] 
 }
+.ai-analysis-btn {
+  box-shadow: -2px -2px 10px 0px rgba(255, 134, 41, 0.20), 2px 2px 10px 0px rgba(255, 139, 203, 0.20);
+}
 .slick-list, .slick-track {
   height: 100%;
 }
@@ -109,7 +128,7 @@ a:focus {
   outline: none;
 }
 .rounded-theme-r {
-  @apply rounded-lg;
+  @apply rounded-xl;
 }
 
 /* primetable css */
