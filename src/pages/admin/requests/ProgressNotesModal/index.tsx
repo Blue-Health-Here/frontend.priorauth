@@ -94,11 +94,10 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
     return (
         <ModalWrapper>
             <ModalHeader title="AI Analysis" onClose={onClose} />
-            <div className="relative overflow-y-auto grid grid-cols-3 lg:grid-cols-4 flex-1">
-                <div className="col-span-1 bg-[#F8FAFF] z-0 flex flex-col justify-between gap-4 p-6">
-                    <div
-                        className="bg-white rounded-xl border border-gray-200 p-2"
-                    >
+            <div className="relative overflow-y-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 flex-1">
+                {/* Sidebar - changes order on mobile */}
+                <div className="order-2 md:order-1 col-span-1 bg-[#F8FAFF] z-0 flex flex-col justify-between gap-4 p-4 md:p-6">
+                    <div className="bg-white rounded-xl border border-gray-200 p-2">
                         <FileDropzone 
                             isDragging={isDragging} 
                             onDragOver={handleDragOver}
@@ -120,8 +119,14 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                     </div>
                     <GradientSidebarButton />
                 </div>
-                <div className="col-span-2 lg:col-span-3 flex items-center justify-center">
-                    <img src="/radial-color-ai.png" alt="radial color ai" className="w-[30rem] lg:w-[50rem]" />
+                
+                {/* Main content - comes first on mobile */}
+                <div className="hidden  order-1 md:order-2 col-span-1 md:col-span-2 lg:col-span-3 lg:flex items-center justify-center p-4 md:p-0">
+                    <img 
+                        src="/radial-color-ai.png" 
+                        alt="radial color ai" 
+                        className="w-full max-w-xs sm:max-w-sm md:max-w-none md:w-[30rem] lg:w-[50rem]" 
+                    />
                 </div>
             </div>
         </ModalWrapper>

@@ -113,24 +113,24 @@ const RequestDetails: React.FC = () => {
           <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 lg:sticky lg:top-6">
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               <div>
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
                   DOS
                 </p>
-                <p className="text-sm font-medium text-gray-900 mt-1">
+                <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">
                   5/5/2025
                 </p>
               </div>
               <div>
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
                   CMM Key
                 </p>
-                <p className="text-sm font-medium text-gray-900 mt-1">-</p>
+                <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">-</p>
               </div>
               <div className="col-span-2 sm:col-span-1">
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
                   CMM Key 2
                 </p>
-                <p className="text-sm font-medium text-gray-900 mt-1">
+                <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">
                   BM8DJD89
                 </p>
               </div>
@@ -139,7 +139,7 @@ const RequestDetails: React.FC = () => {
 
           <div className="bg-white rounded-xl overflow-hidden border border-gray-200">
             <div className="bg-[#EBF1FF] px-3 py-2">
-              <h3 className="text-md font-semibold text-gray-800">Status</h3>
+              <h3 className="text-sm sm:text-md font-semibold text-gray-800">Status</h3>
             </div>
             <div className="space-y-6 px-4 pb-4 pt-6">
               <div className="border-l-2 border-gray-300 pl-3">
@@ -179,7 +179,7 @@ const RequestDetails: React.FC = () => {
 
           <div className="bg-white rounded-xl overflow-hidden border border-gray-200">
             <div className="bg-[#EBF1FF] px-3 py-2">
-              <h3 className="text-md font-semibold text-gray-800">Notes</h3>
+              <h3 className="text-sm sm:text-md font-semibold text-gray-800">Notes</h3>
             </div>
             <div className="p-4">
               <div className="mb-2">
@@ -194,24 +194,24 @@ const RequestDetails: React.FC = () => {
 
           <div className="bg-white rounded-xl overflow-hidden border border-gray-200">
             <div className="bg-[#EBF1FF] px-3 py-2">
-              <h3 className="text-md font-semibold text-gray-800">Files</h3>
+              <h3 className="text-sm sm:text-md font-semibold text-gray-800">Files</h3>
             </div>
             <div className="p-4 space-y-4">
               <p className="text-sm font-medium text-[#7A7A7A]">Upload</p>
 
-              <div className="border border-gray-300 rounded-lg p-4 text-center ">
+              <div className="border border-gray-300 rounded-lg p-2 sm:p-4 text-center ">
                 <p className="text-sm text-gray-500">
                   Drag files here or browse
                 </p>
               </div>
 
               <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B]">
-                <div className="bg-white rounded-lg p-4">
+                <div className="bg-white rounded-lg p-2 sm:p-4">
                   <div className="flex items-center justify-center gap-2">
                     <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
                       Upload Progress Notes
                     </p>
-                    <div className="p-[1.5px] rounded-md bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B]">
+                    <div className="p-[1px] sm:p-[1.5px] rounded-md bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B]">
                       <div className="bg-white p-1 rounded-md flex items-center justify-center">
                         <svg
                           className="w-3 h-3"
@@ -252,12 +252,12 @@ const RequestDetails: React.FC = () => {
                   Fax Form To Be Signed By MD
                 </p>
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                  <div className="flex-1 p-3 py-3.5 bg-gray-100 rounded-lg flex items-center justify-center">
+                  <div className="flex-1 p-3 py-2 sm:py-3.5 bg-gray-100 rounded-lg flex items-center justify-center">
                     <p className="text-sm text-gray-500">
                       No Attachment Available
                     </p>
                   </div>
-                  <button className="flex items-center justify-center gap-1 text-xs font-medium text-gray-700 border border-gray-300 hover:bg-gray-50 px-3 py-3 sm:py-[14px] rounded-lg transition-colors">
+                  <button className="flex items-center justify-center gap-1 text-xs font-medium text-gray-700 border border-gray-300 hover:bg-gray-50 px-3 py-2 sm:py-[14px] rounded-lg transition-colors">
                     Attach Files
                     <svg
                       className="w-4 h-4"
@@ -281,12 +281,12 @@ const RequestDetails: React.FC = () => {
                   Letter of Medical Necessity
                 </p>
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                  <div className="flex-1 p-3 py-3.5 bg-gray-100 rounded-lg flex items-center justify-center">
+                  <div className="flex-1 p-3 py-2 sm:py-3.5 bg-gray-100 rounded-lg flex items-center justify-center">
                     <p className="text-sm text-gray-500">
                       No Attachment Available
                     </p>
                   </div>
-                  <button className="flex items-center justify-center gap-1 text-xs font-medium text-gray-700 border border-gray-300 hover:bg-gray-50 px-3 py-3 sm:py-[14px] rounded-lg transition-colors">
+                  <button className="flex items-center justify-center gap-1 text-xs font-medium text-gray-700 border border-gray-300 hover:bg-gray-50 px-3 py-2 sm:py-[14px] rounded-lg transition-colors">
                     Attach Files
                     <svg
                       className="w-4 h-4"

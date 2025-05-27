@@ -18,7 +18,7 @@ export const MedicationDetails: React.FC<MedicationDetailsProps> = ({
   return (
     <div className={`border border-gray-200 rounded-xl overflow-hidden ${className}`}>
       <div className="bg-[#EBF1FF] px-3 py-2">
-        <h3 className="text-md font-semibold text-gray-800">{title}</h3>
+        <h3 className="text-sm sm:sm:text-md font-semibold text-gray-800">{title}</h3>
       </div>
       
       <div className="p-2">
@@ -29,8 +29,8 @@ export const MedicationDetails: React.FC<MedicationDetailsProps> = ({
           >
             {row.map(([label, value], itemIndex) => (
               <div key={itemIndex} className="flex flex-col space-y-0.5 p-2">
-                <span className="text-xs font-medium text-gray-500">{label}</span>
-                <span className="text-sm font-semibold text-gray-800">{value || '-'}</span>
+                <span className="text-[10px] sm:text-xs font-medium text-gray-500">{label}</span>
+                <span className="text-[10px] sm:text-sm font-semibold text-gray-800">{value || '-'}</span>
               </div>
             ))}
           </div>
