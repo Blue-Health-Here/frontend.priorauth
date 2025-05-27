@@ -80,11 +80,13 @@ const AddNewPharmacyScreen: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center gap-3">
               <Button
                 title="Cancel"
+                onClick={() => navigate("/admin/pharmacies")}
+                type="button"
                 textColor="text-primary-sky-blue"
                 className="w-full md:w-24 px-6 bg-primary-white border border-primary-sky-blue hover:bg-primary-sky-blue hover:text-primary-white"
                 noHover
               />
-              <Button title="Save" className="w-full md:w-24 px-6" />
+              <Button type="submit" title="Save" className="w-full md:w-24 px-6" />
             </div>
           </div>
         </Form>

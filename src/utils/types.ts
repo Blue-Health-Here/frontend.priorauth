@@ -37,3 +37,13 @@ export interface DataTableProps {
   onStatusChange?: (rowData: any, newStatus: string) => void;
   headerComponent?: ReactNode
 }
+
+export interface UploadedFile {
+  id: string;
+  name: string;
+  size: number;
+  type: string;
+  lastModified: number;
+  progress: number;
+  status: "uploading" | "completed" | "error";
+}
