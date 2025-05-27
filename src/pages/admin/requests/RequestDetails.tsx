@@ -1,22 +1,15 @@
 import React, { useState } from "react";
 import { MedicationDetails } from "./MedicationDetails";
 import { DataGrid } from "./MedicationDetails";
+// import ProgressNotesModal from "./ProgressNotesModal2";
 import ProgressNotesModal from "./ProgressNotesModal";
 
 const RequestDetails: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const medicationData: DataGrid = [
-    [
-      ["Rx#", "669516-0"],
-      ["NDC", "00642-7470-01"],
-      ["Days", "28"],
-    ],
-    [
-      ["Qty", "28"],
-      ["Medication Dosing", "-"],
-      ["Drug Dosage Form", "Tablet"],
-    ],
+    [ ["Rx#", "669516-0"], ["NDC", "00642-7470-01"], ["Days", "28"] ],
+    [ ["Qty", "28"], ["Medication Dosing", "-"], ["Drug Dosage Form", "Tablet"] ],
   ];
 
   const patientData: DataGrid = [
@@ -99,14 +92,8 @@ const RequestDetails: React.FC = () => {
         <div className="w-full lg:flex-1 lg:max-w-3xl space-y-6">
           <MedicationDetails title="Medication" data={medicationData} />
           <MedicationDetails title="Patient Information" data={patientData} />
-          <MedicationDetails
-            title="Insurance Information"
-            data={insuranceData}
-          />
-          <MedicationDetails
-            title="Pharmacy and Prescriber"
-            data={pharmacyData}
-          />
+          <MedicationDetails title="Insurance Information" data={insuranceData} />
+          <MedicationDetails title="Pharmacy and Prescriber" data={pharmacyData} />
         </div>
 
         <div className="w-full lg:w-110 lg:flex-shrink-0 space-y-6">

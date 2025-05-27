@@ -45,5 +45,7 @@ export interface UploadedFile {
   type: string;
   lastModified: number;
   progress: number;
+  url: string;
   status: "uploading" | "completed" | "error";
 }
+

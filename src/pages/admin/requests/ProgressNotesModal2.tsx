@@ -171,9 +171,8 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
           </div>
         </div>
       );
-    } else if (file.type.startsWith('text/') || 
-               file.type === 'application/msword' || 
-               file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+    } else if (file.type.startsWith('text/') || file.type === 'application/msword' || 
+      file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
       return (
         <div className={`${containerClass} relative`}>
           <div className="absolute inset-0 flex items-center justify-center">
@@ -338,7 +337,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
             </div>
           )}
 
-          {analysisStarted && (
+          {/* {analysisStarted && (
             <div className="absolute top-0 left-[25%] w-[75%] h-full p-6">
               <div className="bg-white rounded-lg border border-gray-200 h-full p-4">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">
@@ -351,7 +350,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                 </div>
               </div>
             </div>
-          )}
+          )} */}
 
           {!analysisStarted && (
             <div
@@ -367,9 +366,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
             >
               <div
                 className={`flex justify-center px-6 py-10 border-2 border-dashed rounded-lg ${
-                  isDragging
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-[#a8ddf3] bg-[#F2FBFF]"
+                  isDragging ? "border-blue-500 bg-blue-50" : "border-[#a8ddf3] bg-[#F2FBFF]"
                 }`}
                 style={{
                   height: "196px",
