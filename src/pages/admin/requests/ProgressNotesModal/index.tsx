@@ -5,7 +5,6 @@ import FileDropzone from "./FileDropzone";
 import UploadFileList from "./UploadFileList";
 import GradientSidebarButton from "./GradientSidebarButton";
 import { UploadedFile } from "../../../../utils/types";
-import { Link } from "react-router-dom";
 import { notesAiAnalysisData } from "../../../../utils/constants";
 
 interface ProgressNotesModalProps {
@@ -133,36 +132,45 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                         className="w-full h-full"
                         title={file.name}
                     />
-                    <div className="absolute bottom-0 left-0 right-0 bg-white text-gray-800 text-xs p-1 truncate border-t border-gray-200">
-                        {file.name}
-                    </div>
+                    <p className="absolute bottom-0 left-0 right-0 p-2 text-center bg-white ">
+                        <span className="font-medium text-xs line-clamp-1 text-secondary-black">{file.name}</span>
+                    </p>
+                    <a href={file.url} target="_blank" className="cursor-pointer bg-white z-10 p-1.5 border rounded-sm border-blue-navigation-link-button absolute top-4 right-4">
+                        <img src="/formkit_expand.svg" alt="expand button" className="w-4" />
+                    </a>
                 </div>
             );
         } else if (file.type.startsWith('text/') || file.type === 'application/msword' ||
             file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
             return (
                 <div className={`${containerClass} relative`}>
-                    {/* <div className="absolute inset-0 flex items-center justify-center">
-                        <svg className="h-12 w-12 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z" clipRule="evenodd" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <svg className="h-7 w-7 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
-                    </div> */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-white text-gray-800 text-xs p-1 truncate border-t border-gray-200">
-                        {file.name}
                     </div>
+                    <p className="absolute bottom-0 left-0 right-0 p-2 text-center bg-white ">
+                        <span className="font-medium text-xs line-clamp-1 text-secondary-black">{file.name}</span>
+                    </p>
+                    <a href={file.url} target="_blank" className="cursor-pointer bg-white z-10 p-1.5 border rounded-sm border-blue-navigation-link-button absolute top-4 right-4">
+                        <img src="/formkit_expand.svg" alt="expand button" className="w-4" />
+                    </a>
                 </div>
             );
         } else {
             return (
                 <div className={`${containerClass} relative`}>
-                    {/* <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="absolute inset-0 flex items-center justify-center">
                         <svg className="h-12 w-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
-                    </div> */}
-                    {/* <div className="absolute bottom-0 left-0 right-0 bg-white text-gray-800 text-xs p-1 truncate border-t border-gray-200">
-                        {file.name}
-                    </div> */}
+                    </div>
+                    <p className="absolute bottom-0 left-0 right-0 p-2 text-center bg-white ">
+                        <span className="font-medium text-xs line-clamp-1 text-secondary-black">{file.name}</span>
+                    </p>
+                    <a href={file.url} target="_blank" className="cursor-pointer bg-white z-10 p-1.5 border rounded-sm border-blue-navigation-link-button absolute top-4 right-4">
+                        <img src="/formkit_expand.svg" alt="expand button" className="w-4" />
+                    </a>
                 </div>
             );
         }
@@ -230,7 +238,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                         )}
                     </div> : <div className="flex-1">
                         <h4 className="text-base font-medium text-gray-700 mb-4">Your Uploads</h4>
-                        <div className={`${uploadedFiles.length === 1 ? 'flex justify-center flex-1' : 'grid grid-cols-2 gap-4 flex-1 max-h-96 overflow-y-auto'}`}>
+                        <div className={`${uploadedFiles.length === 1 ? 'flex justify-center flex-1' : 'grid grid-cols-2 gap-4 flex-1'}`}>
                             {uploadedFiles.map((file) => (
                                 <div key={file.id} className={`rounded-lg ${uploadedFiles.length === 1 ? 'w-full max-w-md' : ''}`}>
                                     {renderFilePreview(file, uploadedFiles.length === 1)}
