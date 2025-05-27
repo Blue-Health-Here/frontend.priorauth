@@ -17,24 +17,6 @@ interface UploadedFile {
   file?: File;
 }
 
-interface AnalysisResult {
-  diagnosis: string;
-  treatmentNotes: string;
-  currentMedications: Medication[];
-  previousMedications: Medication[];
-  summary?: string;
-  lastUpdated?: string;
-}
-
-interface Medication {
-  name: string;
-  dosage: string;
-  frequency: string;
-  purpose?: string;
-  startDate?: string;
-  endDate?: string;
-}
-
 const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   isOpen,
   onClose,
@@ -42,65 +24,6 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [analysisStarted, setAnalysisStarted] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-
-  // Mock AI analysis function - in a real app, this would call an API
-  const performAIAnalysis = (files: UploadedFile[]): Promise<AnalysisResult> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // This is mock data - replace with actual API call
-        const mockResult: AnalysisResult = {
-          diagnosis: "Type 2 Diabetes Mellitus with mild peripheral neuropathy\nHypertension, stage 1\nHyperlipidemia",
-          treatmentNotes: "Patient presents with elevated HbA1c (8.2%) and reports occasional tingling in extremities. Blood pressure is controlled with current medications. Recommend:\n- Increase metformin to 1000mg BID\n- Start low-dose aspirin therapy\n- Referral to nutritionist for diabetic diet education\n- Schedule follow-up in 3 months for repeat labs",
-          currentMedications: [
-            {
-              name: "Metformin",
-              dosage: "500mg",
-              frequency: "Twice daily",
-              purpose: "Blood sugar control",
-              startDate: "01/15/2022"
-            },
-            {
-              name: "Lisinopril",
-              dosage: "10mg",
-              frequency: "Daily",
-              purpose: "Hypertension",
-              startDate: "03/10/2021"
-            },
-            {
-              name: "Atorvastatin",
-              dosage: "20mg",
-              frequency: "At bedtime",
-              purpose: "Cholesterol management",
-              startDate: "06/05/2022"
-            }
-          ],
-          previousMedications: [
-            {
-              name: "Glipizide",
-              dosage: "5mg",
-              frequency: "Daily",
-              purpose: "Blood sugar control",
-              startDate: "08/12/2020",
-              endDate: "01/10/2022"
-            },
-            {
-              name: "Hydrochlorothiazide",
-              dosage: "12.5mg",
-              frequency: "Daily",
-              purpose: "Hypertension",
-              startDate: "02/05/2020",
-              endDate: "03/05/2021"
-            }
-          ],
-          summary: "Patient with well-controlled hypertension and hyperlipidemia, but suboptimal diabetes control. Needs medication adjustment and lifestyle modifications.",
-          lastUpdated: new Date().toLocaleString()
-        };
-        resolve(mockResult);
-      }, 3000); // Simulate API delay
-    });
-  };
 
   useEffect(() => {
     if (!isOpen || !uploadedFiles.some((file) => file.status === "uploading"))
@@ -145,6 +68,8 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
       });
     };
   }, []);
+
+  if (!isOpen) return null;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -200,26 +125,12 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
     setUploadedFiles((prev) => prev.filter((file) => file.id !== id));
   };
 
-  const startAnalysis = async () => {
-    if (uploadedFiles.length === 0) return;
-    
+  const startAnalysis = () => {
     setAnalysisStarted(true);
-    setIsAnalyzing(true);
-    
-    try {
-      const result = await performAIAnalysis(uploadedFiles);
-      setAnalysisResult(result);
-    } catch (error) {
-      console.error("Analysis failed:", error);
-      // Handle error state
-    } finally {
-      setIsAnalyzing(false);
-    }
   };
 
   const redoAnalysis = () => {
     setAnalysisStarted(false);
-    setAnalysisResult(null);
   };
 
   const formatFileSize = (bytes: number) => {
@@ -291,27 +202,6 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
     }
   };
 
-  const renderMedicationItem = (med: Medication, isCurrent: boolean = true) => (
-    <div key={med.name} className="p-3 border-b border-gray-100 last:border-0">
-      <div className="flex justify-between items-start">
-        <div>
-          <h4 className="font-medium text-gray-900">{med.name}</h4>
-          <p className="text-sm text-gray-600">{med.dosage} • {med.frequency}</p>
-          {med.purpose && <p className="text-xs text-gray-500 mt-1">Purpose: {med.purpose}</p>}
-        </div>
-        <span className={`px-2 py-1 text-xs rounded-full ${isCurrent ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}>
-          {isCurrent ? 'Current' : 'Previous'}
-        </span>
-      </div>
-      <div className="flex text-xs text-gray-500 mt-2 space-x-4">
-        {med.startDate && <span>Start: {med.startDate}</span>}
-        {!isCurrent && med.endDate && <span>End: {med.endDate}</span>}
-      </div>
-    </div>
-  );
-
-  if (!isOpen) return null;
-
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
       <div
@@ -319,7 +209,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
         style={{ maxHeight: "calc(100vh - 4rem)" }}
       >
         <div className="flex justify-between items-center border-b border-gray-200 px-6 py-4">
-          <h3 className="text-lg font-semibold text-gray-800">Medical Report AI Analysis</h3>
+          <h3 className="text-lg font-semibold text-gray-800">AI Analysis</h3>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-500 focus:outline-none"
@@ -347,7 +237,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                 <h4 className="text-sm font-medium text-gray-700 mb-4">
                   Uploaded Documents
                 </h4>
-                <div className={`${uploadedFiles.length === 1 ? 'flex justify-center flex-1' : 'grid grid-cols-2 gap-4 flex-1 overflow-y-auto'}`}>
+                <div className={`${uploadedFiles.length === 1 ? 'flex justify-center flex-1  ' : 'grid grid-cols-2 gap-4 flex-1 overflow-y-auto'}`}>
                   {uploadedFiles.map((file) => (
                     <div
                       key={file.id}
@@ -436,11 +326,11 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
 
                   <h2 className="text-3xl font-bold text-center relative z-10">
                     <span className="bg-gradient-to-r from-[#F66568] to-[#A163F9] bg-clip-text text-transparent">
-                      Upload Medical
+                      Upload Progress
                     </span>
                     <br />
                     <span className="bg-gradient-to-r to-[#A163F9] from-[#F66568] bg-clip-text text-transparent">
-                      Reports for Analysis
+                      Notes for AI Analysis
                     </span>
                   </h2>
                 </div>
@@ -449,101 +339,16 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
           )}
 
           {analysisStarted && (
-            <div className="absolute top-0 left-[25%] w-[75%] h-full p-6 overflow-y-auto">
+            <div className="absolute top-0 left-[25%] w-[75%] h-full p-6">
               <div className="bg-white rounded-lg border border-gray-200 h-full p-4">
-                {isAnalyzing ? (
-                  <div className="flex flex-col items-center justify-center h-full">
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-                    <p className="text-gray-600">Analyzing medical reports...</p>
-                    <p className="text-sm text-gray-500 mt-2">This may take a few moments</p>
-                  </div>
-                ) : analysisResult ? (
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-                        <svg className="w-5 h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        Diagnosis
-                      </h3>
-                      <div className="bg-gray-50 rounded-lg p-4 whitespace-pre-line">
-                        {analysisResult.diagnosis}
-                      </div>
-                    </div>
-
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-                        <svg className="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                        Treatment Notes
-                      </h3>
-                      <div className="bg-gray-50 rounded-lg p-4 whitespace-pre-line">
-                        {analysisResult.treatmentNotes}
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-6">
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-                          <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                          </svg>
-                          Current Medications
-                        </h3>
-                        <div className="bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-                          {analysisResult.currentMedications.length > 0 ? (
-                            analysisResult.currentMedications.map(med => renderMedicationItem(med, true)))
-                            : (
-                              <div className="p-4 text-center text-gray-500">
-                                No current medications found
-                              </div>
-                            )}
-                        </div>
-                      </div>
-
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-                          <svg className="w-5 h-5 text-yellow-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                          Previous Medications
-                        </h3>
-                        <div className="bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-                          {analysisResult.previousMedications.length > 0 ? (
-                            analysisResult.previousMedications.map(med => renderMedicationItem(med, false))
-                          ) : (
-                            <div className="p-4 text-center text-gray-500">
-                              No previous medications found
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    {analysisResult.summary && (
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-                          <svg className="w-5 h-5 text-purple-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                          </svg>
-                          Clinical Summary
-                        </h3>
-                        <div className="bg-gray-50 rounded-lg p-4 whitespace-pre-line">
-                          {analysisResult.summary}
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="text-xs text-gray-500 text-right mt-4">
-                      Analysis completed: {analysisResult.lastUpdated}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="bg-gray-50 rounded-lg p-4 h-[calc(100%-3rem)] flex items-center justify-center">
-                    <p className="text-gray-600">No analysis results available</p>
-                  </div>
-                )}
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                  AI Analysis Results
+                </h3>
+                <div className="bg-gray-50 rounded-lg p-4 h-[calc(100%-3rem)]">
+                  <p className="text-gray-600">
+                    Analysis results will appear here...
+                  </p>
+                </div>
               </div>
             </div>
           )}
@@ -608,7 +413,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                     </p>
                   </div>
                   <p className="mt-2 text-sm text-gray-500">
-                    (Supports PDF, DOCX, JPG, PNG)
+                    (Max File size: 25 MB)
                   </p>
                 </div>
               </div>
