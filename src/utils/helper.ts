@@ -101,3 +101,19 @@ export const getReqStatusTextColor = (status: string) => {
     }
     return statusClass;
 };
+
+export const getCurrentBadgeColors = (status?: string) => {
+    let activeBadge = '';
+    switch (status) {
+        case 'error':
+            activeBadge = 'text-status-error-text-color bg-status-error-bg-color'
+            break;
+        case 'warning':
+            activeBadge = 'text-status-warning-text-color bg-status-warning-bg-color'
+            break;
+        default:
+            activeBadge = 'text-status-success-text-color bg-status-success-bg-color'
+            break;
+    }
+    return activeBadge;
+};

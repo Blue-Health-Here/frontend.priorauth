@@ -96,6 +96,56 @@
   --font-secondary: var(--urbanist);
 }
 
+
+/* CUSTOM ANIMATIONS */
+
+@layer utilities {
+  .animate-fadeIn {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-fadeOut {
+    animation: fadeOut 0.2s ease-in forwards;
+  }
+
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+  }
+
+  .custom-bounce {
+    animation: customBounce 1s infinite;
+  }
+
+  @keyframes customBounce {
+    0%, 100% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: translateY(-10px); /* Adjust for gentler bounce */
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -182,3 +232,10 @@ a:focus {
   padding-bottom: 10px !important;
   color: var(--primary-black) !important;
 }
+
+.diagnosis-card {
+  border-radius: 8px;
+  border: 1px solid var(--AI-Animation-1, #F8A8AA);
+  background: var(--AI-Animation-BG, linear-gradient(92deg, #F7F1FF -3.46%, #FFEFEF 104.67%));
+}
+
