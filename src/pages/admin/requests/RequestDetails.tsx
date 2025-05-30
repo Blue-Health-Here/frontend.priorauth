@@ -3,6 +3,7 @@ import { MedicationDetails } from "./MedicationDetails";
 import { DataGrid } from "./MedicationDetails";
 // import ProgressNotesModal from "./ProgressNotesModal2";
 import ProgressNotesModal from "./ProgressNotesModal";
+import ThemeButton from "../../../components/common/ThemeButton";
 
 const RequestDetails: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -76,15 +77,8 @@ const RequestDetails: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
         <h2 className="text-lg font-bold text-gray-800">UBRELVY 50MG TAB</h2>
         <div className="flex gap-3 self-end sm:self-auto">
-          <button className="text-secondary-navy-blue rounded-xl bg-[#EBF1FF] hover:bg-blue-100 font-semibold text-xs sm:text-sm cursor-pointer rounded-md px-3 sm:px-4 py-2 transition-colors border-0">
-            Open Portal
-          </button>
-          <button
-            onClick={openModal}
-            className="text-white bg-primary-navy-blue rounded-xl hover:bg-blue-800 text-xs sm:text-sm cursor-pointer rounded-md px-4 sm:px-6 py-2 sm:py-3.5 transition-colors"
-          >
-            Submit Progress Notes
-          </button>
+          <ThemeButton className="h-full min-h-12" variant="secondary">Open Portal</ThemeButton>
+          <ThemeButton onClick={openModal} className="h-full min-h-12" variant="primary">Submit Progress Notes</ThemeButton>
         </div>
       </div>
 

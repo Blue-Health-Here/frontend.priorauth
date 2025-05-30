@@ -1,14 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import PharmacyCard from './PharmacyCard';
 // import Pagination from '../../../components/common/Pagination';
-import { Formik, Form } from 'formik';
-import Button from '../../../components/common/Button';
-import SelectField from '../../../components/common/form/SelectField';
-import { Link } from 'react-router-dom';
 import { pharmacies, tabs } from '../../../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { fetchAllPharmacies } from '../../../services/adminService';
+import TableHeader from './TableHeader';
 
 const AdminPharmacies: React.FC = () => {
   const { pharmaciesData } = useSelector((state: RootState) => state.adminPharmacies);
@@ -29,36 +26,7 @@ const AdminPharmacies: React.FC = () => {
     <>
       {/* <div className="bg-primary-background rounded-2xl shadow-xs min-h-[calc(100vh-15rem)]"> */}
         <div className="bg-primary-white p-5 rounded-2xl shadow-[0px 0px 12px 0px rgba(0, 0, 0, 0.04)]">
-          <div className="flex justify-between items-center gap-4">
-            <Formik
-              initialValues={{ category: "", search: "" }}
-              onSubmit={() => { }}
-            >
-              {() => (
-                <Form className="flex md:min-w-64 flex-wrap pb-6 text-grey gap-3 [&>input]:mb-3 [&>input]:placeholder:text-themeLight [&>input]:placeholder:text-[12px]">
-                  <SelectField
-                    className="border border-medium-stroke rounded-lg p-2 font-medium min-w-48 rounded-theme-r"
-                    parentClassName="flex-1"
-                    name="sort"
-                    options={[
-                      { value: "sortby", label: "Sort By" },
-                      { value: "operational", label: "Operational" },
-                    ]}
-                  />
-                  <SelectField
-                    className="border border-medium-stroke rounded-lg p-2 font-medium min-w-48 rounded-theme-r"
-                    parentClassName="flex-1"
-                    name="filter"
-                    options={[
-                      { value: "filterby", label: "Filter By" },
-                      { value: "operational", label: "Operational" },
-                    ]}
-                  />
-                </Form>
-              )}
-            </Formik>
-            <Link to="/admin/pharmacies/add"><Button title="Add Pharmacy" className="w-full sm:w-40 rounded-theme-r" /></Link>
-          </div>
+          <TableHeader />
           <div className="flex flex-wrap overflow-x-auto whitespace-nowrap pb-4">
             {tabs.map(tab => (
               <button
