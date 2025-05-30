@@ -8,6 +8,7 @@ import { UploadedFile } from "../../../../utils/types";
 import { notesAiAnalysisData } from "../../../../utils/constants";
 import RenderFilePreview from "./RenderFilePreview";
 import RenderNoteCard from "./RenderNoteCard";
+import ThemeButton from "../../../../components/common/ThemeButton";
 
 interface ProgressNotesModalProps {
     isOpen: boolean;
@@ -249,10 +250,9 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                         <div className="px-4 lg:px-6 py-4 lg:py-6">
                             <div className="flex justify-between items-center gap-4 mb-4">
                                 <h2 className="text-primary-black font-semibold text-xl">Progress Notes Analysis</h2>
-                                <button onClick={handleDownloadReport}
-                                    className="text-white bg-primary-navy-blue rounded-xl hover:bg-blue-800 text-xs sm:text-sm cursor-pointer rounded-md px-4 sm:px-6 py-2 sm:py-3.5 transition-colors">
+                                <ThemeButton className="h-full min-h-12" variant="primary" onClick={handleDownloadReport}>
                                     Download Report
-                                </button>
+                                </ThemeButton>
                             </div>
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                                 <div className="flex flex-col gap-4 col-span-2">
