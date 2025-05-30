@@ -1,8 +1,8 @@
 import { Form, Formik } from "formik";
 import SelectField from "./form/SelectField";
-import Button from "./Button";
 import { Link } from "react-router-dom";
 import TabCarousel from "./TabCarousel";
+import ThemeButton from "./ThemeButton";
 
 const RequestTableHeader = () => {
     return (
@@ -20,7 +20,7 @@ const RequestTableHeader = () => {
                                 name="sort"
                                 options={[
                                     { value: "sortby", label: "Sort By" },
-                                    { value: "operational", label: "Operational" },
+                                    { value: "desc", label: "Desc" },
                                 ]}
                             />
                             <SelectField
@@ -29,15 +29,13 @@ const RequestTableHeader = () => {
                                 name="filter"
                                 options={[
                                     { value: "filterby", label: "Filter By" },
-                                    { value: "operational", label: "Operational" },
+                                    { value: "name", label: "Name" },
                                 ]}
                             />
                         </Form>
                     )}
                 </Formik>
-                <Link to="/admin/requests/add" className="w-full sm:w-auto">
-                    <Button title="Add Request" className="w-full sm:w-40 rounded-theme-r" />
-                </Link>
+                <Link to="/admin/requests/add"><ThemeButton className="w-full sm:w-40 rounded-theme-r" variant="primary">Add Request</ThemeButton></Link>
             </div>
             <TabCarousel />
         </>

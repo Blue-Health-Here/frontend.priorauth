@@ -39,9 +39,6 @@ const AdminRequests: React.FC = () => {
                 className='requests-table'
                 onStatusChange={(rowData, newStatus) => {
                     console.log(rowData, newStatus, "new row and status")
-                    // Make your API call here
-                    // Example:
-                    // updateRequestStatus(rowData.id, newStatus);
                 }}
             />
         </>
