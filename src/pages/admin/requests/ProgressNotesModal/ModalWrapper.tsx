@@ -11,7 +11,7 @@ const ModalWrapper: React.FC<ModalWrapperProps> = ({ children }) => {
       <div className="absolute inset-0 bg-black opacity-40 backdrop-blur-sm z-10" />
       <div className="relative flex flex-col bg-white rounded-lg shadow-xl border border-gray-300 
         transform transition-all duration-300 scale-95 opacity-0 animate-fadeIn 
-        w-full max-w-8xl h-[90vh] mx-4 overflow-hidden z-50" style={{ maxHeight: "calc(100vh - 4rem)" }}>
+        w-full max-w-8xl h-[90vh] sm:mx-4 overflow-hidden z-50" style={{ maxHeight: "calc(100vh - 4rem)" }}>
         {children}
       </div>
     </div>

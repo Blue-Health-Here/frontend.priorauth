@@ -207,8 +207,8 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
             <ModalHeader title="AI Analysis" onClose={onClose} />
             {/* Hidden canvas for PDF rendering */}
             <canvas ref={canvasRef} style={{ display: 'none' }} />
-            <div className="relative overflow-y-auto grid grid-cols-3 lg:grid-cols-4 flex-1">
-                <div className="col-span-1 bg-[#F8FAFF] z-0 flex flex-col justify-between gap-4 p-6 relative">
+            <div className="relative overflow-y-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 flex-1">
+                <div className="order-2 md:order-1 col-span-1 bg-[#F8FAFF] z-0 flex flex-col justify-between gap-4 p-4 md:p-6 relative">
                     {!analysisStarted ? <div className="bg-white rounded-xl border border-gray-200 p-2">
                         <FileDropzone
                             isDragging={isDragging}
@@ -229,9 +229,9 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                     </div> : <div className="flex-1">
                         <h4 className="text-base font-medium text-gray-700 mb-4">Your Uploads</h4>
                         <div className={`${uploadedFiles.length === 1 ? 'flex justify-center flex-1' : 'grid grid-cols-2 gap-4 flex-1'}`}>
-                            {uploadedFiles.map((file) => <RenderFilePreview 
-                                file={file} 
-                                isLarge={uploadedFiles.length === 1} 
+                            {uploadedFiles.map((file) => <RenderFilePreview
+                                file={file}
+                                isLarge={uploadedFiles.length === 1}
                                 selectedItem={selectedFile} handleSelectFile={handleSelectFile} />)}
                         </div>
                     </div>}
@@ -241,10 +241,10 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                         redoAnalysis={redoAnalysis}
                         startAnalysis={startAnalysis} />
                 </div>
-                <div className="col-span-2 lg:col-span-3">
+                <div className="hidden order-1 md:order-2 col-span-1 md:col-span-2 lg:col-span-3 lg:flex items-center justify-center p-4 md:p-0">
                     {!analysisStarted ? (
                         <div className="flex items-center justify-center h-full">
-                            <img src="/radial-color-ai.png" alt="radial color ai" className="w-[26rem] lg:w-[40rem] custom-bounce" />
+                            <img src="/radial-color-ai.png" alt="radial color ai" className="w-full max-w-xs sm:max-w-sm md:max-w-none md:w-[30rem] lg:w-[40rem] custom-bounce" />
                         </div>
                     ) : (
                         <div className="px-4 lg:px-6 py-4 lg:py-6">
@@ -256,8 +256,8 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                             </div>
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                                 <div className="flex flex-col gap-4 col-span-2">
-                                    {notesAiAnalysisData.map((item, index) => <RenderNoteCard 
-                                        item={item} key={index} 
+                                    {notesAiAnalysisData.map((item, index) => <RenderNoteCard
+                                        item={item} key={index}
                                         handleDownloadReport={handleDownloadReport} />)}
                                 </div>
                                 <div className="flex gap-4 flex-col col-span-1">

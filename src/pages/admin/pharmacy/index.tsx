@@ -23,9 +23,9 @@ const AdminPharmacies: React.FC = () => {
   return (
     <>
       {/* <div className="bg-primary-background rounded-2xl shadow-xs min-h-[calc(100vh-15rem)]"> */}
-      <div className="bg-primary-white p-5 rounded-2xl shadow-[0px 0px 12px 0px rgba(0, 0, 0, 0.04)]">
+      <div className="bg-primary-white p-4 sm:p-5 rounded-2xl shadow-[0px 0px 12px 0px rgba(0, 0, 0, 0.04)]">
         <TableHeader />
-        <div className="flex flex-wrap overflow-x-auto whitespace-nowrap pb-4">
+        <div className="flex overflow-x-auto whitespace-nowrap py-4 scrollbar-hide">
           {tabs.map(tab => (
             <button
               key={tab.id}
@@ -40,7 +40,7 @@ const AdminPharmacies: React.FC = () => {
             </button>
           ))}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 p-3 md:p-6 bg-primary-background rounded-b-2xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 p-3 sm:p-6 bg-primary-background rounded-b-2xl">
           {pharmacies.map((pharmacy: any) => {
             return (
               <PharmacyCard key={pharmacy.id} pharmacy={pharmacy} />

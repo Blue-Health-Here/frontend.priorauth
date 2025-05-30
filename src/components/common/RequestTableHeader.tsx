@@ -35,7 +35,9 @@ const RequestTableHeader = () => {
                         </Form>
                     )}
                 </Formik>
-                <Link to="/admin/requests/add"><ThemeButton className="w-full sm:w-40 rounded-theme-r" variant="primary">Add Request</ThemeButton></Link>
+                <Link to="/admin/requests/add" className="w-full sm:w-auto">
+                    <ThemeButton className="w-full sm:w-40 rounded-theme-r" variant="primary">Add Request</ThemeButton>
+                </Link>
             </div>
             <TabCarousel />
         </>

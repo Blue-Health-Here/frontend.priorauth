@@ -39,34 +39,34 @@ const Topbar: React.FC = () => {
         {/* <div className="md:hidden block">
           <FaBars size={22} className='text-primary-sky-blue block lg:hidden' />
         </div> */}
-        <div className="relative">
+        <div className="hidden md:block relative mx-2">
           <input
             type="text"
             placeholder="Search here"
-            className=" w-full md:w-96 pl-10 pr-4 py-2 border border-medium-stroke rounded-lg text-xs md:text-sm focus:outline-none placeholder:text-tertiary-white"
+            className="w-[180px] lg:w-[220px] xl:w-[280px] 2xl:w-[350px] pl-9 pr-3 py-1.5 sm:py-2 border border-medium-stroke rounded-lg text-sm focus:outline-none placeholder:text-tertiary-white"
           />
-          <span className="absolute left-3 top-2.5 text-gray-500 cursor-pointer">
+          <span className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-gray-500">
             <img src="/search-icon.svg" alt="search icon" />
           </span>
         </div>
         <div className="flex justify-end gap-4">
-          <Link to="/admin/notifications" className="flex rounded-lg border border-light-stroke items-center p-2.5">
+          <Link to="/admin/notifications" className="flex rounded-lg border border-light-stroke items-center p-2 sm:p-2.5">
             <p className='relative'>
-              <img src="/notifications.svg" alt="notification" className='h-6 w-6' />
+              <img src="/notifications.svg" alt="notification" className='w-4 h-4 sm:h-6 sm:w-6' />
               <span className='absolute rounded-full w-2 h-2 bg-error-clip top-0.5 right-0.5'></span>
             </p>
           </Link>
           <div className='px-1 rounded-lg border border-quaternary-navy-blue bg-quaternary-navy-blue' ref={dropdownRef}>
             <div className="flex gap-3 items-center relative cursor-pointer" onClick={toggleDropdown}>
-              <img src="/images/profile-image.png" alt="" className='w-10 h-10 rounded-full' />
-              <div className='py-0.5'>
-                <h2 className='text-primary-black font-bold'>John Doe</h2>
-                <p className='text-secondary-black'>johndoe@mail.com</p>
+              <img src="/images/profile-image.png" alt="Profile" className='w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full' />
+              <div className='hidden sm:block py-0.5'>
+                <h2 className='text-primary-black font-bold text-sm md:text-base'>John Doe</h2>
+                <p className='text-secondary-black text-xs md:text-sm'>johndoe@mail.com</p>
               </div>
-              <img 
-                src='/profile_chevron_down.svg' 
-                alt='Toggle dropdown' 
-                className='w-4 h-4 sm:w-5 sm:h-5' 
+              <img
+                src='/profile_chevron_down.svg'
+                alt='Toggle dropdown'
+                className='w-4 h-4 sm:w-5 sm:h-5'
               />
             </div>
             {isDropdownOpen && (
