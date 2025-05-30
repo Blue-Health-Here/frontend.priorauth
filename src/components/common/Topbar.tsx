@@ -69,9 +69,12 @@ const Topbar: React.FC = () => {
         </div>
         <div className="flex justify-end gap-4">
           <Link to="/admin/notifications" className="flex rounded-lg border border-light-stroke items-center p-2.5">
-            <img src="/notifications.svg" alt="notification" className='h-6 w-6' />
+            <p className='relative'>
+              <img src="/notifications.svg" alt="notification" className='h-6 w-6' />
+              <span className='absolute rounded-full w-2 h-2 bg-error-clip top-0.5 right-0.5'></span>
+            </p>
           </Link>
-          <div className='px-1 rounded-lg border border-light-stroke' ref={dropdownRef}>
+          <div className='px-1 rounded-lg border border-quaternary-navy-blue bg-quaternary-navy-blue' ref={dropdownRef}>
             <div className="flex gap-3 items-center relative cursor-pointer" onClick={toggleDropdown}>
               <img src="/images/profile-image.png" alt="" className='w-10 h-10 rounded-full' />
               <div className='py-0.5'>
