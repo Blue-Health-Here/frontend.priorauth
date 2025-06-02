@@ -11,11 +11,11 @@ import PharmacyDetailScreen from "./pages/admin/pharmacy/PharmacyDetailScreen";
 import AddNewPharmacyScreen from "./pages/admin/pharmacy/AddNewPharmacyScreen";
 import AdminSettings from "./pages/admin/settings";
 import ChangePasswordScreen from "./pages/admin/settings/ChangePasswordScreen";
-import NotificationScreen from "./components/NotificationScreen";
 import AdminRolesAndPermissions from "./pages/permissions";
 import ThemeProvider from "./layouts/ThemeProvider";
 import { Toaster } from "react-hot-toast";
 import RequestDetails from "./pages/admin/requests/RequestDetails";
+import NotificationScreen from "./pages/admin/notifications";
 
 function App() {
   return (
