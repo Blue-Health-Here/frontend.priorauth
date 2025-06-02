@@ -7,6 +7,7 @@
   --secondary-navy-blue: #3961B2;
   --tertiary-navy-blue: #85ACFF;
   --quaternary-navy-blue: #EBF1FF;
+  --quaternary-navy-blue-dark: #CBDAFF;
   --accent: #FFBD38;
   --primary-sky-blue: #1594CC;
   --secondary-sky-blue: #66D0FF;
@@ -54,6 +55,7 @@
   --color-secondary-navy-blue: var(--secondary-navy-blue);
   --color-tertiary-navy-blue: var(--tertiary-navy-blue);
   --color-quaternary-navy-blue: var(--quaternary-navy-blue);
+  --color-quaternary-navy-blue-dark: var(--quaternary-navy-blue-dark);
   --color-accent: var(--accent);
   --color-primary-sky-blue: var(--primary-sky-blue);
   --color-secondary-sky-blue: var(--secondary-sky-blue);
