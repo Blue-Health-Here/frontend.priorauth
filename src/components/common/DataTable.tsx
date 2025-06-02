@@ -75,7 +75,7 @@ const DataTable: React.FC<DataTableProps> = ({
                         value={selectedOption?.value}
                         options={reqStatusOptions}
                         onChange={(e) => handleStatusChange(rowData, e.value)}
-                        className={`w-full max-w-[230px] ${getReqBgStatusStyle(cellData)}`}
+                        className={`w-full  ${getReqBgStatusStyle(cellData)}`}
                         placeholder="Select Status"
                         optionGroupTemplate={optionTemplate}
                         valueTemplate={valueTemplate}
