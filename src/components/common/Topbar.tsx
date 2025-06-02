@@ -42,10 +42,7 @@ const Topbar: React.FC = () => {
             {pageTitle}
           </p>
         </div>
-        <div className="md:hidden block" onClick={() => dispatch(setIsSidebarOpen(!isSidebarOpen))}>
-          <FaBars size={22} className='text-primary-sky-blue block lg:hidden' />
-        </div>
-        <div className="hidden md:block relative mx-2">
+        <div className="hidden lg:block relative mx-2">
           <input
             type="text"
             placeholder="Search here"
@@ -55,14 +52,14 @@ const Topbar: React.FC = () => {
             <img src="/search-icon.svg" alt="search icon" />
           </span>
         </div>
-        {<div className="md:flex hidden justify-end gap-4">
-          <Link to="/admin/notifications" className="flex rounded-lg border border-light-stroke items-center p-2 sm:p-2.5">
+        {<div className="flex justify-end items-center gap-4">
+          <Link to="/admin/notifications" className="md:flex hidden rounded-lg border border-light-stroke items-center p-2 sm:p-2.5">
             <p className='relative'>
               <img src="/notifications.svg" alt="notification" className='w-4 h-4 sm:h-6 sm:w-6' />
               <span className='absolute rounded-full w-2 h-2 bg-error-clip top-0.5 right-0.5'></span>
             </p>
           </Link>
-          <div className='px-1 rounded-lg border border-quaternary-navy-blue bg-quaternary-navy-blue' ref={dropdownRef}>
+          <div className='px-1 hidden lg:block rounded-lg border border-quaternary-navy-blue bg-quaternary-navy-blue' ref={dropdownRef}>
             <div className="flex gap-3 items-center relative cursor-pointer" onClick={toggleDropdown}>
               <img src="/images/profile-image.png" alt="Profile" className='w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full' />
               <div className='hidden sm:block py-0.5'>
@@ -81,6 +78,10 @@ const Topbar: React.FC = () => {
                 navigate("/login");
               }} />
             )}
+          </div>
+          
+          <div className="lg:hidden block" onClick={() => dispatch(setIsSidebarOpen(!isSidebarOpen))}>
+            <FaBars size={22} className='text-primary-sky-blue block lg:hidden' />
           </div>
         </div>}
       </nav>
