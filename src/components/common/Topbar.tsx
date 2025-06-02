@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import NavbarProfileDropdown from './NavbarProfileDropdown';
 import { handleLogout } from '../../services/authService';
 import { getPageTitle } from '../../utils/getPageTitle';
@@ -7,23 +7,25 @@ import { FaBars } from 'react-icons/fa6';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { setIsSidebarOpen } from '../../store/features/global/globalSlice';
+import NavbarNotificationDropdown from './NavbarNotificationDropdown';
 
 const Topbar: React.FC = () => {
   const { isSidebarOpen } = useSelector((state: RootState) => state.global);
+  const [isNotifDropdownOpen, setIsNotifDropdownOpen] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const notifDropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const pageTitle = getPageTitle(location.pathname);
   const dispatch = useDispatch();
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
   const handleClickOutside = (event: MouseEvent) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setIsDropdownOpen(false);
+    }
+    if (notifDropdownRef.current && !notifDropdownRef.current.contains(event.target as Node)) {
+      setIsNotifDropdownOpen(false);
     }
   };
 
@@ -53,14 +55,18 @@ const Topbar: React.FC = () => {
           </span>
         </div>
         {<div className="flex justify-end items-center gap-4">
-          <Link to="/admin/notifications" className="md:flex hidden rounded-lg border border-light-stroke items-center p-2 sm:p-2.5">
-            <p className='relative'>
-              <img src="/notifications.svg" alt="notification" className='w-4 h-4 sm:h-6 sm:w-6' />
-              <span className='absolute rounded-full w-2 h-2 bg-error-clip top-0.5 right-0.5'></span>
-            </p>
-          </Link>
+          <div className='relative' ref={notifDropdownRef}>
+            <button type='button' onClick={() => setIsNotifDropdownOpen(!isNotifDropdownOpen)} 
+              className="md:flex hidden cursor-pointer rounded-lg border border-light-stroke items-center p-2 sm:p-2.5">
+              <p className='relative'>
+                <img src="/notifications.svg" alt="notification" className='w-4 h-4 sm:h-6 sm:w-6' />
+                <span className='absolute rounded-full w-2 h-2 bg-error-clip top-0.5 right-0.5'></span>
+              </p>
+            </button>
+            {isNotifDropdownOpen && <NavbarNotificationDropdown />}
+          </div>
           <div className='px-1 hidden lg:block rounded-lg border border-quaternary-navy-blue bg-quaternary-navy-blue' ref={dropdownRef}>
-            <div className="flex gap-3 items-center relative cursor-pointer" onClick={toggleDropdown}>
+            <div className="flex gap-3 items-center relative cursor-pointer" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
               <img src="/images/profile-image.png" alt="Profile" className='w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full' />
               <div className='hidden sm:block py-0.5'>
                 <h2 className='text-primary-black font-bold text-sm md:text-base'>John Doe</h2>

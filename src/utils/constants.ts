@@ -910,43 +910,52 @@ export const rquestDetailpageData = [
 export const notification = [
   {
     icon: "/images/notify1.png",
-    message: "Your ad Lorem Ipsum dolor has published to screens.",
-    time: "18 min ago"
+    message: "Your health support request has been successfully submitted and is now under review.",
+    status: 'Approved',
+    time: "18 min ago",
+    unRead: true
   },
   {
     icon: "/images/notify2.png",
-    message: "Your ad Lorem Ipsum dolor has published to screens.",
-    time: "18 min ago"
+    message: "You have a new message from your healthcare provider regarding your recent inquiry.",
+    status: "Denied",
+    time: "18 min ago",
+    unRead: true
   },
   {
     icon: "/images/notify3.png",
-    message: "Your ad Lorem Ipsum dolor has published to screens.",
-    time: "18 min ago"
+    message: "Your appointment has been confirmed. Check your dashboard for details.",
+    status: "Plan Exclusion",
+    time: "18 min ago",
+    unRead: false
   },
   {
     icon: "/images/notify4.png",
-    message: "Your ad Lorem Ipsum dolor has published to screens.",
-    time: "18 min ago"
+    message: "New updates available for your health tracking app. Please update for the best experience.",
+    status: "Denied",
+    time: "18 min ago",
+    unRead: false
   },
   {
     icon: "/images/notify5.png",
-    message: "Your ad Lorem Ipsum dolor has published to screens.",
-    time: "18 min ago"
+    message: "A reminder: Your next scheduled appointment is in 3 days. Don't forget to prepare any questions you may have.",
+    status: "Plan Exclusion",
+    time: "18 min ago",
+    unRead: false
   },
   {
     icon: "/images/notify1.png",
-    message: "Your ad Lorem Ipsum dolor has published to screens.",
-    time: "18 min ago"
+    message: "Your prescription refill request has been processed. You can pick it up at your local pharmacy.",
+    status: "Approved",
+    time: "18 min ago",
+    unRead: false
   },
   {
     icon: "/images/notify2.png",
-    message: "Your ad Lorem Ipsum dolor has published to screens.",
-    time: "18 min ago"
-  },
-  {
-    icon: "/images/notify3.png",
-    message: "Your ad Lorem Ipsum dolor has published to screens.",
-    time: "18 min ago"
+    message: "You have a new health tip available in your app. Check it out to stay informed!",
+    status: "Denied",
+    time: "18 min ago",
+    unRead: false
   },
 ];
 
