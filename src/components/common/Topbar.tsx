@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import NavbarProfileDropdown from './NavbarProfileDropdown';
 import { handleLogout } from '../../services/authService';
 import { getPageTitle } from '../../utils/getPageTitle';
