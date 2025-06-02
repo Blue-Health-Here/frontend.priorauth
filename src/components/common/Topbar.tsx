@@ -1,38 +1,31 @@
 import React, { useEffect, useRef, useState } from 'react';
-// import { FaBars } from 'react-icons/fa';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import NavbarProfileDropdown from './NavbarProfileDropdown';
 import { handleLogout } from '../../services/authService';
 import { getPageTitle } from '../../utils/getPageTitle';
+import { FaBars } from 'react-icons/fa6';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { setIsSidebarOpen } from '../../store/features/global/globalSlice';
+import NavbarNotificationDropdown from './NavbarNotificationDropdown';
 
 const Topbar: React.FC = () => {
-  // const [isScrolled, setIsScrolled] = useState(false);
+  const { isSidebarOpen } = useSelector((state: RootState) => state.global);
+  const [isNotifDropdownOpen, setIsNotifDropdownOpen] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const notifDropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const pageTitle = getPageTitle(location.pathname);
-
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     setIsScrolled(window.scrollY > 0);
-  //   };
-
-  //   window.addEventListener('scroll', handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll);
-  //   };
-  // }, []);
-
-  // Function to toggle the dropdown
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+  const dispatch = useDispatch();
 
   const handleClickOutside = (event: MouseEvent) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setIsDropdownOpen(false);
+    }
+    if (notifDropdownRef.current && !notifDropdownRef.current.contains(event.target as Node)) {
+      setIsNotifDropdownOpen(false);
     }
   };
 
@@ -44,44 +37,46 @@ const Topbar: React.FC = () => {
   }, []);
 
   return (
-    <div className={`fixed top-0 left-[250px] xl:left-[260px] right-0 p-3.5 z-60 transition-all duration-300 bg-white border-b border-gray-100`}>
-      <nav
-        //  lg:pl-[264px] xl:pl-[276px]
-        className={`topbar flex justify-between items-center transition-all duration-300 pl-0`}
-      >
-        <div className='hidden md:md:block'>
-          <p className="text-lg md:text-xl lg:text-2xl font-semibold text-primary-black">
+    <div className={`fixed top-0 left-0 lg:left-[250px] xl:left-[260px] right-0 p-4 sm:p-3.5 z-60 bg-white border-b border-gray-100`}>
+      <nav className={`flex justify-between items-center w-full`}>
+        <div className='flex items-center'>
+          <p className="text-lg sm:text-xl lg:text-2xl font-semibold text-primary-black whitespace-nowrap">
             {pageTitle}
           </p>
         </div>
-        {/* <div className="md:hidden block">
-          <FaBars size={22} className='text-primary-sky-blue block lg:hidden' />
-        </div> */}
-        <div className="relative">
+        <div className="hidden lg:block relative mx-2">
           <input
             type="text"
             placeholder="Search here"
-            className=" w-full md:w-96 pl-10 pr-4 py-2 border border-medium-stroke rounded-lg text-xs md:text-sm focus:outline-none placeholder:text-tertiary-white"
+            className="w-[180px] lg:w-[220px] xl:w-[280px] 2xl:w-[350px] pl-9 pr-3 py-1.5 sm:py-2 border border-medium-stroke rounded-lg text-sm focus:outline-none placeholder:text-tertiary-white"
           />
-          <span className="absolute left-3 top-2.5 text-gray-500 cursor-pointer">
+          <span className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-gray-500">
             <img src="/search-icon.svg" alt="search icon" />
           </span>
         </div>
-        <div className="flex justify-end gap-4">
-          <Link to="/admin/notifications" className="flex rounded-lg border border-light-stroke items-center p-2.5">
-            <p className='relative'>
-              <img src="/notifications.svg" alt="notification" className='h-6 w-6' />
-              <span className='absolute rounded-full w-2 h-2 bg-error-clip top-0.5 right-0.5'></span>
-            </p>
-          </Link>
-          <div className='px-1 rounded-lg border border-quaternary-navy-blue bg-quaternary-navy-blue' ref={dropdownRef}>
-            <div className="flex gap-3 items-center relative cursor-pointer" onClick={toggleDropdown}>
-              <img src="/images/profile-image.png" alt="" className='w-10 h-10 rounded-full' />
-              <div className='py-0.5'>
-                <h2 className='text-primary-black font-bold'>John Doe</h2>
-                <p className='text-secondary-black'>johndoe@mail.com</p>
+        {<div className="flex justify-end items-center gap-4">
+          <div className='relative' ref={notifDropdownRef}>
+            <button type='button' onClick={() => setIsNotifDropdownOpen(!isNotifDropdownOpen)} 
+              className="md:flex hidden cursor-pointer rounded-lg border border-light-stroke items-center p-2 sm:p-2.5">
+              <p className='relative'>
+                <img src="/notifications.svg" alt="notification" className='w-4 h-4 sm:h-6 sm:w-6' />
+                <span className='absolute rounded-full w-2 h-2 bg-error-clip top-0.5 right-0.5'></span>
+              </p>
+            </button>
+            {isNotifDropdownOpen && <NavbarNotificationDropdown />}
+          </div>
+          <div className='px-1 hidden lg:block rounded-lg border border-quaternary-navy-blue bg-quaternary-navy-blue' ref={dropdownRef}>
+            <div className="flex gap-3 items-center relative cursor-pointer" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+              <img src="/images/profile-image.png" alt="Profile" className='w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full' />
+              <div className='hidden sm:block py-0.5'>
+                <h2 className='text-primary-black font-bold text-sm md:text-base'>John Doe</h2>
+                <p className='text-secondary-black text-xs md:text-sm'>johndoe@mail.com</p>
               </div>
-              <img src='/profile_chevron_down.svg' alt='profile chevron down' className='w-6 h-6' />
+              <img
+                src='/profile_chevron_down.svg'
+                alt='Toggle dropdown'
+                className='w-4 h-4 sm:w-5 sm:h-5'
+              />
             </div>
             {isDropdownOpen && (
               <NavbarProfileDropdown onClose={() => {
@@ -90,7 +85,11 @@ const Topbar: React.FC = () => {
               }} />
             )}
           </div>
-        </div>
+          
+          <div className="lg:hidden block" onClick={() => dispatch(setIsSidebarOpen(!isSidebarOpen))}>
+            <FaBars size={22} className='text-primary-sky-blue block lg:hidden' />
+          </div>
+        </div>}
       </nav>
     </div>
   );

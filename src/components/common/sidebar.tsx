@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { adminSidebarItems } from '../../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { setIsSidebarCollapsed } from '../../store/features/global/globalSlice';
+import { setIsSidebarCollapsed, setIsSidebarOpen } from '../../store/features/global/globalSlice';
+import { RxCross2 } from 'react-icons/rx';
 
 const Sidebar: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
   const pathName = location.pathname;
   const dispatch = useDispatch();
-  const { isSidebarCollapsed } = useSelector((state: RootState) => state.global);
+  const { isSidebarCollapsed, isSidebarOpen } = useSelector((state: RootState) => state.global);
 
   useEffect(() => {
     if (window.innerWidth < 1024) {
-      setIsSidebarOpen(false);
+      dispatch(setIsSidebarOpen(false));
     }
   }, [pathName]);
 
@@ -35,25 +35,26 @@ const Sidebar: React.FC = () => {
   }
 
   const asideClass = isSidebarOpen
-    ? 'max-w-[250px] min-w-[250px] transition-all duration-500 shadow-[0px 0px 12px 0px rgba(0, 0, 0, 0.04)] xl:min-w-[260px] xl:max-w-[260px] block text-secondary-black fixed top-0 bottom-0 z-[99]'
+    ? 'max-w-full min-w-full transition-all duration-500 shadow-[0px 0px 12px 0px rgba(0, 0, 0, 0.04)] xl:min-w-[260px] xl:max-w-[260px] block text-secondary-black fixed top-0 bottom-0 z-[99]'
     : 'max-w-[250px] min-w-[250px] transition-all duration-500 shadow-[0px 0px 12px 0px rgba(0, 0, 0, 0.04)] xl:min-w-[260px] xl:max-w-[260px] hidden lg:flex text-secondary-black flex-col fixed top-0 bottom-0 z-[99]';
 
   return (
     <>
       {isSidebarOpen && <div className="fixed inset-0 z-[98] bg-black bg-opacity-50 lg:hidden" />}
       <aside className={asideClass}>
-        {/* {isSidebarOpen && (
-          <span onClick={() => setIsSidebarOpen(false)} className="absolute top-4 right-4 cursor-pointer ">
-            <RxCross2 size={20} /> X
-          </span>
-        )} */}
-        <div className='py-4 px-4 flex min-h-[81px] bg-primary-white justify-between items-center border-r border-gray-100'>
+        <div className='p-4 flex min-h-[79px] border-b border-gray-100 bg-primary-white justify-between items-center border-r border-gray-100'>
           <Link to='/' className='pl-2'>
             <img src="/images/logo.svg" alt="PriorAuth Logo" className="h-7 sm:h-8 lg:h-8" />
           </Link>
-          <img onClick={handleSidebarCollapse} src='/header-left-logo-arrow.svg' alt='header left logo arrow' className={`w-8 h-8 bg-gray-100 p-2 rounded-lg cursor-pointer ${isSidebarCollapsed ? 'scale-[-1]' : ''}`} />
+          {!isSidebarOpen ? <img onClick={handleSidebarCollapse} src='/header-left-logo-arrow.svg' alt='header left logo arrow' className={`w-8 h-8 bg-gray-100 p-2 rounded-lg cursor-pointer ${isSidebarCollapsed ? 'scale-[-1]' : ''}`} /> : (
+            <span onClick={() => dispatch(setIsSidebarOpen(false))} className="cursor-pointer ">
+              <RxCross2 size={20} />
+            </span>
+          )}
         </div>
-        <div className={`${isSidebarCollapsed ? ' !max-w-[80px] !min-w-[80px]' : ''} overflow-y-auto bg-primary-white duration-500 transition-all flex flex-col flex-1 px-4 py-10 border-t border-r border-gray-100`}>
+        <div className={`${isSidebarCollapsed ? ' !max-w-[80px] !min-w-[80px]' : ''} h-[calc(100%-79px)] 
+          overflow-y-auto bg-primary-white duration-500 transition-all flex flex-col flex-1 gap-4
+          px-4 py-10 border-r border-gray-100`}>
           <ul className="flex flex-col gap-y-2 text-[15px]">
             {adminSidebarItems.map((item, index) => (
               <NavLink
@@ -83,7 +84,7 @@ const Sidebar: React.FC = () => {
               </NavLink>
             ))}
           </ul>
-          <div className='mt-2 2xl:mt-auto'>
+          <div className='mt-auto'>
             <NavLink
               to={'/admin/settings'}
               className={({ isActive }) =>

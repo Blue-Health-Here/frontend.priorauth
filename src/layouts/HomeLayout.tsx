@@ -4,7 +4,7 @@ import FooterSection from "../pages/Home/FooterSection";
 
 const HomeLayout: React.FC<{ children: any }> = ({ children }) => {
   return (
-    <div className="min-h-screen bg-primary-white">
+    <div className="min-h-screen bg-primary-white ">
       {/* Header */}
       <Header />
       {/* Main Content */}
