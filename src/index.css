@@ -48,6 +48,8 @@
 
   --urbanist: "Urbanist", "sans-serif";
   --dm-sans: "DM Sans", "sans-serif";
+
+  --AI-ButtonBorder: linear-gradient(42deg, #F8A8AA 7.93%, #FFA5E0 29.5%, #FFDFD7 38.64%, #FFB126 51.64%, #FF512B 77.37%);
 }
 
 @theme inline {
@@ -241,3 +243,17 @@ a:focus {
   background: var(--AI-Animation-BG, linear-gradient(92deg, #F7F1FF -3.46%, #FFEFEF 104.67%));
 }
 
+.magic-lines {
+  padding: 2px;
+  /* border: 2px solid var(--AI-ButtonBorder, #F8A8AA); */
+  background: var(--AI-ButtonBorder);
+  box-shadow: -2px -2px 10px 0px rgba(255, 134, 41, 0.20), 2px 2px 10px 0px rgba(255, 139, 203, 0.20);
+}
+
+.magic-title {
+  font-size: 1rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, #F66568 23.8%, #A16CF9 75.81%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
