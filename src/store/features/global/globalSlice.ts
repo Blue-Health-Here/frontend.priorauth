@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     isLoading: false,
     profileData: null,
-    isSidebarCollapsed: false
+    isSidebarCollapsed: false,
+    isSidebarOpen: false
 };
 
 const globalSlice = createSlice({
@@ -18,12 +19,15 @@ const globalSlice = createSlice({
         },
         setIsSidebarCollapsed: (state, action) => {
             state.isSidebarCollapsed = action.payload;
+        },
+        setIsSidebarOpen: (state, action) => {
+            state.isSidebarOpen = action.payload;
         }
     }
 });
 
 export const {
-    setIsLoading, setProfileData, setIsSidebarCollapsed
+    setIsLoading, setProfileData, setIsSidebarCollapsed, setIsSidebarOpen
 } = globalSlice.actions;
 
 export default globalSlice.reducer;

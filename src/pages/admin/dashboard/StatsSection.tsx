@@ -26,7 +26,7 @@ const StatsSection: React.FC = () => {
 
       <div className="sm:col-span-1 xl:col-span-3 h-full">
         <div className="bg-primary-white p-4 sm:p-6 rounded-2xl shadow-lg h-full flex flex-col">
-          <h2 className="text-sm md:text-base lg:text-lg text-secondary-black font-secondary">Total Requests</h2>
+          <h2 className="text-sm md:text-base lg:text-lg font-semibold text-secondary-black font-secondary">Total Requests</h2>
           <p className="text-tertiary-black text-xs md:text-sm lg:text-base leading-[120%] mt-2">
             Total no. of Sessions/sessions Doctors need to attend.
           </p>
@@ -42,7 +42,7 @@ const StatsSection: React.FC = () => {
 
       <div className="sm:col-span-1 xl:col-span-3 h-full">
         <div className="bg-primary-white p-4 sm:p-6 rounded-2xl shadow-lg flex flex-col h-full">
-          <h2 className="text-sm md:text-base lg:text-lg text-secondary-black font-secondary">
+          <h2 className="text-sm md:text-base lg:text-lg font-semibold text-secondary-black font-secondary">
             Total Tasks
           </h2>
           <p className="text-tertiary-black text-xs md:text-sm lg:text-base leading-[120%] mt-2">

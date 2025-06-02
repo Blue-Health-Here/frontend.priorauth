@@ -3,13 +3,19 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import NavbarProfileDropdown from './NavbarProfileDropdown';
 import { handleLogout } from '../../services/authService';
 import { getPageTitle } from '../../utils/getPageTitle';
+import { FaBars } from 'react-icons/fa6';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { setIsSidebarOpen } from '../../store/features/global/globalSlice';
 
 const Topbar: React.FC = () => {
+  const { isSidebarOpen } = useSelector((state: RootState) => state.global);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const pageTitle = getPageTitle(location.pathname);
+  const dispatch = useDispatch();
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -29,16 +35,16 @@ const Topbar: React.FC = () => {
   }, []);
 
   return (
-    <div className={`fixed top-0 left-0 lg:left-[250px] xl:left-[260px] right-0 p-2 sm:p-3.5 z-60 bg-white border-b border-gray-100`}>
+    <div className={`fixed top-0 left-0 lg:left-[250px] xl:left-[260px] right-0 p-4 sm:p-3.5 z-60 bg-white border-b border-gray-100`}>
       <nav className={`flex justify-between items-center w-full`}>
         <div className='flex items-center'>
           <p className="text-lg sm:text-xl lg:text-2xl font-semibold text-primary-black whitespace-nowrap">
             {pageTitle}
           </p>
         </div>
-        {/* <div className="md:hidden block">
+        <div className="md:hidden block" onClick={() => dispatch(setIsSidebarOpen(!isSidebarOpen))}>
           <FaBars size={22} className='text-primary-sky-blue block lg:hidden' />
-        </div> */}
+        </div>
         <div className="hidden md:block relative mx-2">
           <input
             type="text"
@@ -49,7 +55,7 @@ const Topbar: React.FC = () => {
             <img src="/search-icon.svg" alt="search icon" />
           </span>
         </div>
-        <div className="flex justify-end gap-4">
+        {<div className="md:flex hidden justify-end gap-4">
           <Link to="/admin/notifications" className="flex rounded-lg border border-light-stroke items-center p-2 sm:p-2.5">
             <p className='relative'>
               <img src="/notifications.svg" alt="notification" className='w-4 h-4 sm:h-6 sm:w-6' />
@@ -76,7 +82,7 @@ const Topbar: React.FC = () => {
               }} />
             )}
           </div>
-        </div>
+        </div>}
       </nav>
     </div>
   );
