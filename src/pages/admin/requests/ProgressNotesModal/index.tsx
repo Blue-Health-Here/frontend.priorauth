@@ -311,35 +311,37 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                     </p>
                   </div>
 
-                  <div className="border border-ai-animation rounded-theme-r flex flex-col gap-5 bg-primary-white p-4">
-                    <div className="flex items-center justify-between gap-4">
-                      <h3 className="font-semibold">Magic Lines</h3>
-                      <img
-                        src="/copy-icon.svg"
-                        alt="copy icon"
-                        className="cursor-pointer"
-                      />
-                    </div>
-                    <div className="text-primary-black">
-                      <p>
-                        The patient has trialed and failed, experienced
-                        contraindications, or had intolerances to at least two
-                        preventive migraine medications:
-                      </p>
-                      <ul className="list-disc pl-5 space-y-2 mt-2">
-                        <li>
-                          Propranolol 20mg BID (XX/XX/2023 - XX/XX/2023), which
-                          worsened headaches.
-                        </li>
-                        <li>
-                          Amitriptyline 25mg daily (XX/XX/2023 - XX/XX/2023),
-                          which caused excessive drowsiness.
-                        </li>
-                        <li>
-                          Topiramate 100mg daily (XX/XX/2023 - XX/XX/2023),
-                          which caused memory issues.
-                        </li>
-                      </ul>
+                  <div className="magic-lines rounded-lg overflow-hidden">
+                    <div className="flex flex-col gap-5 bg-primary-white p-4 bg-white rounded-lg">
+                      <div className="flex items-center justify-between gap-4">
+                        <h3 className="font-semibold magic-title">Magic Lines</h3>
+                        <img
+                          src="/magic-copy-icon.svg"
+                          alt="copy icon"
+                          className="cursor-pointer"
+                        />
+                      </div>
+                      <div className="text-primary-black">
+                        <p>
+                          The patient has trialed and failed, experienced
+                          contraindications, or had intolerances to at least two
+                          preventive migraine medications:
+                        </p>
+                        <ul className="list-disc pl-5 space-y-2 mt-2">
+                          <li>
+                            Propranolol 20mg BID (XX/XX/2023 - XX/XX/2023), which
+                            worsened headaches.
+                          </li>
+                          <li>
+                            Amitriptyline 25mg daily (XX/XX/2023 - XX/XX/2023),
+                            which caused excessive drowsiness.
+                          </li>
+                          <li>
+                            Topiramate 100mg daily (XX/XX/2023 - XX/XX/2023),
+                            which caused memory issues.
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
