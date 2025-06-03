@@ -55,7 +55,7 @@ const OTPVerification: React.FC = () => {
           {/* Logo container */}
           <div className="">
             <img
-              src="public/updated-logo.svg"
+              src="/updated-logo.svg"
               alt="Prior Auth Support Logo"
               className="h-10 sm:h-12 mt-6"
             />
