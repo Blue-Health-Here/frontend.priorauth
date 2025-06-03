@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const OTPVerification: React.FC = () => {
   const [otpValues, setOtpValues] = useState<string[]>(["", "", "", ""]);
   const [isOtpIncorrect, setIsOtpIncorrect] = useState(false);
-  const [timeRemaining, setTimeRemaining] = useState("14:59");
+  // const [timeRemaining, setTimeRemaining] = useState("14:59");
 
   const inputRefs = [
     useRef<HTMLInputElement>(null),
@@ -89,11 +89,10 @@ const OTPVerification: React.FC = () => {
                   className={`w-10 sm:w-12 md:w-14 lg:w-24 h-14 text-center text-xl font-medium 
                             border rounded-xl focus:outline-none py-2
                             transition-colors duration-200
-                            ${
-                              isOtpIncorrect
-                                ? "border-[#FF2E37] text-[#FF2E37]"
-                                : "border-[#EBEBEB] focus:border-[#87CEEB]"
-                            }`}
+                            ${isOtpIncorrect
+                      ? "border-[#FF2E37] text-[#FF2E37]"
+                      : "border-[#EBEBEB] focus:border-[#87CEEB]"
+                    }`}
                 />
               ))}
             </div>
@@ -107,7 +106,7 @@ const OTPVerification: React.FC = () => {
               ) : (
                 <p className="text-[#A3A3A3] text-sm">
                   Your link expires in{" "}
-                  <span className="text-[#7A7A7A]">{timeRemaining}</span>
+                  <span className="text-[#7A7A7A]">14:59</span>
                 </p>
               )}
             </div>
