@@ -8,51 +8,63 @@ import { signInValidationSchema } from "../../utils/validationSchema";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { submitLogin } from "../../services/authService";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const Login: React.FC = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [loginError, setLoginError] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     const userData = localStorage.getItem("user");
     const token = userData ? JSON.parse(userData) : null;
 
     if (token) {
-      navigate("/admin")
+      navigate("/admin");
       return;
     }
   }, []);
 
   const handleSubmit = async (values: FormikValues) => {
     try {
+      setLoginError(false);
       const response = await submitLogin(dispatch, values);
       if (response) {
         navigate("/admin");
       }
     } catch (error: any) {
+      setLoginError(true);
       toast.error(error?.message);
     }
-  }
+  };
 
   return (
     <div className="flex min-h-screen w-full">
-      <div className="w-full md:w-1/2 flex flex-col justify-between py-10 px-6 md:px-8 bg-primary-white">
-        <Link to="/" className="self-start mb-8">
-          <img
-            src="/images/logo.svg"
-            alt="Prior Auth Support Logo"
-            className="h-7 sm:h-8 md:h-10"
-          />
-        </Link>
-
-        <div className="flex-grow flex flex-col justify-center items-center w-full max-w-md mx-auto">
-          <div className="mb-8 text-center">
-            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-primary-black mb-1">
-              Welcome back to, Prior Auth
+      <div className="w-full md:w-1/2 flex flex-col py-10 pt-30 px-6 md:px-8 bg-primary-white">
+        <div className="w-full max-w-[500px] mx-auto flex flex-col">
+          <div className="mt-10 mb-5">
+            <Link to="/">
+              <img
+                src="/images/updated-logo.svg"
+                alt="Prior Auth Support Logo"
+                className="h-12 sm:h-14 md:h-12"
+              />
+            </Link>
+          </div>
+          <div className="mb-8">
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-primary-black mb-2">
+              Welcome back
             </h1>
-            <p className="text-secondary-black text-xs sm:text-sm md:text-base font-secondary">
-              Welcome back! Please enter your details.
+            <p
+              className={`text-xs sm:text-sm md:text-base font-secondary ${
+                loginError ? "text-[#FF2E37]" : "text-secondary-black"
+              }`}
+            >
+              {loginError
+                ? "No information found for this record. Try again."
+                : "Please enter your details"}
             </p>
           </div>
           <Formik
@@ -61,27 +73,61 @@ const Login: React.FC = () => {
             onSubmit={handleSubmit}
           >
             {() => (
-              <Form className="w-full">
+              <Form>
                 <div className="mb-6">
-
+                  <label
+                    htmlFor="userName"
+                    className="block text-sm text-[#7A7A7A] mb-1"
+                  >
+                    Email
+                  </label>
                   <InputField
                     name="userName"
                     type="text"
-                    label="Username"
+                    placeholder="Enter email"
                     variant="FloatingLabel"
+                    className={`w-full max-w-[466px] h-[40px] border ${
+                      loginError ? "border-[#FF2E37]" : "border-[#EBEBEB]"
+                    } rounded-lg px-4 text-gray-900 placeholder:text-[#9E9E9E] placeholder:text-sm focus:outline-none ${
+                      loginError ? "border-[#FF2E37]" : ""
+                    }`}
                   />
                 </div>
 
                 <div className="mb-4">
-                  <InputField
-                    name="password"
-                    type="password"
-                    label="Password"
-                    variant="FloatingLabel"
-                  />
+                  <label
+                    htmlFor="password"
+                    className="block text-sm text-[#7A7A7A] mb-1"
+                  >
+                    Password
+                  </label>
+                  <div className="relative w-full max-w-[466px]">
+                    <InputField
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter password"
+                      variant="FloatingLabel"
+                      className={`w-full h-[40px] border ${
+                        loginError ? "border-[#FF2E37]" : "border-[#EBEBEB]"
+                      } rounded-lg px-4 pr-10 text-gray-900 placeholder:text-[#9E9E9E] placeholder:text-sm focus:outline-none ${
+                        loginError ? "border-[#FF2E37]" : ""
+                      }`}
+                    />
+                    <button
+                      type="button"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <FiEyeOff size={18} className="text-[#525252]" />
+                      ) : (
+                        <FiEye size={15} className="text-[#525252]" />
+                      )}
+                    </button>
+                  </div>
                 </div>
 
-                <div className="flex justify-between items-center mb-8">
+                <div className="flex items-center justify-between mb-8 w-full max-w-[466px]">
                   <label
                     htmlFor="remember"
                     className="inline-flex items-center cursor-pointer"
@@ -97,22 +143,24 @@ const Login: React.FC = () => {
                   </label>
                   <Link
                     to="#"
-                    className="text-xs md:text-sm text-error-clip font-secondary"
+                    className="text-xs md:text-sm text-[#007AFA] font-medium underline"
                   >
                     Forgot Password?
                   </Link>
                 </div>
 
-                <button
-                  type="submit"
-                  className="w-full cursor-pointer text-xs sm:text-sm md:text-base bg-primary-navy-blue text-white py-2 rounded-md mb-6 font-semibold"
-                >
-                  Login
-                </button>
+                <div className="flex justify-center mb-6">
+                  <button
+                    type="submit"
+                    className="w-full max-w-[360px] cursor-pointer text-xs sm:text-sm bg-primary-navy-blue text-white py-3.5 rounded-lg"
+                  >
+                    Login
+                  </button>
+                </div>
 
                 <div className="text-center text-xs sm:text-sm md:text-base text-secondary-black">
                   Don't have an account?{"  "}
-                  <Link to="#" className="text-primary-black font-semibold">
+                  <Link to="#" className="text-[#007AFA] font-medium underline">
                     Sign up for free
                   </Link>
                 </div>
@@ -120,15 +168,13 @@ const Login: React.FC = () => {
             )}
           </Formik>
         </div>
-
-        <div className="md:h-8"></div>
       </div>
 
-      <div className="hidden md:block w-1/2">
+      <div className="hidden md:block w-1/2 p-10 bg-[#EBF1FF]">
         <img
           src="/images/contact-section.png"
           alt="Hands holding each other"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover rounded-3xl"
         />
       </div>
     </div>
