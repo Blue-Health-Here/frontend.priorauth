@@ -184,6 +184,9 @@ a:focus {
 .rounded-theme-r {
   @apply rounded-xl;
 }
+.theme-shadow {
+  @apply shadow-[0px_0px_12px_0px_rgba(0,0,0,0.04)];
+}
 
 /* primetable css */
 
@@ -256,4 +259,13 @@ a:focus {
   background: linear-gradient(90deg, #F66568 23.8%, #A16CF9 75.81%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.first-card {
+  border-radius: 16px;
+  background: linear-gradient(315deg, #74F8FD 0%, #0000FD 97.67%);
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.04);
+}
+.request-graph canvas {
+  width: 100% !important;
 }
