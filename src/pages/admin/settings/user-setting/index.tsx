@@ -26,9 +26,9 @@ const UserSettingPage: React.FC = () => {
   }
 
   return (
-    <div className="rounded-2xl bg-primary-white shadow-lg px-5 pt-6 pb-5 min-h-[calc(100vh-11rem)] relative">
+    <div className="rounded-2xl bg-primary-white shadow-lg px-5 pt-6 pb-5 md:min-h-[calc(100vh-11rem)] relative">
       <h2 className="text-lg md:text-xl font-semibold mb-4">Change Password</h2>
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center flex-wrap gap-4">
         <div className="relative">
           <img
             src={profileImage}
@@ -75,7 +75,7 @@ const UserSettingPage: React.FC = () => {
             }}
           >
             <div className="mt-10 space-y-6">
-              <div className="grid grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <InputField
                   type='text'
                   name="name"
@@ -120,7 +120,7 @@ const UserSettingPage: React.FC = () => {
                 />
               </div>
             </div>
-            <div className="md:absolute md:bottom-5 md:right-5 flex flex-col md:flex-row gap-3 mt-20">
+            <div className="md:absolute md:bottom-5 md:right-5 flex flex-col md:flex-row gap-3 mt-6 md:mt-20">
               <Button
                 title="Cancel"
                 textColor="text-primary-sky-blue"
