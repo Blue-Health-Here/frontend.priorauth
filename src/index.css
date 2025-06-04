@@ -257,3 +257,7 @@ a:focus {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.option {
+  color: var(--tertiary-black, #667085);
+}

@@ -1,7 +1,7 @@
 import { Form, Formik } from 'formik';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import InputField, { inputStyles } from '../../../../components/common/form/InputField';
+import InputField  from '../../../../components/common/form/InputField';
 import Button from '../../../../components/common/Button';
 import { changePasswordValidationSchema } from '../../../../utils/validationSchema';
 
@@ -44,22 +44,25 @@ const ChangePasswordPage: React.FC = () => {
                   name="password"
                   label="Current Password"
                   placeholder="Enter Password"
-                  variant="password"
+                  variant="default"
+                  isPassword={true}
                 />
-                <div></div> 
+                <div></div>
               </div>
               <div className="grid grid-cols-3 gap-6">
                 <InputField
                   name="newPassword"
                   label="New Password"
                   placeholder="Enter Password"
-                  variant="password"
+                  variant="default"
+                  isPassword={true}
                 />
                 <InputField
                   name="confirmPassword"
                   label="Confirm Password"
                   placeholder="Enter Password"
-                  variant="password"
+                  variant="default"
+                  isPassword={true}
                 />
               </div>
             </div>
