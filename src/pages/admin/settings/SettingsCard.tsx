@@ -19,10 +19,10 @@ const SettingsCard: React.FC<SettingsCardProps> = ({ icon, title, description, p
                     className='w-6 h-6'
                 />
             </div>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+            <h2 className="text-lg md:text-xl font-semibold text-primary-black whitespace-nowrap mb-4">
                 {title}
             </h2>
-            <p className="text-quaternary-white mb-8 flex-grow">
+            <p className="text-xs sm:text-sm lg:text-base text-quaternary-white mb-8 flex-grow">
                 {description}
             </p>
             <div className="mt-auto">
