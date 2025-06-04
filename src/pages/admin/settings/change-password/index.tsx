@@ -1,11 +1,11 @@
 import { Form, Formik } from 'formik';
 import React from 'react';
-import InputField, { inputStyles } from '../../../components/common/form/InputField';
-import Button from '../../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
-import { changePasswordValidationSchema } from '../../../utils/validationSchema';
+import InputField, { inputStyles } from '../../../../components/common/form/InputField';
+import Button from '../../../../components/common/Button';
+import { changePasswordValidationSchema } from '../../../../utils/validationSchema';
 
-const ChangePasswordScreen: React.FC = () => {
+const ChangePasswordPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleCancel = () => {
@@ -81,4 +81,4 @@ const ChangePasswordScreen: React.FC = () => {
   );
 };
 
-export default ChangePasswordScreen;
+export default ChangePasswordPage;

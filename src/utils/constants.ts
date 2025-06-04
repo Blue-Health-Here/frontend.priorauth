@@ -1050,3 +1050,24 @@ export const notesAiAnalysisData = [
     label: "Previous Medications", status: "Criteria Partially Met", statusCode: 'warning',
     description: "The patient previously used amlodipine, atorvastatin (10mg and 20mg), fenofibrate, metformin (500mg and 1000mg), Ozempic (0.25mg/0.5mg and 1mg), paxlovid, valsartan (80mg and 160mg), and vitamin D3. The duration of use and patient response to these medications is not specified in the notes except for the discontinuation of Ozempic." },
 ];
+
+export const userSettingsData = [
+  { 
+    icon: '/user settings.svg',
+    title: "User Settings",
+    description: "Manage your account settings here. Customize notifications and update contact.",
+    path:"/"
+  },
+    { 
+    icon: '/lock.svg',
+    title: "Password",
+    description: "In the Password Settings section, you can create, update, and manage your passwords securely.",
+    path:"/admin/settings/change-password"
+  },
+    { 
+    icon: '/role&permission.svg',
+    title: "Permissions",
+    description: "In the Permission Settings area, you can control user access and manage permissions for various features.",
+    path:"/"
+  }
+]
