@@ -38,28 +38,30 @@ const ChangePasswordPage: React.FC = () => {
               handleSubmit(e);
             }}
           >
-            <div className="md:w-md grid grid-cols-1 gap-6 mt-10">
-              <InputField
-                className={inputStyles.defaultInput}
-                type="password"
-                label="Current Password"
-                placeholder="**********************"
-                name="currentPassword"
-              />
-              <InputField
-                className={inputStyles.defaultInput}
-                type="password"
-                label="New Password"
-                placeholder="**********************"
-                name="newPassword"
-              />
-              <InputField
-                className={inputStyles.defaultInput}
-                type="password"
-                label="Confirm New Password"
-                placeholder="**********************"
-                name="confirmPassword"
-              />
+            <div className="mt-10 space-y-6">
+              <div className="grid grid-cols-3 gap-6">
+                <InputField
+                  name="password"
+                  label="Current Password"
+                  placeholder="Enter Password"
+                  variant="password"
+                />
+                <div></div> 
+              </div>
+              <div className="grid grid-cols-3 gap-6">
+                <InputField
+                  name="newPassword"
+                  label="New Password"
+                  placeholder="Enter Password"
+                  variant="password"
+                />
+                <InputField
+                  name="confirmPassword"
+                  label="Confirm Password"
+                  placeholder="Enter Password"
+                  variant="password"
+                />
+              </div>
             </div>
             <div className="md:absolute md:bottom-5 md:right-5 flex flex-col md:flex-row gap-3 mt-20">
               <Button

@@ -1056,7 +1056,7 @@ export const userSettingsData = [
     icon: '/user settings.svg',
     title: "User Settings",
     description: "Manage your account settings here. Customize notifications and update contact.",
-    path:"/"
+    path:"/admin/settings/user-settings"
   },
     { 
     icon: '/lock.svg',
