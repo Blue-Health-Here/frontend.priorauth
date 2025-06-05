@@ -5,13 +5,13 @@ import ThemeButton from "../../../components/common/ThemeButton";
 
 const TableHeader = () => {
     return (
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-5 pb-6">
             <Formik
                 initialValues={{ sort: "", filter: "" }}
                 onSubmit={() => { }}
             >
                 {() => (
-                    <Form className="flex flex-col sm:flex-row w-full sm:w-auto gap-3">
+                    <Form className="flex flex-col sm:flex-row w-full sm:w-auto gap-5">
                         <SelectField
                             className="border border-medium-stroke rounded-lg p-2 font-medium w-full sm:min-w-48 rounded-theme-r"
                             parentClassName="flex-1"
