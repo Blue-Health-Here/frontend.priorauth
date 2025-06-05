@@ -261,11 +261,15 @@ a:focus {
   -webkit-text-fill-color: transparent;
 }
 
+.option {
+  color: var(--tertiary-black, #667085);
+}
 .first-card {
   border-radius: 16px;
   background: linear-gradient(315deg, #74F8FD 0%, #0000FD 97.67%);
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.04);
 }
+
 .request-graph canvas {
   width: 100% !important;
 }

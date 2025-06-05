@@ -10,12 +10,13 @@ import AdminRequests from "./pages/admin/requests";
 import PharmacyDetailScreen from "./pages/admin/pharmacy/PharmacyDetailScreen";
 import AddNewPharmacyScreen from "./pages/admin/pharmacy/AddNewPharmacyScreen";
 import AdminSettings from "./pages/admin/settings";
-import ChangePasswordScreen from "./pages/admin/settings/ChangePasswordScreen";
 import AdminRolesAndPermissions from "./pages/permissions";
 import ThemeProvider from "./layouts/ThemeProvider";
 import { Toaster } from "react-hot-toast";
 import RequestDetails from "./pages/admin/requests/RequestDetails";
 import NotificationScreen from "./pages/admin/notifications";
+import ChangePasswordPage from "./pages/admin/settings/change-password";
+import UserSettingPage from "./pages/admin/settings/user-setting";
 
 function App() {
   return (
@@ -36,7 +37,8 @@ function App() {
                 <Route path="requests" element={<AdminRequests />} />
                 <Route path="requests/:id/request-details" element={<RequestDetails />} />
                 <Route path="settings" element={<AdminSettings />} />
-                <Route path="settings/change-password" element={<ChangePasswordScreen/>} />
+                <Route path="settings/change-password" element={<ChangePasswordPage/>} />
+                <Route path="settings/user-settings" element={<UserSettingPage/>} />
                 <Route path="notifications" element={<NotificationScreen />}/>   
                 <Route path="permissions" element={<AdminRolesAndPermissions />}/>   
               </Route>
