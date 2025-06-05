@@ -158,7 +158,7 @@ const DashboardRequestCard: React.FC<any> = ({
 
     return (
         <div className="rounded-2xl p-5 theme-shadow bg-white transition-colors min-h-[210px] h-full w-full flex flex-col justify-between gap-4 request-graph">
-            <div className="flex justify-between items-start">
+            <div className="flex items-start flex-wrap gap-6 justify-between">
                 <div className="font-secondary">
                     <h3 className="text-sm md:text-base lg:text-lg font-semibold text-primary-black group-hover:text-white transition-colors duration-800 ease-in-out">
                         {title}

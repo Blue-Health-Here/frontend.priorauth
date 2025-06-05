@@ -20,7 +20,7 @@ const GlobalStatsCard: React.FC<any> = ({
 
     const statsData: any = {
         Y: {
-            totalRequests: data?.yearly?.total || 19200,
+            totalRequests: data?.yearly?.total || 19200, 
             stats: data?.yearly?.stats || [
                 { label: 'Approval', value: 56, color: '#19AD4B' },
                 { label: 'Denial', value: 18, color: '#FF2E37' },
@@ -150,9 +150,9 @@ const GlobalStatsCard: React.FC<any> = ({
     return (
         <div className="rounded-2xl p-5 theme-shadow bg-white transition-colors min-h-[210px] h-full w-full flex flex-col justify-between gap-4 request-graph">
             {/* Header */}
-            <div className="flex justify-between items-start">
+            <div className="flex items-start flex-wrap gap-6 justify-between">
                 <div>
-                    <h3 className="text-lg font-semibold text-primary-black mb-1">{title}</h3>
+                    <h3 className="text-lg md:text-xl font-semibold text-primary-black mb-1">{title}</h3>
                     <p className="text-sm text-tertiary-black">{description}</p>
                 </div>
                 <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5">
@@ -173,7 +173,7 @@ const GlobalStatsCard: React.FC<any> = ({
             </div>
 
             {/* Chart and Stats */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center flex-wrap gap-6 justify-center md:justify-between">
                 {/* Doughnut Chart */}
                 <div className="relative">
                     <div className="w-48 h-48">
@@ -209,10 +209,10 @@ const GlobalStatsCard: React.FC<any> = ({
                 </div>
 
                 {/* Stats Legend */}
-                <div className="flex-1 ml-8">
+                <div className="flex-1 md:ml-8">
                     <div className="mb-4">
-                        <h4 className="text-base font-medium text-quaternary-white mb-1">Total Requests</h4>
-                        <div className="text-5xl font-bold text-gray-900">
+                        <h4 className="text-sm md:text-base font-medium text-quaternary-white mb-1">Total Requests</h4>
+                        <div className="text-2xl md:text-3xl lg:text-5xl font-bold text-gray-900">
                             {currentData.totalRequests.toLocaleString()}
                         </div>
                     </div>
