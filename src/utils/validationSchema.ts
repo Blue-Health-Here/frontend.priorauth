@@ -35,10 +35,14 @@ export const changePasswordValidationSchema = Yup.object().shape({
     .matches(/[a-z]/, 'Password must contain lowercase letter')
     .matches(/[A-Z]/, 'Password must contain uppercase letter')
     .matches(/\d/, 'Password must contain a number')
-    .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Password must contain special character'),
+    .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Password must contain special character')
+    .test('different-from-current', 'New password must be different from current password', function(value) {
+      const { currentPassword } = this.parent;
+      if (!value || !currentPassword) return true; 
+      return value !== currentPassword;
+    }),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref('newPassword')], 'Passwords must match')
-    .required('Please confirm your new password'),
+    .required('Please confirm your new password')
 });
 
 export const pharmacyValidationSchema = Yup.object({
