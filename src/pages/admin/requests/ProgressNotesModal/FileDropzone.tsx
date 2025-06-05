@@ -16,19 +16,19 @@ const FileDropzone: React.FC<FileDropzoneProps> = ({
   isDragging,
 }) => (
   <div
-    className={`flex justify-center px-6 py-10 border-2 border-dashed rounded-lg ${
+    className={`flex justify-center px-4 sm:px-6 py-6 sm:py-10 border-2 border-dashed rounded-lg overflow-hidden ${
       isDragging
         ? "border-blue-500 bg-blue-50"
         : "border-[#a8ddf3] bg-[#F2FBFF]"
     }`}
-    style={{ height: "196px" }}
+    style={{ minHeight: "196px" }}
     onDragOver={onDragOver}
     onDragLeave={onDragLeave}
     onDrop={onDrop}
   >
-    <div className="space-y-1 text-center">
+    <div className="space-y-1 text-center flex flex-col justify-center items-center w-full">
       <svg
-        className="mx-auto h-12 w-12 text-gray-400"
+        className="mx-auto h-8 w-8 sm:h-12 sm:w-12 text-gray-400 flex-shrink-0"
         stroke="currentColor"
         fill="none"
         viewBox="0 0 48 48"
@@ -40,28 +40,29 @@ const FileDropzone: React.FC<FileDropzoneProps> = ({
           strokeLinejoin="round"
         />
       </svg>
-      <div className="flex flex-wrap text-[14px] sm:text-sm text-gray-600">
-        <div className="whitespace-nowrap">
-          <label
-            htmlFor="file-upload"
-            className="relative cursor-pointer rounded-md font-medium text-[#1594CC] hover:text-blue-500"
-          >
-            <span>Click to Upload</span>
-            <input
-              id="file-upload"
-              type="file"
-              className="sr-only"
-              onChange={onFileChange}
-              multiple
-            />
-          </label>
-          <span className="text-[#1E1E1E] font-medium text-[14px] sm:text-sm">
-            {" "}
-            or drag and drop
-          </span>
-        </div>
+      
+      <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center items-center text-xs sm:text-sm text-gray-600 gap-1">
+        <label
+          htmlFor="file-upload"
+          className="relative cursor-pointer rounded-md font-medium text-[#1594CC] hover:text-blue-500 flex-shrink-0"
+        >
+          <span>Click to Upload</span>
+          <input
+            id="file-upload"
+            type="file"
+            className="sr-only"
+            onChange={onFileChange}
+            multiple
+          />
+        </label>
+        <span className="text-[#1E1E1E] font-medium text-xs sm:text-sm flex-shrink-0">
+          or drag and drop
+        </span>
       </div>
-      <p className="mt-2 text-sm text-gray-500">(Max File size: 25 MB)</p>
+      
+      <p className="mt-2 text-xs sm:text-sm text-gray-500 flex-shrink-0">
+        (Max File size: 25 MB)
+      </p>
     </div>
   </div>
 );

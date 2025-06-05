@@ -201,7 +201,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
       <canvas ref={canvasRef} style={{ display: "none" }} />
       <div className="relative overflow-y-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 flex-1">
         {/* Left Sidebar */}
-        <div className="order-2 md:order-1 col-span-1 bg-[#F8FAFF] z-0 flex flex-col justify-between gap-4 p-4 md:p-6 relative">
+        <div className="order-1 md:order-1 col-span-1 bg-[#F8FAFF] z-0 flex flex-col justify-between gap-4 p-4 md:p-6 relative">
           {!analysisStarted ? (
             <div className="bg-white rounded-xl border border-gray-200 p-2">
               <FileDropzone
@@ -258,7 +258,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
         </div>
 
         {/* Main Content Area */}
-        <div className="order-1 md:order-2 col-span-1 md:col-span-2 lg:col-span-3 flex flex-col p-4 md:p-0">
+        <div className="order-2 md:order-2 col-span-1 md:col-span-2 lg:col-span-3 flex flex-col p-4 md:p-0">
           {!analysisStarted ? (
             <div className="flex items-center justify-center h-full">
               <img
