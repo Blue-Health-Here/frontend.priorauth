@@ -1,4 +1,4 @@
-import { Form, Formik, Field, ErrorMessage } from 'formik';
+import { Form, Formik,  ErrorMessage } from 'formik';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import InputField from '../../../../components/common/form/InputField';
@@ -64,7 +64,6 @@ const UserSettingPage: React.FC = () => {
           address: '',
         }}
         onSubmit={(values, { setFieldTouched }) => {
-          // Mark all fields as touched to show validation errors
           Object.keys(values).forEach(key => {
             setFieldTouched(key, true);
           });
@@ -72,7 +71,7 @@ const UserSettingPage: React.FC = () => {
         }}
         validationSchema={userValidationSchema}
       >
-        {({ handleSubmit, errors, touched, values }) => (
+        {({ handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
             <div className="mt-10 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
