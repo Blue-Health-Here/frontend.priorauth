@@ -76,7 +76,7 @@ const RequestDetails: React.FC = () => {
 
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
         <h2 className="text-lg font-bold text-gray-800">UBRELVY 50MG TAB</h2>
-        <div className="flex gap-3 self-end sm:self-auto">
+        <div className="flex gap-3 self-end sm:self-auto flex-wrap">
           <ThemeButton className="h-full min-h-12" variant="secondary">Open Portal</ThemeButton>
           <ThemeButton onClick={openModal} className="h-full min-h-12" variant="primary">Submit Progress Notes</ThemeButton>
         </div>

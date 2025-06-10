@@ -268,13 +268,13 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
               />
             </div>
           ) : (
-            <div className="w-full h-full overflow-y-auto px-4 lg:px-6 py-4 lg:py-6">
+            <div className="w-full h-full overflow-y-auto lg:px-6 lg:py-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
                 <h2 className="text-primary-black font-semibold text-xl">
                   Progress Notes Analysis
                 </h2>
                 <ThemeButton
-                  className="w-full sm:w-auto min-h-12"
+                  className="w-max sm:w-auto min-h-12"
                   variant="primary"
                   onClick={handleDownloadReport}
                 >
@@ -303,7 +303,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                         className="cursor-pointer"
                       />
                     </div>
-                    <p className="text-primary-black">
+                    <p className="text-primary-black text-sm">
                       The patient has type 2 diabetes mellitus without
                       complications (E11.9), hyperuricemia (E79.0), essential
                       hypertension (110), chronic rhinitis (J31.0), and fatty
@@ -321,7 +321,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                           className="cursor-pointer"
                         />
                       </div>
-                      <div className="text-primary-black">
+                      <div className="text-primary-black text-sm">
                         <p>
                           The patient has trialed and failed, experienced
                           contraindications, or had intolerances to at least two
