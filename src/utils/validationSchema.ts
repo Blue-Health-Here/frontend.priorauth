@@ -56,3 +56,28 @@ export const pharmacyValidationSchema = Yup.object({
   location: Yup.string().required("Location is required")
 })
 
+
+export const userValidationSchema = Yup.object().shape({
+  name: Yup.string()
+    .required('Name is required')
+    .min(2, 'Name must be at least 2 characters'),
+
+  email: Yup.string()
+    .required('Email is required')
+    .email('Invalid email format'),
+
+  phone: Yup.string()
+    .required('Phone number is required')
+    .matches(/^[0-9]{10,15}$/, 'Phone number must be 10 to 15 digits'),
+
+  whatsapp: Yup.string()
+    .matches(/^[0-9]{10,15}$/, 'WhatsApp number must be 10 to 15 digits')
+    .nullable(),
+
+  gender: Yup.string()
+    .required('Gender is required'),
+
+  address: Yup.string()
+    .required('Address is required')
+    .min(5, 'Address must be at least 5 characters'),
+});

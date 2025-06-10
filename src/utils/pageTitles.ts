@@ -7,9 +7,10 @@ export const pageTitles: any = {
     "/admin/requests": "Requests",
     "/admin/requests/:id/request-details": "Request Details",
     "/admin/settings": "Settings",
-    "/admin/settings/change-password": "Change Password",
     "/admin/notifications": "Notifications",
     "/admin/permissions": "Roles and Permissions",
     "/login": "Login",
     "/otp-verification": "OTP Verification",
+    "/admin/settings/change-password": "Settings",
+    "/admin/settings/user-settings": "User Settings"
 };
