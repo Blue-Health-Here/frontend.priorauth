@@ -196,6 +196,10 @@ export const adminSidebarItems = [
   { name: "Permissions", icon: "/sidebar-role&permission.svg", path: "/admin/permissions" },
 ];
 
+export const pharmacySidebarItems = [
+  { name: "Dashboard", icon: "/sidebar-dashboard.svg", path: "/pharmacy/dashboard" },
+];
+
 export const profileMenu = [
   { name: "Dashboard", icon: RxDashboard, path: "/admin/dashboard" },
   { name: "Profile", icon: FiUser, path: "/admin/profile" },
@@ -1037,37 +1041,76 @@ export const menuItems = (title: string) => {
 }
 
 export const notesAiAnalysisData = [
-  { 
+  {
     label: "Diagnosis", status: "Criteria Not Met", statusCode: 'error',
-    description: "The patient has type 2 diabetes mellitus without complications (E11.9), hyperuricemia (E79.0), essential hypertension (110), chronic rhinitis (J31.0), and fatty liver disease (K76.0). Elevated glucose levels were noted." },
-  { 
+    description: "The patient has type 2 diabetes mellitus without complications (E11.9), hyperuricemia (E79.0), essential hypertension (110), chronic rhinitis (J31.0), and fatty liver disease (K76.0). Elevated glucose levels were noted."
+  },
+  {
     label: "Treatment Notes", status: "Criteria Met", statusCode: 'success',
-    description: "The patient underwent blood work which showed elevated glucose levels. No other imaging studies or specific treatment outcomes are detailed in the provided notes." },
-  { 
+    description: "The patient underwent blood work which showed elevated glucose levels. No other imaging studies or specific treatment outcomes are detailed in the provided notes."
+  },
+  {
     label: "Current Medications", status: "Criteria Met", statusCode: 'success',
-    description: "The patient is currently taking alcohol pads, Allegra-D, atorvastatin 10mg, azelastine, benzonatate, flonase, FreeStyle Lite device and strips, lancets, Rybelsus 7mg, valsartan 160mg, Vascepa, and vitamin D3." },
-  { 
+    description: "The patient is currently taking alcohol pads, Allegra-D, atorvastatin 10mg, azelastine, benzonatate, flonase, FreeStyle Lite device and strips, lancets, Rybelsus 7mg, valsartan 160mg, Vascepa, and vitamin D3."
+  },
+  {
     label: "Previous Medications", status: "Criteria Partially Met", statusCode: 'warning',
-    description: "The patient previously used amlodipine, atorvastatin (10mg and 20mg), fenofibrate, metformin (500mg and 1000mg), Ozempic (0.25mg/0.5mg and 1mg), paxlovid, valsartan (80mg and 160mg), and vitamin D3. The duration of use and patient response to these medications is not specified in the notes except for the discontinuation of Ozempic." },
+    description: "The patient previously used amlodipine, atorvastatin (10mg and 20mg), fenofibrate, metformin (500mg and 1000mg), Ozempic (0.25mg/0.5mg and 1mg), paxlovid, valsartan (80mg and 160mg), and vitamin D3. The duration of use and patient response to these medications is not specified in the notes except for the discontinuation of Ozempic."
+  },
 ];
 
 export const userSettingsData = [
-  { 
+  {
     icon: '/user settings.svg',
     title: "User Settings",
     description: "Manage your account settings here. Customize notifications and update contact.",
-    path:"/admin/settings/user-settings"
+    path: "/admin/settings/user-settings"
   },
-    { 
+  {
     icon: '/lock.svg',
     title: "Password",
     description: "In the Password Settings section, you can create, update, and manage your passwords securely.",
-    path:"/admin/settings/change-password"
+    path: "/admin/settings/change-password"
   },
-    { 
+  {
     icon: '/role&permission.svg',
     title: "Permissions",
     description: "In the Permission Settings area, you can control user access and manage permissions for various features.",
-    path:"/"
+    path: "/"
   }
 ]
+
+export const yearlyRequestsData = {
+  yearly: [35, 42, 38, 45, 52, 48, 58, 62, 55, 68, 72, 65],
+  monthly: [15, 22, 18, 28, 32, 25, 35, 42, 38, 45, 52, 48, 58, 62, 55, 68, 72, 65, 58, 62, 55, 48, 52, 58, 62, 55, 48, 42, 38, 45],
+  weekly: [65, 72, 58, 68, 45, 62, 75]
+};
+
+export const globalStatsData = {
+  yearly: {
+    total: 19200,
+    stats: [
+      { label: 'Approval', value: 56, color: '#19AD4B' },
+      { label: 'Denial', value: 18, color: '#FF2E37' },
+      { label: 'Pending', value: 26, color: '#1594CC' }
+    ]
+  },
+  monthly: {
+    total: 15800,
+    stats: [
+      { label: 'Approval', value: 62, color: '#19AD4B' },
+      { label: 'Denial', value: 15, color: '#FF2E37' },
+      { label: 'Pending', value: 23, color: '#1594CC' }
+    ]
+  },
+  weekly: {
+    total: 3200,
+    stats: [
+      { label: 'Approval', value: 48, color: '#19AD4B' },
+      { label: 'Denial', value: 22, color: '#FF2E37' },
+      { label: 'Pending', value: 30, color: '#1594CC' }
+    ]
+  }
+};
+
+export const timeRanges = ["Today", "W", "M", "Y"];

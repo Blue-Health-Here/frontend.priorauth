@@ -17,6 +17,8 @@ import RequestDetails from "./pages/admin/requests/RequestDetails";
 import NotificationScreen from "./pages/admin/notifications";
 import ChangePasswordPage from "./pages/admin/settings/change-password";
 import UserSettingPage from "./pages/admin/settings/user-setting";
+import PharmacyLayout from "./layouts/PharmacyLayout";
+import PharmacyDashboard from "./pages/pharmacy/dashboard";
 
 function App() {
   return (
@@ -41,6 +43,10 @@ function App() {
                 <Route path="settings/user-settings" element={<UserSettingPage/>} />
                 <Route path="notifications" element={<NotificationScreen />}/>   
                 <Route path="permissions" element={<AdminRolesAndPermissions />}/>   
+              </Route>
+              <Route path="/pharmacy" element={<PharmacyLayout />}>
+                <Route index element={<Navigate to="dashboard" replace />} />
+                <Route path="dashboard" element={<PharmacyDashboard />} /> 
               </Route>
               <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>

@@ -17,7 +17,6 @@ const Topbar: React.FC = () => {
   const notifDropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const pageTitle = getPageTitle(location.pathname);
   const dispatch = useDispatch();
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -41,7 +40,7 @@ const Topbar: React.FC = () => {
       <nav className={`flex justify-between items-center w-full`}>
         <div className='flex items-center'>
           <p className="text-lg sm:text-xl lg:text-2xl font-semibold text-primary-black whitespace-nowrap">
-            {pageTitle}
+            {getPageTitle(location.pathname)}
           </p>
         </div>
         <div className="hidden lg:block relative mx-2">

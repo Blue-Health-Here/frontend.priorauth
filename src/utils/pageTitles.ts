@@ -12,5 +12,9 @@ export const pageTitles: any = {
     "/login": "Login",
     "/otp-verification": "OTP Verification",
     "/admin/settings/change-password": "Settings",
-    "/admin/settings/user-settings": "User Settings"
+    "/admin/settings/user-settings": "User Settings",
+
+    // pharmacy pages titles
+    "/pharmacy/dashboard": "Dashboard",
+    "/pharmacy/requests": "Requests"
 };

@@ -1,42 +1,10 @@
+import DashboardRequestCard from '@/components/common/DashboardRequestCard'
+import GlobalStatsCard from '@/components/common/GlobalStatsCard'
+import StatCard from '@/components/common/StatCard'
+import { globalStatsData, yearlyRequestsData } from '@/utils/constants'
 import React from 'react'
-import StatCard from './StatCard'
-import DashboardRequestCard from './DashboardRequestCard';
-import GlobalStatsCard from './GlobalStatsCard';
 
 const StatsSection: React.FC = () => {
-  const yearlyRequestsData = {
-    yearly: [35, 42, 38, 45, 52, 48, 58, 62, 55, 68, 72, 65],
-    monthly: [15, 22, 18, 28, 32, 25, 35, 42, 38, 45, 52, 48, 58, 62, 55, 68, 72, 65, 58, 62, 55, 48, 52, 58, 62, 55, 48, 42, 38, 45],
-    weekly: [65, 72, 58, 68, 45, 62, 75]
-  };
-
-  const globalStatsData = {
-    yearly: {
-      total: 19200,
-      stats: [
-        { label: 'Approval', value: 56, color: '#19AD4B' },
-        { label: 'Denial', value: 18, color: '#FF2E37' },
-        { label: 'Pending', value: 26, color: '#1594CC' }
-      ]
-    },
-    monthly: {
-      total: 15800,
-      stats: [
-        { label: 'Approval', value: 62, color: '#19AD4B' },
-        { label: 'Denial', value: 15, color: '#FF2E37' },
-        { label: 'Pending', value: 23, color: '#1594CC' }
-      ]
-    },
-    weekly: {
-      total: 3200,
-      stats: [
-        { label: 'Approval', value: 48, color: '#19AD4B' },
-        { label: 'Denial', value: 22, color: '#FF2E37' },
-        { label: 'Pending', value: 30, color: '#1594CC' }
-      ]
-    }
-  };
-
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-12 gap-4">
       <div className='sm:col-span-2 xl:col-span-6'>
