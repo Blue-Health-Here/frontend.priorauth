@@ -117,3 +117,23 @@ export const getCurrentBadgeColors = (status?: string) => {
     }
     return activeBadge;
 };
+
+/**
+ * Format number to shorthand (e.g., 1.5k, 2M)
+ * @param {number} value - The number to format.
+ * @param {number} decimalPlaces - Decimal places to show (default: 1).
+ * @returns {string} Formatted number string.
+ */
+export function formatNumberWithUnits(value: any, decimalPlaces = 1) {
+    if (value < 1000) return value.toString();
+
+    const units = ['k', 'M', 'B', 'T'];
+    let unitIndex = -1;
+
+    while (value >= 1000 && unitIndex < units.length - 1) {
+        value /= 1000;
+        unitIndex++;
+    }
+
+    return `${parseFloat(value.toFixed(decimalPlaces))}${units[unitIndex]}`;
+}

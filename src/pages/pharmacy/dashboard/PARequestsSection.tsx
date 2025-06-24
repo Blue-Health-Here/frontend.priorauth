@@ -1,0 +1,53 @@
+import { useState } from "react";
+import { formatNumberWithUnits } from "../../../utils/helper";
+
+const PARequestsSection = () => {
+    const [activePeriod, setActivePeriod] = useState<any>('Y');
+    const handlePeriodChange = (period: any) => {
+        setActivePeriod(period);
+    };
+
+    const paReqStats = [
+        { color: "#5CE543", label: "Approved", value: 1200 },
+        { color: "#F9A538", label: "Plan Exclusion", value: 2500 },
+        { color: "#FF4040", label: "Denied", value: 3700 },
+        { color: "#66D0FF", label: "Queued for Call", value: 3700 },
+        { color: "#007AFF", label: "Awaiting Insurance", value: 1200 },
+    ];
+
+    return (
+        <div className="p-4 rounded-2xl bg-white theme-shadow flex flex-col gap-4">
+            <div className="flex justify-between items-center gap-4 flex-wrap">
+                <h3 className="font-semibold text-base text-primary-black">PA Requests</h3>
+                <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5">
+                    {['Today', 'Y', 'M', 'W'].map((period) => (
+                        <button
+                            key={period}
+                            type='button'
+                            onClick={() => handlePeriodChange(period)}
+                            className={`px-3 py-2 cursor-pointer rounded-md transition-colors ${activePeriod === period
+                                ? 'bg-quaternary-navy-blue text-primary-navy-blue'
+                                : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
+                                }`}
+                        >
+                            {period}
+                        </button>
+                    ))}
+                </div>
+            </div>
+            <div className="flex flex-wrap gap-6 items-center justify-center">
+                {paReqStats.map((item: any, index: number) => (
+                    <div key={index} className="rounded-2xl border border-quaternary-navy-blue p-4 sm:p-6 flex flex-col gap-6 flex-1">
+                        <p className="flex gap-2 items-center">
+                            <span className={`w-4 h-4 rounded-full`} style={{ background: item.color }}></span>
+                            <span>{item.label}</span>
+                        </p>
+                        <h3 className="font-semibold text-4xl">{formatNumberWithUnits(item.value)}</h3>
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
+};
+
+export default PARequestsSection;

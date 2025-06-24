@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { adminSidebarItems } from '../../utils/constants';
+import { adminSidebarItems, pharmacySidebarItems } from '../../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { setIsSidebarCollapsed, setIsSidebarOpen } from '../../store/features/global/globalSlice';
@@ -11,7 +11,8 @@ const Sidebar: React.FC = () => {
   const pathName = location.pathname;
   const dispatch = useDispatch();
   const { isSidebarCollapsed, isSidebarOpen } = useSelector((state: RootState) => state.global);
-
+  const sidebarItems = pathName.startsWith("/pharmacy") ? pharmacySidebarItems : adminSidebarItems;
+  
   useEffect(() => {
     if (window.innerWidth < 1024) {
       dispatch(setIsSidebarOpen(false));
@@ -56,7 +57,7 @@ const Sidebar: React.FC = () => {
           overflow-y-auto bg-primary-white duration-500 transition-all flex flex-col flex-1 gap-4
           px-4 py-10 border-r border-gray-100`}>
           <ul className="flex flex-col gap-y-2 text-[15px]">
-            {adminSidebarItems.map((item, index) => (
+            {sidebarItems.map((item, index) => (
               <NavLink
                 to={item.path}
                 key={index}
