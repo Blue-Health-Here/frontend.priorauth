@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import ModalWrapper from "./ModalWrapper";
-import ModalHeader from "./ModalHeader";
+import ModalWrapper from "../../../../components/common/ModalWrapper";
+import ModalHeader from "../../../../components/common/ModalHeader";
 import FileDropzone from "./FileDropzone";
 import UploadFileList from "./UploadFileList";
 import GradientSidebarButton from "./GradientSidebarButton";
@@ -192,162 +192,163 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
 
   const removeFile = (id: string) =>
     setUploadedFiles((prev) => prev.filter((file) => file.id !== id));
-  const handleDownloadReport = () => {};
+  const handleDownloadReport = () => { };
   const handleSelectFile = (file: any) => setSelectedFile(file);
 
   return (
     <ModalWrapper>
-      <ModalHeader title="AI Analysis" onClose={onClose} />
-      <canvas ref={canvasRef} style={{ display: "none" }} />
-      <div className="relative overflow-y-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 flex-1">
-        {/* Left Sidebar */}
-        <div className="order-1 md:order-1 col-span-1 bg-[#F8FAFF] z-0 flex flex-col justify-between gap-4 p-4 md:p-6 relative">
-          {!analysisStarted ? (
-            <div className="bg-white rounded-xl border border-gray-200 p-2">
-              <FileDropzone
-                isDragging={isDragging}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
-                onFileChange={handleFileChange}
-              />
+      <div className="w-full max-w-8xl h-[90vh] sm:mx-4 overflow-hidden z-50" style={{ maxHeight: "calc(100vh - 4rem)" }}>
+        <ModalHeader title="AI Analysis" onClose={onClose} />
+        <canvas ref={canvasRef} style={{ display: "none" }} />
+        <div className="relative overflow-y-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 flex-1">
+          {/* Left Sidebar */}
+          <div className="order-1 md:order-1 col-span-1 bg-[#F8FAFF] z-0 flex flex-col justify-between gap-4 p-4 md:p-6 relative">
+            {!analysisStarted ? (
+              <div className="bg-white rounded-xl border border-gray-200 p-2">
+                <FileDropzone
+                  isDragging={isDragging}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  onFileChange={handleFileChange}
+                />
 
-              {uploadedFiles.length > 0 && (
-                <div className="mt-4">
-                  <div className="px-2 py-2">
-                    <h4 className="text-sm font-medium text-gray-700">
-                      Uploaded Files
-                    </h4>
+                {uploadedFiles.length > 0 && (
+                  <div className="mt-4">
+                    <div className="px-2 py-2">
+                      <h4 className="text-sm font-medium text-gray-700">
+                        Uploaded Files
+                      </h4>
+                    </div>
+                    <UploadFileList
+                      files={uploadedFiles}
+                      removeFile={(id: any) => removeFile(id)}
+                    />
                   </div>
-                  <UploadFileList
-                    files={uploadedFiles}
-                    removeFile={(id: any) => removeFile(id)}
-                  />
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="flex-1">
-              <h4 className="text-base font-medium text-gray-700 mb-4">
-                Your Uploads
-              </h4>
-              <div
-                className={`${
-                  uploadedFiles.length === 1
-                    ? "flex justify-center flex-1"
-                    : "grid grid-cols-2 gap-4 flex-1"
-                }`}
-              >
-                {uploadedFiles.map((file) => (
-                  <RenderFilePreview
-                    file={file}
-                    isLarge={uploadedFiles.length === 1}
-                    selectedItem={selectedFile}
-                    handleSelectFile={handleSelectFile}
-                  />
-                ))}
+                )}
               </div>
-            </div>
-          )}
-          <GradientSidebarButton
-            disabled={uploadedFiles?.length === 0}
-            analysisStarted={analysisStarted}
-            redoAnalysis={redoAnalysis}
-            startAnalysis={startAnalysis}
-          />
-        </div>
-
-        {/* Main Content Area */}
-        <div className="order-2 md:order-2 col-span-1 md:col-span-2 lg:col-span-3 flex flex-col p-4 md:p-0">
-          {!analysisStarted ? (
-            <div className="flex items-center justify-center h-full">
-              <img
-                src="/radial-color-ai.png"
-                alt="radial color ai"
-                className="w-full max-w-xs sm:max-w-sm md:max-w-none md:w-[30rem] lg:w-[40rem] custom-bounce"
-              />
-            </div>
-          ) : (
-            <div className="w-full h-full overflow-y-auto lg:px-6 lg:py-6">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-                <h2 className="text-primary-black font-semibold text-xl">
-                  Progress Notes Analysis
-                </h2>
-                <ThemeButton
-                  className="w-max sm:w-auto min-h-12"
-                  variant="primary"
-                  onClick={handleDownloadReport}
+            ) : (
+              <div className="flex-1">
+                <h4 className="text-base font-medium text-gray-700 mb-4">
+                  Your Uploads
+                </h4>
+                <div
+                  className={`${uploadedFiles.length === 1
+                      ? "flex justify-center flex-1"
+                      : "grid grid-cols-2 gap-4 flex-1"
+                    }`}
                 >
-                  Download Report
-                </ThemeButton>
-              </div>
-
-              <div className="flex flex-col lg:flex-row gap-4">
-                <div className="flex-1 flex flex-col gap-4">
-                  {notesAiAnalysisData.map((item, index) => (
-                    <RenderNoteCard
-                      item={item}
-                      key={index}
-                      handleDownloadReport={handleDownloadReport}
+                  {uploadedFiles.map((file) => (
+                    <RenderFilePreview
+                      file={file}
+                      isLarge={uploadedFiles.length === 1}
+                      selectedItem={selectedFile}
+                      handleSelectFile={handleSelectFile}
                     />
                   ))}
                 </div>
+              </div>
+            )}
+            <GradientSidebarButton
+              disabled={uploadedFiles?.length === 0}
+              analysisStarted={analysisStarted}
+              redoAnalysis={redoAnalysis}
+              startAnalysis={startAnalysis}
+            />
+          </div>
 
-                <div className="lg:w-1/3 flex flex-col gap-4">
-                  <div className="border border-primary-sky-blue rounded-theme-r flex flex-col gap-5 bg-primary-white p-4">
-                    <div className="flex items-center justify-between gap-4">
-                      <h3 className="font-semibold">Recommendation</h3>
-                      <img
-                        src="/copy-icon.svg"
-                        alt="copy icon"
-                        className="cursor-pointer"
+          {/* Main Content Area */}
+          <div className="order-2 md:order-2 col-span-1 md:col-span-2 lg:col-span-3 flex flex-col p-4 md:p-0">
+            {!analysisStarted ? (
+              <div className="flex items-center justify-center h-full">
+                <img
+                  src="/radial-color-ai.png"
+                  alt="radial color ai"
+                  className="w-full max-w-xs sm:max-w-sm md:max-w-none md:w-[30rem] lg:w-[40rem] custom-bounce"
+                />
+              </div>
+            ) : (
+              <div className="w-full h-full overflow-y-auto lg:px-6 lg:py-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                  <h2 className="text-primary-black font-semibold text-xl">
+                    Progress Notes Analysis
+                  </h2>
+                  <ThemeButton
+                    className="w-max sm:w-auto min-h-12"
+                    variant="primary"
+                    onClick={handleDownloadReport}
+                  >
+                    Download Report
+                  </ThemeButton>
+                </div>
+
+                <div className="flex flex-col lg:flex-row gap-4">
+                  <div className="flex-1 flex flex-col gap-4">
+                    {notesAiAnalysisData.map((item, index) => (
+                      <RenderNoteCard
+                        item={item}
+                        key={index}
+                        handleDownloadReport={handleDownloadReport}
                       />
-                    </div>
-                    <p className="text-primary-black text-sm">
-                      The patient has type 2 diabetes mellitus without
-                      complications (E11.9), hyperuricemia (E79.0), essential
-                      hypertension (110), chronic rhinitis (J31.0), and fatty
-                      liver disease (K76.0). Elevated glucose levels were noted.
-                    </p>
+                    ))}
                   </div>
 
-                  <div className="magic-lines rounded-lg overflow-hidden">
-                    <div className="flex flex-col gap-5 bg-primary-white p-4 bg-white rounded-lg">
+                  <div className="lg:w-1/3 flex flex-col gap-4">
+                    <div className="border border-primary-sky-blue rounded-theme-r flex flex-col gap-5 bg-primary-white p-4">
                       <div className="flex items-center justify-between gap-4">
-                        <h3 className="font-semibold magic-title">Magic Lines</h3>
+                        <h3 className="font-semibold">Recommendation</h3>
                         <img
-                          src="/magic-copy-icon.svg"
+                          src="/copy-icon.svg"
                           alt="copy icon"
                           className="cursor-pointer"
                         />
                       </div>
-                      <div className="text-primary-black text-sm">
-                        <p>
-                          The patient has trialed and failed, experienced
-                          contraindications, or had intolerances to at least two
-                          preventive migraine medications:
-                        </p>
-                        <ul className="list-disc pl-5 space-y-2 mt-2">
-                          <li>
-                            Propranolol 20mg BID (XX/XX/2023 - XX/XX/2023), which
-                            worsened headaches.
-                          </li>
-                          <li>
-                            Amitriptyline 25mg daily (XX/XX/2023 - XX/XX/2023),
-                            which caused excessive drowsiness.
-                          </li>
-                          <li>
-                            Topiramate 100mg daily (XX/XX/2023 - XX/XX/2023),
-                            which caused memory issues.
-                          </li>
-                        </ul>
+                      <p className="text-primary-black text-sm">
+                        The patient has type 2 diabetes mellitus without
+                        complications (E11.9), hyperuricemia (E79.0), essential
+                        hypertension (110), chronic rhinitis (J31.0), and fatty
+                        liver disease (K76.0). Elevated glucose levels were noted.
+                      </p>
+                    </div>
+
+                    <div className="magic-lines rounded-lg overflow-hidden">
+                      <div className="flex flex-col gap-5 bg-primary-white p-4 bg-white rounded-lg">
+                        <div className="flex items-center justify-between gap-4">
+                          <h3 className="font-semibold magic-title">Magic Lines</h3>
+                          <img
+                            src="/magic-copy-icon.svg"
+                            alt="copy icon"
+                            className="cursor-pointer"
+                          />
+                        </div>
+                        <div className="text-primary-black text-sm">
+                          <p>
+                            The patient has trialed and failed, experienced
+                            contraindications, or had intolerances to at least two
+                            preventive migraine medications:
+                          </p>
+                          <ul className="list-disc pl-5 space-y-2 mt-2">
+                            <li>
+                              Propranolol 20mg BID (XX/XX/2023 - XX/XX/2023), which
+                              worsened headaches.
+                            </li>
+                            <li>
+                              Amitriptyline 25mg daily (XX/XX/2023 - XX/XX/2023),
+                              which caused excessive drowsiness.
+                            </li>
+                            <li>
+                              Topiramate 100mg daily (XX/XX/2023 - XX/XX/2023),
+                              which caused memory issues.
+                            </li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </ModalWrapper>

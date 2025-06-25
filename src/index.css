@@ -273,3 +273,43 @@ a:focus {
 .request-graph canvas {
   width: 100% !important;
 }
+
+.theme-datatable .p-datatable .p-datatable-header {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+  border: none;
+  background: transparent;
+}
+
+.theme-datatable .p-datatable .p-paginator-bottom {
+  border: none;
+}
+/* Apply to the paginator container */
+.custom-paginator .p-paginator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0;
+  padding-top: 16px;
+}
+
+/* Align current page report to left */
+.custom-paginator .p-paginator-current {
+  order: 0;
+}
+
+/* Align dropdown (rows per page) to right */
+.custom-paginator .p-dropdown {
+  order: 1;
+  margin-left: auto;
+}
+
+.custom-paginator .p-paginator .p-paginator-pages .p-paginator-page {
+  border-radius: 8px;
+}
+
+.custom-paginator .p-paginator .p-paginator-current {
+  color: var(--secondary-black);
+}

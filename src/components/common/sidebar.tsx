@@ -36,8 +36,8 @@ const Sidebar: React.FC = () => {
   }
 
   const asideClass = isSidebarOpen
-    ? 'max-w-full min-w-full transition-all duration-500 shadow-[0px 0px 12px 0px rgba(0, 0, 0, 0.04)] xl:min-w-[260px] xl:max-w-[260px] block text-secondary-black fixed top-0 bottom-0 z-[99]'
-    : 'max-w-[250px] min-w-[250px] transition-all duration-500 shadow-[0px 0px 12px 0px rgba(0, 0, 0, 0.04)] xl:min-w-[260px] xl:max-w-[260px] hidden lg:flex text-secondary-black flex-col fixed top-0 bottom-0 z-[99]';
+    ? 'max-w-full min-w-full transition-all duration-500 shadow-[0px 0px 12px 0px rgba(0, 0, 0, 0.04)] xl:min-w-[280px] xl:max-w-[280px] block text-secondary-black fixed top-0 bottom-0 z-[99]'
+    : 'max-w-[250px] min-w-[250px] transition-all duration-500 shadow-[0px 0px 12px 0px rgba(0, 0, 0, 0.04)] xl:min-w-[280px] xl:max-w-[280px] hidden lg:flex text-secondary-black flex-col fixed top-0 bottom-0 z-[99]';
 
   return (
     <>
