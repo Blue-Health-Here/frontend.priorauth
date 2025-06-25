@@ -1,7 +1,15 @@
 import ThemeDataTable from "@/components/common/ThemeDataTable";
+import { useEffect, useState } from "react";
+import UnlockAccessInfoModal from "./UnlockAccessInfoModal";
+import { InputText } from "primereact/inputtext";
+import FilterField from "@/components/common/FilterField";
+import ToggleColumnsField from "@/components/common/ToggleColumnsField";
+import { FiSearch } from "react-icons/fi";
 
 // Example usage component
 const CMMAccountDatabase = () => {
+    const [isOpenModal, setIsOpenModal] = useState(false);
+
     const sampleData = [
         {
             id: 1,
@@ -137,6 +145,12 @@ const CMMAccountDatabase = () => {
         }
     ];
 
+    const [visibleColumns, setVisibleColumns] = useState(
+        columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: col.visible !== false }), {})
+    );
+    const [isChecked, setIsChecked] = useState<boolean>(false);
+    const [globalFilter, setGlobalFilter] = useState('');
+
     const handleRowClick = (event: any) => {
         console.log('Row clicked:', event.data);
     };
@@ -144,17 +158,86 @@ const CMMAccountDatabase = () => {
     const handleOpenPasswordModal = (event: any) => {
         event.stopPropagation();
         console.log(event, "event");
+        setIsOpenModal(true);
     };
 
+    const closeModal = () => {
+        setIsOpenModal(false);
+    };
+
+    const toggleColumn = (columnField: any) => {
+        setVisibleColumns((prev: any) => ({
+            ...prev,
+            [columnField]: !prev[columnField]
+        }));
+    };
+
+    const clearSelection = () => {
+        setVisibleColumns(
+            columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: false }), {})
+        );
+        setIsChecked(false);
+    };
+
+    const selectAll = (value: any) => {
+        setVisibleColumns(
+            columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: value }), {})
+        );
+    };
+
+    const header = (
+        <div className="flex items-center justify-start gap-4">
+            <div className="relative flex-1 max-w-md h-full">
+                <InputText
+                    value={globalFilter}
+                    onChange={(e: any) => setGlobalFilter(e.target.value)}
+                    placeholder={"Search for request here"}
+                    className="w-full !pl-10 !h-full !text-sm !rounded-xl !border-light-stroke"
+                />
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    <FiSearch className='w-5 h-5' />
+                </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+                <FilterField columns={columns} />
+                <ToggleColumnsField
+                    clearSelection={clearSelection} 
+                    selectAll={selectAll}
+                    setIsChecked={setIsChecked}
+                    isChecked={isChecked}
+                    columns={columns}
+                    visibleColumns={visibleColumns}
+                    toggleColumn={toggleColumn}
+                />
+            </div>
+        </div>
+    )
+
+    useEffect(() => {
+        if (Object.keys(visibleColumns).filter((item) => visibleColumns[item]).length === columns.length) {
+            setIsChecked(true);
+        } else {
+            setIsChecked(false);
+        }
+    }, [visibleColumns]);
+
     return (
-        <ThemeDataTable
-            data={sampleData}
-            columns={columns}
-            title="CMM Account Database"
-            searchPlaceholder="Search..."
-            onRowClick={handleRowClick}
-            handleClickOpenPasswordModal={handleOpenPasswordModal}
-        />
+        <>
+            {isOpenModal && <UnlockAccessInfoModal isOpen={isOpenModal} onClose={closeModal} />}
+            <ThemeDataTable
+                header={header}
+                data={sampleData}
+                columns={columns}
+                title="CMM Account Database"
+                searchPlaceholder="Search..."
+                onRowClick={handleRowClick}
+                visibleColumns={visibleColumns}
+                globalFilter={globalFilter}
+                setGlobalFilter={setGlobalFilter}
+                handleClickOpenPasswordModal={handleOpenPasswordModal}
+            />
+        </>
     );
 };
 
