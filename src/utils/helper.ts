@@ -137,3 +137,15 @@ export function formatNumberWithUnits(value: any, decimalPlaces = 1) {
 
     return `${parseFloat(value.toFixed(decimalPlaces))}${units[unitIndex]}`;
 }
+// Helper function to generate an array of random integers under 2000
+export function generateDatasetForCaseAnalysis(rows: number, cols: number, max = 2000): number[][] {
+    const dataset: number[][] = [];
+    for (let i = 0; i < rows; i++) {
+        const row: number[] = [];
+        for (let j = 0; j < cols; j++) {
+            row.push(Math.floor(Math.random() * max) + 1); // 1 to max
+        }
+        dataset.push(row);
+    }
+    return dataset;
+}

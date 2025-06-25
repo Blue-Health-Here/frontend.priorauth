@@ -7,6 +7,7 @@ import InsuranceWiseChart from "@/components/InsuranceWiseChart";
 import MedicationWiseChart from "@/components/MedicationWiseChart";
 import ApprovalDenialCards from "@/components/ApprovalDenialCards";
 import WithCNOrWithoutCNCards from "@/components/WithCNOrWithoutCNCards";
+import CaseAnalysisCard from "./CaseAnalysisCard";
 
 const PharmacyDashboard = () => {
     return (
@@ -35,14 +36,17 @@ const PharmacyDashboard = () => {
                     />
                 </div>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <MedicationWiseChart />
                 <InsuranceWiseChart />
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <ApprovalDenialCards />
                 <WithCNOrWithoutCNCards />
                 {/* <InsuranceWiseChart /> */}
+            </div>
+            <div className="grid grid-cols-1 gap-4">
+                <CaseAnalysisCard />
             </div>
         </div>
     )
