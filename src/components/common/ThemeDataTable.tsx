@@ -57,7 +57,7 @@ const ThemeDataTable: React.FC<any> = ({
         );
     };
 
-    const passwordBodyTemplate = (rowData: any, field: any) => {
+    const passwordBodyTemplate = () => {
         return (
             <div className="flex items-center gap-2">
                 <span className="text-gray-600">••••••••••</span>
@@ -241,7 +241,7 @@ const ThemeDataTable: React.FC<any> = ({
                             key={column.field}
                             field={column.field}
                             header={column.header}
-                            body={column.type === 'password' ? (rowData: any) => passwordBodyTemplate(rowData, column.field) : column.body}
+                            body={column.type === 'password' ? () => passwordBodyTemplate() : column.body}
                         // sortable={column.sortable !== false}
                         // filter={column.filterable}
                         // filterPlaceholder={`Search by ${column.header}`}
