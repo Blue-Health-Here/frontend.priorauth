@@ -9,7 +9,6 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
-import { timeRanges } from "@/utils/constants";
 import { generateDatasetForCaseAnalysis } from "@/utils/helper";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
