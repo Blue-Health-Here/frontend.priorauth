@@ -8,6 +8,8 @@ import {
     Title,
     Tooltip,
     Legend,
+    ChartData,
+    ChartOptions,
 } from "chart.js";
 import { generateDatasetForCaseAnalysis } from "@/utils/helper";
 
@@ -24,36 +26,74 @@ const CaseAnalysisCard = () => {
 
     const [approved, denied, planExclusion] = datasetsByRange[range];
 
-    const data = {
+    const data: ChartData<"bar"> = {
         labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"],
         datasets: [
-            {
-                label: "Approval",
-                backgroundColor: "#5CE543",
-                data: approved,
-            },
             {
                 label: "Denial",
                 backgroundColor: "#FF4040",
                 data: denied,
+                barThickness: 90,
+                categoryPercentage: 1,
+                barPercentage: 0.9,
+                
             },
             {
                 label: "Plan Exclusion",
                 backgroundColor: "#F9A538",
                 data: planExclusion,
+                barThickness: 90,
+                categoryPercentage: 1,
+                barPercentage: 0.9,
+            },
+            {
+                label: "Approval",
+                backgroundColor: "#5CE543",
+                data: approved,
+                barThickness: 90,
+                categoryPercentage: 1,
+                barPercentage: 0.9,
+                borderRadius: { topLeft: 10, topRight: 10 },
             },
         ],
     };
 
-    const options = {
+    const options: ChartOptions<"bar"> = {
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
             x: {
                 stacked: true,
+                grid: {
+                    display: false,
+                },
+                offset: true,
             },
             y: {
-                stacked: true
-            }
+                stacked: true,
+                grid: {
+                    display: true,
+                },
+            },
+        },
+        plugins: {
+            legend: {
+                position: 'top',
+                align: 'start',
+                labels: {
+                    boxWidth: 12,
+                    padding: 20,
+                    usePointStyle: true,
+                    pointStyle: 'rect',
+                    generateLabels: (chart: ChartJS) => {
+                        const original = ChartJS.defaults.plugins.legend.labels.generateLabels(chart);
+                        return original.reverse();
+                    }
+                }
+            },
+        },
+        layout: {
+            padding: 0
         }
     };
 
@@ -78,11 +118,14 @@ const CaseAnalysisCard = () => {
                 </div>
             </div>
             <div className="h-[400px] w-full">
-                <Bar data={data} options={options} className="w-full" />
+                <Bar 
+                    data={data} 
+                    options={options} 
+                    className="w-full" 
+                />
             </div>
         </div>
     );
-
 };
 
 export default CaseAnalysisCard;

@@ -118,6 +118,7 @@ const GlobalStatsCard: React.FC<any> = ({
 
                 // Get the canvas context
                 const ctx = chartRef.current.getContext('2d');
+                debugger;
                 if (ctx) {
                     // Clear the canvas
                     ctx.clearRect(0, 0, chartRef.current.width, chartRef.current.height);

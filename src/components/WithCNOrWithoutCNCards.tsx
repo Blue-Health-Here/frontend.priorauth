@@ -31,6 +31,7 @@ const WithCNOrWithoutCNCards = () => {
                         data: [65, 35],
                         backgroundColor: ['#FF4040', '#5CE543'],
                         borderWidth: 0,
+                        spacing:4
                         // cutout: '60%'
                     }]
                 },
@@ -64,6 +65,7 @@ const WithCNOrWithoutCNCards = () => {
                         data: [62, 38],
                         backgroundColor: ['#5CE543', '#FF4040'],
                         borderWidth: 0,
+                        spacing: 4
                         // cutout: '60%'
                     }]
                 },

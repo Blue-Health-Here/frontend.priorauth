@@ -55,13 +55,15 @@ const InsuranceWiseChart = () => {
         datasets: [
             {
                 label: "Approval",
-                backgroundColor: "#4ADE80",
+                backgroundColor: "#5CE543",
                 data: approved,
+                borderRadius: 10,
             },
             {
                 label: "Denial",
-                backgroundColor: "#F87171",
+                backgroundColor: "#FF7E7E",
                 data: denied,
+                borderRadius: 10,
             },
         ],
     };
@@ -73,6 +75,18 @@ const InsuranceWiseChart = () => {
             legend: { position: "top" },
             title: { display: false },
         },
+        scales: {
+            x: {
+                grid: {
+                    display: true // Removes vertical grid lines (appear horizontal in horizontal bar chart)
+                }
+            },
+            y: {
+                grid: {
+                    display: false // Removes horizontal grid lines (appear vertical in horizontal bar chart)
+                }
+            }
+        }
     };
 
     return (

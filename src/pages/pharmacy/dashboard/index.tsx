@@ -10,46 +10,56 @@ import WithCNOrWithoutCNCards from "@/components/WithCNOrWithoutCNCards";
 import CaseAnalysisCard from "./CaseAnalysisCard";
 
 const PharmacyDashboard = () => {
-    return (
-        <div className="flex flex-col gap-4">
-            <h1 className="text-xl text-primary-black font-medium">Dashboard</h1>
-            <PARequestsSection />
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-12 gap-4">
-                <div className='sm:col-span-2 xl:col-span-6'>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-4 sm:gap-4 h-full">
-                        <StatCard title="Today's Request" className='col-span-2 bg-gradient-to-br from-[#0000FD] to-[#74F8FD]' description="Total no of tasks created by the Admin." value="150" />
-                        <StatCard title='Prescribers' className='col-span-1' description="Doctor registered, including individual & linked with clinics." value="48" />
-                        <div className='col-span-3'>
-                            <DashboardRequestCard
-                                title="Requests"
-                                value="42K"
-                                data={yearlyRequestsData}
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className='sm:col-span-2 xl:col-span-6 h-full'>
-                    <GlobalStatsCard
-                        title="Global Stats"
-                        description="Total no. of Sessions/sessions Doctors need to attend"
-                        data={globalStatsData}
-                    />
-                </div>
+  return (
+    <div className="flex flex-col gap-4">
+      <h1 className="text-xl text-primary-black font-medium">Dashboard</h1>
+      <PARequestsSection />
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-12 gap-4">
+        <div className="sm:col-span-2 xl:col-span-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-4 sm:gap-4 h-full">
+            <StatCard
+              title="Today's Request"
+              className="col-span-2 bg-gradient-to-br from-[#0000FD] to-[#74F8FD] min-h-[120px]"
+              description="Total no of tasks created by the Admin."
+              value="150"
+            />
+            <StatCard
+              title="Prescribers"
+              className="col-span-1 min-h-[120px]"
+              description="Doctor registered, including individual & linked with clinics."
+              value="48"
+            />
+            <div className="col-span-3">
+              <DashboardRequestCard
+                title="Requests"
+                value="42K"
+                data={yearlyRequestsData}
+              />
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <MedicationWiseChart />
-                <InsuranceWiseChart />
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <ApprovalDenialCards />
-                <WithCNOrWithoutCNCards />
-                {/* <InsuranceWiseChart /> */}
-            </div>
-            <div className="grid grid-cols-1 gap-4">
-                <CaseAnalysisCard />
-            </div>
+          </div>
         </div>
-    )
+        <div className="sm:col-span-2 xl:col-span-6 h-full">
+          <GlobalStatsCard
+            title="Global Stats"
+            description="Total no. of Sessions/sessions Doctors need to attend"
+            data={globalStatsData}
+          />
+        </div>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <MedicationWiseChart />
+        <InsuranceWiseChart />
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <ApprovalDenialCards />
+        <WithCNOrWithoutCNCards />
+        {/* <InsuranceWiseChart /> */}
+      </div>
+      <div className="grid grid-cols-1 gap-4">
+        <CaseAnalysisCard />
+      </div>
+    </div>
+  );
 };
 
 export default PharmacyDashboard;

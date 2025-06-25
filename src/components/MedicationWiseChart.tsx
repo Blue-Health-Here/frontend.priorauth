@@ -49,23 +49,47 @@ const MedicationWiseChart = () => {
         datasets: [
             {
                 label: "Requests",
-                backgroundColor: "#3B82F6",
+                backgroundColor: "#007AFF",
                 data: requests,
+                borderRadius: { topLeft: 8, topRight: 8 }, // Add top radius
             },
             {
                 label: "Approved",
-                backgroundColor: "#4ADE80",
+                backgroundColor: "#5CE543",
                 data: approved,
+                borderRadius: { topLeft: 8, topRight: 8 }, // Add top radius
             },
         ],
     };
 
     const options: any = {
         responsive: true,
+        scales: {
+            x: {
+                grid: {
+                    display: false, 
+                },
+            },
+            y: {
+                grid: {
+                    display: true, 
+                },
+            },
+        },
         plugins: {
-            legend: { position: "top" },
+            legend: { 
+                position: 'top',
+                align: 'start',
+                labels: {
+                    boxWidth: 12,
+                    padding: 20,
+                    usePointStyle: true,
+                    pointStyle: 'rect',
+                }
+            },
             title: { display: false },
         },
+        
     };
 
     return (

@@ -29,8 +29,9 @@ const DashboardRequestCard: React.FC<any> = ({
             datasets: [{
                 data: data?.yearly || [35, 42, 38, 45, 52, 48, 58, 62, 55, 68, 72, 65],
                 backgroundColor: '#66D0FF',
-                borderRadius: 4,
+                borderRadius: 2,
                 borderSkipped: false,
+                barPercentage: 0.75,
             }]
         },
         M: {
@@ -49,6 +50,8 @@ const DashboardRequestCard: React.FC<any> = ({
                 backgroundColor: '#66D0FF',
                 borderRadius: 4,
                 borderSkipped: false,
+                barPercentage: 0.5,
+categoryPercentage: 0.5
             }]
         }
     };
@@ -157,7 +160,7 @@ const DashboardRequestCard: React.FC<any> = ({
     }, []);
 
     return (
-        <div className="rounded-2xl p-5 theme-shadow bg-white transition-colors min-h-[210px] h-full w-full flex flex-col justify-between gap-4 request-graph">
+        <div className="rounded-2xl p-5 theme-shadow bg-white transition-colors min-h-[210px] h-[50%] w-full flex flex-col justify-between gap-4 request-graph">
             <div className="flex items-start flex-wrap gap-6 justify-between">
                 <div className="font-secondary">
                     <h3 className="text-sm md:text-base lg:text-lg font-semibold text-primary-black group-hover:text-white transition-colors duration-800 ease-in-out">
@@ -189,7 +192,7 @@ const DashboardRequestCard: React.FC<any> = ({
                     {value}
                 </div>
                 <div className="flex-1">
-                    <div className="h-24 w-full">
+                    <div className="h-24 w-[50%] ml-60">
                         <canvas ref={chartRef}></canvas>
                     </div>
                 </div>

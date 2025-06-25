@@ -31,6 +31,8 @@ const ApprovalDenialCards = () => {
                         data: [80, 20],
                         backgroundColor: ['#5CE543', '#62C051'],
                         borderWidth: 0,
+                        spacing: 4
+                    
                         // cutout: '60%'
                     }]
                 },
@@ -64,6 +66,7 @@ const ApprovalDenialCards = () => {
                         data: [62, 38],
                         backgroundColor: ['#ef4444', '#f87171'],
                         borderWidth: 0,
+                        spacing:4
                         // cutout: '60%'
                     }]
                 },
