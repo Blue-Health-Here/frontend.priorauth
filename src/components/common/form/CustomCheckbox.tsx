@@ -7,7 +7,7 @@ interface CustomCheckboxProps {
   id?: string;
 }
 
-const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ checked, onChange, id }) => {
+const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ className, checked, onChange, id }) => {
   return (
     <label className="inline-flex items-center cursor-pointer">
     <input
@@ -18,7 +18,7 @@ const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ checked, onChange, id }
       id={id}
     />
     <span
-      className={`w-[18px] h-[18px] flex items-center justify-center rounded-[4px] border-2 transition-all duration-200 ${
+      className={`${className} w-[18px] h-[18px] flex items-center justify-center rounded-[4px] border-2 transition-all duration-200 ${
         checked
           ? 'bg-primary-sky-blue border-primary-sky-blue' 
           : 'bg-transparent border-secondary-black' 
