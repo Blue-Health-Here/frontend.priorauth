@@ -5,6 +5,7 @@ import FilterField from "@/components/common/FilterField";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import { FiSearch } from "react-icons/fi";
 import ThemeButton from "@/components/common/ThemeButton";
+import RequestStatusDropdownField from "./RequestStatusDropdownField";
 
 const sampleData = [
     {
@@ -236,6 +237,7 @@ const columns = [
 ];
 
 const PharmacyRequests = () => {
+    const [requestsData, setRequestsData] = useState<any>(sampleData);
     const [visibleColumns, setVisibleColumns] = useState(columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: col.visible !== false }), {}));
     const [isChecked, setIsChecked] = useState<boolean>(false);
     const [globalFilter, setGlobalFilter] = useState('');
@@ -263,6 +265,15 @@ const PharmacyRequests = () => {
         console.log(row, "row")
     };
 
+    const handleStatusChange = (status: any) => {
+        if (status?.length > 0) {
+            const filteredData = sampleData.filter(item => status.includes(item.request_status));
+            setRequestsData(filteredData);
+        } else {
+            setRequestsData(sampleData);
+        }
+    };
+
     const tableHeader = (
         <div className="flex gap-2 items-center h-12"> {/* Set fixed height here */}
             <div className="relative h-full">
@@ -279,6 +290,7 @@ const PharmacyRequests = () => {
     
             <div className="inline-flex h-full items-center gap-2">
                 <FilterField columns={columns} />
+                <RequestStatusDropdownField data={sampleData} onChange={(selected) => handleStatusChange(selected)} />
                 <ToggleColumnsField
                     clearSelection={clearSelection}
                     selectAll={selectAll}
@@ -331,7 +343,7 @@ const PharmacyRequests = () => {
             </div>
             <ThemeDataTable
                 header={tableHeader}
-                data={sampleData}
+                data={requestsData}
                 columns={columns}
                 pageSize={5}
                 title="Your Requests"
