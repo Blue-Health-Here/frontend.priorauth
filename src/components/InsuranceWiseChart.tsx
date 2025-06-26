@@ -78,13 +78,19 @@ const InsuranceWiseChart = () => {
         scales: {
             x: {
                 grid: {
-                    display: true // Removes vertical grid lines (appear horizontal in horizontal bar chart)
-                }
+                    display: true 
+                },
+                 border: {
+                    display: false, 
+                },
             },
             y: {
                 grid: {
-                    display: false // Removes horizontal grid lines (appear vertical in horizontal bar chart)
-                }
+                    display: false 
+                },
+                 border: {
+                    display: false, 
+                },
             }
         }
     };

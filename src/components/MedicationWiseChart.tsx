@@ -62,39 +62,78 @@ const MedicationWiseChart = () => {
         ],
     };
 
-    const options: any = {
-        responsive: true,
-        scales: {
-            x: {
-                grid: {
-                    display: false, 
-                },
+  const options: any = {
+    responsive: true,
+    scales: {
+        x: {
+            grid: {
+                display: false,
             },
-            y: {
-                grid: {
-                    display: true, 
-                },
+            border: {
+                display: false,
             },
-        },
-        plugins: {
-            legend: { 
-                position: 'top',
-                align: 'start',
-                labels: {
-                    boxWidth: 12,
-                    padding: 20,
-                    usePointStyle: true,
-                    pointStyle: 'rect',
+            ticks: {
+                display: true,
+                autoSkip: false,
+                maxRotation: 0,
+                minRotation: 0,
+                padding: 10,
+                callback: function(this: any, value: string | number, index: number, values: any[]) {
+                    // Get the full label text
+                    const label = typeof value === 'number' 
+                        ? this.chart.data.labels?.[index] || ''
+                        : value;
+                    
+                    // Truncate long labels and add ellipsis
+                    return label.length > 10 ? `${label.substring(0, 10)}...` : label;
                 }
             },
-            title: { display: false },
+            barThickness: 30,
+            categoryPercentage: 0.8,
+            barPercentage: 0.9,
         },
-        
-    };
-
+        y: {
+            grid: {
+                display: true,
+                drawTicks: false,
+            },
+            border: {
+                display: false,
+            },
+            ticks: {
+                stepSize: 500,
+                callback: function(value: string | number) {
+                    return Number(value).toString();
+                },
+                padding: 10,
+            },
+            beginAtZero: true,
+        },
+    },
+    plugins: {
+        legend: { 
+            position: 'top',
+            align: 'start',
+            labels: {
+                boxWidth: 12,
+                padding: 10,
+                usePointStyle: true,
+                pointStyle: 'rect',
+            }
+        },
+        title: { display: false },
+        tooltip: {
+            callbacks: {
+                label: function(context: any) {
+                    return `${context.dataset.label}: ${context.parsed.y}`;
+                }
+            }
+        }
+    },
+};
     return (
         <div className="bg-white rounded-2xl p-4 theme-shadow w-full">
-            <div className="flex justify-between items-center mb-2">
+            <div className="flex justify-between items-center">
                 <h2 className="text-lg font-semibold">Medication wise Analysis</h2>
                 <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5">
                     {timeRanges.map((period) => (

@@ -36,7 +36,6 @@ const CaseAnalysisCard = () => {
                 barThickness: 90,
                 categoryPercentage: 1,
                 barPercentage: 0.9,
-                
             },
             {
                 label: "Plan Exclusion",
@@ -67,12 +66,21 @@ const CaseAnalysisCard = () => {
                 grid: {
                     display: false,
                 },
+                border: {
+                    display: false, // Ensure no border is shown
+                },
                 offset: true,
             },
             y: {
                 stacked: true,
                 grid: {
                     display: true,
+                },
+                border: {
+                    display: false, // Ensure no border is shown
+                },
+                ticks: {
+                    color: "#666", // Optional: customize tick color
                 },
             },
         },
@@ -100,7 +108,7 @@ const CaseAnalysisCard = () => {
     return (
         <div className="bg-white rounded-2xl p-4 theme-shadow w-full">
             <div className="flex justify-between items-center mb-2">
-                <h2 className="text-lg font-semibold">Medication wise Analysis</h2>
+                <h2 className="text-lg font-semibold">Case Analysis</h2>
                 <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5">
                     {["W", "M", "Y"].map((period) => (
                         <button

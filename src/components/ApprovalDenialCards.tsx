@@ -117,14 +117,14 @@ const ApprovalDenialCards = () => {
                     <div className="space-y-2">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center">
-                                <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                                <div className="w-2.5 h-2.5 bg-green-500 rounded-xs mr-2"></div>
                                 <span className="text-sm text-gray-600">With Chart Notes</span>
                             </div>
                             <span className="text-sm font-medium text-gray-800">35%</span>
                         </div>
                         <div className="flex items-center justify-between">
                             <div className="flex items-center">
-                                <div className="w-3 h-3 bg-green-300 rounded-full mr-2"></div>
+                                <div className="w-2.5 h-2.5 bg-green-300 rounded-xs mr-2"></div>
                                 <span className="text-sm text-gray-600">Without Chart Notes</span>
                             </div>
                             <span className="text-sm font-medium text-gray-800">16%</span>
@@ -148,14 +148,14 @@ const ApprovalDenialCards = () => {
                     <div className="space-y-2">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center">
-                                <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                                <div className="w-2.5 h-2.5 bg-red-500 rounded-xs mr-2"></div>
                                 <span className="text-sm text-gray-600">With Chart Notes</span>
                             </div>
                             <span className="text-sm font-medium text-gray-800">35%</span>
                         </div>
                         <div className="flex items-center justify-between">
                             <div className="flex items-center">
-                                <div className="w-3 h-3 bg-red-300 rounded-full mr-2"></div>
+                                <div className="w-2.5 h-2.5 bg-red-300 rounded-xs mr-2"></div>
                                 <span className="text-sm text-gray-600">Without Chart Notes</span>
                             </div>
                             <span className="text-sm font-medium text-gray-800">16%</span>
