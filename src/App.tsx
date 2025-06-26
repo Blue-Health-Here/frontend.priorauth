@@ -20,6 +20,7 @@ import UserSettingPage from "./pages/admin/settings/user-setting";
 import PharmacyLayout from "./layouts/PharmacyLayout";
 import PharmacyDashboard from "./pages/pharmacy/dashboard";
 import CMMAccountDatabase from "./pages/pharmacy/cmm-account";
+import PharmacyRequests from "./pages/pharmacy/requests";
 
 function App() {
   return (
@@ -47,8 +48,9 @@ function App() {
               </Route>
               <Route path="/pharmacy" element={<PharmacyLayout />}>
                 <Route index element={<Navigate to="dashboard" replace />} />
-                <Route path="dashboard" element={<PharmacyDashboard />} /> 
-                <Route path="cmm-account-database" element={<CMMAccountDatabase />} /> 
+                <Route path="dashboard" element={<PharmacyDashboard />} />
+                <Route path="requests" element={<PharmacyRequests />} />
+                <Route path="cmm-account-database" element={<CMMAccountDatabase />} />
               </Route>
               <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>
