@@ -24,14 +24,16 @@ const FilterField: React.FC<any> = ({ columns, className }) => {
     return (
         <div className={`relative ${className}`} ref={dropdownRef}>
             <Button
-                label="Filters"
-                icon={<PiSlidersHorizontalBold className='w-5 h-5' />}
                 severity="secondary"
                 outlined
-                iconPos='right'
-                className='flex gap-2 !text-sm !rounded-xl !border-light-stroke !text-secondary-black !font-medium'
+                className="!text-sm !rounded-xl !border-light-stroke !text-secondary-black !font-medium"
                 onClick={() => setShowFiltersDropdown(!showFiltersDropdown)}
-            />
+            >
+                <span className="flex items-center gap-2">
+                    Filters
+                    <PiSlidersHorizontalBold className='w-5 h-5' />
+                </span>
+            </Button>
 
             {showFiltersDropdown && (
                 <div className="absolute right-0 p-4 top-full mt-1 w-64 bg-primary-white border border-light-stroke rounded-xl theme-shadow z-10">

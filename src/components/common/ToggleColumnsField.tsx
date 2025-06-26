@@ -31,14 +31,16 @@ const ToggleColumnsField: React.FC<any> = ({
     return (
         <div className={`relative ${className}`} ref={columnDropdownRef}>
             <Button
-                label="Fields"
-                icon={<FaChevronDown className="w-4 h-4" />}
                 severity="secondary"
                 outlined
-                iconPos='right'
-                className='flex gap-2 !text-sm !rounded-xl !border-light-stroke !text-secondary-black !font-medium'
+                className="!text-sm !rounded-xl !border-light-stroke !text-secondary-black !font-medium"
                 onClick={() => setShowColumnDropdown(!showColumnDropdown)}
-            />
+            >
+                <span className="flex items-center gap-2">
+                    Fields
+                    <FaChevronDown className="w-4 h-4" />
+                </span>
+            </Button>
 
             {showColumnDropdown && (
                 <div className="absolute right-0 top-full mt-1 p-4 w-64 bg-primary-white border border-light-stroke rounded-xl theme-shadow z-10">
