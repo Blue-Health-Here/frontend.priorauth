@@ -39,7 +39,7 @@ const Topbar: React.FC = () => {
     <div className={`fixed top-0 left-0 lg:left-[250px] xl:left-[280px] right-0 p-4 sm:p-3.5 z-60 bg-white border-b border-gray-100`}>
       <nav className={`flex justify-between items-center w-full`}>
         <div className='flex items-center'>
-          <p className="text-lg sm:text-xl lg:text-2xl font-semibold text-primary-black whitespace-nowrap">
+          <p className="text-lg sm:text-xl font-semibold text-primary-black whitespace-nowrap">
             {getPageTitle(location.pathname)}
           </p>
         </div>

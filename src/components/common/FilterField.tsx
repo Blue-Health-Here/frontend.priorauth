@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { PiSlidersHorizontalBold } from "react-icons/pi";
 import CustomCheckbox from "./form/CustomCheckbox";
 
-const FilterField: React.FC<any> = ({ columns }) => {
+const FilterField: React.FC<any> = ({ columns, className }) => {
     const [showFiltersDropdown, setShowFiltersDropdown] = useState(false);
     const [selectedOpt, setSelectedOpt] = useState("");
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -22,7 +22,7 @@ const FilterField: React.FC<any> = ({ columns }) => {
     }, []);
 
     return (
-        <div className="relative" ref={dropdownRef}>
+        <div className={`relative ${className}`} ref={dropdownRef}>
             <Button
                 label="Filters"
                 icon={<PiSlidersHorizontalBold className='w-5 h-5' />}
@@ -34,31 +34,29 @@ const FilterField: React.FC<any> = ({ columns }) => {
             />
 
             {showFiltersDropdown && (
-                <div className="absolute right-0 top-full mt-1 w-64 bg-primary-white border border-light-stroke rounded-xl theme-shadow z-10">
-                    <div className="p-4">
-                        <p className="text-sm text-primary-black mb-4">Filter options</p>
-                        <div className="space-y-4">
-                            {columns.filter((col: any) => col.filterable).map((column: any) => (
-                                <div key={column.field} className="flex items-center">
-                                    <label
-                                        htmlFor={`filter-${column.field}`}
-                                        className="inline-flex items-center cursor-pointer"
-                                    >
-                                        <CustomCheckbox
-                                            id={`filter-${column.field}`}
-                                            onChange={() => {
-                                                setSelectedOpt(column.field)
-                                            }}
-                                            className='!border'
-                                            checked={column.field === selectedOpt}
-                                        />
-                                        <span className="text-xs md:text-sm text-secondary-black ml-2 font-medium font-secondary">
-                                            {column.header}
-                                        </span>
-                                    </label>
-                                </div>
-                            ))}
-                        </div>
+                <div className="absolute right-0 p-4 top-full mt-1 w-64 bg-primary-white border border-light-stroke rounded-xl theme-shadow z-10">
+                    <p className="text-sm text-primary-black mb-4">Filter options</p>
+                    <div className="space-y-4">
+                        {columns.filter((col: any) => col.filterable).map((column: any) => (
+                            <div key={column.field} className="flex items-center">
+                                <label
+                                    htmlFor={`filter-${column.field}`}
+                                    className="inline-flex items-center cursor-pointer"
+                                >
+                                    <CustomCheckbox
+                                        id={`filter-${column.field}`}
+                                        onChange={() => {
+                                            setSelectedOpt(column.field)
+                                        }}
+                                        className='!border'
+                                        checked={column.field === selectedOpt}
+                                    />
+                                    <span className="text-xs md:text-sm text-secondary-black ml-2 font-medium font-secondary">
+                                        {column.header}
+                                    </span>
+                                </label>
+                            </div>
+                        ))}
                     </div>
                 </div>
             )}
