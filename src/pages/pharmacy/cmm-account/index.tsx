@@ -6,7 +6,6 @@ import FilterField from "@/components/common/FilterField";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import { FiSearch } from "react-icons/fi";
 
-// Example usage component
 const CMMAccountDatabase = () => {
     const [isOpenModal, setIsOpenModal] = useState(false);
 
@@ -157,7 +156,6 @@ const CMMAccountDatabase = () => {
 
     const handleOpenPasswordModal = (event: any) => {
         event.stopPropagation();
-        console.log(event, "event");
         setIsOpenModal(true);
     };
 

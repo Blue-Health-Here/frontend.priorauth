@@ -3,7 +3,6 @@ import { DataTable } from 'primereact/datatable';
 import React, { useRef } from 'react';
 import { AiOutlineEye } from "react-icons/ai";
 
-// Main Reusable DataTable Component
 const ThemeDataTable: React.FC<any> = ({
     data = [],
     columns = [],
@@ -16,7 +15,7 @@ const ThemeDataTable: React.FC<any> = ({
     isPaginator = true,
     className = '',
     handleClickOpenPasswordModal,
-    visibleColumns, header, globalFilter
+    visibleColumns, header, globalFilter, globalFilterFields
 }) => {
     const dt = useRef(null);
 
@@ -41,6 +40,7 @@ const ThemeDataTable: React.FC<any> = ({
                 paginatorTemplate="CurrentPageReport PrevPageLink PageLinks NextPageLink RowsPerPageDropdown"
                 currentPageReportTemplate="Showing {last} of {totalRecords} entries"
                 globalFilter={globalFilter}
+                globalFilterFields={globalFilterFields}
                 header={header || null}
                 emptyMessage={emptyMessage}
                 loading={loading}
@@ -54,10 +54,11 @@ const ThemeDataTable: React.FC<any> = ({
                             key={column.field}
                             field={column.field}
                             header={column.header}
-                            body={column.type === 'password' ? () => passwordBodyTemplate() : column.body}
-                        // sortable={column.sortable !== false}
-                        // filter={column.filterable}
-                        // filterPlaceholder={`Search by ${column.header}`}
+                            body={column.type === 'password' ? () => passwordBodyTemplate() : 
+                                column.customTemplate ? (rowData) => column.render(rowData, column.field) : column.body}
+                            // sortable={column.sortable !== false}
+                            // filter={column.filterable}
+                            // filterPlaceholder={`Search by ${column.header}`}
                         />
                     ))}
             </DataTable>
