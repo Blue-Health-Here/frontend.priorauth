@@ -78,7 +78,7 @@ const MedicationWiseChart = () => {
                 maxRotation: 0,
                 minRotation: 0,
                 padding: 10,
-                callback: function(this: any, value: string | number, index: number, values: any[]) {
+                callback: function(this: any, value: string | number, index: number) {
                     // Get the full label text
                     const label = typeof value === 'number' 
                         ? this.chart.data.labels?.[index] || ''
