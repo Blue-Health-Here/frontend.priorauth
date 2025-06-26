@@ -314,6 +314,9 @@ a:focus {
 .custom-paginator .p-dropdown {
   order: 1;
   margin-left: auto;
+  background-color: var(--status-bg-lilac-sky);
+  height: 2.5rem;
+  border-color: var(--status-bg-lilac-sky);
 }
 
 .custom-paginator .p-paginator .p-paginator-pages .p-paginator-page {
@@ -333,3 +336,12 @@ a:focus {
   border-radius: 8px;
 }
 
+.custom-paginator .p-dropdown .p-dropdown-trigger {
+  color: var(--status-text-lilac-sky);
+  width: 2rem;
+}
+
+.custom-paginator .p-dropdown .p-dropdown-label {
+  color: var(--status-text-lilac-sky);
+  line-height: 1rem;
+}

@@ -10,7 +10,7 @@ const ToggleColumnsField: React.FC<any> = ({
     isChecked,
     columns,
     visibleColumns,
-    toggleColumn 
+    toggleColumn, className 
 }) => {
     const [showColumnDropdown, setShowColumnDropdown] = useState(false);
     const columnDropdownRef = useRef<HTMLDivElement>(null);
@@ -29,7 +29,7 @@ const ToggleColumnsField: React.FC<any> = ({
     }, []);
 
     return (
-        <div className="relative" ref={columnDropdownRef}>
+        <div className={`relative ${className}`} ref={columnDropdownRef}>
             <Button
                 label="Fields"
                 icon={<FaChevronDown className="w-4 h-4" />}

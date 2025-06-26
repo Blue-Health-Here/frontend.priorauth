@@ -184,23 +184,23 @@ const CMMAccountDatabase = () => {
     };
 
     const header = (
-        <div className="flex items-center justify-start gap-4">
-            <div className="relative flex-1 max-w-md h-full">
+        <div className="flex gap-2 items-center h-12"> {/* Set fixed height here */}
+            <div className="relative h-full">
                 <InputText
                     value={globalFilter}
                     onChange={(e: any) => setGlobalFilter(e.target.value)}
-                    placeholder={"Search for request here"}
-                    className="w-full !pl-10 !h-full !text-sm !rounded-xl !border-light-stroke"
+                    placeholder="Search for request here..."
+                    className="!pl-10 !rounded-xl !border-light-stroke h-full" // Force full height
                 />
                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                    <FiSearch className='w-5 h-5' />
+                    <FiSearch className="w-5 h-5" />
                 </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="inline-flex h-full items-center gap-2">
                 <FilterField columns={columns} />
                 <ToggleColumnsField
-                    clearSelection={clearSelection} 
+                    clearSelection={clearSelection}
                     selectAll={selectAll}
                     setIsChecked={setIsChecked}
                     isChecked={isChecked}
@@ -221,13 +221,15 @@ const CMMAccountDatabase = () => {
     }, [visibleColumns]);
 
     return (
-        <>
+        <div className='bg-primary-white rounded-2xl theme-datatable theme-shadow px-4 py-4'>
+            <div>
+                <h2 className='text-lg sm:text-xl lg:text-2xl font-semibold text-primary-black whitespace-nowrap pb-4'>CMM Account Database</h2>
+            </div>
             {isOpenModal && <UnlockAccessInfoModal isOpen={isOpenModal} onClose={closeModal} />}
             <ThemeDataTable
                 header={header}
                 data={sampleData}
                 columns={columns}
-                title="CMM Account Database"
                 searchPlaceholder="Search..."
                 onRowClick={handleRowClick}
                 visibleColumns={visibleColumns}
@@ -235,7 +237,7 @@ const CMMAccountDatabase = () => {
                 setGlobalFilter={setGlobalFilter}
                 handleClickOpenPasswordModal={handleOpenPasswordModal}
             />
-        </>
+        </div>
     );
 };
 

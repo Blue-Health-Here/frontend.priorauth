@@ -4,6 +4,8 @@ import { InputText } from "primereact/inputtext";
 import FilterField from "@/components/common/FilterField";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import { FiSearch } from "react-icons/fi";
+import ThemeButton from "@/components/common/ThemeButton";
+import { Link } from "react-router-dom";
 
 const sampleData = [
     {
@@ -238,6 +240,7 @@ const PharmacyRequests = () => {
     const [visibleColumns, setVisibleColumns] = useState(columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: col.visible !== false }), {}));
     const [isChecked, setIsChecked] = useState<boolean>(false);
     const [globalFilter, setGlobalFilter] = useState('');
+    const [activeRequestTab, setActiveRequestTab] = useState<string>('Active Requests');
 
     const toggleColumn = (columnField: any) => {
         setVisibleColumns((prev: any) => ({
@@ -256,24 +259,26 @@ const PharmacyRequests = () => {
             columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: value }), {})
         );
     };
+
     const handleRowClick = (row: any) => {
         console.log(row, "row")
     };
+
     const tableHeader = (
-        <div className="flex items-center justify-start gap-4">
-            <div className="relative flex-1 max-w-md h-full">
+        <div className="flex gap-2 items-center h-12"> {/* Set fixed height here */}
+            <div className="relative h-full">
                 <InputText
                     value={globalFilter}
                     onChange={(e: any) => setGlobalFilter(e.target.value)}
                     placeholder="Search for request here..."
-                    className="w-full !pl-10 !h-full !text-sm !rounded-xl !border-light-stroke"
+                    className="!pl-10 !rounded-xl !border-light-stroke h-full" // Force full height
                 />
                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                    <FiSearch className='w-5 h-5' />
+                    <FiSearch className="w-5 h-5" />
                 </div>
             </div>
-
-            <div className="flex items-center gap-4">
+    
+            <div className="inline-flex h-full items-center gap-2">
                 <FilterField columns={columns} />
                 <ToggleColumnsField
                     clearSelection={clearSelection}
@@ -285,8 +290,17 @@ const PharmacyRequests = () => {
                     toggleColumn={toggleColumn}
                 />
             </div>
+    
+            <div className="inline-flex h-full gap-2 ml-auto">
+                <ThemeButton type="button" className="!h-full min-w-max rounded-xl" variant="secondary">
+                    Open Portal
+                </ThemeButton>
+                <ThemeButton className="w-full !h-full rounded-xl" variant="primary">
+                    Add Request
+                </ThemeButton>
+            </div>
         </div>
-    )
+    );
 
     useEffect(() => {
         if (Object.keys(visibleColumns).filter((item) => visibleColumns[item]).length === columns.length) {
@@ -297,18 +311,39 @@ const PharmacyRequests = () => {
     }, [visibleColumns]);
 
     return (
-        <ThemeDataTable
-            header={tableHeader}
-            data={sampleData}
-            columns={columns}
-            title="Your Requests"
-            searchPlaceholder="Search"
-            onRowClick={handleRowClick}
-            visibleColumns={visibleColumns}
-            globalFilter={globalFilter}
-            setGlobalFilter={setGlobalFilter}
-            globalFilterFields={['patient.name', 'medication', 'prescriber.name', 'submittedOn', 'request_status', 'notes', 'lastModified']}
-        />
+        <div className='bg-primary-white rounded-2xl theme-datatable theme-shadow px-4 py-4'>
+            <div className="flex justify-between gap-4 items-center pb-4">
+                <h2 className='text-lg sm:text-xl lg:text-2xl font-semibold text-primary-black whitespace-nowrap'>Your Requests</h2>
+                <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5">
+                    {['All Requests', 'Active Requests'].map((item) => (
+                        <button
+                            key={item}
+                            type='button'
+                            onClick={() => setActiveRequestTab(item)}
+                            className={`px-3 py-2 cursor-pointer rounded-md font-medium transition-colors ${activeRequestTab === item
+                                ? 'bg-quaternary-navy-blue text-primary-navy-blue'
+                                : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
+                                }`}
+                        >
+                            {item}
+                        </button>
+                    ))}
+                </div>
+            </div>
+            <ThemeDataTable
+                header={tableHeader}
+                data={sampleData}
+                columns={columns}
+                pageSize={5}
+                title="Your Requests"
+                searchPlaceholder="Search"
+                onRowClick={handleRowClick}
+                visibleColumns={visibleColumns}
+                globalFilter={globalFilter}
+                setGlobalFilter={setGlobalFilter}
+                globalFilterFields={['patient.name', 'medication', 'prescriber.name', 'submittedOn', 'request_status', 'notes', 'lastModified']}
+            />
+        </div>
     );
 };
 
