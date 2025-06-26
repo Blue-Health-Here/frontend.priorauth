@@ -35,11 +35,11 @@ const PARequestsSection = () => {
                     ))}
                 </div>
             </div>
-            <div className="flex flex-wrap gap-6 items-center justify-center">
+            <div className="flex flex-wrap gap-4 items-center justify-center">
                 {paReqStats.map((item: any, index: number) => (
-                    <div key={index} className="rounded-2xl border border-quaternary-navy-blue p-4 sm:p-6 flex flex-col gap-6 flex-1">
-                        <p className="flex gap-2 items-center">
-                            <span className={`w-4 h-4 rounded-full`} style={{ background: item.color }}></span>
+                    <div key={index} className="rounded-2xl border border-quaternary-navy-blue p-4 pt-2 flex flex-col gap-5 flex-1 min-w-[150px] h-[120px] justify-center">
+                        <p className="flex gap-2 items-center text-sm">
+                            <span className={`w-3 h-3 rounded-full`} style={{ background: item.color }}></span>
                             <span>{item.label}</span>
                         </p>
                         <h3 className="font-semibold text-4xl">{formatNumberWithUnits(item.value)}</h3>

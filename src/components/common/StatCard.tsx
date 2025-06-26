@@ -15,18 +15,18 @@ const StatCard: React.FC<StatCardProps> = ({ description, title, value, classNam
       onClick={() => {
         navigate(`/admin/${title.toLowerCase()}`);
       }}
-      className={`cursor-pointer group min-h-[170px] text-white h-full w-full flex flex-col justify-between gap-4 rounded-2xl p-5 theme-shadow bg-white transition-colors ${className}
+      className={`cursor-pointer group min-h-[140px] w-full flex flex-col justify-between gap-3 rounded-lg p-5 theme-shadow bg-white transition-colors ${className}
         transition-background duration-700 ease-in-out`}
     >
       <div className="font-secondary">
         <h3 className={`text-sm md:text-base ${title === "Today's Request" && 'text-white'} text-primary-black lg:text-lg font-semibold transition-colors duration-800 ease-in-out`}>
           {title}
         </h3>
-        <p className={`text-xs md:text-sm lg:text-sm mt-2 ${title === "Today's Request" && 'text-white'} text-tertiary-black transition-colors duration-800 ease-in-out`}>
+        <p className={`text-xs md:text-sm lg:text-sm mt-2 ${title === "Today's Request" && 'text-white'} text-tertiary-black transition-colors duration-800 ease-in-out line-clamp-2`}>
           {description}
         </p>
       </div>
-      <div className={`text-xl md:text-3xl lg:text-5xl font-semibold mt-5 ${title === "Today's Request" && 'text-white'} text-primary-black transition-colors duration-800 ease-in-out`}>
+      <div className={`text-xl md:text-3xl lg:text-4xl font-semibold ${title === "Today's Request" && 'text-white'} text-primary-black transition-colors duration-800 ease-in-out`}>
         {value}
       </div>
     </div>

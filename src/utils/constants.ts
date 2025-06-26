@@ -1092,9 +1092,9 @@ export const globalStatsData = {
   yearly: {
     total: 19200,
     stats: [
-      { label: 'Approval', value: 56, color: '#19AD4B' },
-      { label: 'Denial', value: 18, color: '#FF2E37' },
-      { label: 'Pending', value: 26, color: '#1594CC' }
+      { label: 'Approval', value: 56, color: '#5CE543' },
+      { label: 'Denial', value: 18, color: '#FF4040' },
+      { label: 'Pending', value: 26, color: '#007AFF' }
     ]
   },
   monthly: {
