@@ -48,7 +48,7 @@ const Topbar: React.FC = () => {
   return (
     <div
       className={`fixed top-0 left-0 ${
-        isSidebarCollapsed ? "lg:left-[80px]" : "lg:left-[240px]"
+        isSidebarCollapsed ? "lg:left-[80px]" : "lg:left-[280px]"
       } right-0 p-3 sm:p-3 z-60 bg-white border-b border-gray-100`}
     >
       <nav className={`flex justify-between items-center w-full`}>
@@ -123,7 +123,7 @@ const Topbar: React.FC = () => {
                 alt="Profile"
                 className="w-7 h-7 sm:w-8 sm:h-8 rounded-full"
               />
-              <div className="hidden sm:block py-0.5">
+              <div className="hidden sm:block py-1">
                 <h2 className="text-primary-black font-semibold text-xs">
                   John Doe
                 </h2>

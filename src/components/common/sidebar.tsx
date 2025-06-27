@@ -43,8 +43,8 @@ const Sidebar: React.FC = () => {
   };
 
   const asideClass = isSidebarOpen
-    ? "max-w-full min-w-full transition-all duration-500 shadow-[0px 0px 12px 0px rgba(0, 0, 0, 0.04)] xl:min-w-[240px] xl:max-w-[240px] block text-secondary-black fixed top-0 bottom-0 z-[99]"
-    : `max-w-[240px] min-w-[240px] transition-all duration-500 shadow-[0px 0px 12px 0px rgba(0, 0, 0, 0.04)] hidden lg:flex text-secondary-black flex-col fixed top-0 bottom-0 z-[99] ${
+    ? "max-w-full min-w-full transition-all duration-500 shadow-[0px 0px 12px 0px rgba(0, 0, 0, 0.04)] xl:min-w-[280px] xl:max-w-[280px] block text-secondary-black fixed top-0 bottom-0 z-[99]"
+    : `max-w-[280px] min-w-[280px] transition-all duration-500 shadow-[0px 0px 12px 0px rgba(0, 0, 0, 0.04)] hidden lg:flex text-secondary-black flex-col fixed top-0 bottom-0 z-[99] ${
         isSidebarCollapsed ? "!min-w-[80px] !max-w-[80px]" : ""
       }`;
 
@@ -55,8 +55,8 @@ const Sidebar: React.FC = () => {
       )}
       <aside className={asideClass}>
         <div
-          className={`p-4 flex h-[67px] border-b bg-primary-white justify-between items-center border-r border-gray-100 ${
-            isSidebarCollapsed ? "px-2" : ""
+          className={`p-4 flex h-[67px] border-b bg-primary-white gap-4 sm:gap-6 lg:gap-8 items-center border-r border-gray-100 ${
+            isSidebarCollapsed ? "px-2 justify-center" : "justify-between"
           }`}
         >
           <Link to="/" className={isSidebarCollapsed ? "pl-0" : "pl-2"}>
