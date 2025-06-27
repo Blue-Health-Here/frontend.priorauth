@@ -29,7 +29,7 @@ const PharmacyCard: React.FC<PharmacyCardProps> = ({ pharmacy }) => {
       <div className="flex flex-col gap-3">
         <div className='flex justify-between gap-2 items-center'>
           <div className='flex gap-2 items-center'>
-            <Link to={`/admin/pharmacies/${pharmacy.id}`}>
+            <Link to={`/admin/pharmacies/${pharmacy.id}/pharmacy-details`}>
               <img 
                 src={pharmacy.pharmacyLogo || '/images/Abstergo Ltd..png'} 
                 alt="" 
@@ -37,7 +37,7 @@ const PharmacyCard: React.FC<PharmacyCardProps> = ({ pharmacy }) => {
               />
             </Link>
             <div>
-              <Link to={`/admin/pharmacies/${pharmacy.id}`}>
+              <Link to={`/admin/pharmacies/${pharmacy.id}/pharmacy-details`}>
                 <h2 className='text-sm sm:text-base md:text-lg font-semibold text-primary-black leading-[110%]'>
                   {pharmacy.name}
                 </h2>
