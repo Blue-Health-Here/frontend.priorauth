@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import ModalWrapper from "../../../../components/common/ModalWrapper";
-import ModalHeader from "../../../../components/common/ModalHeader";
-import FileDropzone from "./FileDropzone";
-import UploadFileList from "./UploadFileList";
+import UploadFileList from "../../../../components/common/UploadFileList";
 import GradientSidebarButton from "./GradientSidebarButton";
-import { UploadedFile } from "../../../../utils/types";
-import { notesAiAnalysisData } from "../../../../utils/constants";
 import RenderFilePreview from "./RenderFilePreview";
 import RenderNoteCard from "./RenderNoteCard";
-import ThemeButton from "../../../../components/common/ThemeButton";
+import { UploadedFile } from "@/utils/types";
+import ModalWrapper from "@/components/common/ModalWrapper";
+import ModalHeader from "@/components/common/ModalHeader";
+import FileDropzone from "@/components/common/FileDropzone";
+import ThemeButton from "@/components/common/ThemeButton";
+import { notesAiAnalysisData } from "@/utils/constants";
 
 interface ProgressNotesModalProps {
   isOpen: boolean;
@@ -197,8 +197,8 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
 
   return (
     <ModalWrapper>
-      <div className="w-full max-w-8xl h-[90vh] sm:mx-4 overflow-hidden z-50" style={{ maxHeight: "calc(100vh - 4rem)" }}>
-        <ModalHeader title="AI Analysis" onClose={onClose} />
+      <ModalHeader title="AI Analysis" onClose={onClose} />
+      <div className="w-full max-w-8xl overflow-hidden z-50 flex" style={{ minHeight: "calc(100vh - 4rem)" }}>
         <canvas ref={canvasRef} style={{ display: "none" }} />
         <div className="relative overflow-y-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 flex-1">
           {/* Left Sidebar */}
@@ -211,6 +211,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
                   onFileChange={handleFileChange}
+                  descriptionText={'(Max File size: 25 MB)'}
                 />
 
                 {uploadedFiles.length > 0 && (

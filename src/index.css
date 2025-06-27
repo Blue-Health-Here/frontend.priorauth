@@ -38,6 +38,11 @@
   --success-chip-bg-color: #DBFFE7;
   --information-chip-bg-color: #DEF0FC;
   --warning-chip-bg-color: #FFF9E0;
+  --gray-color: #666C7C;
+  --status-text-lilac-sky: #2A1FB5;
+  --status-bg-lilac-sky: #E0DEFF;
+  --status-bg-sky-blue: #E0F2FE;
+  --status-text-sky-blue: #0369A1;
 
   --status-error-text-color: #C2410C;
   --status-error-bg-color: #FFE5E0;
@@ -94,6 +99,13 @@
   --color-status-success-bg-color: var(--status-success-bg-color);
   --color-status-warning-text-color: var(--status-warning-text-color);
   --color-status-warning-bg-color: var(--status-warning-bg-color);
+  --color-gray: var(--gray-color);
+  --color-status-text-sky-blue: var(--status-text-sky-blue);
+  --color-status-bg-sky-blue: var(--status-bg-sky-blue);
+  --color-status-bg-lilac-sky: var(--status-bg-lilac-sky);
+  --color-status-text-lilac-sky: var(--status-text-lilac-sky);
+  --color-status-bg-rose-blush: #FEE2E2;
+  --color-status-text-rose-blush: #B91C1C;
 
   /* Font family */
   --font-primary: var(--dm-sans);
@@ -304,6 +316,9 @@ a:focus {
 .custom-paginator .p-dropdown {
   order: 1;
   margin-left: auto;
+  background-color: var(--status-bg-lilac-sky);
+  height: 2.5rem;
+  border-color: var(--status-bg-lilac-sky);
 }
 
 .custom-paginator .p-paginator .p-paginator-pages .p-paginator-page {
@@ -312,4 +327,23 @@ a:focus {
 
 .custom-paginator .p-paginator .p-paginator-current {
   color: var(--secondary-black);
+}
+
+.custom-paginator .p-column-title {
+  color: var(--gray-color);
+  font-weight: 300;
+}
+
+.custom-paginator > .p-datatable-wrapper {
+  border-radius: 8px;
+}
+
+.custom-paginator .p-dropdown .p-dropdown-trigger {
+  color: var(--status-text-lilac-sky);
+  width: 2rem;
+}
+
+.custom-paginator .p-dropdown .p-dropdown-label {
+  color: var(--status-text-lilac-sky);
+  line-height: 1rem;
 }

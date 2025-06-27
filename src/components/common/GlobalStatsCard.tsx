@@ -53,7 +53,7 @@ const GlobalStatsCard: React.FC<any> = ({
                 backgroundColor: currentData.stats.map((stat: any) => stat.color),
                 borderWidth: 4,
                 borderColor: '#ffffff',
-                cutout: '55%',
+                cutout: '35%',
                 spacing: 2
             }]
         };
@@ -79,7 +79,6 @@ const GlobalStatsCard: React.FC<any> = ({
                 chartInstance.current.update('none');
             } catch (error) {
                 console.warn('Chart update failed, reinitializing:', error);
-                // If update fails, recreate the chart
                 initChart();
             }
         }
@@ -87,13 +86,11 @@ const GlobalStatsCard: React.FC<any> = ({
 
     const initChart = () => {
         if (chartRef.current) {
-            // Clean up existing chart
             if (chartInstance.current && !chartInstance.current.destroyed) {
                 chartInstance.current.destroy();
             }
             chartInstance.current = null;
 
-            // Create new chart
             chartInstance.current = new Chart.Chart(chartRef.current, {
                 type: 'doughnut',
                 data: createChartData(activePeriod),
@@ -110,19 +107,15 @@ const GlobalStatsCard: React.FC<any> = ({
     useEffect(() => {
         const initChart = () => {
             if (chartRef.current) {
-                // Clean up existing chart instance
                 if (chartInstance.current) {
                     chartInstance.current.destroy();
                     chartInstance.current = null;
                 }
 
-                // Get the canvas context
                 const ctx = chartRef.current.getContext('2d');
                 if (ctx) {
-                    // Clear the canvas
                     ctx.clearRect(0, 0, chartRef.current.width, chartRef.current.height);
 
-                    // Create new chart instance
                     chartInstance.current = new Chart.Chart(chartRef.current, {
                         type: 'doughnut',
                         data: createChartData(activePeriod),
@@ -132,10 +125,8 @@ const GlobalStatsCard: React.FC<any> = ({
             }
         };
 
-        // Small delay to ensure DOM is ready
         const timeoutId = setTimeout(initChart, 0);
 
-        // Cleanup function
         return () => {
             clearTimeout(timeoutId);
             if (chartInstance.current) {
@@ -148,12 +139,12 @@ const GlobalStatsCard: React.FC<any> = ({
     const currentData = statsData[activePeriod];
 
     return (
-        <div className="rounded-2xl p-5 theme-shadow bg-white transition-colors min-h-[210px] h-full w-full flex flex-col justify-between gap-4 request-graph">
-            {/* Header */}
-            <div className="flex items-start flex-wrap gap-6 justify-between">
+        <div className="rounded-2xl p-5 theme-shadow bg-white transition-colors min-h-[210px]  w-full flex flex-col">
+            {/* Header with reduced bottom margin */}
+            <div className="flex items-start flex-wrap justify-between mb-2"> {/* Changed mb-1 to mb-2 */}
                 <div>
-                    <h3 className="text-lg md:text-xl font-semibold text-primary-black mb-1">{title}</h3>
-                    <p className="text-sm text-tertiary-black">{description}</p>
+                    <h3 className="text-lg font-semibold text-primary-black">{title}</h3> {/* Removed mb-1 */}
+                    <p className="text-sm text-tertiary-black mt-1">{description}</p> {/* Added mt-1 */}
                 </div>
                 <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5">
                     {['Y', 'M', 'W'].map((period) => (
@@ -172,9 +163,9 @@ const GlobalStatsCard: React.FC<any> = ({
                 </div>
             </div>
 
-            {/* Chart and Stats */}
-            <div className="flex items-center flex-wrap gap-6 justify-center md:justify-between">
-                {/* Doughnut Chart */}
+            {/* Chart and Stats with tighter spacing */}
+            <div className="flex items-center flex-wrap justify-between mt-10 px-4"> {/* Added mt-2 instead of gap */}
+                {/* Doughnut Chart - unchanged size */}
                 <div className="relative">
                     <div className="w-48 h-48">
                         <canvas ref={chartRef}></canvas>
@@ -183,23 +174,17 @@ const GlobalStatsCard: React.FC<any> = ({
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <div className="text-center">
                             {currentData.stats.map((stat: any, index: number) => {
-                                // Calculate the cumulative angle up to this segment
                                 const previousTotal = currentData.stats.slice(0, index).reduce((sum: any, s: any) => sum + s.value, 0);
-                                // Find the middle angle of this segment
                                 const segmentMiddle = previousTotal + (stat.value / 2);
-                                // Convert percentage to degrees (360deg = 100%)
                                 const angleInDegrees = (segmentMiddle * 360) / 100;
-                                // Convert to radians for math functions
-                                const angleInRadians = (angleInDegrees - 90) * (Math.PI / 180); // -90 to start from top
-                                
-                                // Calculate position on the circle (radius of about 70px from center)
+                                const angleInRadians = (angleInDegrees - 90) * (Math.PI / 180);
                                 const radius = 70;
                                 const x = Math.cos(angleInRadians) * radius;
                                 const y = Math.sin(angleInRadians) * radius;
                                 
                                 return (
                                     <div key={stat.label} className="absolute text-white text-xs font-bold drop-shadow-sm"
-                                        style={{ left: '50%', top: '50%', transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))` }}>
+                                        style={{ left: '50%', top: '50%', transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)` }}>
                                         {stat.value}%
                                     </div>
                                 );
@@ -208,8 +193,8 @@ const GlobalStatsCard: React.FC<any> = ({
                     </div>
                 </div>
 
-                {/* Stats Legend */}
-                <div className="flex-1 md:ml-8">
+                {/* Stats Legend - unchanged */}
+                <div className="flex-1 md:ml-20">
                     <div className="mb-4">
                         <h4 className="text-sm md:text-base font-medium text-quaternary-white mb-1">Total Requests</h4>
                         <div className="text-2xl md:text-3xl lg:text-5xl font-bold text-gray-900">
@@ -222,8 +207,8 @@ const GlobalStatsCard: React.FC<any> = ({
                             <div key={stat.label} className="flex items-center justify-between">
                                 <div className="flex items-center">
                                     <div
-                                        className="w-3 h-3 rounded-full mr-3"
-                                        style={{ backgroundColor: stat.color }}
+                                        className="w-2.5 h-2.5 mr-3"
+                                        style={{ backgroundColor: stat.color,borderRadius: '2px'  }}
                                     ></div>
                                     <span className="text-sm font-medium text-primary-black">{stat.label}</span>
                                 </div>

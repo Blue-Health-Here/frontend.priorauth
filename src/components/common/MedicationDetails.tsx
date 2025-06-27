@@ -16,8 +16,8 @@ export const MedicationDetails: React.FC<MedicationDetailsProps> = ({
   className = '',
 }) => {
   return (
-    <div className={`border border-gray-200 rounded-xl overflow-hidden ${className}`}>
-      <div className="bg-[#EBF1FF] px-3 py-2">
+    <div className={`border border-quaternary-navy-blue rounded-xl overflow-hidden ${className}`}>
+      <div className="bg-quaternary-navy-blue px-3 py-2">
         <h3 className="text-sm sm:sm:text-md font-semibold text-gray-800">{title}</h3>
       </div>
       

@@ -14,12 +14,14 @@ import AdminRolesAndPermissions from "./pages/permissions";
 import ThemeProvider from "./layouts/ThemeProvider";
 import { Toaster } from "react-hot-toast";
 import RequestDetails from "./pages/admin/requests/RequestDetails";
+import PharmacyRequestDetails from "./pages/pharmacy/requests/RequestDetails";
 import NotificationScreen from "./pages/admin/notifications";
 import ChangePasswordPage from "./pages/admin/settings/change-password";
 import UserSettingPage from "./pages/admin/settings/user-setting";
 import PharmacyLayout from "./layouts/PharmacyLayout";
 import PharmacyDashboard from "./pages/pharmacy/dashboard";
 import CMMAccountDatabase from "./pages/pharmacy/cmm-account";
+import PharmacyRequests from "./pages/pharmacy/requests";
 
 function App() {
   return (
@@ -35,7 +37,7 @@ function App() {
                 <Route index element={<Navigate to="dashboard" replace />} />
                 <Route path="dashboard" element={<AdminDashboard />} />
                 <Route path="pharmacies" element={<AdminPharmacies />} />
-                <Route path="pharmacies/:pharmacyId" element={<PharmacyDetailScreen />}/> 
+                <Route path="pharmacies/:pharmacyId/pharmacy-details" element={<PharmacyDetailScreen />}/> 
                 <Route path="pharmacies/add" element={<AddNewPharmacyScreen />}/>   
                 <Route path="requests" element={<AdminRequests />} />
                 <Route path="requests/:id/request-details" element={<RequestDetails />} />
@@ -47,8 +49,10 @@ function App() {
               </Route>
               <Route path="/pharmacy" element={<PharmacyLayout />}>
                 <Route index element={<Navigate to="dashboard" replace />} />
-                <Route path="dashboard" element={<PharmacyDashboard />} /> 
-                <Route path="cmm-account-database" element={<CMMAccountDatabase />} /> 
+                <Route path="dashboard" element={<PharmacyDashboard />} />
+                <Route path="requests" element={<PharmacyRequests />} />
+                <Route path="requests/:id/request-details" element={<PharmacyRequestDetails />} />
+                <Route path="cmm-account-database" element={<CMMAccountDatabase />} />
               </Route>
               <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>

@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import NavbarProfileDropdown from "./NavbarProfileDropdown";
-import { handleLogout } from "../../services/authService";
-import { getPageTitle } from "../../utils/getPageTitle";
-import { FaBars } from "react-icons/fa6";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { setIsSidebarCollapsed, setIsSidebarOpen } from "../../store/features/global/globalSlice";
-import NavbarNotificationDropdown from "./NavbarNotificationDropdown";
+import { useLocation, useNavigate } from 'react-router-dom';
+import NavbarProfileDropdown from './NavbarProfileDropdown';
+import { handleLogout } from '../../services/authService';
+import { FaBars } from 'react-icons/fa6';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { setIsSidebarCollapsed, setIsSidebarOpen } from '../../store/features/global/globalSlice';
+import NavbarNotificationDropdown from './NavbarNotificationDropdown';
+import { BreadCrumb } from 'primereact/breadcrumb';
+import { generateBreadcrumbItems } from '@/utils/helper';
+import { HiOutlineSlash } from "react-icons/hi2";
 
 const Topbar: React.FC = () => {
   const { isSidebarOpen, isSidebarCollapsed } = useSelector((state: RootState) => state.global);
@@ -41,6 +43,8 @@ const Topbar: React.FC = () => {
     };
   }, []);
 
+  const breadcrumbItems = generateBreadcrumbItems(location.pathname);
+
   return (
     <div
       className={`fixed top-0 left-0 ${
@@ -72,9 +76,8 @@ const Topbar: React.FC = () => {
               className="text-primary-sky-blue block lg:hidden"
             />
           </div>
-          <p className="text-xs scale-70 font-medium sm:text-xl text-primary-black whitespace-nowrap">
-            {getPageTitle(location.pathname)}
-          </p>
+          
+          <BreadCrumb className='!text-lg !sm:text-xl !font-semibold !text-primary-black !p-0 !border-0' model={breadcrumbItems} separatorIcon={<HiOutlineSlash />} />
         </div>
         <div className="hidden lg:flex items-center justify-center flex-1">
           <div className="relative mx-2 w-[400px]">
@@ -102,6 +105,7 @@ const Topbar: React.FC = () => {
                   alt="notification"
                   className="w-4 h-4 sm:h-5 sm:w-5"
                 />
+                <span className='absolute rounded-full w-2 h-2 bg-error-clip top-0.5 right-0.5'></span>
               </p>
             </button>
             {isNotifDropdownOpen && <NavbarNotificationDropdown />}
