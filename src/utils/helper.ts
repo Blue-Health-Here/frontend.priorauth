@@ -118,12 +118,6 @@ export const getCurrentBadgeColors = (status?: string) => {
     return activeBadge;
 };
 
-/**
- * Format number to shorthand (e.g., 1.5k, 2M)
- * @param {number} value - The number to format.
- * @param {number} decimalPlaces - Decimal places to show (default: 1).
- * @returns {string} Formatted number string.
- */
 export function formatNumberWithUnits(value: any, decimalPlaces = 1) {
     if (value < 1000) return value.toString();
 
@@ -136,8 +130,8 @@ export function formatNumberWithUnits(value: any, decimalPlaces = 1) {
     }
 
     return `${parseFloat(value.toFixed(decimalPlaces))}${units[unitIndex]}`;
-}
-// Helper function to generate an array of random integers under 2000
+};
+
 export function generateDatasetForCaseAnalysis(rows: number, cols: number, max = 2000): number[][] {
     const dataset: number[][] = [];
     for (let i = 0; i < rows; i++) {
@@ -148,4 +142,41 @@ export function generateDatasetForCaseAnalysis(rows: number, cols: number, max =
         dataset.push(row);
     }
     return dataset;
-}
+};
+
+export const generateBreadcrumbItems = (pathname: string) => {
+    const pathSegments = pathname.replace(/^\//, '').split('/').filter(segment => segment);
+
+    const allowedSegments = [
+        'dashboard',
+        'requests',
+        'request-details',
+        'cmm-account-database',
+        'pharmacies',
+        'pharmacy-details',
+        'permissions',
+        'settings'
+    ];
+
+    const customLabels: Record<string, string> = {
+        'dashboard': 'Dashboard',
+        'requests': 'Requests',
+        'request-details': 'Request Details',
+        'cmm-account-database': 'CMM Account Database',
+        'pharmacies': 'Pharmacies',
+        'pharmacy-details': 'Pharmacy Details',
+        'permissions': 'Permissions',
+        'settings': 'Settings'
+    };
+
+    const items = pathSegments
+        .filter(segment => allowedSegments.includes(segment))
+        .map(segment => ({
+            label: customLabels[segment] || segment
+                .split('-')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ')
+        }));
+
+    return items;
+};

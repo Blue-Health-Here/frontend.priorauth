@@ -6,6 +6,7 @@ import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import { FiSearch } from "react-icons/fi";
 import ThemeButton from "@/components/common/ThemeButton";
 import RequestStatusDropdownField from "./RequestStatusDropdownField";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const sampleData = [
     {
@@ -242,6 +243,8 @@ const PharmacyRequests = () => {
     const [isChecked, setIsChecked] = useState<boolean>(false);
     const [globalFilter, setGlobalFilter] = useState('');
     const [activeRequestTab, setActiveRequestTab] = useState<string>('Active Requests');
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const toggleColumn = (columnField: any) => {
         setVisibleColumns((prev: any) => ({
@@ -262,7 +265,7 @@ const PharmacyRequests = () => {
     };
 
     const handleRowClick = (row: any) => {
-        console.log(row, "row")
+        navigate(location.pathname + "/" + row.data.id + "/request-details");
     };
 
     const handleStatusChange = (status: any) => {
