@@ -50,3 +50,7 @@ export interface UploadedFile {
   fileStatus?: string;
 }
 
+export interface PasswordRequirement {
+  label: string
+  test: (password: string) => boolean
+}
