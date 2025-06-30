@@ -43,7 +43,8 @@ const SecuritySettings = () => {
             confirmPassword: '',
           }}
           validationSchema={changePasswordValidationSchema}
-          onSubmit={(values, { setSubmitting, resetForm, setErrors }) => {
+          onSubmit={(values, { setSubmitting, resetForm }) => {
+            console.log(values, "values");
             // Simulate API call
             setTimeout(() => {
               setSuccessMessage('Password changed successfully!');
@@ -56,7 +57,7 @@ const SecuritySettings = () => {
             }, 1000);
           }}
         >
-          {({ values, errors, touched, isSubmitting, handleSubmit, setFieldTouched }) => {
+          {({ values, errors, touched, isSubmitting, handleSubmit }) => {
             const passwordRequirementsMet = passwordRequirements.map((req) => req.test(values.newPassword));
             const passwordsMatch = values.newPassword && values.confirmPassword && values.newPassword === values.confirmPassword;
             const currentPasswordMatchesNew = values.currentPassword && values.newPassword && values.currentPassword === values.newPassword;
