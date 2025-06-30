@@ -7,6 +7,7 @@ import { FiSearch } from "react-icons/fi";
 import ThemeButton from "@/components/common/ThemeButton";
 import RequestStatusDropdownField from "./RequestStatusDropdownField";
 import { useLocation, useNavigate } from "react-router-dom";
+import AddRequestModal from "./AddRequestModal";
 
 const sampleData = [
     {
@@ -245,6 +246,7 @@ const PharmacyRequests = () => {
     const [activeRequestTab, setActiveRequestTab] = useState<string>('Active Requests');
     const navigate = useNavigate();
     const location = useLocation();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const toggleColumn = (columnField: any) => {
         setVisibleColumns((prev: any) => ({
@@ -309,7 +311,7 @@ const PharmacyRequests = () => {
                 <ThemeButton type="button" className="!h-full min-w-max rounded-xl" variant="secondary">
                     Open Portal
                 </ThemeButton>
-                <ThemeButton className="w-full !h-full rounded-xl" variant="primary">
+                <ThemeButton className="w-full !h-full rounded-xl" variant="primary" type="button" onClick={() => setIsModalOpen(true)}>
                     Add Request
                 </ThemeButton>
             </div>
@@ -326,6 +328,7 @@ const PharmacyRequests = () => {
 
     return (
         <div className='bg-primary-white rounded-2xl theme-datatable theme-shadow px-4 py-4'>
+            {isModalOpen && <AddRequestModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />}
             <div className="flex justify-between gap-4 items-center pb-4">
                 <h2 className='text-lg sm:text-xl lg:text-2xl font-semibold text-primary-black whitespace-nowrap'>Your Requests</h2>
                 <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5">
