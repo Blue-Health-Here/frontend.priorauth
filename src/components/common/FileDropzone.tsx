@@ -17,10 +17,10 @@ const FileDropzone: React.FC<FileDropzoneProps> = ({
   onDragLeave,
   onDrop,
   isDragging,
-  descriptionText, className, minHeight = "196px"
+  descriptionText, className, minHeight = "100%"
 }) => (
   <div
-    className={`flex justify-center px-4 sm:px-6 py-6 sm:py-10 border-2 border-dashed rounded-lg overflow-hidden ${className} ${
+    className={`flex justify-center px-4 py-6 border-2 border-dashed rounded-lg overflow-hidden ${className} ${
       isDragging
         ? "border-blue-500 bg-blue-50"
         : "border-[#a8ddf3] bg-[#F2FBFF]"

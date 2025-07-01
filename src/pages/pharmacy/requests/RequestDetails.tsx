@@ -7,6 +7,7 @@ import CardHeader from "@/components/common/CardHeader";
 import FileDropzone from "@/components/common/FileDropzone";
 import UploadFileList from "@/components/common/UploadFileList";
 import { UploadedFile } from "@/utils/types";
+import ProgressNotesModal from "@/components/ProgressNotesModal";
 
 const RequestDetails: React.FC<any> = () => {
   const navigate = useNavigate();
@@ -102,6 +103,7 @@ const RequestDetails: React.FC<any> = () => {
 
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -262,167 +264,173 @@ const RequestDetails: React.FC<any> = () => {
   const handleAddTag = (updateFn: (prev: UploadedFile[]) => UploadedFile[]) => {
     setUploadedFiles(updateFn);
   };
-
+  const closeModal = () => {
+    setIsModalOpen(false);
+  }
 
   return (
-    <div className="p-4 bg-white rounded-xl theme-shadow relative">
-      <div className="flex justify-between items-center flex-wrap gap-4 mb-4">
-        <h2 className="text-lg font-bold text-gray-800 inline-flex gap-2 items-center">
-          <img onClick={() => navigate("/pharmacy/requests")} src='/header-left-logo-arrow.svg'
-            alt='header left logo arrow' className={`w-8 h-8 bg-gray-100 p-2 rounded-lg cursor-pointer`} />
-          <span>UBRELVY 50MG TAB</span>
-        </h2>
-        <div className="flex gap-3 self-end sm:self-auto flex-wrap">
-          <ThemeButton className="h-full min-h-12" variant="secondary">Open Portal</ThemeButton>
-          <ThemeButton className="h-full min-h-12" variant="primary">Submit Progress Notes</ThemeButton>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-        <div className="sm:col-span-2 lg:col-span-3 space-y-4">
-          {requestDetails.map((item: any, index: number) => (
-            <div key={index} className={`border border-quaternary-navy-blue rounded-xl overflow-hidden`}>
-              <CardHeader title={item.label} />
-              <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-                {item.data.map((row: any, rowIndex: any) => (
-                  <div
-                    key={rowIndex}
-                    className={` ${rowIndex < data.length - 1 ? 'mb-2' : ''}`}
-                  >
-                    <div className="flex flex-col space-y-2">
-                      <span className="text-[10px] sm:text-xs font-medium text-gray-500">{row.label}</span>
-                      <span className="text-[10px] sm:text-sm font-semibold text-gray-800">{row.value || '-'}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="lg:col-span-2 space-y-4">
-          <div className="p-4 rounded-xl border border-quaternary-navy-blue lg:sticky lg:top-6">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  DOS
-                </p>
-                <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">
-                  5/5/2025
-                </p>
-              </div>
-              <div>
-                <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  CMM Key
-                </p>
-                <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">-</p>
-              </div>
-              <div className="col-span-2 sm:col-span-1">
-                <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  CMM Key 2
-                </p>
-                <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">
-                  BM8DJD89
-                </p>
-              </div>
-            </div>
+    <>
+      <ProgressNotesModal isOpen={isModalOpen} onClose={closeModal} />
+      <div className="p-4 bg-white rounded-xl theme-shadow relative">
+        <div className="flex justify-between items-center flex-wrap gap-4 mb-4">
+          <h2 className="text-lg font-bold text-gray-800 inline-flex gap-2 items-center">
+            <img onClick={() => navigate("/pharmacy/requests")} src='/header-left-logo-arrow.svg'
+              alt='header left logo arrow' className={`w-8 h-8 bg-gray-100 p-2 rounded-lg cursor-pointer`} />
+            <span>UBRELVY 50MG TAB</span>
+          </h2>
+          <div className="flex gap-3 self-end sm:self-auto flex-wrap">
+            <ThemeButton className="h-full min-h-12" variant="secondary">Open Portal</ThemeButton>
+            <ThemeButton className="h-full min-h-12" variant="primary">Submit Progress Notes</ThemeButton>
           </div>
+        </div>
 
-          <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
-            <CardHeader title="Status" />
-            <div className="p-4">
-              <div className="relative flex flex-col gap-4">
-                <div className="absolute left-2.5 top-0 bottom-0 w-1.5 bg-gray-200"></div>
-                {statusItems.map((item: any, index: number) => (
-                  <div key={index} className={`relative flex items-center gap-4 ${item.isActive ? 'border border-dashed border-blue-navigation-link-button rounded-xl opacity-100' : 'opacity-50'}`}>
-                    <div className="p-1 bg-white rounded-full inline-flex justify-center items-center ml-1">
-                      <div className={`relative z-10 w-2.5 h-2.5 rounded-full flex-shrink-0 p-1`}>
-                        <div className="absolute inset-0 rounded-full bg-blue-500"></div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="sm:col-span-2 lg:col-span-3 space-y-4">
+            {requestDetails.map((item: any, index: number) => (
+              <div key={index} className={`border border-quaternary-navy-blue rounded-xl overflow-hidden`}>
+                <CardHeader title={item.label} />
+                <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {item.data.map((row: any, rowIndex: any) => (
+                    <div
+                      key={rowIndex}
+                      className={` ${rowIndex < data.length - 1 ? 'mb-2' : ''}`}
+                    >
+                      <div className="flex flex-col space-y-2">
+                        <span className="text-[10px] sm:text-xs font-medium text-gray-500">{row.label}</span>
+                        <span className="text-[10px] sm:text-sm font-semibold text-gray-800">{row.value || '-'}</span>
                       </div>
                     </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
 
-                    <div className={`p-2 w-full`}>
-                      <div className="flex justify-between items-center w-full">
-                        <div className={`px-4 py-1 rounded-full line-clamp-1 text-xs sm:text-sm lg:text-base font-normal ${item.statusClass}`}>
-                          {item.title}
+          <div className="lg:col-span-2 space-y-4">
+            <div className="p-4 rounded-xl border border-quaternary-navy-blue lg:sticky lg:top-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    DOS
+                  </p>
+                  <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">
+                    5/5/2025
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    CMM Key
+                  </p>
+                  <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">-</p>
+                </div>
+                <div className="col-span-2 sm:col-span-1">
+                  <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    CMM Key 2
+                  </p>
+                  <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">
+                    BM8DJD89
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
+              <CardHeader title="Status" />
+              <div className="p-4">
+                <div className="relative flex flex-col gap-4">
+                  <div className="absolute left-2.5 top-0 bottom-0 w-1.5 bg-gray-200"></div>
+                  {statusItems.map((item: any, index: number) => (
+                    <div key={index} className={`relative flex items-center gap-4 ${item.isActive ? 'border border-dashed border-blue-navigation-link-button rounded-xl opacity-100' : 'opacity-50'}`}>
+                      <div className="p-1 bg-white rounded-full inline-flex justify-center items-center ml-1">
+                        <div className={`relative z-10 w-2.5 h-2.5 rounded-full flex-shrink-0 p-1`}>
+                          <div className="absolute inset-0 rounded-full bg-blue-500"></div>
                         </div>
-                        {item.date && (
-                          <span className="text-quaternary-white text-sm">{item.date}</span>
+                      </div>
+
+                      <div className={`p-2 w-full`}>
+                        <div className="flex justify-between items-center w-full">
+                          <div className={`px-4 py-1 rounded-full line-clamp-1 text-xs sm:text-sm lg:text-base font-normal ${item.statusClass}`}>
+                            {item.title}
+                          </div>
+                          {item.date && (
+                            <span className="text-quaternary-white text-sm">{item.date}</span>
+                          )}
+                        </div>
+
+                        {item.note && (
+                          <p className="text-tertiary-black text-md mt-2 italic">{item.note}</p>
                         )}
                       </div>
-
-                      {item.note && (
-                        <p className="text-tertiary-black text-md mt-2 italic">{item.note}</p>
-                      )}
                     </div>
-                  </div>
-                ))}
-              </div>
-              <div className="flex gap-4 mt-8">
-                <ThemeButton
-                  variant="tertiary"
-                  className="flex-1 gap-2 px-4 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-                  <span className="flex gap-2 items-center">
-                    Check Notes
-                    <FiFileText />
-                  </span>
-                </ThemeButton>
-                <ThemeButton
-                  className="flex-1 gap-2 px-4 py-3 bg-blue-900 text-white rounded-lg hover:bg-blue-800 transition-colors">
-                  <span className="flex gap-2 items-center">
-                    Add Notes
-                    <FaPlus />
-                  </span>
-                </ThemeButton>
+                  ))}
+                </div>
+                <div className="flex gap-4 mt-8">
+                  <ThemeButton
+                    variant="tertiary"
+                    className="flex-1 gap-2 px-4 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                    <span className="flex gap-2 items-center">
+                      Check Notes
+                      <FiFileText />
+                    </span>
+                  </ThemeButton>
+                  <ThemeButton
+                    className="flex-1 gap-2 px-4 py-3 bg-blue-900 text-white rounded-lg hover:bg-blue-800 transition-colors">
+                    <span className="flex gap-2 items-center">
+                      Add Notes
+                      <FaPlus />
+                    </span>
+                  </ThemeButton>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="bg-white rounded-xl border border-quaternary-navy-blue relative">
-            <CardHeader title="Files" />
-            <div className="p-4 flex flex-col gap-4">
-              <div className="inline-flex flex-col gap-1">
-                <h3 className="text-base font-medium text-primary-black">Progress Notes</h3>
-                <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] overflow-hidden">
-                  <button
-                    type="button"
-                    className="flex w-full items-center justify-center gap-2 py-4 px-3 bg-white rounded-lg"
-                  >
-                    <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
-                      Upload Progress Notes
-                    </p>
-                    <img src="/upload-new.svg" alt="upload new img" className="" />
-                  </button>
-                </div>
-              </div>
-              <div className="inline-flex flex-col gap-1">
-                <h3 className="text-base font-medium text-primary-black">Upload Files</h3>
-                <FileDropzone
-                  isDragging={isDragging}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
-                  onFileChange={handleFileChange}
-                  className="!p-3"
-                  minHeight="100%"
-                />
-              </div>
-
-              {uploadedFiles.length > 0 && (
+            <div className="bg-white rounded-xl border border-quaternary-navy-blue relative">
+              <CardHeader title="Files" />
+              <div className="p-4 flex flex-col gap-4">
                 <div className="inline-flex flex-col gap-1">
-                  <h3 className="text-sm font-medium text-secondary-black">{uploadedFiles.length} files uploading...</h3>
-                  <UploadFileList
-                    files={uploadedFiles}
-                    removeFile={(id: any) => removeFile(id)}
-                    handleAddTag={handleAddTag}
+                  <h3 className="text-base font-medium text-primary-black">Progress Notes</h3>
+                  <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] overflow-hidden">
+                    <button
+                      type="button"
+                      onClick={() => setIsModalOpen(true)}
+                      className="flex w-full items-center justify-center cursor-pointer gap-2 py-4 px-3 bg-white rounded-lg"
+                    >
+                      <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
+                        Upload Progress Notes
+                      </p>
+                      <img src="/upload-new.svg" alt="upload new img" className="" />
+                    </button>
+                  </div>
+                </div>
+                <div className="inline-flex flex-col gap-1">
+                  <h3 className="text-base font-medium text-primary-black">Upload Files</h3>
+                  <FileDropzone
+                    isDragging={isDragging}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    onFileChange={handleFileChange}
+                    className="!p-3"
+                    minHeight="100%"
                   />
                 </div>
-              )}
+
+                {uploadedFiles.length > 0 && (
+                  <div className="inline-flex flex-col gap-1">
+                    <h3 className="text-sm font-medium text-secondary-black">{uploadedFiles.length} files uploading...</h3>
+                    <UploadFileList
+                      files={uploadedFiles}
+                      removeFile={(id: any) => removeFile(id)}
+                      handleAddTag={handleAddTag}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
