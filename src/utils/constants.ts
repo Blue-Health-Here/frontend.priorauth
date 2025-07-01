@@ -1116,3 +1116,27 @@ export const globalStatsData = {
 };
 
 export const timeRanges = ["Today", "W", "M", "Y"];
+
+export const commonMedications = [
+  "Metformin",
+  "Lisinopril",
+  "Atorvastatin",
+  "Amlodipine",
+  "Metoprolol",
+  "Omeprazole",
+  "Albuterol",
+  "Hydrochlorothiazide",
+  "Gabapentin",
+  "Sertraline",
+];
+
+export const icdCodes = [
+  { code: "E11.9", description: "Type 2 diabetes mellitus without complications" },
+  { code: "I10", description: "Essential hypertension" },
+  { code: "Z79.4", description: "Long term use of insulin" },
+  { code: "E78.5", description: "Hyperlipidemia, unspecified" },
+  { code: "J44.1", description: "Chronic obstructive pulmonary disease with acute exacerbation" },
+  { code: "F32.9", description: "Major depressive disorder, single episode, unspecified" },
+  { code: "M79.3", description: "Panniculitis, unspecified" },
+  { code: "G89.29", description: "Other chronic pain" },
+];
