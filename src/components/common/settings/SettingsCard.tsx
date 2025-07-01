@@ -7,7 +7,7 @@ interface Props {
 
 export default function SettingsCard({ children, className = "" }: Props) {
     return (
-        <div className={`bg-card rounded-lg border p-6 ${className}`}>
+        <div className={`bg-card rounded-xl border border-[#CBDAFF] p-4 ${className}`}>
             {children}
         </div>
     )

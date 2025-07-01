@@ -1,13 +1,13 @@
 "use client"
 
-import { useState } from "react"
-import SecuritySettings from "./SecuritySettings"
+import { useState } from "react";
+import SecuritySettings from "./SecuritySettings";
 import { pharmacyValidationSchema } from '@/utils/validationSchema';
-import EditableFormSection from "@/components/common/settings/EditableFormSection"
-import SettingsCard from "@/components/common/settings/SettingsCard"
+import EditableFormSection from "@/components/common/settings/EditableFormSection";
+import SettingsCard from "@/components/common/settings/SettingsCard";
 
 export function PharmacySettings() {
-    const [isEditingProfile, setIsEditingProfile] = useState(false)
+    const [isEditingProfile, setIsEditingProfile] = useState(false);
     const [profileData, setProfileData] = useState({
         name: "Abstergo Ltd.",
         joinedDate: "31-03-2025",
@@ -19,36 +19,43 @@ export function PharmacySettings() {
         approvedRequests: "225",
         deniedRequests: "90",
         prescribers: "17",
-    })
+    });
 
     return (
-        <div className="p-6 space-y-8">
-            <h1 className="text-3xl font-medium tracking-tighter">Profile Settings</h1>
-            <div className="space-y-8">
-                <SettingsCard>
-                    <EditableFormSection
-                       onEdit={() => setIsEditingProfile(true)}
-                        profileData={profileData}
-                        isEditingProfile={isEditingProfile}
-                        initialValues={{
-                            name: profileData.name,
-                            email: profileData.email,
-                            phoneNumber: profileData.phoneNumber,
-                            location: profileData.location,
-                            fullAddress: profileData.fullAddress,
-                        }}
-                        validationSchema={pharmacyValidationSchema}
-                        onCancel={() => setIsEditingProfile(false)}
-                        onSubmit={(values) => {
-                            console.log(values, "values");
-                            setProfileData({ ...profileData, ...values })
-                            setIsEditingProfile(false)
-                        }}
-                    />
-                </SettingsCard>
+        <div className="">
+            <div className="bg-white rounded-lg shadow-sm">
+                {/* Header Section */}
+                <div className="px-6 pt-6">
+                    <h1 className="text-xl font-medium tracking-tighter">Profile Settings</h1>
+                </div>
 
-                <SecuritySettings />
+                {/* Content Section */}
+                <div className="p-6 space-y-6">
+                    <SettingsCard className="bg-transparent shadow-none p-0">
+                        <EditableFormSection
+                            onEdit={() => setIsEditingProfile(true)}
+                            profileData={profileData}
+                            isEditingProfile={isEditingProfile}
+                            initialValues={{
+                                name: profileData.name,
+                                email: profileData.email,
+                                phoneNumber: profileData.phoneNumber,
+                                location: profileData.location,
+                                fullAddress: profileData.fullAddress,
+                            }}
+                            validationSchema={pharmacyValidationSchema}
+                            onCancel={() => setIsEditingProfile(false)}
+                            onSubmit={(values) => {
+                                console.log(values, "values");
+                                setProfileData({ ...profileData, ...values });
+                                setIsEditingProfile(false);
+                            }}
+                        />
+                    </SettingsCard>
+
+                    <SecuritySettings />
+                </div>
             </div>
         </div>
-    )
+    );
 }
