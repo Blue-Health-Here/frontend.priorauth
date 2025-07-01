@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 // import ProgressNotesModal from "./ProgressNotesModal2";
-import ProgressNotesModal from "./ProgressNotesModal";
 import ThemeButton from "../../../components/common/ThemeButton";
 import { DataGrid, MedicationDetails } from "@/components/common/MedicationDetails";
+import ProgressNotesModal from "@/components/ProgressNotesModal";
 
 const RequestDetails: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

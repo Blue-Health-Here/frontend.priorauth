@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import UploadFileList from "../../../../components/common/UploadFileList";
 import GradientSidebarButton from "./GradientSidebarButton";
 import RenderFilePreview from "./RenderFilePreview";
 import RenderNoteCard from "./RenderNoteCard";
@@ -9,6 +8,7 @@ import ModalHeader from "@/components/common/ModalHeader";
 import FileDropzone from "@/components/common/FileDropzone";
 import ThemeButton from "@/components/common/ThemeButton";
 import { notesAiAnalysisData } from "@/utils/constants";
+import UploadFileList from "../common/UploadFileList";
 
 interface ProgressNotesModalProps {
   isOpen: boolean;
@@ -211,7 +211,6 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
                   onFileChange={handleFileChange}
-                  descriptionText={'(Max File size: 25 MB)'}
                 />
 
                 {uploadedFiles.length > 0 && (
@@ -222,6 +221,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                       </h4>
                     </div>
                     <UploadFileList
+                      isAddTags={false}
                       files={uploadedFiles}
                       removeFile={(id: any) => removeFile(id)}
                     />

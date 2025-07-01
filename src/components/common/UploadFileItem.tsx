@@ -11,11 +11,12 @@ const predefinedTags = [
 
 interface UploadFileItemProps {
     file: UploadedFile;
+    isAddTags?: boolean;
     removeFile: (id: string) => void;
     handleAddTag: (updateFn: (prevFiles: UploadedFile[]) => UploadedFile[]) => void;
 }
 
-const UploadFileItem: React.FC<UploadFileItemProps> = ({ file, removeFile, handleAddTag }) => {
+const UploadFileItem: React.FC<UploadFileItemProps> = ({ file, removeFile, handleAddTag, isAddTags }) => {
     const [customTag, setCustomTag] = useState("");
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -81,7 +82,7 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({ file, removeFile, handl
                 <div className="flex items-start space-x-2">
                     <img src="/uploading_state.svg" alt="uploading state" />
                     <div className="inline-flex gap-1 flex-col">
-                        <p className="text-xs font-medium text-primary-black truncate">{file.name}</p>
+                        <p className="text-xs font-medium text-primary-black truncate break-all max-w-[150px] line-clamp-1">{file.name}</p>
                         {file.fileTags?.length > 0 && <div className="flex gap-1">
                             <div className="px-4 py-1 rounded-lg line-clamp-1 text-xs sm:text-sm font-medium w-max bg-quaternary-navy-blue text-secondary-navy-blue">
                                 {file.fileTags[0]} 
@@ -105,13 +106,13 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({ file, removeFile, handl
                             />
                         </svg>
                     </button>
-                    <button
+                    {isAddTags && <button
                         type="button"
                         onClick={toggleDropdown}
                         className="text-blue-navigation-link-button cursor-pointer font-medium text-sm underline"
                     >
                         {file.showTagDropdown ? "Hide Tags" : "Add Tags"}
-                    </button>
+                    </button>}
                 </div>
             </div>
 
