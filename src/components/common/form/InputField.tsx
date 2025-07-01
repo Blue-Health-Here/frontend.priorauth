@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { InputHTMLAttributes, useState } from "react";
 import { useField } from "formik";
 import { Label } from "../Label";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
-interface InputFieldProps {
+interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   id?: string;
   name: string;
   type?: string;
@@ -12,7 +12,7 @@ interface InputFieldProps {
   variant?: "default" | "FloatingLabel" | "password" | 'setting';
   className?: string;
   errorColor?: string;
-  isPassword?: boolean
+  isPassword?: boolean;
 }
 
 export const inputStyles = {
@@ -33,7 +33,8 @@ const InputField: React.FC<InputFieldProps> = ({
   variant = "default",
   className = "",
   errorColor = "text-red-500",
-  isPassword = false
+  isPassword = false,
+  ...rest
 }) => {
   const [field, meta] = useField(name);
   const [isFocused, setIsFocused] = useState(false);
@@ -53,6 +54,7 @@ const InputField: React.FC<InputFieldProps> = ({
         <div className="relative">
           <input
             id={id}
+            {...rest}
             type={inputType}
             placeholder={placeholder}
             {...field}

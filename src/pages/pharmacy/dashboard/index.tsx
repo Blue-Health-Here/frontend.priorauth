@@ -19,13 +19,13 @@ const PharmacyDashboard = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-4 sm:gap-4 h-full">
             <StatCard
               title="Today's Request"
-              className="col-span-2 bg-gradient-to-br from-[#0000FD] to-[#74F8FD] min-h-[120px]"
+              className="col-span-2 bg-gradient-to-br from-[#0000FD] to-[#74F8FD] min-h-[120px] rounded-xl"
               description="Total no of tasks created by the Admin."
               value="150"
             />
             <StatCard
               title="Prescribers"
-              className="col-span-1 min-h-[120px]"
+              className="col-span-1 min-h-[120px] rounded-xl"
               description="Doctor registered, including individual & linked with clinics."
               value="48"
             />
