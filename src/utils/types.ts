@@ -51,3 +51,7 @@ export interface UploadedFile {
   showTagDropdown?: boolean
 }
 
+export interface PasswordRequirement {
+  label: string
+  test: (password: string) => boolean
+}

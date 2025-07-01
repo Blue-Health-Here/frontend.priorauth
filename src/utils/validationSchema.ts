@@ -50,9 +50,6 @@ export const pharmacyValidationSchema = Yup.object({
   email: Yup.string()
     .required("Email is required")
     .email("Invalid email address"),
-  phoneNumber: Yup.string()
-    .required("Phone number is required")
-    .matches(/^\d{10,15}$/, "Phone number must be 10 to 15 digits"),
   location: Yup.string().required("Location is required")
 })
 

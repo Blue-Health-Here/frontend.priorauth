@@ -137,7 +137,7 @@ const Sidebar: React.FC = () => {
           <div className="px-3 py-4">
             <div className={isSidebarCollapsed ? "flex justify-center" : ""}>
               <NavLink
-                to={"/admin/settings"}
+                to={pathName.startsWith("/pharmacy") ? "/pharmacy/settings" : "/admin/settings"}
                 className={({ isActive }) =>
                   `group flex items-center gap-x-2 rounded cursor-pointer transition font-secondary ${
                     isActive
