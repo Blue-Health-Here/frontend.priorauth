@@ -41,6 +41,7 @@ const ThemeDataTable: React.FC<any> = ({
             loading={loading}
             className="custom-paginator"
             onRowClick={onRowClick}
+            rowClassName={() => 'cursor-pointer hover:!bg-gray-50 active:bg-gray-100 transition duration-200'}
         >
             {columns
                 .filter((column: any) => visibleColumns[column.field])

@@ -47,7 +47,8 @@ export interface UploadedFile {
   progress: number;
   url: string;
   status: "uploading" | "completed" | "error";
-  fileStatus?: string;
+  fileTags: any[];
+  showTagDropdown?: boolean
 }
 
 export interface PasswordRequirement {

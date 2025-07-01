@@ -1,4 +1,4 @@
-import { getCurrentBadgeColors } from "../../../../utils/helper";
+import { getCurrentBadgeColors } from "@/utils/helper";
 
 const RenderNoteCard: React.FC<any> = ({ item, handleDownloadReport }) => {
     return (

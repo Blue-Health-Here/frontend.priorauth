@@ -56,9 +56,13 @@ const DashboardRequestCard: React.FC<any> = ({
         }
     };
 
-    const chartOptions = {
+    const chartOptions: any = {
         responsive: true,
         maintainAspectRatio: false,
+        animation: {
+            duration: 600, // Adjust for smoother/faster animation
+            easing: 'easeInOutCubic', // Try 'easeOutBounce', 'easeInOutCubic' for different feels
+        },
         plugins: {
             legend: {
                 display: false
@@ -70,16 +74,15 @@ const DashboardRequestCard: React.FC<any> = ({
         scales: {
             x: {
                 display: false,
-                grid: {
-                    display: false
-                }
+                grid: { display: false },
+                stacked: true,
+                border: { display: false },
+                offset: true,
             },
             y: {
                 display: false,
-                grid: {
-                    display: false
-                },
-                max: 90 // Adjusted to reduce bar heights
+                grid: { display: false },
+                max: 100
             }
         },
         elements: {
@@ -88,12 +91,13 @@ const DashboardRequestCard: React.FC<any> = ({
             }
         }
     };
+    
 
     const updateChart = (period: any) => {
         if (chartInstance.current && !chartInstance.current.destroyed) {
             try {
                 chartInstance.current.data = chartData[period];
-                chartInstance.current.update('none');
+                chartInstance.current.update('active');
             } catch (error) {
                 console.warn('Chart update failed, reinitializing:', error);
                 initChart();
@@ -188,12 +192,12 @@ const DashboardRequestCard: React.FC<any> = ({
                 </div>
             </div>
 
-            <div className="flex items-end justify-between ">
+            <div className="flex items-end justify-between gap-4">
                 <div className="text-xl md:text-5xl font-semibold text-primary-black">
                     {value}
                 </div>
                 <div className="flex-1">
-                    <div className="h-16 w-[50%] ml-65">
+                    <div className="h-24">
                         <canvas ref={chartRef}></canvas>
                     </div>
                 </div>
