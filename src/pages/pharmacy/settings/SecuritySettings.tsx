@@ -39,7 +39,7 @@ const SecuritySettings = () => {
           </div>
           <button
             onClick={() => setIsChangingPassword(true)}
-            className="flex items-center justify-center gap-2 bg-[#EBF1FF] text-[#163066] text-sm font-semibold rounded-lg px-4 py-2 transition-colors hover:bg-[#EBF1FF]/90"
+            className="flex items-center cursor-pointer justify-center gap-2 bg-[#EBF1FF] text-[#163066] text-sm font-semibold rounded-lg px-4 py-2 transition-colors hover:bg-[#EBF1FF]/90"
           >
             Change Password
           </button>

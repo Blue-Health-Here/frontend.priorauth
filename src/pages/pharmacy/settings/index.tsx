@@ -23,7 +23,7 @@ export function PharmacySettings() {
 
     return (
         <div className="">
-            <div className="bg-white rounded-lg shadow-sm">
+            <div className="bg-white rounded-xl theme-shadow">
                 {/* Header Section */}
                 <div className="px-6 pt-6">
                     <h1 className="text-xl font-medium tracking-tighter">Profile Settings</h1>

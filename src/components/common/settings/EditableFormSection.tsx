@@ -62,7 +62,7 @@ export default function EditableFormSection({
               <button
                 type="button"
                 onClick={onEdit}
-                className="flex items-center justify-center gap-3 bg-[#EBF1FF] text-[#163066] text-sm font-medium rounded-lg px-6 py-3.5 transition-colors hover:bg-[#EBF1FF]/90"
+                className="flex items-center cursor-pointer justify-center gap-3 bg-[#EBF1FF] text-[#163066] text-sm font-bold rounded-lg px-4 py-2.5 transition-colors hover:bg-[#EBF1FF]/90"
               >
                 <span>Edit Details</span>
                 <img src="/Vector (12).svg" alt="Edit" className="w-4 h-4" />
