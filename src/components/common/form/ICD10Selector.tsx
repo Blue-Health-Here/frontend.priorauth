@@ -4,7 +4,7 @@ import { FiChevronDown, FiChevronUp, FiPlus } from 'react-icons/fi';
 import { icdCodes } from '@/utils/constants';
 import ThemeButton from '../ThemeButton';
 
-const ICD10Selector: React.FC<any> = ({ name, ...props }) => {
+const ICD10Selector: React.FC<any> = ({ name }) => {
     const [field, meta, helpers] = useField(name);
     const [isOpen, setIsOpen] = useState(false);
     const [showCustomForm, setShowCustomForm] = useState(false);

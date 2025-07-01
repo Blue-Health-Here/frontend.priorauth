@@ -10,7 +10,7 @@ import * as Yup from "yup";
 import { FiEdit, FiX } from "react-icons/fi";
 import TextareaField from "@/components/common/form/TextareaField";
 import ICD10Selector from "@/components/common/form/ICD10Selector";
-import { commonMedications, icdCodes } from "@/utils/constants";
+import { commonMedications } from "@/utils/constants";
 
 interface AddRequestModalProps {
     isOpen: boolean;
@@ -22,17 +22,23 @@ interface Medication {
     name: string
 }
 
-const AddRequestModal: React.FC<AddRequestModalProps> = ({ isOpen, onClose }) => {
-    const [formData, setFormData] = useState({
+const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
+    // const [formData, setFormData] = useState({
+    //     from: "MediCare Pharmacy",
+    //     key: "",
+    //     rejectionClaim: "",
+    // });
+    const formData = {
         from: "MediCare Pharmacy",
         key: "",
         rejectionClaim: "",
-    })
+        icd10Code: null
+    };
     const [editingMedication, setEditingMedication] = useState<string | null>(null)
     const [editValue, setEditValue] = useState("")
     const [customMedicine, setCustomMedicine] = useState("")
     const [showCustomMedicationForm, setShowCustomMedicationForm] = useState<boolean>(false);
-    const [icdWarning, setICDWarning] = useState("")
+    // const [icdWarning, setICDWarning] = useState("")
     const [medications, setMedications] = useState<Medication[]>([])
 
     const extractMedications = (text: string) => {
@@ -96,7 +102,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ isOpen, onClose }) =>
             id: `REQ-${Date.now()}`,
             title: `Medical Request - ${formData.key || "Untitled"}`,
             status: "Pending",
-            priority: icdWarning ? "High" : "Medium",
+            // priority: icdWarning ? "High" : "Medium",
             assignee: "Unassigned",
             createdDate: new Date().toLocaleDateString(),
             dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString(),
@@ -123,12 +129,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ isOpen, onClose }) =>
             <ModalHeader title="Add Request" onClose={onClose} />
             <div className="flex flex-col gap-4 max-w-2xl">
                 <Formik
-                    initialValues={{
-                        from: "MediCare Pharmacy",
-                        key: "",
-                        rejectionClaim: "",
-                        icd10Code: null
-                    }}
+                    initialValues={formData}
                     validationSchema={Yup.object({
                         key: Yup.string(),
                         rejectionClaim: Yup.string()
@@ -137,7 +138,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ isOpen, onClose }) =>
                     })}
                     onSubmit={handleSubmit}
                 >
-                    {({ errors, touched, setFieldValue }) => (
+                    {({ setFieldValue }) => (
                         <Form>
                             <div className="space-y-2 p-4">
                                 {/* From and Key Fields */}

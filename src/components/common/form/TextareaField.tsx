@@ -16,6 +16,7 @@ interface TextareaFieldProps extends TextareaHTMLAttributes<HTMLTextAreaElement>
 const TextareaField: React.FC<TextareaFieldProps> = ({ className, name, ref, label, onChange, disabled = false }) => {
     const [field, meta] = useField(name);
 
+    console.log(field, "field");    
     return (
         <div>
             <Label htmlFor={name} className="text-quaternary-white text-sm font-secondary">
