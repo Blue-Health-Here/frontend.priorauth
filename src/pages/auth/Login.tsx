@@ -70,12 +70,12 @@ const Login: React.FC = () => {
                     htmlFor="userName"
                     className="block text-sm text-[#7A7A7A] mb-1"
                   >
-                    Email
+                    Username
                   </label>
                   <InputField
                     name="userName"
                     type="text"
-                    placeholder="Enter email"
+                    placeholder="Enter username"
                     variant="FloatingLabel"
                     className={`w-full max-w-[466px] h-[40px] border ${
                       loginError ? "border-[#FF2E37]" : "border-[#EBEBEB]"
