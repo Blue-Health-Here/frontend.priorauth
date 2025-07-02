@@ -11,9 +11,8 @@ import AddRequestModal from "./AddRequestModal";
 import { getAllReqStatuses } from "@/services/pharmacyService";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Formik, FormikValues } from "formik";
-import SelectField from "@/components/common/form/SelectField";
 import { RootState } from "@/store";
-import { getReqBgStatusStyle, getStatusClass } from "@/utils/helper";
+import { getStatusClass } from "@/utils/helper";
 import { Dropdown } from "primereact/dropdown";
 
 const sampleData = [

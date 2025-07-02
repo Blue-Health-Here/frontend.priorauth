@@ -2,7 +2,6 @@ import toast from "react-hot-toast";
 import { axiosAdmin } from "../api/instance";
 import { AppDispatch } from "../store";
 import { setIsLoading } from "../store/features/global/globalSlice";
-import { setRequestsData } from "../store/features/admin/requests/requestsSlice";
 import { setReqStatusesData } from "@/store/features/admin/requests/statusesSlice";
 
 // Types
