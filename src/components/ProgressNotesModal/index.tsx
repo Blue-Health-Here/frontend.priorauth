@@ -14,12 +14,20 @@ interface ProgressNotesModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
+declare global {
+  interface Window {
+    pdfjsLib: any;
+  }
+}
 
 const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   isOpen,
   onClose,
 }) => {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const [previouslyUploadedFiles, setPreviouslyUploadedFiles] = useState<
+    UploadedFile[]
+  >([]);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [analysisStarted, setAnalysisStarted] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<any>(null);
@@ -52,9 +60,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
 
   const loadPdfJs = useCallback(() => {
     return new Promise((resolve, reject) => {
-      // @ts-ignore
       if (window.pdfjsLib) {
-        // @ts-ignore
         resolve(window.pdfjsLib);
         return;
       }
@@ -63,10 +69,8 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
       script.src =
         "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
       script.onload = () => {
-        // @ts-ignore // Set worker path
         window.pdfjsLib.GlobalWorkerOptions.workerSrc =
           "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-        // @ts-ignore
         resolve(window.pdfjsLib);
       };
       script.onerror = () => reject(new Error("Failed to load PDF.js"));
@@ -74,42 +78,45 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
     });
   }, []);
 
-  const convertPdfToImage = useCallback(async (file: any) => {
-    try {
-      const pdfjsLib: any = await loadPdfJs();
-      const arrayBuffer = await file.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-      const page = await pdf.getPage(1);
-      const viewport = page.getViewport({ scale: 2.0 });
+  const convertPdfToImage = useCallback(
+    async (file: any) => {
+      try {
+        const pdfjsLib: any = await loadPdfJs();
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        const page = await pdf.getPage(1);
+        const viewport = page.getViewport({ scale: 2.0 });
 
-      const canvas: any = canvasRef.current;
-      const context = canvas.getContext("2d");
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
+        const canvas: any = canvasRef.current;
+        const context = canvas.getContext("2d");
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
 
-      const renderContext = {
-        canvasContext: context,
-        viewport: viewport,
-      };
+        const renderContext = {
+          canvasContext: context,
+          viewport: viewport,
+        };
 
-      await page.render(renderContext).promise;
+        await page.render(renderContext).promise;
 
-      const imageDataUrl = canvas.toDataURL("image/png", 0.9);
-      return {
-        id: Math.random().toString(36).substring(2, 9),
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        lastModified: file.lastModified,
-        progress: 0,
-        status: "uploading" as const,
-        file: file,
-        url: imageDataUrl,
-      };
-    } catch (err) {
-      console.error("Error converting PDF to image:", err);
-    }
-  }, [loadPdfJs]);
+        const imageDataUrl = canvas.toDataURL("image/png", 0.9);
+        return {
+          id: Math.random().toString(36).substring(2, 9),
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          lastModified: file.lastModified,
+          progress: 0,
+          status: "uploading" as const,
+          file: file,
+          url: imageDataUrl,
+        };
+      } catch (err) {
+        console.error("Error converting PDF to image:", err);
+      }
+    },
+    [loadPdfJs]
+  );
 
   if (!isOpen) return null;
 
@@ -157,7 +164,10 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   };
 
   const redoAnalysis = () => {
+    setPreviouslyUploadedFiles((prev) => [...prev, ...uploadedFiles]);
+    setUploadedFiles([]);
     setAnalysisStarted(false);
+    setSelectedFile(null);
   };
 
   const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
@@ -192,55 +202,99 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
 
   const removeFile = (id: string) =>
     setUploadedFiles((prev) => prev.filter((file) => file.id !== id));
-  const handleDownloadReport = () => { };
+  const handleDownloadReport = () => {};
   const handleSelectFile = (file: any) => setSelectedFile(file);
 
   return (
     <ModalWrapper>
       <ModalHeader title="AI Analysis" onClose={onClose} />
-      <div className="w-[1536px] overflow-hidden z-50 flex" style={{ height: "calc(100vh - 4rem)" }}>
+      <div
+        className="w-[1536px] overflow-hidden z-50 flex"
+        style={{ height: "calc(100vh - 4rem)" }}
+      >
         <canvas ref={canvasRef} style={{ display: "none" }} />
         <div className="relative h-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 flex-1">
           {/* Left Sidebar */}
           <div className="order-1 md:order-1 col-span-1 bg-[#F8FAFF] z-0 flex flex-col justify-between gap-4 p-4 md:p-6 relative md:w-[401px] h-full overflow-y-auto">
-            {!analysisStarted ? (
-              <div className="bg-white rounded-xl border border-gray-200 p-2.5">
-                <FileDropzone
-                  isDragging={isDragging}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
-                  onFileChange={handleFileChange}
-                />
+            {!analysisStarted && (
+              <div className="space-y-4">
+                {/* Upload File Section */}
+                <div className="bg-white rounded-xl border border-gray-200 p-2.5">
+                  <FileDropzone
+                    isDragging={isDragging}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    onFileChange={handleFileChange}
+                  />
 
-                {uploadedFiles.length > 0 && (
-                  <div className="mt-4">
+                  {uploadedFiles.length > 0 && (
+                    <div className="mt-4">
+                      <div className="px-2 py-2">
+                        <h4 className="text-sm font-medium text-gray-700">
+                          {uploadedFiles.some(
+                            (file) => file.status === "uploading"
+                          )
+                            ? `${
+                                uploadedFiles.filter(
+                                  (file) => file.status === "uploading"
+                                ).length
+                              } file${
+                                uploadedFiles.filter(
+                                  (file) => file.status === "uploading"
+                                ).length > 1
+                                  ? "s"
+                                  : ""
+                              } uploading`
+                            : "Uploaded Files"}
+                        </h4>
+                      </div>
+                      <UploadFileList
+                        isAddTags={false}
+                        files={uploadedFiles}
+                        removeFile={removeFile}
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Previously Uploaded Files Section */}
+                {previouslyUploadedFiles.length > 0 && (
+                  <div className="bg-white rounded-xl border border-gray-200 p-2.5">
                     <div className="px-2 py-2">
                       <h4 className="text-sm font-medium text-gray-700">
-                        Uploaded Files
+                        Previously Uploaded Files
                       </h4>
                     </div>
                     <UploadFileList
                       isAddTags={false}
-                      files={uploadedFiles}
-                      removeFile={(id: any) => removeFile(id)}
+                      files={previouslyUploadedFiles}
+                      removeFile={(id: any) =>
+                        setPreviouslyUploadedFiles((prev) =>
+                          prev.filter((file) => file.id !== id)
+                        )
+                      }
                     />
                   </div>
                 )}
               </div>
-            ) : (
+            )}
+
+            {analysisStarted && (
               <div className="flex-1">
                 <h4 className="text-base font-medium text-[#1E1E1E] mb-4">
                   Your Uploads
                 </h4>
                 <div
-                  className={`${uploadedFiles.length === 1
+                  className={`${
+                    uploadedFiles.length === 1
                       ? "flex justify-center flex-1"
                       : "grid grid-cols-2 gap-4 flex-1"
-                    }`}
+                  }`}
                 >
                   {uploadedFiles.map((file) => (
                     <RenderFilePreview
+                      key={file.id}
                       file={file}
                       isLarge={uploadedFiles.length === 1}
                       selectedItem={selectedFile}
@@ -250,15 +304,19 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                 </div>
               </div>
             )}
+
             <GradientSidebarButton
-              disabled={uploadedFiles?.length === 0}
+              disabled={
+                uploadedFiles.length === 0 ||
+                uploadedFiles.some((file) => file.status !== "completed")
+              }
               analysisStarted={analysisStarted}
               redoAnalysis={redoAnalysis}
               startAnalysis={startAnalysis}
             />
           </div>
 
-          {/* Main Content Area */}
+          {/* Main Content */}
           <div className="order-2 md:order-2 col-span-1 md:col-span-2 lg:col-span-3 flex flex-col h-full overflow-hidden">
             {!analysisStarted ? (
               <div className="flex items-center justify-center h-full p-4">
@@ -269,7 +327,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                 />
               </div>
             ) : (
-              <div className="w-full h-full overflow-y-auto lg:px-6 lg:py-6">
+              <div className="w-full h-full overflow-y-auto p-8 pr-3">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
                   <h2 className="text-primary-black font-medium text-xl">
                     Progress Notes Analysis
@@ -308,14 +366,17 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                         The patient has type 2 diabetes mellitus without
                         complications (E11.9), hyperuricemia (E79.0), essential
                         hypertension (110), chronic rhinitis (J31.0), and fatty
-                        liver disease (K76.0). Elevated glucose levels were noted.
+                        liver disease (K76.0). Elevated glucose levels were
+                        noted.
                       </p>
                     </div>
 
                     <div className="magic-lines rounded-lg overflow-hidden">
                       <div className="flex flex-col gap-5 bg-primary-white p-4 bg-white rounded-lg">
                         <div className="flex items-center justify-between gap-4">
-                          <h3 className="font-semibold magic-title">Magic Lines</h3>
+                          <h3 className="font-semibold magic-title">
+                            Magic Lines
+                          </h3>
                           <img
                             src="/magic-copy-icon.svg"
                             alt="copy icon"
@@ -325,17 +386,17 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                         <div className="text-primary-black text-sm">
                           <p>
                             The patient has trialed and failed, experienced
-                            contraindications, or had intolerances to at least two
-                            preventive migraine medications:
+                            contraindications, or had intolerances to at least
+                            two preventive migraine medications:
                           </p>
                           <ul className="list-disc pl-5 space-y-2 mt-2">
                             <li>
-                              Propranolol 20mg BID (XX/XX/2023 - XX/XX/2023), which
-                              worsened headaches.
+                              Propranolol 20mg BID (XX/XX/2023 - XX/XX/2023),
+                              which worsened headaches.
                             </li>
                             <li>
-                              Amitriptyline 25mg daily (XX/XX/2023 - XX/XX/2023),
-                              which caused excessive drowsiness.
+                              Amitriptyline 25mg daily (XX/XX/2023 -
+                              XX/XX/2023), which caused excessive drowsiness.
                             </li>
                             <li>
                               Topiramate 100mg daily (XX/XX/2023 - XX/XX/2023),
