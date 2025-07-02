@@ -198,13 +198,13 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   return (
     <ModalWrapper>
       <ModalHeader title="AI Analysis" onClose={onClose} />
-      <div className="w-full max-w-8xl overflow-hidden z-50 flex" style={{ minHeight: "calc(100vh - 4rem)" }}>
+      <div className="w-[1536px] overflow-hidden z-50 flex" style={{ height: "calc(100vh - 4rem)" }}>
         <canvas ref={canvasRef} style={{ display: "none" }} />
-        <div className="relative overflow-y-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 flex-1">
+        <div className="relative h-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 flex-1">
           {/* Left Sidebar */}
-          <div className="order-1 md:order-1 col-span-1 bg-[#F8FAFF] z-0 flex flex-col justify-between gap-4 p-4 md:p-6 relative">
+          <div className="order-1 md:order-1 col-span-1 bg-[#F8FAFF] z-0 flex flex-col justify-between gap-4 p-4 md:p-6 relative md:w-[401px] h-full overflow-y-auto">
             {!analysisStarted ? (
-              <div className="bg-white rounded-xl border border-gray-200 p-2">
+              <div className="bg-white rounded-xl border border-gray-200 p-2.5">
                 <FileDropzone
                   isDragging={isDragging}
                   onDragOver={handleDragOver}
@@ -230,7 +230,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
               </div>
             ) : (
               <div className="flex-1">
-                <h4 className="text-base font-medium text-gray-700 mb-4">
+                <h4 className="text-base font-medium text-[#1E1E1E] mb-4">
                   Your Uploads
                 </h4>
                 <div
@@ -259,19 +259,19 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
           </div>
 
           {/* Main Content Area */}
-          <div className="order-2 md:order-2 col-span-1 md:col-span-2 lg:col-span-3 flex flex-col p-4 md:p-0">
+          <div className="order-2 md:order-2 col-span-1 md:col-span-2 lg:col-span-3 flex flex-col h-full overflow-hidden">
             {!analysisStarted ? (
-              <div className="flex items-center justify-center h-full">
+              <div className="flex items-center justify-center h-full p-4">
                 <img
                   src="/radial-color-ai.png"
                   alt="radial color ai"
-                  className="w-full max-w-xs sm:max-w-sm md:max-w-none md:w-[30rem] lg:w-[40rem] custom-bounce"
+                  className="w-full max-w-xs sm:max-w-sm md:max-w-none md:w-[30rem] lg:w-[60rem] custom-bounce"
                 />
               </div>
             ) : (
               <div className="w-full h-full overflow-y-auto lg:px-6 lg:py-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-                  <h2 className="text-primary-black font-semibold text-xl">
+                  <h2 className="text-primary-black font-medium text-xl">
                     Progress Notes Analysis
                   </h2>
                   <ThemeButton

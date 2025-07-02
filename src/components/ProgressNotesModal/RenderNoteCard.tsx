@@ -4,7 +4,7 @@ const RenderNoteCard: React.FC<any> = ({ item, handleDownloadReport }) => {
     return (
         <div className="border border-light-stroke p-4 rounded-theme-r">
             <div className="flex flex-wrap justify-between items-center gap-4 pb-4">
-                <span className="font-semibold">{item.label}</span>
+                <span className="font-semibold text-[#525252]">{item.label}</span>
                 <span className={`${getCurrentBadgeColors(item.statusCode)} text-xs sm:text-sm px-4 py-2 font-semibold rounded-theme-r transition-colors`}>
                     {item.status}
                 </span>
