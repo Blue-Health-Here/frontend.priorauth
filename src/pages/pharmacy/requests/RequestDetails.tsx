@@ -411,7 +411,6 @@ const RequestDetails: React.FC<any> = () => {
                     onDrop={handleDrop}
                     onFileChange={handleFileChange}
                     className="!p-3"
-                    minHeight="100%"
                   />
                 </div>
 
