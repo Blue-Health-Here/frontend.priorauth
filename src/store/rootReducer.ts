@@ -6,6 +6,9 @@ import reqStatusesReducer from "./features/admin/requests/statusesSlice";
 // Admin Imports
 import adminReqsReducer from "./features/admin/requests/requestsSlice";
 import adminPharmacyReducer from "./features/admin/pharmacies/pharmaciesSlice";
+
+// Pharmacy Imports
+import pharmacyReqsReducer from "./features/pharmacy/requests/requestsSlice";
 // import adminChecklistReducer from "./features/admin/checklist/adminChecklistSlice"
 // import adminMarketingReducer from "./features/admin/marketing/adminMarketingSlice"
 // import adminCategoryReducer from "./features/admin/category/adminCategorySlice"
@@ -20,6 +23,9 @@ const rootReducer = combineReducers({
     // Admin Reducers
     adminReqs: adminReqsReducer,
     adminPharmacies: adminPharmacyReducer,
+
+    // Pharmacy Reducers
+    pharmacyReqs: pharmacyReqsReducer
     // checklist: adminChecklistReducer,
     // marketing: adminMarketingReducer,
     // category: adminCategoryReducer,

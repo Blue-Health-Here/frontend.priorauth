@@ -3,6 +3,7 @@ import { axiosAdmin } from "../api/instance";
 import { AppDispatch } from "../store";
 import { setIsLoading } from "../store/features/global/globalSlice";
 import { setReqStatusesData } from "@/store/features/admin/requests/statusesSlice";
+import { setRequestsData } from "@/store/features/pharmacy/requests/requestsSlice";
 
 // Types
 type ApiMethod = 'get' | 'post' | 'put' | 'delete';
@@ -141,6 +142,13 @@ const apiHandler = async <T = any>(
 
 export const getAllReqStatuses = async (dispatch: AppDispatch) => {
     return apiHandler(dispatch, 'post', '/status/get_all', {
+        data: {
+            pagedListRequest: {
+                pageNo: 1,
+                pageSize: 10000,
+                getAllRecords: true
+            }
+        },
         successMessage: "Requests Statuses have been fetched successfully!",
         onSuccess: (data) => {
             dispatch(setReqStatusesData(data))
@@ -154,3 +162,26 @@ export const getAllReqStatuses = async (dispatch: AppDispatch) => {
     })
 }
 
+// ============= Requests  =============
+
+export const getAllPharmacyReqs = async (dispatch: AppDispatch) => {
+    return apiHandler(dispatch, 'post', '/pa_request/get_all', {
+        data: {
+            pagedListRequest: {
+                pageNo: 1,
+                pageSize: 10000,
+                getAllRecords: true
+            }
+        },
+        successMessage: "Requests have been fetched successfully!",
+        onSuccess: (data) => {
+            dispatch(setRequestsData(data))
+        },
+        onError: (error) => {
+            if (error.status === 404) {
+                dispatch(setRequestsData([]));
+            }
+        },
+        errorMessage: "Requests not found."
+    })
+}
