@@ -5,102 +5,15 @@ import FilterField from "@/components/common/FilterField";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import { FiSearch } from "react-icons/fi";
 import ThemeButton from "@/components/common/ThemeButton";
-import RequestStatusDropdownField from "./RequestStatusDropdownField";
+// import RequestStatusDropdownField from "./RequestStatusDropdownField";
 import { useLocation, useNavigate } from "react-router-dom";
 import AddRequestModal from "./AddRequestModal";
-import { getAllReqStatuses } from "@/services/pharmacyService";
+import { getAllPharmacyReqs, getAllReqStatuses } from "@/services/pharmacyService";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Formik, FormikValues } from "formik";
 import { RootState } from "@/store";
-import { getStatusClass } from "@/utils/helper";
+import { getStatusClass, transformPharmacyRequest } from "@/utils/helper";
 import { Dropdown } from "primereact/dropdown";
-
-const sampleData = [
-    {
-        id: 1,
-        patient: { name: 'Razan Ahmad', image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" },
-        medication: 'Atorvastatin',
-        prescriber: { name: 'Dr. Sarah Khan', image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" },
-        submittedOn: '2025-06-20',
-        request_status: '0b7048b1-4969-451f-8504-bf439eee6fd2',
-        // request_status: 'Approved With Progress Notes',
-        notes: '–',
-        lastModified: '2025-05-15 10:30 AM',
-        statusClass: "bg-status-success-bg-color text-status-success-text-color"
-    },
-    {
-        id: 2,
-        patient: { name: 'Liam Johnson', image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" },
-        medication: 'Metformin',
-        prescriber: { name: 'Dr. John Smith', image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" },
-        submittedOn: '2025-06-18',
-        request_status: '0b7048b1-4969-451f-8504-bf439eee6fd2',
-        // request_status: 'Progress Notes Required',
-        notes: '05/09/2025: The...',
-        lastModified: '2025-05-15 09:00 AM',
-        statusClass: "bg-status-bg-sky-blue text-status-text-sky-blue"
-    },
-    {
-        id: 3,
-        patient: { name: 'Sophia Williams', image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" },
-        medication: 'Lisinopril',
-        prescriber: { name: 'Dr. Emily Clark', image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" },
-        submittedOn: '2025-06-15',
-        request_status: '0b7048b1-4969-451f-8504-bf439eee6fd2',
-        // request_status: 'Process Appeal– Queued For Call',
-        notes: '05/15/2025: A fo...',
-        lastModified: '2025-05-15 08:00 AM',
-        statusClass: "bg-status-warning-bg-color text-status-error-text-color"
-    },
-    {
-        id: 4,
-        patient: { name: 'Noah Brown', image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" },
-        medication: 'Omeprazole',
-        prescriber: { name: 'Dr. Michael Lee', image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" },
-        submittedOn: '2025-06-19',
-        request_status: '84b0039e-d646-4e60-82af-cbd84146e8c9',
-        // request_status: 'Not Enrolled in the Billed Plan',
-        notes: '05/15/2025: A re...',
-        lastModified: '2025-05-15 01:15 PM',
-        statusClass: "bg-status-bg-lilac-sky text-status-text-lilac-sky"
-    },
-    {
-        id: 5,
-        patient: { name: 'Emma Davis', image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" },
-        medication: 'Amlodipine',
-        prescriber: { name: 'Dr. Olivia Garcia', image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" },
-        submittedOn: '2025-06-17',
-        request_status: '0b7048b1-4969-451f-8504-bf439eee6fd2',
-        // request_status: 'Updated Progress Notes Required',
-        notes: '05/15/2025: A ce...',
-        lastModified: '2025-05-15 11:00 AM',
-        statusClass: "bg-status-bg-sky-blue text-status-text-sky-blue"
-    },
-    {
-        id: 6,
-        patient: { name: 'Ethan Hall', image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" },
-        medication: 'Losartan',
-        prescriber: { name: 'Dr. Ava Martinez', image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" },
-        submittedOn: '2025-06-14',
-        request_status: '84b0039e-d646-4e60-82af-cbd84146e8c9',
-        // request_status: 'Not Enrolled in the Billed Plan',
-        notes: '05/15/2025: The...',
-        lastModified: '2025-05-15 02:30 PM',
-        statusClass: "bg-status-bg-lilac-sky text-status-text-lilac-sky"
-    },
-    {
-        id: 7,
-        patient: { name: 'Isabella Moore', image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" },
-        medication: 'Simvastatin',
-        prescriber: { name: 'Dr. James Wilson', image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" },
-        submittedOn: '2025-06-13',
-        request_status: '0b7048b1-4969-451f-8504-bf439eee6fd2',
-        // request_status: 'Approved With Progress Notes',
-        notes: '–',
-        lastModified: '2025-05-15 03:10 PM',
-        statusClass: "bg-status-success-bg-color text-status-success-text-color"
-    }
-];
 
 const PharmacyRequests = () => {
     const columns = [
@@ -160,7 +73,13 @@ const PharmacyRequests = () => {
             header: 'Notes',
             visible: true,
             filterable: true,
-            sortable: true
+            sortable: true,
+            customTemplate: true,
+            render: (rowData: any, field: any) => (
+                <div className="line-clamp-1 w-40">
+                    {rowData[field]}
+                </div>
+            )
         },
         {
             field: 'lastModified',
@@ -171,7 +90,8 @@ const PharmacyRequests = () => {
         }
     ];
     const { reqStatusesData } = useSelector((state: RootState) => state.reqStatuses);
-    const [requestsData, setRequestsData] = useState<any>(sampleData);
+    const { reqsData } = useSelector((state: RootState) => state.pharmacyReqs);
+    const [requestsData, setRequestsData] = useState<any>([]);
     const [visibleColumns, setVisibleColumns] = useState(columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: col.visible !== false }), {}));
     const [isChecked, setIsChecked] = useState<boolean>(false);
     const [globalFilter, setGlobalFilter] = useState('');
@@ -183,23 +103,35 @@ const PharmacyRequests = () => {
     const isFetchedStatuses = useRef(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const fetchAllReqStatuses = async () => {
-        setIsLoading(true);
-        await getAllReqStatuses(dispatch).finally(() => setIsLoading(false));
-    };
-
     useEffect(() => {
+        const fetchInitialData = async () => {
+            setIsLoading(true);
+            try {
+                await Promise.all([
+                    getAllReqStatuses(dispatch),
+                    getAllPharmacyReqs(dispatch),
+                ]);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+    
         if (!isFetchedStatuses.current) {
-            fetchAllReqStatuses();
+            fetchInitialData();
             isFetchedStatuses.current = true;
         }
     }, []);
+
+    useEffect(() => {
+        if (reqsData.length > 0) {
+            setRequestsData(reqsData.map((item: any) => ({ ...transformPharmacyRequest(item) })))
+        }
+    }, [reqsData]);
 
     const handleSubmitStatusChange = async (values: FormikValues) => {
         console.log(values, "values");
     };
     
-    // console.log(reqStatusesData.map((item: any) => ({ label: item.name, value: item.id })), "reqStatusesData")
     const requestStatusTemplate = (rowData: any, field: any) => (
         <Formik
             initialValues={{ status: rowData[field] }}
@@ -211,7 +143,7 @@ const PharmacyRequests = () => {
                 const findStatus = reqStatusesData.find((item: any) => item.id === rowData[field]);
                 return (
                     <Form>
-                        <div onClick={(e) => e.stopPropagation()} className="w-58">
+                        <div onClick={(e) => e.stopPropagation()} className="max-w-40">
                             <Dropdown
                                 value={values.status}
                                 options={statusOptions}
@@ -221,7 +153,7 @@ const PharmacyRequests = () => {
                                     submitForm();
                                 }}
                                 name="status"
-                                className={`!border-0 max-w-58 ${findStatus && getStatusClass(findStatus.name)}`}
+                                className={`!border-0 max-w-58 !text-sm ${findStatus && getStatusClass(findStatus.name)}`}
                                 placeholder="Select Status"
                                 // optionGroupTemplate={optionTemplate}
                                 // valueTemplate={valueTemplate}
@@ -251,14 +183,14 @@ const PharmacyRequests = () => {
         );
     };
 
-    const handleStatusChange = (status: any) => {
-        if (status?.length > 0) {
-            const filteredData = sampleData.filter(item => status.includes(item.request_status));
-            setRequestsData(filteredData);
-        } else {
-            setRequestsData(sampleData);
-        }
-    };
+    // const handleStatusChange = (status: any) => {
+    //     if (status?.length > 0) {
+    //         const filteredData = sampleData.filter(item => status.includes(item.request_status));
+    //         setRequestsData(filteredData);
+    //     } else {
+    //         setRequestsData(sampleData);
+    //     }
+    // };
 
     const tableHeader = (
         <div className="flex gap-2 items-center h-12"> {/* Set fixed height here */}
@@ -276,7 +208,7 @@ const PharmacyRequests = () => {
 
             <div className="inline-flex h-full items-center gap-2">
                 <FilterField columns={columns} />
-                <RequestStatusDropdownField data={sampleData} onChange={(selected) => handleStatusChange(selected)} />
+                {/* <RequestStatusDropdownField data={sampleData} onChange={(selected) => handleStatusChange(selected)} /> */}
                 <ToggleColumnsField
                     clearSelection={clearSelection}
                     selectAll={selectAll}
@@ -329,16 +261,22 @@ const PharmacyRequests = () => {
                 </div>
             </div>
             
-            {reqStatusesData.length === 0 ? (
-                <div className="text-center py-10 text-gray-500">Loading statuses...</div>
+            {isLoading ? (
+                <div className="text-center py-4 w-10 text-gray-500">
+                    <div role="status">
+                        <svg aria-hidden="true" className="w-8 h-8 text-gray-200 animate-spin fill-primary-sky-blue" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                        </svg>
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                </div>
             ) : (
                 <ThemeDataTable
                     header={tableHeader}
                     data={requestsData}
                     columns={columns}
                     pageSize={5}
-                    loading={isLoading}
-                    title="Your Requests"
                     searchPlaceholder="Search"
                     onRowClick={(row: any) => navigate(location.pathname + "/" + row.data.id + "/request-details")}
                     visibleColumns={visibleColumns}
