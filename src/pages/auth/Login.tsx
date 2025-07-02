@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import InputField from "../../components/common/form/InputField";
 import CustomCheckbox from "../../components/common/form/CustomCheckbox";
 import { Link, useNavigate } from "react-router-dom";
@@ -17,22 +17,13 @@ const Login: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const userData = localStorage.getItem("user");
-    const token = userData ? JSON.parse(userData) : null;
-
-    if (token) {
-      navigate("/admin");
-      return;
-    }
-  }, []);
-
   const handleSubmit = async (values: FormikValues) => {
     try {
       setLoginError(false);
       const response = await submitLogin(dispatch, values);
       if (response) {
-        navigate("/admin");
+        if (response.roleCode === "pharmacyUser") navigate("/pharmacy");
+        else navigate("/admin");
       }
     } catch (error: any) {
       setLoginError(true);
@@ -44,12 +35,12 @@ const Login: React.FC = () => {
     <div className="flex min-h-screen w-full">
       <div className="w-full md:w-1/2 flex flex-col py-10 pt-30 px-6 md:px-8 bg-primary-white">
         <div className="w-full max-w-[500px] mx-auto flex flex-col">
-          <div className="mt-10 mb-5">
-            <Link to="/">
+          <div className="mt-10 mb-5 w-max">
+            <Link to="/" className="w-max">
               <img
                 src="/images/updated-logo.svg"
                 alt="Prior Auth Support Logo"
-                className="h-12 sm:h-14 md:h-12"
+                className="h-12 sm:h-14 md:h-12 w-max"
               />
             </Link>
           </div>
@@ -79,12 +70,12 @@ const Login: React.FC = () => {
                     htmlFor="userName"
                     className="block text-sm text-[#7A7A7A] mb-1"
                   >
-                    Email
+                    Username
                   </label>
                   <InputField
                     name="userName"
                     type="text"
-                    placeholder="Enter email"
+                    placeholder="Enter username"
                     variant="FloatingLabel"
                     className={`w-full max-w-[466px] h-[40px] border ${
                       loginError ? "border-[#FF2E37]" : "border-[#EBEBEB]"

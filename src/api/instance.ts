@@ -5,7 +5,7 @@ const api: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "http://172.212.86.131:8060"
+    "Access-Control-Allow-Origin": "https://priorauth-backend-bluehealth-dudsdnf3bbc5hwbh.canadacentral-01.azurewebsites.net"
   },
 });
 
