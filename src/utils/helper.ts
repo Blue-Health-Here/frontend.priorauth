@@ -180,3 +180,41 @@ export const generateBreadcrumbItems = (pathname: string) => {
 
     return items;
 };
+const STATUS_CLASS_MAP = [
+    {
+      keywords: ["APPROVED"],
+      className: "bg-status-success-bg-color text-status-success-text-color",
+    },
+    {
+      keywords: [
+        "PROCESSING",
+        "UPDATED_PROGRESS_NOTES",
+        "PENDING",
+        "SECOND_CALL",
+        "THIRD_CALL",
+      ],
+      className: "bg-status-bg-sky-blue text-status-text-sky-blue",
+    },
+    {
+      keywords: ["APPEAL", "REJECTED", "PROCESS_APPEAL", "QUEUED"],
+      className: "bg-status-warning-bg-color text-status-error-text-color",
+    },
+    {
+      keywords: ["NOT_ENROLLED", "ADDITIONAL_NOTES"],
+      className: "bg-status-bg-lilac-sky text-status-text-lilac-sky",
+    },
+  ];
+  
+  export function getStatusClass(statusName = "") {
+    const normalized = statusName.trim().toUpperCase();
+  
+    for (const entry of STATUS_CLASS_MAP) {
+      if (entry.keywords.some((keyword) => normalized.includes(keyword))) {
+        return entry.className;
+      }
+    }
+  
+    // Default fallback
+    return "bg-default text-default";
+  }
+  
