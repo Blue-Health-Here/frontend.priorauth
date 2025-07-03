@@ -98,19 +98,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
     }
 
     const handleSubmit = async (values: FormikValues) => {
-        const requestData = {
-            id: `REQ-${Date.now()}`,
-            title: `Medical Request - ${formData.key || "Untitled"}`,
-            status: "Pending",
-            // priority: icdWarning ? "High" : "Medium",
-            assignee: "Unassigned",
-            createdDate: new Date().toLocaleDateString(),
-            dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString(),
-            ...formData,
-            medications,
-        }
-
-        console.log("Form submitted:", values, requestData)
+        console.log("Form submitted:", values)
 
         // Reset form
         // setMedications([])
@@ -149,7 +137,6 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
                                             name="from"
                                             label="From"
                                             placeholder="Enter from"
-                                            disabled
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -170,7 +157,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
                                         label="Rejection Claim"
                                         placeholder="Enter rejection claim details..."
                                         rows={4}
-                                        className="w-full rounded-lg !border !border-light-stroke bg-background !px-4 !py-2 text-base placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                                        className="w-full rounded-lg !border !border-light-stroke bg-background !px-4 focus:outline-none focus:!border-gray-400 !py-2 text-base placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                                         onChange={(e: any) => {
                                             if (e.target.value !== "") {
                                                 setFieldValue("rejectionClaim", e.target.value)
