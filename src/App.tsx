@@ -33,9 +33,9 @@ import AdminRolesAndPermissions from "./pages/permissions";
 import PharmacyLayout from "./layouts/PharmacyLayout";
 import PharmacyDashboard from "./pages/pharmacy/dashboard";
 import PharmacyRequests from "./pages/pharmacy/requests";
-import PharmacyRequestDetails from "./pages/pharmacy/requests/RequestDetails";
 import CMMAccountDatabase from "./pages/pharmacy/cmm-account";
 import { PharmacySettings } from "./pages/pharmacy/settings";
+import PharmacyRequestDetails from './pages/pharmacy/requests/details';
 
 function App() {
   return (
