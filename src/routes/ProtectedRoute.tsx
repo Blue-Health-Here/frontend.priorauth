@@ -1,10 +1,7 @@
 // src/routes/ProtectedRoute.tsx
+import { User } from "@/utils/types";
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-
-type User = {
-  roleCode: string;
-};
 
 const ProtectedRoute: React.FC<{ allowedRoles: string[] }> = ({ allowedRoles }) => {
   const storedUser = localStorage.getItem("user");
