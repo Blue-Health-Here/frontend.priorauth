@@ -149,7 +149,7 @@ export const getAllReqStatuses = async (dispatch: AppDispatch) => {
                 getAllRecords: true
             }
         },
-        successMessage: "Requests Statuses have been fetched successfully!",
+        // successMessage: "Requests Statuses have been fetched successfully!",
         onSuccess: (data) => {
             dispatch(setReqStatusesData(data))
         },
@@ -173,7 +173,7 @@ export const getAllPharmacyReqs = async (dispatch: AppDispatch) => {
                 getAllRecords: true
             }
         },
-        successMessage: "Requests have been fetched successfully!",
+        // successMessage: "Requests have been fetched successfully!",
         onSuccess: (data) => {
             dispatch(setRequestsData(data))
         },

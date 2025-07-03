@@ -24,6 +24,7 @@ const RequestStatusDropdownField: React.FC<RequestStatusDropdownFieldProps> = ({
         data.forEach(item => {
             if (item.request_status && item.statusClass) {
                 uniqueMap.set(item.request_status, {
+                    id: item.id,
                     name: item.request_status,
                     sClass: item.statusClass
                 });
@@ -62,7 +63,7 @@ const RequestStatusDropdownField: React.FC<RequestStatusDropdownFieldProps> = ({
 
     const filteredStatuses = statusSearch !== "" ? 
         statusesList.filter((item: any) => item.name.toLowerCase().includes(statusSearch.toLowerCase())) : statusesList;
-    
+
     return (
         <div className={`relative ${className}`} ref={dropdownRef}>
             <Button
@@ -99,8 +100,8 @@ const RequestStatusDropdownField: React.FC<RequestStatusDropdownFieldProps> = ({
                                 <label htmlFor={`status-${idx}`} className="inline-flex items-center cursor-pointer">
                                     <CustomCheckbox
                                         id={`status-${idx}`}
-                                        checked={selectedStatuses.includes(status.name)}
-                                        onChange={() => toggleStatus(status.name)}
+                                        checked={selectedStatuses.includes(status.id)}
+                                        onChange={() => toggleStatus(status.id)}
                                         className='!border !border-medium-stroke'
                                     />
                                     <span className={`px-3 py-1 ml-2 rounded-full line-clamp-1 max-w-[240px] !text-sm lg:text-base font-normal ${status.sClass}`}>
