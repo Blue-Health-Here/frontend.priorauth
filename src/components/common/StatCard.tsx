@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 interface StatCardProps {
-  description: string;
+  description?: string;
   title: string;
   value: string;
   className?: string;

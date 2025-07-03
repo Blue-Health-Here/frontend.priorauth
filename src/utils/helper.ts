@@ -180,41 +180,76 @@ export const generateBreadcrumbItems = (pathname: string) => {
 
     return items;
 };
+
 const STATUS_CLASS_MAP = [
     {
-      keywords: ["APPROVED"],
-      className: "bg-status-success-bg-color text-status-success-text-color",
+        keywords: ["APPROVED"],
+        className: "bg-status-success-bg-color text-status-success-text-color",
     },
     {
-      keywords: [
-        "PROCESSING",
-        "UPDATED_PROGRESS_NOTES",
-        "PENDING",
-        "SECOND_CALL",
-        "THIRD_CALL",
-      ],
-      className: "bg-status-bg-sky-blue text-status-text-sky-blue",
+        keywords: [
+            "PROCESSING",
+            "UPDATED_PROGRESS_NOTES",
+            "PENDING",
+            "SECOND_CALL",
+            "THIRD_CALL",
+        ],
+        className: "bg-status-bg-sky-blue text-status-text-sky-blue",
     },
     {
-      keywords: ["APPEAL", "REJECTED", "PROCESS_APPEAL", "QUEUED"],
-      className: "bg-status-warning-bg-color text-status-error-text-color",
+        keywords: ["APPEAL", "REJECTED", "PROCESS_APPEAL", "QUEUED"],
+        className: "bg-status-warning-bg-color text-status-error-text-color",
     },
     {
-      keywords: ["NOT_ENROLLED", "ADDITIONAL_NOTES"],
-      className: "bg-status-bg-lilac-sky text-status-text-lilac-sky",
+        keywords: ["NOT_ENROLLED", "ADDITIONAL_NOTES"],
+        className: "bg-status-bg-lilac-sky text-status-text-lilac-sky",
     },
-  ];
-  
-  export function getStatusClass(statusName = "") {
+];
+
+export function getStatusClass(statusName = "") {
     const normalized = statusName.trim().toUpperCase();
-  
+
     for (const entry of STATUS_CLASS_MAP) {
-      if (entry.keywords.some((keyword) => normalized.includes(keyword))) {
-        return entry.className;
-      }
+        if (entry.keywords.some((keyword) => normalized.includes(keyword))) {
+            return entry.className;
+        }
     }
-  
+
     // Default fallback
     return "bg-default text-default";
-  }
-  
+}
+
+export function transformPharmacyRequest(data: any) {
+    return {
+        id: data.id,
+        patient: {
+            name: data.patientName || 'Unknown Patient',
+            image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" // static fallback
+        },
+        medication: data.medication || '-',
+        prescriber: {
+            name: data.prescriber || 'Unknown Prescriber',
+            image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" // static fallback
+        },
+        submittedOn: data.createdAt?.split("T")[0] || '-', // Extract just the date
+        request_status: data.statusId || '',
+        notes: data.rejectionclaim || '–',
+        lastModified: formatDateTime(data.createdAt), // Custom date formatting below
+        statusClass: getStatusClass(data.statusId) // Assume you have this function elsewhere
+    };
+}
+
+// Optional: Function to format ISO date into readable string
+export function formatDateTime(isoString: string) {
+    if (!isoString) return '-';
+    const date = new Date(isoString);
+    const options: any = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+    };
+    return date.toLocaleString('en-US', options).replace(',', '');
+}
