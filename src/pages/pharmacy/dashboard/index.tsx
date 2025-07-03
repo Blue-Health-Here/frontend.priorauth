@@ -20,18 +20,17 @@ const PharmacyDashboard = () => {
             <StatCard
               title="Today's Request"
               className="col-span-2 bg-gradient-to-br from-[#0000FD] to-[#74F8FD] min-h-[120px] rounded-xl"
-              description="Total no of tasks created by the Admin."
               value="150"
             />
             <StatCard
               title="Prescribers"
               className="col-span-1 min-h-[120px] rounded-xl"
-              description="Doctor registered, including individual & linked with clinics."
               value="48"
             />
             <div className="col-span-3">
               <DashboardRequestCard
                 title="Requests"
+                description=""
                 value="42K"
                 data={yearlyRequestsData}
               />
@@ -41,7 +40,7 @@ const PharmacyDashboard = () => {
         <div className="sm:col-span-2 xl:col-span-6 h-full">
           <GlobalStatsCard
             title="Global Stats"
-            description="Total no. of Sessions/sessions Doctors need to attend"
+            description=""
             data={globalStatsData}
           />
         </div>
