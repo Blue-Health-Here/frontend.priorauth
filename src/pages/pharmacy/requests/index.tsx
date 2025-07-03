@@ -24,10 +24,7 @@ const PharmacyRequests = () => {
             sortable: true,
             customTemplate: true,
             render: (rowData: any, field: any) => (
-                <div className="flex gap-2 items-center">
-                    <img src={rowData[field].image} alt="patient img" className="w-10 h-10 rounded-full" />
-                    <p>{rowData[field].name}</p>
-                </div>
+                <p>{rowData[field].name}</p>
             )
         },
         {
@@ -45,10 +42,7 @@ const PharmacyRequests = () => {
             sortable: true,
             customTemplate: true,
             render: (rowData: any, field: any) => (
-                <div className="flex gap-2 items-center">
-                    <img src={rowData[field].image} alt="prescriber img" className="w-10 h-10 rounded-full" />
-                    <p>{rowData[field].name}</p>
-                </div>
+                <p>{rowData[field].name}</p>
             )
         },
         {
