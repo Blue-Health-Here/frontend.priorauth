@@ -346,4 +346,6 @@ a:focus {
 .custom-paginator .p-dropdown .p-dropdown-label {
   color: var(--status-text-lilac-sky);
   line-height: 1rem;
+  display: flex;
+  align-items: center;
 }

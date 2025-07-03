@@ -5,15 +5,14 @@ import FilterField from "@/components/common/FilterField";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import { FiSearch } from "react-icons/fi";
 import ThemeButton from "@/components/common/ThemeButton";
-// import RequestStatusDropdownField from "./RequestStatusDropdownField";
 import { useLocation, useNavigate } from "react-router-dom";
 import AddRequestModal from "./AddRequestModal";
 import { getAllPharmacyReqs, getAllReqStatuses } from "@/services/pharmacyService";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Formik, FormikValues } from "formik";
 import { RootState } from "@/store";
 import { getStatusClass, transformPharmacyRequest } from "@/utils/helper";
-import { Dropdown } from "primereact/dropdown";
+import RequestStatusDropdown from "@/components/RequestStatusDropdown";
+import RequestStatusDropdownField from "./RequestStatusDropdownField";
 
 const PharmacyRequests = () => {
     const columns = [
@@ -102,6 +101,7 @@ const PharmacyRequests = () => {
     const dispatch = useDispatch();
     const isFetchedStatuses = useRef(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [filteredStatuses, setFilteredStatuses] = useState([]);
 
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -125,44 +125,24 @@ const PharmacyRequests = () => {
     useEffect(() => {
         if (reqsData.length > 0) {
             setRequestsData(reqsData.map((item: any) => ({ ...transformPharmacyRequest(item) })))
+            setFilteredStatuses(reqsData.map((item: any) => {
+                const statusFound = reqStatusesData.find((item: any) => item.id === item.statusId);
+                return { ...item, statusClass: statusFound ? getStatusClass(statusFound.name) : "" };
+            }))
         }
     }, [reqsData]);
 
-    const handleSubmitStatusChange = async (values: FormikValues) => {
+    const handleSubmitStatusChange = async (values: any) => {
         console.log(values, "values");
     };
     
     const requestStatusTemplate = (rowData: any, field: any) => (
-        <Formik
-            initialValues={{ status: rowData[field] }}
-            onSubmit={handleSubmitStatusChange}
-            enableReinitialize
-        >
-            {({ values, setFieldValue, submitForm }) => {
-                const statusOptions = reqStatusesData.map((item: any) => ({ label: item.name, value: item.id }));
-                const findStatus = reqStatusesData.find((item: any) => item.id === rowData[field]);
-                return (
-                    <Form>
-                        <div onClick={(e) => e.stopPropagation()} className="max-w-40">
-                            <Dropdown
-                                value={values.status}
-                                options={statusOptions}
-                                onChange={(e) => {
-                                    e.stopPropagation();
-                                    setFieldValue("status", e.target.value);
-                                    submitForm();
-                                }}
-                                name="status"
-                                className={`!border-0 max-w-58 !text-sm ${findStatus && getStatusClass(findStatus.name)}`}
-                                placeholder="Select Status"
-                                // optionGroupTemplate={optionTemplate}
-                                // valueTemplate={valueTemplate}
-                            />
-                        </div>
-                    </Form>
-                )
-            }}
-        </Formik>
+        <RequestStatusDropdown 
+            className={`!border-0 max-w-58 !text-sm`}
+            selectedValue={rowData[field]} 
+            handleChange={handleSubmitStatusChange}
+            data={reqStatusesData.map((item: any) => ({ name: item.name, code: item.id }))} 
+        />
     );
 
     const toggleColumn = (columnField: any) => {
@@ -183,14 +163,15 @@ const PharmacyRequests = () => {
         );
     };
 
-    // const handleStatusChange = (status: any) => {
-    //     if (status?.length > 0) {
-    //         const filteredData = sampleData.filter(item => status.includes(item.request_status));
-    //         setRequestsData(filteredData);
-    //     } else {
-    //         setRequestsData(sampleData);
-    //     }
-    // };
+    const handleStatusChange = (status: any) => {
+        console.log(status, "status found");
+        // if (status?.length > 0) {
+        //     const filteredData = sampleData.filter(item => status.includes(item.request_status));
+        //     setRequestsData(filteredData);
+        // } else {
+        //     setRequestsData(sampleData);
+        // }
+    };
 
     const tableHeader = (
         <div className="flex gap-2 items-center h-12"> {/* Set fixed height here */}
@@ -208,7 +189,7 @@ const PharmacyRequests = () => {
 
             <div className="inline-flex h-full items-center gap-2">
                 <FilterField columns={columns} />
-                {/* <RequestStatusDropdownField data={sampleData} onChange={(selected) => handleStatusChange(selected)} /> */}
+                <RequestStatusDropdownField data={filteredStatuses} onChange={(selected) => handleStatusChange(selected)} />
                 <ToggleColumnsField
                     clearSelection={clearSelection}
                     selectAll={selectAll}
