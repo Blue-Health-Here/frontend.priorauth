@@ -125,9 +125,8 @@ const PharmacyRequests = () => {
     useEffect(() => {
         if (reqsData.length > 0) {
             setRequestsData(reqsData.map((item: any) => ({ ...transformPharmacyRequest(item) })))
-            setFilteredStatuses(reqsData.map((item: any) => {
-                const statusFound = reqStatusesData.find((item: any) => item.id === item.statusId);
-                return { ...item, statusClass: statusFound ? getStatusClass(statusFound.name) : "" };
+            setFilteredStatuses(reqStatusesData.map((item: any) => {
+                return { ...item, request_status: item.name, statusClass: getStatusClass(item.name) };
             }))
         }
     }, [reqsData]);
@@ -164,13 +163,13 @@ const PharmacyRequests = () => {
     };
 
     const handleStatusChange = (status: any) => {
-        console.log(status, "status found");
-        // if (status?.length > 0) {
-        //     const filteredData = sampleData.filter(item => status.includes(item.request_status));
-        //     setRequestsData(filteredData);
-        // } else {
-        //     setRequestsData(sampleData);
-        // }
+        const requests = reqsData.map((item: any) => ({ ...transformPharmacyRequest(item) }));
+        if (status?.length > 0) {
+            const filteredData = requests.filter((item: any) => status.includes(item.request_status));
+            setRequestsData(filteredData);
+        } else {
+            setRequestsData(requests);
+        }
     };
 
     const tableHeader = (
