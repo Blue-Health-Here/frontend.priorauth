@@ -314,7 +314,7 @@ a:focus {
 }
 
 /* Align dropdown (rows per page) to right */
-.custom-paginator .p-dropdown {
+.custom-paginator .p-paginator-bottom .p-dropdown {
   order: 1;
   margin-left: auto;
   background-color: var(--status-bg-lilac-sky);
@@ -339,12 +339,12 @@ a:focus {
   border-radius: 8px;
 }
 
-.custom-paginator .p-dropdown .p-dropdown-trigger {
+.custom-paginator .p-paginator-bottom .p-dropdown .p-dropdown-trigger {
   color: var(--status-text-lilac-sky);
   width: 2rem;
 }
 
-.custom-paginator .p-dropdown .p-dropdown-label {
+.custom-paginator .p-paginator-bottom .p-dropdown .p-dropdown-label {
   color: var(--status-text-lilac-sky);
   line-height: 1rem;
   display: flex;
