@@ -350,3 +350,10 @@ a:focus {
   display: flex;
   align-items: center;
 }
+.status-dropdown .p-dropdown-trigger {
+  padding: 0 !important;
+  display: none !important;
+}
+.status-dropdown .p-dropdown-label {
+  padding: 0 !important;
+}
