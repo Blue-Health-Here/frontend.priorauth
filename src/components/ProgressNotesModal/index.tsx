@@ -9,6 +9,10 @@ import FileDropzone from "@/components/common/FileDropzone";
 import ThemeButton from "@/components/common/ThemeButton";
 import { notesAiAnalysisData } from "@/utils/constants";
 import UploadFileList from "../common/UploadFileList";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { deleteUploadedProgressNote, setRequestProgressNotes } from "@/store/features/pharmacy/requests/requestProgressNotesSlice";
+import { RootState } from "@/store";
 
 interface ProgressNotesModalProps {
   isOpen: boolean;
@@ -24,6 +28,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   isOpen,
   onClose,
 }) => {
+  const { reqsProgressNotesUploaded } = useSelector((state: RootState) => state.pharmacyRequestProgressNotes);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [previouslyUploadedFiles, setPreviouslyUploadedFiles] = useState<
     UploadedFile[]
@@ -32,6 +37,18 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   const [analysisStarted, setAnalysisStarted] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const canvasRef = useRef(null);
+  const dispatch = useDispatch();
+  const { id: requestId } = useParams();
+
+  useEffect(() => {
+    console.log(reqsProgressNotesUploaded, "reqsProgressNotesUploaded");
+    const reqFound = reqsProgressNotesUploaded.find((item: any) => item.requestId === requestId);
+    if (reqFound) {
+      setUploadedFiles(reqFound.uploadedFiles.map((item: any) => ({ ...item, url: URL.createObjectURL(item.file) })));
+    } else {
+      setUploadedFiles([]);
+    }
+  }, []);
 
   useEffect(() => {
     if (!isOpen || !uploadedFiles.some((file) => file.status === "uploading"))
@@ -161,6 +178,10 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
     if (uploadedFiles?.length > 0) {
       setSelectedFile(uploadedFiles[0]);
     }
+    dispatch(setRequestProgressNotes({
+      requestId,
+      uploadedFiles
+    }));
   };
 
   const redoAnalysis = () => {
@@ -200,9 +221,24 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
     }
   };
 
-  const removeFile = (id: string) =>
-    setUploadedFiles((prev) => prev.filter((file) => file.id !== id));
-  const handleDownloadReport = () => {};
+  // const removeFile = (id: string) =>
+  //   setUploadedFiles((prev) => prev.filter((file) => file.id !== id));
+  const removeFile = (id: string, requestId?: string) => {
+    setUploadedFiles((prevFiles) => {
+      const updated = prevFiles.filter((file) => file.id !== id);
+
+      if (requestId) {
+        dispatch(deleteUploadedProgressNote({
+          requestId,
+          fileName: prevFiles.find(file => file.id === id)?.name || ''
+        }));
+      }
+
+      return updated;
+    });
+  };
+
+  const handleDownloadReport = () => { };
   const handleSelectFile = (file: any) => setSelectedFile(file);
 
   return (
@@ -235,17 +271,15 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                           {uploadedFiles.some(
                             (file) => file.status === "uploading"
                           )
-                            ? `${
-                                uploadedFiles.filter(
-                                  (file) => file.status === "uploading"
-                                ).length
-                              } file${
-                                uploadedFiles.filter(
-                                  (file) => file.status === "uploading"
-                                ).length > 1
-                                  ? "s"
-                                  : ""
-                              } uploading`
+                            ? `${uploadedFiles.filter(
+                              (file) => file.status === "uploading"
+                            ).length
+                            } file${uploadedFiles.filter(
+                              (file) => file.status === "uploading"
+                            ).length > 1
+                              ? "s"
+                              : ""
+                            } uploading`
                             : "Uploaded Files"}
                         </h4>
                       </div>
@@ -286,11 +320,10 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                   Your Uploads
                 </h4>
                 <div
-                  className={`${
-                    uploadedFiles.length === 1
+                  className={`${uploadedFiles.length === 1
                       ? "flex justify-center flex-1"
                       : "grid grid-cols-2 gap-4 flex-1"
-                  }`}
+                    }`}
                 >
                   {uploadedFiles.map((file) => (
                     <RenderFilePreview
