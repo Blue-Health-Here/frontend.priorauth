@@ -29,7 +29,7 @@ const ICD10Selector: React.FC<any> = ({ name, icdCodes }) => {
     }, [isOpen]);
 
     const handleCodeSelect = (code: any) => {
-        helpers.setValue(code);
+        helpers.setValue(code.code);
         setIsOpen(false); // Close dropdown after selection
     };
 
@@ -41,7 +41,7 @@ const ICD10Selector: React.FC<any> = ({ name, icdCodes }) => {
                 isCustom: true
             };
 
-            helpers.setValue(newCode);
+            helpers.setValue(newCode.code);
             setCustomCode('');
             setShowCustomForm(false);
             setIsOpen(false); // Close dropdown after selection
@@ -49,7 +49,7 @@ const ICD10Selector: React.FC<any> = ({ name, icdCodes }) => {
     };
 
     const isCodeSelected = (code: any) => {
-        return selectedCode && selectedCode.code === code.code;
+        return selectedCode && selectedCode === code.code;
     };
 
     return (
@@ -61,7 +61,7 @@ const ICD10Selector: React.FC<any> = ({ name, icdCodes }) => {
                     onClick={() => setIsOpen(!isOpen)}
                     className="w-full flex items-center justify-between h-11 bg-white border border-light-stroke rounded-lg px-3 py-2 text-left focus:outline-none"
                 >
-                    {selectedCode ? <span className="text-primary-black text-sm">{selectedCode.code}</span> : <span className="text-primary-black text-sm">Select ICD-10 Codes</span>}
+                    {selectedCode ? <span className="text-primary-black text-sm">{selectedCode}</span> : <span className="text-primary-black text-sm">Select ICD-10 Codes</span>}
                     {isOpen ? <FiChevronUp size={20} /> : <FiChevronDown size={20} />}
                 </button>
 

@@ -167,19 +167,33 @@ const PharmacyRequests = () => {
 
     const tableHeader = (
         <div className="flex gap-2 items-center h-12"> {/* Set fixed height here */}
-            <div className="relative h-full">
-                <InputText
-                    value={globalFilter}
-                    onChange={(e: any) => setGlobalFilter(e.target.value)}
-                    placeholder="Search for request here..."
-                    className="!pl-10 !rounded-xl !border-light-stroke h-full" // Force full height
-                />
-                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                    <FiSearch className="w-5 h-5" />
-                </div>
+            <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5 h-full">
+                {['All Requests', 'Active Requests'].map((item) => (
+                    <button
+                        key={item}
+                        type='button'
+                        onClick={() => setActiveRequestTab(item)}
+                        className={`px-3 py-2 cursor-pointer rounded-md font-medium transition-colors ${activeRequestTab === item
+                            ? 'bg-quaternary-navy-blue text-primary-navy-blue'
+                            : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
+                            }`}
+                    >
+                        {item}
+                    </button>
+                ))}
             </div>
-
-            <div className="inline-flex h-full items-center gap-2">
+            <div className="inline-flex h-full items-center gap-2 ml-auto">
+                <div className="relative h-full">
+                    <InputText
+                        value={globalFilter}
+                        onChange={(e: any) => setGlobalFilter(e.target.value)}
+                        placeholder="Search for request here..."
+                        className="!pl-10 !rounded-xl !border-light-stroke h-full !text-sm" // Force full height
+                    />
+                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <FiSearch className="w-4 h-4" />
+                    </div>
+                </div>
                 <FilterField columns={columns} />
                 <RequestStatusDropdownField data={filteredStatuses} onChange={(selected) => handleStatusChange(selected)} />
                 <ToggleColumnsField
@@ -191,15 +205,6 @@ const PharmacyRequests = () => {
                     visibleColumns={visibleColumns}
                     toggleColumn={toggleColumn}
                 />
-            </div>
-
-            <div className="inline-flex h-full gap-2 ml-auto">
-                <ThemeButton type="button" className="!h-full min-w-max rounded-xl" variant="secondary">
-                    Open Portal
-                </ThemeButton>
-                <ThemeButton className="w-full !h-full rounded-xl" variant="primary" type="button" onClick={() => setIsModalOpen(true)}>
-                    Add Request
-                </ThemeButton>
             </div>
         </div>
     );
@@ -215,24 +220,18 @@ const PharmacyRequests = () => {
     return (
         <div className='bg-primary-white rounded-2xl theme-datatable theme-shadow px-4 py-4'>
             {isModalOpen && <AddRequestModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />}
-            <div className="flex justify-between gap-4 items-center pb-4">
+            <div className="flex justify-between gap-4 items-center pb-4 h-16">
                 <h2 className='text-lg sm:text-xl lg:text-2xl font-semibold text-primary-black whitespace-nowrap'>Your Requests</h2>
-                <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5">
-                    {['All Requests', 'Active Requests'].map((item) => (
-                        <button
-                            key={item}
-                            type='button'
-                            onClick={() => setActiveRequestTab(item)}
-                            className={`px-3 py-2 cursor-pointer rounded-md font-medium transition-colors ${activeRequestTab === item
-                                ? 'bg-quaternary-navy-blue text-primary-navy-blue'
-                                : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
-                                }`}
-                        >
-                            {item}
-                        </button>
-                    ))}
+                <div className="inline-flex h-full gap-2 ml-auto">
+                    <ThemeButton type="button" className="!h-full min-w-max rounded-xl" variant="secondary">
+                        Open Portal
+                    </ThemeButton>
+                    <ThemeButton className="w-full !h-full rounded-xl" variant="primary" type="button" onClick={() => setIsModalOpen(true)}>
+                        Add Request
+                    </ThemeButton>
                 </div>
             </div>
+
             
             {isLoading ? (
                 <div className="text-center py-4 w-10 text-gray-500">

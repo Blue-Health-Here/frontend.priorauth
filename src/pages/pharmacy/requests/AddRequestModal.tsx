@@ -84,7 +84,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
                 key: values.key,
                 rejectionclaim: values.rejectionClaim,
                 medication, // safe now
-                icd10Code: values.icd10Code?.code,
+                icd10Code: values.icd10Code,
                 from: user.firstName + " " + user.lastName,
             });
     
