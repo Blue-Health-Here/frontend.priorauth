@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useField } from 'formik';
 import { FiChevronDown, FiChevronUp, FiPlus } from 'react-icons/fi';
-import { icdCodes } from '@/utils/constants';
+// import { icdCodes } from '@/utils/constants';
 import ThemeButton from '../ThemeButton';
 
-const ICD10Selector: React.FC<any> = ({ name }) => {
+const ICD10Selector: React.FC<any> = ({ name, icdCodes }) => {
     const [field, meta, helpers] = useField(name);
     const [isOpen, setIsOpen] = useState(false);
     const [showCustomForm, setShowCustomForm] = useState(false);
@@ -53,7 +53,7 @@ const ICD10Selector: React.FC<any> = ({ name }) => {
     };
 
     return (
-        <div className="w-full max-w-2xl">
+        <div className="w-full">
             {/* Dropdown trigger */}
             <div className="relative" ref={dropdownRef}>
                 <button
@@ -134,30 +134,11 @@ const ICD10Selector: React.FC<any> = ({ name }) => {
                 )}
             </div>
             
-            {/* Selected code display */}
-            {/* {selectedCode && (
-                <div className="flex items-center justify-between bg-status-bg-sky-blue px-3 py-2 h-11 rounded-lg mt-4">
-                    <div>
-                        <span className="font-medium text-gray-900">{selectedCode.code}</span>
-                        {selectedCode.isCustom && (
-                            <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mt-1">
-                                Custom
-                            </span>
-                        )}
-                    </div>
-                    <button
-                        type="button"
-                        onClick={handleRemoveCode}
-                        className="text-status-text-sky-blue transition-colors font-medium"
-                    >
-                        <FiX size={20} className='' />
-                    </button>
-                </div>
-            )} */}
-
             {/* Error display */}
             {meta.touched && meta.error && (
-                <div className="mt-2 text-sm text-red-600">{meta.error}</div>
+                <p className="text-red-500 text-xs font-secondary">
+                    {meta.error}
+                </p>
             )}
         </div>
     );

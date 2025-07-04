@@ -11,7 +11,6 @@ import { getAllPharmacyReqs, getAllReqStatuses } from "@/services/pharmacyServic
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { getStatusClass, transformPharmacyRequest } from "@/utils/helper";
-import RequestStatusDropdown from "@/components/RequestStatusDropdown";
 import RequestStatusDropdownField from "./RequestStatusDropdownField";
 
 const PharmacyRequests = () => {
@@ -110,11 +109,11 @@ const PharmacyRequests = () => {
             }
         };
     
-        if (!isFetchedStatuses.current) {
+        if (!isFetchedStatuses.current || !isModalOpen) {
             fetchInitialData();
             isFetchedStatuses.current = true;
         }
-    }, []);
+    }, [isModalOpen]);
 
     useEffect(() => {
         if (reqsData.length > 0) {
@@ -124,19 +123,19 @@ const PharmacyRequests = () => {
             }))
         }
     }, [reqsData]);
-
-    const handleSubmitStatusChange = async (values: any) => {
-        console.log(values, "values");
-    };
     
-    const requestStatusTemplate = (rowData: any, field: any) => (
-        <RequestStatusDropdown 
-            className={`!border-0 max-w-58 !text-sm status-dropdown`}
-            selectedValue={rowData[field]} 
-            handleChange={handleSubmitStatusChange}
-            data={reqStatusesData.map((item: any) => ({ name: item.name, code: item.id }))} 
-        />
-    );
+    const requestStatusTemplate = (rowData: any, field: any) => {
+        const statusFound = reqStatusesData.find((item: any) => item.id === rowData[field]);
+        if (statusFound) {
+            const statusClass = getStatusClass(statusFound.name);
+            return (
+                <div className={`text-sm font-medium truncate px-4 py-2 rounded-full max-w-58 ${statusClass}`}>
+                    {statusFound.name}
+                </div>
+            );
+        }
+        return "N/A"
+    };
 
     const toggleColumn = (columnField: any) => {
         setVisibleColumns((prev: any) => ({

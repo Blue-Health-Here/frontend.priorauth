@@ -75,7 +75,13 @@ const InputField: React.FC<InputFieldProps> = ({
               )}
             </button>
           )}
+          {meta.touched && meta.error && (
+            <p className="text-red-500 text-xs font-secondary">
+              {meta.error}
+            </p>
+          )}
         </div>
+        
       </div>
     );
   }
