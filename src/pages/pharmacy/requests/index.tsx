@@ -131,7 +131,7 @@ const PharmacyRequests = () => {
     
     const requestStatusTemplate = (rowData: any, field: any) => (
         <RequestStatusDropdown 
-            className={`!border-0 max-w-58 !text-sm`}
+            className={`!border-0 max-w-58 !text-sm status-dropdown`}
             selectedValue={rowData[field]} 
             handleChange={handleSubmitStatusChange}
             data={reqStatusesData.map((item: any) => ({ name: item.name, code: item.id }))} 

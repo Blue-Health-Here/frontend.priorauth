@@ -193,6 +193,8 @@ const STATUS_CLASS_MAP = [
             "PENDING",
             "SECOND_CALL",
             "THIRD_CALL",
+            "REQUIRED",
+            "AWAITING"
         ],
         className: "bg-status-bg-sky-blue text-status-text-sky-blue",
     },
