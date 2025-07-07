@@ -221,7 +221,8 @@ export function getStatusClass(statusName = "") {
     return "bg-default text-default";
 }
 
-export function transformPharmacyRequest(data: any) {
+export function transformPharmacyRequest(data: any, reqStatusesData: any) {
+    const statusFound = reqStatusesData.find((item: any) => item.id === data.statusId);
     return {
         id: data.id,
         patient: {
@@ -235,6 +236,7 @@ export function transformPharmacyRequest(data: any) {
         },
         submittedOn: data.createdAt?.split("T")[0] || '-', // Extract just the date
         request_status: data.statusId || '',
+        statusName: statusFound?.name || '',
         notes: data.rejectionclaim || '–',
         lastModified: formatDateTime(data.createdAt), // Custom date formatting below
         statusClass: getStatusClass(data.statusId) // Assume you have this function elsewhere
@@ -255,3 +257,53 @@ export function formatDateTime(isoString: string) {
     };
     return date.toLocaleString('en-US', options).replace(',', '');
 }
+
+export const groupRequestsByStatus = (data: any[], statuses: any[]) => {
+    const grouped: any = {};
+
+    data.forEach((item) => {
+        const statusObj = statuses.find((s) => s.id === item.request_status);
+        const statusName = statusObj?.name || 'Unknown';
+
+        if (!grouped[statusName]) {
+            grouped[statusName] = [];
+        }
+
+        grouped[statusName].push(item);
+    });
+
+    return Object.entries(grouped).map(([status, data]) => ({
+        status,
+        data,
+    }));
+};
+
+export const groupByField = (data: any, fieldPath: any) => {
+    const result: any = {};
+    data.forEach((item: any) => {
+        const value = fieldPath.includes('.')
+            ? fieldPath.split('.').reduce((acc: any, key: any) => acc?.[key], item)?.name
+            : fieldPath === "prescriber" || fieldPath === "patient" ? item[fieldPath].name : item[fieldPath];
+        if (!result[value]) {
+            result[value] = [];
+        }
+        result[value].push(item);
+    });
+    return Object.entries(result).map(([key, value]) => ({
+        status: key,
+        data: value
+    }));
+}
+
+export const getFilterLabel = (field: string): string => {
+    const labelMap: Record<string, string> = {
+        'patient': 'Name',
+        'medication': 'Medication',
+        'prescriber': 'Prescriber',
+        'request_status': 'Status',
+        'submittedOn': 'Submitted On',
+        'lastModified': 'Last Modified'
+    };
+
+    return labelMap[field] || field.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+};
