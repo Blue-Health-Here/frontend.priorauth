@@ -1,10 +1,9 @@
 import ThemeDataTable from "@/components/common/ThemeDataTable";
 import { useEffect, useState } from "react";
 import UnlockAccessInfoModal from "./UnlockAccessInfoModal";
-import { InputText } from "primereact/inputtext";
 import FilterField from "@/components/common/FilterField";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
-import { FiSearch } from "react-icons/fi";
+import SearchField from "@/components/common/SearchField";
 
 const CMMAccountDatabase = () => {
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -189,20 +188,9 @@ const CMMAccountDatabase = () => {
         // console.log("Selected filter:", field);
     };
 
-
     const header = (
         <div className="flex gap-2 items-center h-12"> {/* Set fixed height here */}
-            <div className="relative h-full">
-                <InputText
-                    value={globalFilter}
-                    onChange={(e: any) => setGlobalFilter(e.target.value)}
-                    placeholder="Search for request here..."
-                    className="!pl-10 !rounded-xl !border-light-stroke h-full" // Force full height
-                />
-                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                    <FiSearch className="w-5 h-5" />
-                </div>
-            </div>
+            <SearchField globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
 
             <div className="inline-flex h-full items-center gap-2">
                 <FilterField columns={columns}

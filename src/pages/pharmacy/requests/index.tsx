@@ -1,9 +1,7 @@
 import ThemeDataTable from "@/components/common/ThemeDataTable";
 import { useEffect, useRef, useState } from "react";
-import { InputText } from "primereact/inputtext";
 import FilterField from "@/components/common/FilterField";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
-import { FiSearch } from "react-icons/fi";
 import ThemeButton from "@/components/common/ThemeButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import AddRequestModal from "./AddRequestModal";
@@ -12,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { getFilterLabel, getStatusClass, groupByField, transformPharmacyRequest } from "@/utils/helper";
 import RequestStatusDropdownField from "./RequestStatusDropdownField";
-// import { Accordion, AccordionTab } from "primereact/accordion";
+import SearchField from "@/components/common/SearchField";
 
 const PharmacyRequests = () => {
     const columns = [
@@ -112,7 +110,7 @@ const PharmacyRequests = () => {
             }
         };
 
-        if (!isFetchedStatuses.current || !isModalOpen) {
+        if (!isFetchedStatuses.current && !isModalOpen) {
             fetchInitialData();
             isFetchedStatuses.current = true;
         }
@@ -194,17 +192,7 @@ const PharmacyRequests = () => {
                     ))}
                 </div>
                 <div className="inline-flex h-full items-center gap-2 ml-auto">
-                    <div className="relative h-full">
-                        <InputText
-                            value={globalFilter}
-                            onChange={(e: any) => setGlobalFilter(e.target.value)}
-                            placeholder="Search for request here..."
-                            className="!pl-10 !rounded-xl !border-light-stroke h-full !text-sm" // Force full height
-                        />
-                        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                            <FiSearch className="w-4 h-4" />
-                        </div>
-                    </div>
+                    <SearchField globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
                     <FilterField
                         columns={columns}
                         selectedValue={selectedFilterField}
