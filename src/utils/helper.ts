@@ -206,6 +206,22 @@ const STATUS_CLASS_MAP = [
         keywords: ["NOT_ENROLLED", "ADDITIONAL_NOTES"],
         className: "bg-status-bg-lilac-sky text-status-text-lilac-sky",
     },
+    {
+        keywords: [
+            "DENIED",
+            "APPEAL-REJECTED",
+            "AWAITING DENIAL LETTER",
+            "DENIAL ALREADY ON FILE",
+            "DENIED W/O PROGRESS NOTES",
+            "DENIED-NEED DENIAL LETTER",
+            "DENIED WITH PROGRESS NOTES",
+            "DENIED - DENIAL LETTER RECEIVED",
+            "DENIAL LETTER SENT TO MD BY INSURANCE"
+        ],
+        className: "bg-[#FEE2E2] text-[#B91C1C]", // Direct color values
+        // OR use your CSS variables if defined:
+        // className: "bg-status-bg-rose-blush text-status-text-rose-blush"
+    },
 ];
 
 export function getStatusClass(statusName = "") {

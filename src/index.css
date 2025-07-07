@@ -106,6 +106,7 @@
   --color-status-text-lilac-sky: var(--status-text-lilac-sky);
   --color-status-bg-rose-blush: #FEE2E2;
   --color-status-text-rose-blush: #B91C1C;
+  /* --color-status-denied-bg-color: var(--status-denied-bg-color) */
 
   /* Font family */
   --font-primary: var(--dm-sans);
