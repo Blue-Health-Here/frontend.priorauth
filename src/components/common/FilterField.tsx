@@ -35,7 +35,7 @@ const FilterField: React.FC<FilterFieldProps> = ({ columns, selectedValue, onCha
                 onClick={() => setShowFiltersDropdown(!showFiltersDropdown)}
             >
                 <span className="flex items-center gap-2">
-                    Filters
+                    Group By
                     <PiSlidersHorizontalBold className='w-5 h-5' />
                 </span>
             </Button>
