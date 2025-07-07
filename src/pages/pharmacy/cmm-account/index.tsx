@@ -1,10 +1,8 @@
 import ThemeDataTable from "@/components/common/ThemeDataTable";
 import { useEffect, useState } from "react";
 import UnlockAccessInfoModal from "./UnlockAccessInfoModal";
-import { InputText } from "primereact/inputtext";
 import FilterField from "@/components/common/FilterField";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
-import { FiSearch } from "react-icons/fi";
 import SearchField from "@/components/common/SearchField";
 
 const CMMAccountDatabase = () => {

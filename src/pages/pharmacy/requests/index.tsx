@@ -1,9 +1,7 @@
 import ThemeDataTable from "@/components/common/ThemeDataTable";
 import { useEffect, useRef, useState } from "react";
-import { InputText } from "primereact/inputtext";
 import FilterField from "@/components/common/FilterField";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
-import { FiSearch } from "react-icons/fi";
 import ThemeButton from "@/components/common/ThemeButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import AddRequestModal from "./AddRequestModal";
@@ -13,7 +11,6 @@ import { RootState } from "@/store";
 import { getFilterLabel, getStatusClass, groupByField, transformPharmacyRequest } from "@/utils/helper";
 import RequestStatusDropdownField from "./RequestStatusDropdownField";
 import SearchField from "@/components/common/SearchField";
-// import { Accordion, AccordionTab } from "primereact/accordion";
 
 const PharmacyRequests = () => {
     const columns = [
