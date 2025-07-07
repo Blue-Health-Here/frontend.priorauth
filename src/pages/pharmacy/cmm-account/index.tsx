@@ -8,7 +8,7 @@ import { FiSearch } from "react-icons/fi";
 
 const CMMAccountDatabase = () => {
     const [isOpenModal, setIsOpenModal] = useState(false);
-
+    const [selectedFilterField, setSelectedFilterField] = useState("request_status");
     const sampleData = [
         {
             id: 1,
@@ -156,6 +156,7 @@ const CMMAccountDatabase = () => {
 
     const handleOpenPasswordModal = (event: any) => {
         event.stopPropagation();
+        event.preventDefault();
         setIsOpenModal(true);
     };
 
@@ -182,6 +183,12 @@ const CMMAccountDatabase = () => {
             columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: value }), {})
         );
     };
+    
+    const handleFilterChange = (field: string) => {
+        setSelectedFilterField(field);
+        // console.log("Selected filter:", field);
+    };
+
 
     const header = (
         <div className="flex gap-2 items-center h-12"> {/* Set fixed height here */}
@@ -198,7 +205,9 @@ const CMMAccountDatabase = () => {
             </div>
 
             <div className="inline-flex h-full items-center gap-2">
-                <FilterField columns={columns} />
+                <FilterField columns={columns}
+                    selectedValue={selectedFilterField}
+                    onChange={handleFilterChange} />
                 <ToggleColumnsField
                     clearSelection={clearSelection}
                     selectAll={selectAll}

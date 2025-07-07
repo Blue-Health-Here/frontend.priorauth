@@ -64,7 +64,7 @@ const apiHandler = async <T = any>(
         // Make API call
         let response: ApiResponse<T>;
 
-        console.log(url, data, method, config, "rdler");
+        // console.log(url, data, method, config, "rdler");
         switch (method) {
             case 'get':
                 response = await axiosAdmin.get(url, config);
@@ -185,3 +185,15 @@ export const getAllPharmacyReqs = async (dispatch: AppDispatch) => {
         errorMessage: "Requests not found."
     })
 }
+
+export const extractMedsICDCodes = async (dispatch: AppDispatch, data: any) => {
+    return apiHandler(dispatch, 'post', '/pa_request/add/extract-meds-icd-codes', {
+        data,
+    })
+}
+
+export const handleAddNewRequest = async (dispatch: AppDispatch, data: any) => {
+    return apiHandler(dispatch, 'post', `/pa_request/add`, {
+        data
+    })
+};

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Label } from "@/components/common/Label";
 import ModalHeader from "@/components/common/ModalHeader";
 import ModalWrapper from "@/components/common/ModalWrapper";
@@ -7,19 +7,16 @@ import { useState } from "react";
 import InputField from "@/components/common/form/InputField";
 import { Formik, Form, FormikValues } from "formik";
 import * as Yup from "yup";
-import { FiEdit, FiX } from "react-icons/fi";
 import TextareaField from "@/components/common/form/TextareaField";
 import ICD10Selector from "@/components/common/form/ICD10Selector";
-import { commonMedications } from "@/utils/constants";
+import { extractMedsICDCodes, handleAddNewRequest } from "@/services/pharmacyService";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import toast from "react-hot-toast";
 
 interface AddRequestModalProps {
     isOpen: boolean;
     onClose: () => void;
-}
-
-interface Medication {
-    id: string
-    name: string
 }
 
 const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
@@ -29,124 +26,104 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
     //     rejectionClaim: "",
     // });
     const formData = {
-        from: "MediCare Pharmacy",
         key: "",
         rejectionClaim: "",
         icd10Code: null
     };
-    const [editingMedication, setEditingMedication] = useState<string | null>(null)
-    const [editValue, setEditValue] = useState("")
-    const [customMedicine, setCustomMedicine] = useState("")
-    const [showCustomMedicationForm, setShowCustomMedicationForm] = useState<boolean>(false);
     // const [icdWarning, setICDWarning] = useState("")
-    const [medications, setMedications] = useState<Medication[]>([])
+    const [medications, setMedications] = useState<any[]>([]);
+    const [rejectionclaim, setRejectionClaim] = useState<any>("");
+    const [icdCodes, setICDCodes] = useState([]);
+    const { user } = useSelector((state: RootState) => state.auth);
+    const dispatch = useDispatch();
 
-    const extractMedications = (text: string) => {
-        try {
-            const foundMeds: Medication[] = []
-            const words = text.toLowerCase().split(/\s+/)
+    const handleChangeRejectionClaim = async (e: any, setFieldValue: any) => {
+        if (e.target.value !== "") {
+            setFieldValue("rejectionClaim", e.target.value);
+        } else {
+            setFieldValue("rejectionClaim", "");
+        }
+        setRejectionClaim(e.target.value);
+    }
 
-            commonMedications.forEach((med) => {
-                if (words.some((word) => word.includes(med.toLowerCase()))) {
-                    const exists = medications.some((m) => m.name.toLowerCase() === med.toLowerCase())
-                    if (!exists) {
-                        foundMeds.push({
-                            id: Math.random().toString(),
-                            name: med,
-                        })
-                    }
-                }
-            })
-
-            if (foundMeds.length > 0) {
-                setMedications((prev) => [...prev, ...foundMeds])
+    useEffect(() => {
+        const delayDebounce = setTimeout(() => {
+            if (rejectionclaim.trim() !== "") {
+                postRClaimToGetMedsICDCodes(rejectionclaim);
             }
-            setShowCustomMedicationForm(false);
-        } catch (error) {
-            console.error("Error extracting medications:", error)
+        }, 500);
+
+        return () => clearTimeout(delayDebounce);
+    }, [rejectionclaim]);
+
+    const postRClaimToGetMedsICDCodes = async (rejectionclaim: string) => {
+        const response = await extractMedsICDCodes(dispatch, { rejectionclaim });
+        if (response?.medications && response?.medications?.length > 0) {
+            setMedications(response.medications);
+            if (response.medications[0].icd10Codes && response.medications[0].icd10Codes.length > 0) {
+                setICDCodes(response.medications[0].icd10Codes.map((item: any) => ({ code: item })));
+            } else {
+                setICDCodes([]);
+            }
+        } else {
+            setMedications([]);
+            setICDCodes([]);
         }
     }
-
-    const handleCustomAddMedication = () => {
-        const currentMedicines = [...medications];
-        currentMedicines.push({
-            id: Math.random().toString(),
-            name: customMedicine,
-        });
-        setMedications(currentMedicines);
-        setShowCustomMedicationForm(false);
-        setCustomMedicine("");
-    }
-
-    const removeMedication = (id: string) => {
-        setMedications((prev) => prev.filter((med) => med.id !== id))
-    }
-
-    const startEditingMedication = (id: string, name: string) => {
-        setEditingMedication(id)
-        setEditValue(name)
-    }
-
-    const saveEditedMedication = () => {
-        if (editingMedication && editValue.trim()) {
-            setMedications((prev) =>
-                prev.map((med) => (med.id === editingMedication ? { ...med, name: editValue.trim() } : med)),
-            )
-        }
-        setEditingMedication(null)
-        setEditValue("")
-    }
-
+    
     const handleSubmit = async (values: FormikValues) => {
-        console.log("Form submitted:", values)
-
-        // Reset form
-        // setMedications([])
-        // setICDWarning("")
-        // setCustomICDCode("")
-        // setCustomMedicine("")
-        // setShowCustomMedicationForm(false);
-
-        // onClose()
+        const medication = medications?.[0]?.medication;
+    
+        if (!medication || medication.trim() === "") {
+            // toast.error("Medication is required. Please ensure it's detected from the rejection claim.");
+            return;
+        }
+    
+        try {
+            const response = await handleAddNewRequest(dispatch, {
+                key: values.key,
+                rejectionclaim: values.rejectionClaim,
+                medication, // safe now
+                icd10Code: values.icd10Code,
+                from: user.firstName + " " + user.lastName,
+            });
+    
+            if (response) {
+                onClose();
+                setMedications([]);
+                setICDCodes([]);
+                setRejectionClaim("");
+            }
+        } catch (error: any) {
+            toast.error(error.message);
+        }
     };
-
-    console.log(medications, "medications");
 
     return (
         <ModalWrapper>
             <ModalHeader title="Add Request" onClose={onClose} />
-            <div className="flex flex-col gap-4 max-w-2xl">
+            <div className="flex flex-col gap-4 min-w-lg">
                 <Formik
                     initialValues={formData}
                     validationSchema={Yup.object({
-                        key: Yup.string(),
+                        key: Yup.string().required("Key is required."),
                         rejectionClaim: Yup.string()
                             .required("Rejection claim information is required.")
                             .min(10, "Please provide more detailed information in the rejection claim."),
+                        icd10Code: Yup.string().required("ICD Code is required.")
                     })}
                     onSubmit={handleSubmit}
                 >
                     {({ setFieldValue }) => (
                         <Form>
                             <div className="space-y-2 p-4">
-                                {/* From and Key Fields */}
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <InputField
-                                            id="from"
-                                            name="from"
-                                            label="From"
-                                            placeholder="Enter from"
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <InputField
-                                            name="key"
-                                            label="Key"
-                                            placeholder="Enter key"
-                                            className="!px-4 !py-2"
-                                        />
-                                    </div>
+                                <div className="space-y-2">
+                                    <InputField
+                                        name="key"
+                                        label="Key"
+                                        placeholder="Enter key"
+                                        className="!px-4 !py-2"
+                                    />
                                 </div>
 
                                 {/* Rejection Claim */}
@@ -158,105 +135,31 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
                                         placeholder="Enter rejection claim details..."
                                         rows={4}
                                         className="w-full rounded-lg !border !border-light-stroke bg-background !px-4 focus:outline-none focus:!border-gray-400 !py-2 text-base placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                                        onChange={(e: any) => {
-                                            if (e.target.value !== "") {
-                                                setFieldValue("rejectionClaim", e.target.value)
-                                                extractMedications(e.target.value)
-                                            } else {
-                                                setFieldValue("rejectionClaim", "");
-                                                setMedications([]);
-                                            }
-                                        }}
+                                        onChange={(e: any) => handleChangeRejectionClaim(e, setFieldValue)}
                                     />
                                 </div>
 
                                 {/* Medications */}
                                 <div className="space-y-2">
                                     <Label className="text-quaternary-white text-sm font-secondary">Medication</Label>
-                                    {medications.length > 0 ? <div>
-                                        {showCustomMedicationForm ? (
-                                            <div className="flex gap-2 items-center h-10 w-full">
-                                                <input type="text" value={customMedicine}
-                                                    onChange={(e) => setCustomMedicine(e.target.value)} className="text-xs !border !border-light-stroke focus:outline-none !px-3 !py-2 w-full h-full rounded-lg" autoFocus />
-                                                <ThemeButton type="button" onClick={handleCustomAddMedication} className="w-full sm:w-20 rounded-lg" variant="primary">
-                                                    Add
-                                                </ThemeButton>
-                                                <ThemeButton onClick={() => {
-                                                    setShowCustomMedicationForm(false);
-                                                    setCustomMedicine("");
-                                                }} type="button" 
-                                                    className="w-full sm:w-40 rounded-lg cursor-pointer border border-light-stroke max-w-max" variant="outline">
-                                                    Cancel
-                                                </ThemeButton>
+                                    {medications.length > 0 && medications[0].medication ? <div>
+                                        <div className="bg-status-bg-sky-blue text-status-text-sky-blue w-max font-medium px-2 py-2 rounded-md text-xs">
+                                            {medications[0].medication}
+                                        </div>
+                                    </div> : (
+                                        <>
+                                            <div className="text-gray bg-gray-200 text-sm px-3 py-2 rounded-md m-0">
+                                                Medications will appear here when detected in rejection claim
                                             </div>
-                                        ) : (
-                                            <div className="flex gap-2 justify-between flex-wrap">
-                                                <div className="flex gap-2 items-center flex-wrap">
-                                                    {medications.map((med) => (
-                                                        <div
-                                                            key={med.id}
-                                                            className="flex items-center gap-1 bg-status-bg-sky-blue text-status-text-sky-blue font-medium px-2 py-2 rounded-md text-xs"
-                                                        >
-                                                            {editingMedication === med.id ? (
-                                                                <input
-                                                                    type="text"
-                                                                    value={editValue}
-                                                                    onChange={(e) => setEditValue(e.target.value)}
-                                                                    onBlur={saveEditedMedication}
-                                                                    onKeyDown={(e) => {
-                                                                        if (e.key === "Enter") saveEditedMedication()
-                                                                        if (e.key === "Escape") {
-                                                                            setEditingMedication(null)
-                                                                            setEditValue("")
-                                                                        }
-                                                                    }}
-                                                                    className="h-6 w-20 text-xs"
-                                                                    autoFocus
-                                                                />
-                                                            ) : (
-                                                                <span>{med.name}</span>
-                                                            )}
-                                                            <button
-                                                                onClick={(e) => {
-                                                                    e.preventDefault()
-                                                                    startEditingMedication(med.id, med.name)
-                                                                }}
-                                                                type="button"
-                                                                className="ml-2 hover:bg-status-bg-sky-blue p-0.5 cursor-pointer"
-                                                            >
-                                                                <FiEdit className="h-3 w-3" />
-                                                            </button>
-                                                            <button
-                                                                onClick={(e) => {
-                                                                    e.preventDefault()
-                                                                    removeMedication(med.id)
-                                                                }}
-                                                                type="button"
-                                                                className="hover:bg-status-bg-sky-blue p-0.5 cursor-pointer"
-                                                            >
-                                                                <FiX className="h-3 w-3" />
-                                                            </button>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setShowCustomMedicationForm(true)}
-                                                    className="text-blue-navigation-link-button cursor-pointer font-medium text-sm underline"
-                                                >
-                                                    Missing Medicine? Add it
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div> : <div className="text-gray bg-gray-200 text-sm px-3 py-2 rounded-md">
-                                        Medications will appear here when detected in rejection claim
-                                    </div>}
+                                            <div className="text-red-500 text-xs font-secondary">Medication is required.</div>
+                                        </>
+                                    )}
                                 </div>
 
                                 {/* ICD Codes */}
                                 <div className="space-y-2">
                                     <Label className="text-quaternary-white text-sm font-secondary">ICD-10 Code</Label>
-                                    <ICD10Selector name="icd10Code" />
+                                    <ICD10Selector name="icd10Code" icdCodes={icdCodes} />
                                 </div>
                             </div>
                             <div className="flex justify-end items-center gap-2 border-t border-light-stroke px-4 py-4">
