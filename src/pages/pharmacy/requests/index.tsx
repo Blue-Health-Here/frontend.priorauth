@@ -97,24 +97,24 @@ const PharmacyRequests = () => {
     const [selectedFilterField, setSelectedFilterField] = useState("patient");
     const [filteredRequests, setFilteredRequests] = useState<any[]>([]);
 
-    useEffect(() => {
-        const fetchInitialData = async () => {
-            setIsLoading(true);
-            try {
-                await Promise.all([
-                    getAllReqStatuses(dispatch),
-                    getAllPharmacyReqs(dispatch),
-                ]);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+    const fetchInitialData = async () => {
+        setIsLoading(true);
+        try {
+            await Promise.all([
+                getAllReqStatuses(dispatch),
+                getAllPharmacyReqs(dispatch),
+            ]);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-        if (!isFetchedStatuses.current && !isModalOpen) {
+    useEffect(() => {
+        if (!isFetchedStatuses.current) {
             fetchInitialData();
             isFetchedStatuses.current = true;
         }
-    }, [isModalOpen]);
+    }, []);
 
     useEffect(() => {
         if (reqsData.length > 0) {
@@ -252,7 +252,10 @@ const PharmacyRequests = () => {
 
     return (
         <div className='bg-primary-white rounded-2xl theme-datatable theme-shadow px-4 py-4'>
-            {isModalOpen && <AddRequestModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />}
+            {isModalOpen && <AddRequestModal isOpen={isModalOpen} onClose={(isAdded?: boolean) => {
+                setIsModalOpen(false);
+                if (isAdded) fetchInitialData();
+            }} />}
             <div className="flex justify-between gap-4 items-center pb-4 h-16">
                 <h2 className='text-lg sm:text-xl lg:text-2xl font-semibold text-primary-black whitespace-nowrap'>Your Requests</h2>
                 <div className="inline-flex h-full gap-2 ml-auto">
@@ -264,7 +267,6 @@ const PharmacyRequests = () => {
                     </ThemeButton>
                 </div>
             </div>
-
 
             {isLoading ? (
                 <div className="text-center py-4 w-10 text-gray-500">
