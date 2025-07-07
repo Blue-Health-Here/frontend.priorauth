@@ -156,6 +156,7 @@ const CMMAccountDatabase = () => {
 
     const handleOpenPasswordModal = (event: any) => {
         event.stopPropagation();
+        event.preventDefault();
         setIsOpenModal(true);
     };
 

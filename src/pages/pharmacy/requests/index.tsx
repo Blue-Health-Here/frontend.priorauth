@@ -10,7 +10,7 @@ import AddRequestModal from "./AddRequestModal";
 import { getAllPharmacyReqs, getAllReqStatuses } from "@/services/pharmacyService";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { getStatusClass, transformPharmacyRequest } from "@/utils/helper";
+import { getFilterLabel, getStatusClass, groupByField, transformPharmacyRequest } from "@/utils/helper";
 import RequestStatusDropdownField from "./RequestStatusDropdownField";
 // import { Accordion, AccordionTab } from "primereact/accordion";
 
@@ -96,7 +96,7 @@ const PharmacyRequests = () => {
     const isFetchedStatuses = useRef(false);
     const [isLoading, setIsLoading] = useState(false);
     const [filteredStatuses, setFilteredStatuses] = useState([]);
-    const [selectedFilterField, setSelectedFilterField] = useState("request_status");
+    const [selectedFilterField, setSelectedFilterField] = useState("patient");
     const [filteredRequests, setFilteredRequests] = useState<any[]>([]);
 
     useEffect(() => {
@@ -120,7 +120,7 @@ const PharmacyRequests = () => {
 
     useEffect(() => {
         if (reqsData.length > 0) {
-            setRequestsData(reqsData.map((item: any) => ({ ...transformPharmacyRequest(item) })))
+            setRequestsData(reqsData.map((item: any) => ({ ...transformPharmacyRequest(item, reqStatusesData) })))
             setFilteredStatuses(reqStatusesData.map((item: any) => {
                 return { ...item, request_status: item.name, statusClass: getStatusClass(item.name) };
             }))
@@ -161,7 +161,7 @@ const PharmacyRequests = () => {
     };
 
     const handleStatusChange = (status: any) => {
-        const requests = reqsData.map((item: any) => ({ ...transformPharmacyRequest(item) }));
+        const requests = reqsData.map((item: any) => ({ ...transformPharmacyRequest(item, reqStatusesData) }));
         if (status?.length > 0) {
             const filteredData = requests.filter((item: any) => status.includes(item.request_status));
             setRequestsData(filteredData);
@@ -176,51 +176,56 @@ const PharmacyRequests = () => {
     };
 
     const tableHeader = (
-        <div className="flex gap-2 items-center h-12">
-            <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5 h-full">
-                {['All Requests', 'Active Requests'].map((item) => (
-                    <button
-                        key={item}
-                        type='button'
-                        onClick={() => setActiveRequestTab(item)}
-                        className={`px-3 py-2 cursor-pointer rounded-md font-medium transition-colors ${activeRequestTab === item
-                            ? 'bg-quaternary-navy-blue text-primary-navy-blue'
-                            : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
-                            }`}
-                    >
-                        {item}
-                    </button>
-                ))}
-            </div>
-            <div className="inline-flex h-full items-center gap-2 ml-auto">
-                <div className="relative h-full">
-                    <InputText
-                        value={globalFilter}
-                        onChange={(e: any) => setGlobalFilter(e.target.value)}
-                        placeholder="Search for request here..."
-                        className="!pl-10 !rounded-xl !border-light-stroke h-full !text-sm" // Force full height
-                    />
-                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                        <FiSearch className="w-4 h-4" />
-                    </div>
+        <>
+            <div className="flex gap-2 items-center h-12">
+                <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5 h-full">
+                    {['All Requests', 'Active Requests'].map((item) => (
+                        <button
+                            key={item}
+                            type='button'
+                            onClick={() => setActiveRequestTab(item)}
+                            className={`px-3 py-2 cursor-pointer rounded-md font-medium transition-colors ${activeRequestTab === item
+                                ? 'bg-quaternary-navy-blue text-primary-navy-blue'
+                                : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
+                                }`}
+                        >
+                            {item}
+                        </button>
+                    ))}
                 </div>
-                <FilterField
-                    columns={columns}
-                    selectedValue={selectedFilterField}
-                    onChange={handleFilterChange}
-                />
-                <RequestStatusDropdownField data={filteredStatuses} onChange={(selected) => handleStatusChange(selected)} />
-                <ToggleColumnsField
-                    clearSelection={clearSelection}
-                    selectAll={selectAll}
-                    setIsChecked={setIsChecked}
-                    isChecked={isChecked}
-                    columns={columns}
-                    visibleColumns={visibleColumns}
-                    toggleColumn={toggleColumn}
-                />
+                <div className="inline-flex h-full items-center gap-2 ml-auto">
+                    <div className="relative h-full">
+                        <InputText
+                            value={globalFilter}
+                            onChange={(e: any) => setGlobalFilter(e.target.value)}
+                            placeholder="Search for request here..."
+                            className="!pl-10 !rounded-xl !border-light-stroke h-full !text-sm" // Force full height
+                        />
+                        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                            <FiSearch className="w-4 h-4" />
+                        </div>
+                    </div>
+                    <FilterField
+                        columns={columns}
+                        selectedValue={selectedFilterField}
+                        onChange={handleFilterChange}
+                    />
+                    <RequestStatusDropdownField data={filteredStatuses} onChange={(selected) => handleStatusChange(selected)} />
+                    <ToggleColumnsField
+                        clearSelection={clearSelection}
+                        selectAll={selectAll}
+                        setIsChecked={setIsChecked}
+                        isChecked={isChecked}
+                        columns={columns}
+                        visibleColumns={visibleColumns}
+                        toggleColumn={toggleColumn}
+                    />
+                </div>
             </div>
-        </div>
+            <h2 className="mt-2 capitalize bg-status-bg-sky-blue w-max font-semibold text-primary-black text-sm px-3 py-1 rounded-lg">
+                {getFilterLabel(selectedFilterField)}
+            </h2>
+        </>
     );
 
     useEffect(() => {
@@ -231,55 +236,32 @@ const PharmacyRequests = () => {
         }
     }, [visibleColumns]);
 
-    const groupRequestsByStatus = (data: any[], statuses: any[]) => {
-        const grouped: any = {};
-    
-        data.forEach((item) => {
-            const statusObj = statuses.find((s) => s.id === item.request_status);
-            const statusName = statusObj?.name || 'Unknown';
-    
-            if (!grouped[statusName]) {
-                grouped[statusName] = [];
-            }
-    
-            grouped[statusName].push(item);
-        });
-    
-        return Object.entries(grouped).map(([status, data]) => ({
-            status,
-            data,
-        }));
-    };
-    
-
     useEffect(() => {
         const normalizedData = [...requestsData];
-    
-        if (selectedFilterField === 'request_status') {
-            const grouped = groupRequestsByStatus(normalizedData, reqStatusesData);
-            setFilteredRequests(grouped);
-        } else {
-            const filterValue = globalFilter.toLowerCase();
-    
-            const filtered = normalizedData.filter((item) => {
-                if (selectedFilterField === 'patient') {
-                    return item.patient.name.toLowerCase().includes(filterValue);
-                } else if (selectedFilterField === 'prescriber') {
-                    return item.prescriber.name.toLowerCase().includes(filterValue);
-                } else if (typeof item[selectedFilterField] === 'string') {
-                    return item[selectedFilterField].toLowerCase().includes(filterValue);
-                }
-                return false;
-            });
-    
-            setFilteredRequests([
-                { status: globalFilter ? `Filtered by ${selectedFilterField}` : 'All Requests', data: filtered }
-            ]);
-        }
-    }, [globalFilter, selectedFilterField, requestsData, reqStatusesData]);
-    
+        const filterValue = globalFilter.toLowerCase();
+        const filtered = normalizedData.filter((item) => {
+            if (selectedFilterField === 'patient') {
+                return item[selectedFilterField].name.toLowerCase().includes(filterValue);
+            } else if (selectedFilterField === 'prescriber') {
+                return item[selectedFilterField].name.toLowerCase().includes(filterValue);
+            } else if (selectedFilterField === 'request_status') {
+                return item['statusName'].toLowerCase().includes(filterValue);
+            } else if (typeof item[selectedFilterField] === 'string') {
+                return item[selectedFilterField].toLowerCase().includes(filterValue);
+            }
+            return false;
+        });
 
-    console.log(requestsData, filteredRequests, "requestsData & filteredRequests");
+        if (selectedFilterField === 'request_status') {
+            // setFilteredRequests(groupRequestsByStatus(filtered, reqStatusesData));
+            setFilteredRequests(groupByField(filtered, 'statusName'));
+        } else if (selectedFilterField === "notes") {
+            setFilteredRequests(groupByField(filtered, 'patient'));
+        } else {
+            setFilteredRequests(groupByField(filtered, selectedFilterField))
+        }
+    }, [globalFilter, selectedFilterField, requestsData]);
+
     return (
         <div className='bg-primary-white rounded-2xl theme-datatable theme-shadow px-4 py-4'>
             {isModalOpen && <AddRequestModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />}
@@ -315,7 +297,7 @@ const PharmacyRequests = () => {
                     visibleColumns={visibleColumns}
                     globalFilter={globalFilter}
                     setGlobalFilter={setGlobalFilter}
-                    globalFilterFields={['patient.name', 'medication', 'prescriber.name', 'submittedOn', 'request_status', 'notes', 'lastModified']}
+                    globalFilterFields={['patient.name', 'medication', 'prescriber.name', 'submittedOn', 'statusName', 'notes', 'lastModified']}
                     onRowClick={(row: any) =>
                         navigate(location.pathname + "/" + row.data.id + "/request-details")
                     }

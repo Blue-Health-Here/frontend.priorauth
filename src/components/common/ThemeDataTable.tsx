@@ -121,13 +121,13 @@ const ThemeDataTable: React.FC<any> = ({
             {header && <div className="mb-2">{header}</div>}
 
             {isGrouped ? (
-                <Accordion multiple>
+                <Accordion multiple activeIndex={[0]} className='theme-accordion'>
                     {data.map((group: any, idx: number) => (
                         <AccordionTab key={group.status + idx} header={`${group.status} (${group.data.length})`}>
                             <DataTable
                                 ref={dt}
                                 value={group.data}
-                                paginator={isPaginator}
+                                paginator={false}
                                 rows={pageSize}
                                 rowsPerPageOptions={[5, 10, 25, 50]}
                                 paginatorTemplate="CurrentPageReport PrevPageLink PageLinks NextPageLink RowsPerPageDropdown"

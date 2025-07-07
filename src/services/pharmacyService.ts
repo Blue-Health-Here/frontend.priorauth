@@ -64,7 +64,7 @@ const apiHandler = async <T = any>(
         // Make API call
         let response: ApiResponse<T>;
 
-        console.log(url, data, method, config, "rdler");
+        // console.log(url, data, method, config, "rdler");
         switch (method) {
             case 'get':
                 response = await axiosAdmin.get(url, config);
