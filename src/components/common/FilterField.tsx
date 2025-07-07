@@ -42,7 +42,7 @@ const FilterField: React.FC<FilterFieldProps> = ({ columns, selectedValue, onCha
 
             {showFiltersDropdown && (
                 <div className="absolute right-0 p-4 top-full mt-1 w-64 bg-primary-white border border-light-stroke rounded-xl theme-shadow z-10">
-                    <p className="text-sm text-primary-black mb-4">Filter options</p>
+                    <p className="text-sm text-primary-black mb-4">Group By options</p>
                     <div className="space-y-4">
                         {columns.filter(col => col.filterable).map((column) => (
                             <label
