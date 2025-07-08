@@ -11,27 +11,54 @@ import { BreadCrumb } from 'primereact/breadcrumb';
 import { generateBreadcrumbItems } from '@/utils/helper';
 import { HiOutlineSlash } from "react-icons/hi2";
 
+interface UserData {
+  userName: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  pictureUrl: string | null;
+}
+
 const Topbar: React.FC = () => {
   const { isSidebarOpen, isSidebarCollapsed } = useSelector((state: RootState) => state.global);
   const [isNotifDropdownOpen, setIsNotifDropdownOpen] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [userData, setUserData] = useState<UserData>({
+    userName: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    pictureUrl: null
+  });
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notifDropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        const parsedData = JSON.parse(storedUser);
+        setUserData({
+          userName: parsedData.userName || '',
+          email: parsedData.email || '',
+          firstName: parsedData.firstName || '',
+          lastName: parsedData.lastName || '',
+          pictureUrl: parsedData.pictureUrl || null
+        });
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
+    }
+  }, []);
+
   const handleClickOutside = (event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setIsDropdownOpen(false);
     }
-    if (
-      notifDropdownRef.current &&
-      !notifDropdownRef.current.contains(event.target as Node)
-    ) {
+    if (notifDropdownRef.current && !notifDropdownRef.current.contains(event.target as Node)) {
       setIsNotifDropdownOpen(false);
     }
   };
@@ -53,7 +80,6 @@ const Topbar: React.FC = () => {
     >
       <nav className={`flex justify-between items-center w-full`}>
         <div className="flex items-center gap-2">
-          {/* Show expand button in topbar only when sidebar is collapsed */}
           {isSidebarCollapsed && !isSidebarOpen && (
             <button
               onClick={() => dispatch(setIsSidebarCollapsed(false))}
@@ -66,7 +92,6 @@ const Topbar: React.FC = () => {
               />
             </button>
           )}
-          {/* Mobile menu button */}
           <div
             className="lg:hidden block"
             onClick={() => dispatch(setIsSidebarOpen(!isSidebarOpen))}
@@ -119,16 +144,16 @@ const Topbar: React.FC = () => {
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
               <img
-                src="/images/profile-image.png"
+                src={userData.pictureUrl || "/images/profile-image.png"}
                 alt="Profile"
                 className="w-7 h-7 sm:w-8 sm:h-8 rounded-full"
               />
               <div className="hidden sm:block py-1">
                 <h2 className="text-primary-black font-semibold text-xs">
-                  John Doe
+                  {userData.userName || `${userData.firstName} ${userData.lastName}`.trim() || 'User'}
                 </h2>
                 <p className="text-secondary-black text-xs scale-80 -ml-2">
-                  johndoe@mail.com
+                  {userData.email || 'No email'}
                 </p>
               </div>
               <img

@@ -357,3 +357,15 @@ a:focus {
 .status-dropdown .p-dropdown-label {
   padding: 0 !important;
 }
+
+.p-accordion.theme-accordion .p-accordion-header .p-accordion-header-link {
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  border-radius: 10px;
+  font-size: 14px;
+}
+.p-accordion.theme-accordion .p-accordion-content {
+  border: none;
+}
+

@@ -350,33 +350,94 @@ export function transformPharmacyRequest(data: any) {
   return {
     id: data.id,
     patient: {
-      name: data.patientName || "Unknown Patient",
-      image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png", // static fallback
+      name: data.patientName || 'Unknown Patient',
+      image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" // static fallback
     },
-    medication: data.medication || "-",
+    medication: data.medication || '-',
     prescriber: {
-      name: data.prescriber || "Unknown Prescriber",
-      image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png", // static fallback
+      name: data.prescriber || 'Unknown Prescriber',
+      image: "/images/1ab944febc0bdbcbbda2698fb3496a68.png" // static fallback
     },
-    submittedOn: data.createdAt?.split("T")[0] || "-", // Extract just the date
-    request_status: data.statusId || "",
-    notes: data.rejectionclaim || "–",
+    submittedOn: data.createdAt?.split("T")[0] || '-', // Extract just the date
+    request_status: data.statusId || '',
+    statusName: data?.paStatus || '',
+    notes: data.rejectionclaim || '–',
     lastModified: formatDateTime(data.createdAt), // Custom date formatting below
-    statusClass: getStatusClass(data.statusId), // Assume you have this function elsewhere
+    statusClass: getStatusClass(data.statusId) // Assume you have this function elsewhere
   };
 }
 
 // Optional: Function to format ISO date into readable string
 export function formatDateTime(isoString: string) {
-  if (!isoString) return "-";
+  if (!isoString) return '-';
   const date = new Date(isoString);
   const options: any = {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
     hour12: true,
   };
-  return date.toLocaleString("en-US", options).replace(",", "");
+  return date.toLocaleString('en-US', options).replace(',', '');
+}
+
+export const groupRequestsByStatus = (data: any[], statuses: any[]) => {
+  const grouped: any = {};
+
+  data.forEach((item) => {
+    const statusObj = statuses.find((s) => s.id === item.request_status);
+    const statusName = statusObj?.name || 'Unknown';
+
+    if (!grouped[statusName]) {
+      grouped[statusName] = [];
+    }
+
+    grouped[statusName].push(item);
+  });
+
+  return Object.entries(grouped).map(([status, data]) => ({
+    status,
+    data,
+  }));
+};
+
+export const groupByField = (data: any, fieldPath: any) => {
+  const result: any = {};
+  data.forEach((item: any) => {
+    const value = fieldPath.includes('.')
+      ? fieldPath.split('.').reduce((acc: any, key: any) => acc?.[key], item)?.name
+      : fieldPath === "prescriber" || fieldPath === "patient" ? item[fieldPath].name : item[fieldPath];
+    if (!result[value]) {
+      result[value] = [];
+    }
+    result[value].push(item);
+  });
+  return Object.entries(result).map(([key, value]) => ({
+    status: key,
+    data: value
+  }));
+}
+
+export const getFilterLabel = (field: string): string => {
+  const labelMap: Record<string, string> = {
+    'patient': 'Name',
+    'medication': 'Medication',
+    'prescriber': 'Prescriber',
+    'statusName': 'Status',
+    'submittedOn': 'Submitted On',
+    'lastModified': 'Last Modified'
+  };
+
+  return labelMap[field] || field.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+};
+
+export const filterRequestsByStatus = (data: any, statusFilters: any) => {
+  return data.map((group: any) => {
+    const filteredData = group.data.filter((item: any) => statusFilters.includes(item.statusName));
+    return {
+      ...group,
+      data: filteredData
+    };
+  }).filter((group: any) => group.data.length > 0); // remove groups with no matching items
 }

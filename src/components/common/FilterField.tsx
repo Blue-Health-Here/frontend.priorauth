@@ -1,11 +1,16 @@
 import { Button } from "primereact/button";
 import React, { useEffect, useRef, useState } from "react";
 import { PiSlidersHorizontalBold } from "react-icons/pi";
-import CustomCheckbox from "./form/CustomCheckbox";
 
-const FilterField: React.FC<any> = ({ columns, className }) => {
+interface FilterFieldProps {
+    columns: any[];
+    selectedValue: string;
+    onChange: (value: string) => void;
+    className?: string;
+}
+
+const FilterField: React.FC<FilterFieldProps> = ({ columns, selectedValue, onChange, className }) => {
     const [showFiltersDropdown, setShowFiltersDropdown] = useState(false);
-    const [selectedOpt, setSelectedOpt] = useState("");
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     const handleClickOutside = (event: MouseEvent) => {
@@ -30,34 +35,32 @@ const FilterField: React.FC<any> = ({ columns, className }) => {
                 onClick={() => setShowFiltersDropdown(!showFiltersDropdown)}
             >
                 <span className="flex items-center gap-2">
-                    Filters
+                    Group By
                     <PiSlidersHorizontalBold className='w-5 h-5' />
                 </span>
             </Button>
 
             {showFiltersDropdown && (
                 <div className="absolute right-0 p-4 top-full mt-1 w-64 bg-primary-white border border-light-stroke rounded-xl theme-shadow z-10">
-                    <p className="text-sm text-primary-black mb-4">Filter options</p>
+                    <p className="text-sm text-primary-black mb-4">Group By options</p>
                     <div className="space-y-4">
-                        {columns.filter((col: any) => col.filterable).map((column: any) => (
-                            <div key={column.field} className="flex items-center">
-                                <label
-                                    htmlFor={`filter-${column.field}`}
-                                    className="inline-flex items-center cursor-pointer"
-                                >
-                                    <CustomCheckbox
-                                        id={`filter-${column.field}`}
-                                        onChange={() => {
-                                            setSelectedOpt(column.field)
-                                        }}
-                                        className='!border'
-                                        checked={column.field === selectedOpt}
-                                    />
-                                    <span className="text-xs md:text-sm text-secondary-black ml-2 font-medium font-secondary">
-                                        {column.header}
-                                    </span>
-                                </label>
-                            </div>
+                        {columns.filter(col => col.filterable).map((column) => (
+                            <label
+                                key={column.field}
+                                htmlFor={`filter-${column.field}`}
+                                className="flex items-start rounded-lg peer-disabled:cursor-not-allowed cursor-pointer">
+                                <input
+                                    id={`filter-${column.field}`}
+                                    type="radio"
+                                    name="filter-option"
+                                    onChange={() => onChange(column.field)}
+                                    checked={selectedValue === column.field}
+                                    className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                                />
+                                <span className="text-xs md:text-sm text-secondary-black ml-2 font-medium font-secondary">
+                                    {column.header}
+                                </span>
+                            </label>
                         ))}
                     </div>
                 </div>

@@ -16,7 +16,7 @@ import toast from "react-hot-toast";
 
 interface AddRequestModalProps {
     isOpen: boolean;
-    onClose: () => void;
+    onClose: (isAdded?: boolean) => void;
 }
 
 const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
@@ -60,11 +60,8 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
         const response = await extractMedsICDCodes(dispatch, { rejectionclaim });
         if (response?.medications && response?.medications?.length > 0) {
             setMedications(response.medications);
-            if (response.medications[0].icd10Codes && response.medications[0].icd10Codes.length > 0) {
-                setICDCodes(response.medications[0].icd10Codes.map((item: any) => ({ code: item })));
-            } else {
-                setICDCodes([]);
-            }
+            if (response.medications[0].icd10Codes && response.medications[0].icd10Codes.length > 0) setICDCodes(response.medications[0].icd10Codes.map((item: any) => ({ code: item })));
+            else setICDCodes([]);
         } else {
             setMedications([]);
             setICDCodes([]);
@@ -84,12 +81,12 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
                 key: values.key,
                 rejectionclaim: values.rejectionClaim,
                 medication, // safe now
-                icd10Code: values.icd10Code?.code,
+                icd10Code: values.icd10Code,
                 from: user.firstName + " " + user.lastName,
             });
     
             if (response) {
-                onClose();
+                onClose(true);
                 setMedications([]);
                 setICDCodes([]);
                 setRejectionClaim("");
@@ -141,12 +138,22 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
 
                                 {/* Medications */}
                                 <div className="space-y-2">
-                                    <Label className="text-quaternary-white text-sm font-secondary">Medication</Label>
-                                    {medications.length > 0 && medications[0].medication ? <div>
-                                        <div className="bg-status-bg-sky-blue text-status-text-sky-blue w-max font-medium px-2 py-2 rounded-md text-xs">
-                                            {medications[0].medication}
+                                    {medications.length > 0 && (medications[0].medication || medications[0].insurance) ? (
+                                        <div className="flex gap-4 sm:gap-6 lg:gap-8 items-center justify-start flex-wrap">
+                                            <div>
+                                                <Label className="text-quaternary-white text-sm font-secondary">Medication</Label>
+                                                <div className="bg-status-bg-sky-blue text-status-text-sky-blue border border-status-text-sky-blue w-max font-medium px-2 py-2 rounded-md text-xs">
+                                                    {medications[0].medication}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <Label className="text-quaternary-white text-sm font-secondary">Insurance</Label>
+                                                <div className="bg-status-error-bg-color text-status-error-text-color border border-status-error-text-color w-max font-medium px-2 py-2 rounded-md text-xs">
+                                                    {medications[0].insurance}
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div> : (
+                                    ) : (
                                         <>
                                             <div className="text-gray bg-gray-200 text-sm px-3 py-2 rounded-md m-0">
                                                 Medications will appear here when detected in rejection claim
@@ -163,7 +170,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
                                 </div>
                             </div>
                             <div className="flex justify-end items-center gap-2 border-t border-light-stroke px-4 py-4">
-                                <ThemeButton onClick={onClose} type="button" className="w-full sm:w-40 rounded-lg cursor-pointer border border-light-stroke max-w-max" variant="outline">
+                                <ThemeButton onClick={() => onClose(false)} type="button" className="w-full sm:w-40 rounded-lg cursor-pointer border border-light-stroke max-w-max" variant="outline">
                                     Cancel
                                 </ThemeButton>
                                 <ThemeButton type="submit" className="w-full sm:w-24 rounded-lg min-w-max" variant="primary">
