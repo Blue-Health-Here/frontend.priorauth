@@ -56,7 +56,7 @@ const InfoDetails = () => {
     ];
 
     return (
-        <div className="sm:col-span-2 lg:col-span-3 space-y-4">
+        <div className="sm:col-span-1 lg:col-span-3 space-y-4">
             {requestDetails.map((item: any, index: number) => (
                 <div key={index} className={`border border-quaternary-navy-blue rounded-xl overflow-hidden`}>
                     <CardHeader title={item.label} />

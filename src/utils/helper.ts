@@ -221,8 +221,7 @@ export function getStatusClass(statusName = "") {
     return "bg-default text-default";
 }
 
-export function transformPharmacyRequest(data: any, reqStatusesData: any) {
-    const statusFound = reqStatusesData.find((item: any) => item.id === data.statusId);
+export function transformPharmacyRequest(data: any) {
     return {
         id: data.id,
         patient: {
@@ -236,7 +235,7 @@ export function transformPharmacyRequest(data: any, reqStatusesData: any) {
         },
         submittedOn: data.createdAt?.split("T")[0] || '-', // Extract just the date
         request_status: data.statusId || '',
-        statusName: statusFound?.name || '',
+        statusName: data?.paStatus || '',
         notes: data.rejectionclaim || '–',
         lastModified: formatDateTime(data.createdAt), // Custom date formatting below
         statusClass: getStatusClass(data.statusId) // Assume you have this function elsewhere
@@ -300,10 +299,20 @@ export const getFilterLabel = (field: string): string => {
         'patient': 'Name',
         'medication': 'Medication',
         'prescriber': 'Prescriber',
-        'request_status': 'Status',
+        'statusName': 'Status',
         'submittedOn': 'Submitted On',
         'lastModified': 'Last Modified'
     };
 
     return labelMap[field] || field.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 };
+
+export const filterRequestsByStatus = (data: any, statusFilters: any) => {
+    return data.map((group: any) => {
+        const filteredData = group.data.filter((item: any) => statusFilters.includes(item.statusName));
+        return {
+            ...group,
+            data: filteredData
+        };
+    }).filter((group: any) => group.data.length > 0); // remove groups with no matching items
+}
