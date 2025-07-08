@@ -241,6 +241,8 @@ const STATUS_CLASS_MAP = [
       "PRESCRIBER'S TAX ID REQUIRED TO PROCEED",
       "AWAITING INS. NUMBER ON BACK OF PT. CARD",
       "PROCESSING",
+      "INS. NUMBER ON BACK OF PT. CARD.",
+      "PRESCRIBER’S TAX ID REQUIRED TO PROCEED"
     ],
     className: "bg-[#D1FAF9] text-[#0D9488]",
   },
@@ -257,6 +259,7 @@ const STATUS_CLASS_MAP = [
     keywords: [
       "INSURANCE CARD RECEIVED",
       "PATIENT INFORMATION MISSING – QUEUED FOR CALL",
+      "PATIENT'S INSURANCE IS TERMINATED"
     ],
     className: "bg-[#E0E7FF] text-[#3730A3]",
   },
@@ -294,7 +297,7 @@ const STATUS_CLASS_MAP = [
   },
   {
     keywords: [
-      "AWAITING MD'S SIGNATURE ON FAX FORM",
+      "AWAITING MD’S SIGNATURE ON FAX FORM",
       "MEDICAL NECESSITY LETTER SENT FOR MD SIGNATURE",
     ],
     className: "bg-[#DBEAFE] text-[#1D4ED8]",
@@ -323,7 +326,7 @@ const STATUS_CLASS_MAP = [
   {
     keywords: [
       "NOT ENROLLED IN THE BILLED PLAN",
-      "PATIENT'S INSURANCE IS TERMINATED",
+      "PATIENT’S INSURANCE IS TERMINATED",
       "PRESCRIBER NOT ENROLLED/NPI NOT REGISTERED WITH INSURANCE",
     ],
     className: "bg-[#E0DEFF] text-[#2A1FB5]",
