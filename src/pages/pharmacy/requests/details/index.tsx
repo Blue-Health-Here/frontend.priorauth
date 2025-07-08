@@ -156,7 +156,7 @@ const PharmacyRequestDetails: React.FC<any> = () => {
                             progress: 0,
                             status: "uploading" as const,
                             file: file,
-                            url: URL.createObjectURL(file),
+                            url: file ? URL.createObjectURL(file) : "",
                             fileTags: []
                         };
                     }
