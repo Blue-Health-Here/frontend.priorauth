@@ -441,3 +441,55 @@ export const filterRequestsByStatus = (data: any, statusFilters: any) => {
     };
   }).filter((group: any) => group.data.length > 0); // remove groups with no matching items
 }
+
+export const transformRequestDetails = (data: any) => {
+  return [
+    {
+      label: "Medication",
+      data: [
+        { label: "Rx Number", value: data.rxNumber || "-" },
+        { label: "NDC", value: data.ndc || "-" },
+        { label: "Days", value: data.days || "-" },
+        { label: "Qty", value: data.qty || "-" },
+        { label: "Medication Dosing", value: data.medicationDosing || "-" },
+        { label: "Drug Dosage Form", value: data.drugDosageForm || "-" }
+      ]
+    },
+    {
+      label: "Patient Information",
+      data: [
+        { label: "Patient Name", value: data.patientName || "-" },
+        { label: "Member ID", value: data.memberId || "-" },
+        { label: "DOB", value: data.dob || "-" },
+        { label: "Patient Address", value: data.patientAddress || "-" },
+        { label: "Patient City", value: data.patientCity || "-" },
+        { label: "Patient ZipCode", value: data.zipCode || "-" }
+      ]
+    },
+    {
+      label: "Insurance Information",
+      data: [
+        { label: "Insurance", value: data.insurance || "-" },
+        { label: "FORM", value: data.form || "-" },
+        { label: "Insurance Phone", value: data.insurancePhone || "-" },
+        { label: "Help Desk Number", value: data.helpDeskNumber || "-" },
+        { label: "PCN", value: data.pcn || "-" },
+        { label: "BIN", value: data.bin || "-" },
+        { label: "Group", value: data.group || "-" }
+      ]
+    },
+    {
+      label: "Prescriber Information",
+      data: [
+        { label: "Pharmacy", value: data.pharmacy || "-" },
+        { label: "Prescriber", value: data.prescriber || "-" },
+        { label: "NPI", value: data.npi || "-" },
+        { label: "Prescriber Address", value: data.prescriberAddress || "-" },
+        { label: "Prescriber City", value: data.prescriberCity || "-" },
+        { label: "Prescriber ZipCode", value: data.prescriberZipCode || "-" },
+        { label: "Prescriber Phone", value: data.prescriberPhone || "-" },
+        { label: "Prescriber Fax", value: data.prescriberFax || "-" }
+      ]
+    }
+  ];
+};
