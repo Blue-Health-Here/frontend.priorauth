@@ -1,5 +1,6 @@
 import CardHeader from "@/components/common/CardHeader";
-import { data } from "react-router-dom";
+import { Accordion, AccordionTab } from "primereact/accordion";
+import { LiaAngleDownSolid, LiaAngleUpSolid } from "react-icons/lia";
 
 const InfoDetails = () => {
     const requestDetails = [
@@ -55,16 +56,17 @@ const InfoDetails = () => {
         }
     ];
 
-    return (
-        <div className="sm:col-span-1 lg:col-span-3 space-y-4">
-            {requestDetails.map((item: any, index: number) => (
-                <div key={index} className={`border border-quaternary-navy-blue rounded-xl overflow-hidden`}>
-                    <CardHeader title={item.label} />
-                    <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-                        {item.data.map((row: any, rowIndex: any) => (
+    const createRequestInfoTabs = () => {
+        return requestDetails.map((tab: any) => {
+            return (
+                <AccordionTab key={tab.label} header={(
+                    <CardHeader title={tab.label} className="rounded-lg" />
+                )}>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                        {tab.data.map((row: any, rowIndex: any) => (
                             <div
                                 key={rowIndex}
-                                className={` ${rowIndex < data.length - 1 ? 'mb-2' : ''}`}
+                                className={` ${rowIndex < tab.data.length - 1 ? 'mb-2' : ''}`}
                             >
                                 <div className="flex flex-col space-y-2">
                                     <span className="text-[10px] sm:text-xs font-medium text-gray-500">{row.label}</span>
@@ -73,8 +75,19 @@ const InfoDetails = () => {
                             </div>
                         ))}
                     </div>
-                </div>
-            ))}
+                </AccordionTab>
+            );
+        });
+    };
+
+    return (
+        <div className="sm:col-span-1 lg:col-span-3 space-y-4">
+            <Accordion multiple activeIndex={[0]} 
+                collapseIcon={<LiaAngleUpSolid className="w-4 h-4 text-primary-black absolute right-3" />} 
+                expandIcon={<LiaAngleDownSolid className="w-4 h-4 text-primary-black absolute right-3" />} 
+                className='theme-accordion'>
+                {createRequestInfoTabs()}
+            </Accordion>
         </div>
     )
 };
