@@ -1,63 +1,21 @@
 import CardHeader from "@/components/common/CardHeader";
+import Loading from "@/components/common/Loading";
+import { transformRequestDetails } from "@/utils/helper";
 import { Accordion, AccordionTab } from "primereact/accordion";
+import React, { useEffect, useState } from "react";
 import { LiaAngleDownSolid, LiaAngleUpSolid } from "react-icons/lia";
 
-const InfoDetails = () => {
-    const requestDetails = [
-        {
-            label: "Medication",
-            data: [
-                { label: "RxNorm", value: "636815-0" },
-                { label: "NDC", value: "00642-7470-01" },
-                { label: "Days", value: "28" },
-                { label: "Qty", value: "28" },
-                { label: "Medication Dosing", value: "-" },
-                { label: "Drug Dosage Form", value: "Tablet" }
-            ]
-        },
-        {
-            label: "Patient Information",
-            data: [
-                { label: "Patient Name", value: "CHENG MICHELLE" },
-                { label: "Member ID", value: "726897627" },
-                { label: "DOB", value: "05-30-2000" },
-                { label: "Patient Address", value: "50 LONGWOOD DR" },
-                { label: "Patient City", value: "CLIFTON" },
-                { label: "Patient ZipCode", value: "07013" }
-            ]
-        },
-        {
-            label: "Insurance Information",
-            data: [
-                { label: "Insurance", value: "AMERGROUP" },
-                { label: "FORM", value: "-" },
-                { label: "Insurance Phone", value: "833-207-3115" },
-                { label: "Help Desk Number", value: "1-800-454-3730" },
-                { label: "PCN", value: "WP" },
-                { label: "BIN", value: "003107" },
-                { label: "Group", value: "WMPA" },
-                { label: "", value: "" },
-                { label: "", value: "" }
-            ]
-        },
-        {
-            label: "Medication",
-            data: [
-                { label: "Pharmacy", value: "Silvercare Pharmacy" },
-                { label: "Fax Number", value: "(866)-407-2417" },
-                { label: "", value: "VIERA RUBIA" },
-                { label: "NPI", value: "1063228229" },
-                { label: "Prescriber Address", value: "1033 US HWY STE 102" },
-                { label: "Prescriber City", value: "CLIFTON" },
-                { label: "PrescriberZipCode", value: "07013-2449" },
-                { label: "Prescriber Phone", value: "963-779-7979" },
-                { label: "Prescriber Fax", value: "973-779-7970" }
-            ]
-        }
-    ];
+const InfoDetails: React.FC<any> = ({ isLoading, requestDetails }) => {
+    const [details, setDetails] = useState<any>([]);
 
+    useEffect(() => {
+        if (requestDetails) {
+            setDetails(transformRequestDetails(requestDetails));
+        }
+    }, [requestDetails]);
+    
     const createRequestInfoTabs = () => {
-        return requestDetails.map((tab: any) => {
+        return details.length > 0 && details.map((tab: any) => {
             return (
                 <AccordionTab key={tab.label} header={(
                     <CardHeader title={tab.label} className="rounded-lg" />
@@ -82,12 +40,16 @@ const InfoDetails = () => {
 
     return (
         <div className="sm:col-span-1 lg:col-span-3 space-y-4">
-            <Accordion multiple activeIndex={[0]} 
-                collapseIcon={<LiaAngleUpSolid className="w-4 h-4 text-primary-black absolute right-3" />} 
-                expandIcon={<LiaAngleDownSolid className="w-4 h-4 text-primary-black absolute right-3" />} 
-                className='theme-accordion'>
-                {createRequestInfoTabs()}
-            </Accordion>
+            {isLoading ? (
+                <Loading />
+            ) : (
+                <Accordion multiple activeIndex={[0]} 
+                    collapseIcon={<LiaAngleUpSolid className="w-4 h-4 text-primary-black absolute right-3" />} 
+                    expandIcon={<LiaAngleDownSolid className="w-4 h-4 text-primary-black absolute right-3" />} 
+                    className='theme-accordion'>
+                    {createRequestInfoTabs()}
+                </Accordion>
+            )}
         </div>
     )
 };

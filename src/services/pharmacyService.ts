@@ -160,7 +160,7 @@ export const getAllReqStatuses = async (dispatch: AppDispatch) => {
         },
         errorMessage: "Requests not found."
     })
-}
+};
 
 // ============= Requests  =============
 
@@ -184,16 +184,20 @@ export const getAllPharmacyReqs = async (dispatch: AppDispatch) => {
         },
         errorMessage: "Requests not found."
     })
-}
+};
 
 export const extractMedsICDCodes = async (dispatch: AppDispatch, data: any) => {
     return apiHandler(dispatch, 'post', '/pa_request/add/extract-meds-icd-codes', {
         data,
     })
-}
+};
 
 export const handleAddNewRequest = async (dispatch: AppDispatch, data: any) => {
     return apiHandler(dispatch, 'post', `/pa_request/add`, {
         data
     })
+};
+
+export const getRequestDetails = async (dispatch: AppDispatch, id?: string) => {
+    return apiHandler(dispatch, 'get', `/pa_request/get_by_id/${id}`, {});
 };
