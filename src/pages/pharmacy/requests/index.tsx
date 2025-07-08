@@ -5,10 +5,10 @@ import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import ThemeButton from "@/components/common/ThemeButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import AddRequestModal from "./AddRequestModal";
-import { getAllPharmacyReqs, getAllReqStatuses } from "@/services/pharmacyService";
+import { getAllPharmacyReqs } from "@/services/pharmacyService";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { getFilterLabel, getStatusClass, groupByField, transformPharmacyRequest } from "@/utils/helper";
+import { filterRequestsByStatus, getFilterLabel, getStatusClass, groupByField, transformPharmacyRequest } from "@/utils/helper";
 import RequestStatusDropdownField from "./RequestStatusDropdownField";
 import SearchField from "@/components/common/SearchField";
 
@@ -51,7 +51,7 @@ const PharmacyRequests = () => {
             sortable: true
         },
         {
-            field: 'request_status',
+            field: 'statusName',
             header: 'Status',
             visible: true,
             filterable: true,
@@ -80,7 +80,7 @@ const PharmacyRequests = () => {
             sortable: true
         }
     ];
-    const { reqStatusesData } = useSelector((state: RootState) => state.reqStatuses);
+    // const { reqStatusesData } = useSelector((state: RootState) => state.reqStatuses);
     const { reqsData } = useSelector((state: RootState) => state.pharmacyReqs);
     const [requestsData, setRequestsData] = useState<any>([]);
     const [visibleColumns, setVisibleColumns] = useState(columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: col.visible !== false }), {}));
@@ -101,7 +101,7 @@ const PharmacyRequests = () => {
         setIsLoading(true);
         try {
             await Promise.all([
-                getAllReqStatuses(dispatch),
+                // getAllReqStatuses(dispatch),
                 getAllPharmacyReqs(dispatch),
             ]);
         } finally {
@@ -118,24 +118,18 @@ const PharmacyRequests = () => {
 
     useEffect(() => {
         if (reqsData.length > 0) {
-            setRequestsData(reqsData.map((item: any) => ({ ...transformPharmacyRequest(item, reqStatusesData) })))
-            setFilteredStatuses(reqStatusesData.map((item: any) => {
-                return { ...item, request_status: item.name, statusClass: getStatusClass(item.name) };
-            }))
+            setRequestsData(reqsData.map((item: any) => ({ ...transformPharmacyRequest(item) })))
+            setFilteredStatuses(reqsData.map((item: any) => ({ name: item.paStatus, statusClass: getStatusClass(item.paStatus) })))
         }
     }, [reqsData]);
 
     const requestStatusTemplate = (rowData: any, field: any) => {
-        const statusFound = reqStatusesData.find((item: any) => item.id === rowData[field]);
-        if (statusFound) {
-            const statusClass = getStatusClass(statusFound.name);
-            return (
-                <div className={`text-sm font-medium truncate px-4 py-2 rounded-full max-w-58 ${statusClass}`}>
-                    {statusFound.name}
-                </div>
-            );
-        }
-        return "N/A"
+        const statusClass = getStatusClass(rowData[field]);
+        return (
+            <div className={`text-sm font-medium truncate px-4 py-2 rounded-full max-w-58 ${statusClass}`}>
+                {rowData[field]}
+            </div>
+        );
     };
 
     const toggleColumn = (columnField: any) => {
@@ -159,12 +153,11 @@ const PharmacyRequests = () => {
     };
 
     const handleStatusChange = (status: any) => {
-        const requests = reqsData.map((item: any) => ({ ...transformPharmacyRequest(item, reqStatusesData) }));
         if (status?.length > 0) {
-            const filteredData = requests.filter((item: any) => status.includes(item.request_status));
-            setRequestsData(filteredData);
+            const filteredData = filterRequestsByStatus(filteredRequests, status);
+            setFilteredRequests(filteredData);
         } else {
-            setRequestsData(requests);
+            setFilteredRequests(filteredRequests);
         }
     };
 

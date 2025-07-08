@@ -219,10 +219,8 @@ const PharmacyRequestDetails: React.FC<any> = () => {
             <ProgressNotesModal isOpen={isModalOpen} onClose={closeModal} />
             <div className="p-4 bg-white rounded-xl theme-shadow relative">
                 <PageHeader />
-                <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-                    <InfoDetails />
-
-                    <div className="lg:col-span-2 space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <div className="col-span-1 lg:col-span-2 space-y-4">
                         <div className="p-4 rounded-xl border border-quaternary-navy-blue lg:sticky lg:top-6">
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 <div>
@@ -343,6 +341,8 @@ const PharmacyRequestDetails: React.FC<any> = () => {
                             </div>
                         </div>
                     </div>
+                    
+                    <InfoDetails />
                 </div>
             </div>
         </>
