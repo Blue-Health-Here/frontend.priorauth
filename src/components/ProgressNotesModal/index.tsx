@@ -41,14 +41,25 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   const { id: requestId } = useParams();
 
   useEffect(() => {
-    console.log(reqsProgressNotesUploaded, "reqsProgressNotesUploaded");
     const reqFound = reqsProgressNotesUploaded.find((item: any) => item.requestId === requestId);
     if (reqFound) {
-      setUploadedFiles(reqFound.uploadedFiles.map((item: any) => ({ ...item, url: URL.createObjectURL(item.file) })));
+      setUploadedFiles(
+        reqFound.uploadedFiles.map((item: any) => {
+          // Only create URL if item.file is a valid File object
+          let url = "";
+          if (item && item.file && typeof item.file === "object" && item.file instanceof File) {
+            url = URL.createObjectURL(item.file);
+          } else if (item && typeof item.url === "string") {
+            // If file is missing but url exists (e.g., from server), use that
+            url = item.url;
+          }
+          return { ...item, url };
+        })
+      );
     } else {
       setUploadedFiles([]);
     }
-  }, []);
+  }, [requestId, reqsProgressNotesUploaded]);
 
   useEffect(() => {
     if (!isOpen || !uploadedFiles.some((file) => file.status === "uploading"))
