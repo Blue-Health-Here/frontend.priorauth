@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getRequestDetails } from "@/services/pharmacyService";
 
-const PharmacyRequestDetails: React.FC<any> = () => {
+const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     const statusItems = [
         {
             id: 1,
@@ -240,7 +240,7 @@ const PharmacyRequestDetails: React.FC<any> = () => {
         <>
             <ProgressNotesModal isOpen={isModalOpen} onClose={closeModal} />
             <div className="p-4 bg-white rounded-xl theme-shadow relative">
-                <PageHeader requestDetails={requestDetails} />
+                <PageHeader requestDetails={requestDetails} isAdmin={isAdmin} />
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-cols-5 gap-4">
                     <div className="col-span-1 lg:col-span-2 space-y-4">
                         <div className="p-4 rounded-xl border border-quaternary-navy-blue lg:sticky lg:top-6">
