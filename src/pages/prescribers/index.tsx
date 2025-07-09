@@ -1,57 +1,40 @@
+import Loading from "@/components/common/Loading";
 import PrescriberCard from "@/components/PrescriberCard";
-import React from "react";
+import { getAllPrescribers } from "@/services/pharmacyService";
+import { RootState } from "@/store";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Prescribers: React.FC<any> = ({ isAdmin }) => {
-    const prescribrs: any[] = [
-        {
-            id: '1',
-            name: 'Abstergo Ltd.',
-            image: "/images/Abstergo Ltd..png",
-            type: 'pharmacy',
-            phone: '(217) 555-0113',
-            npi: "1063228229",
-            address: "1033 US HWY STE 102",
-            city: "Clifton"
-        },
-        {
-            id: '2',
-            name: 'Big Kahuna Ltd.',
-            image: "/images/Big Kahuna Ltd..png",
-            type: 'pharmacy',
-            phone: '(217) 555-0113',
-            npi: "1063228229",
-            address: "1033 US HWY STE 102",
-            city: "Clifton"
-        },
-        {
-            id: '3',
-            name: 'Barone LLC.',
-            image: "/images/Barone LLC..png",
-            type: 'pharmacy',
-            phone: '(217) 555-0113',
-            npi: "1063228229",
-            address: "1033 US HWY STE 102",
-            city: "Clifton"
-        },
-        {
-            id: '4',
-            name: 'Acme Co.',
-            image: "/images/Acme Co..png",
-            type: 'pharmacy',
-            phone: '(217) 555-0113',
-            npi: "1063228229",
-            address: "1033 US HWY STE 102",
-            city: "Clifton"
+    const { prescribersData } = useSelector((state: RootState) => state.prescribers);
+    const isFetchedPrescribers = useRef(false);
+    const dispatch = useDispatch();
+    const { user } = useSelector((state: RootState) => state.auth);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const fetchAllPrescribers = async () => {
+        setIsLoading(true);
+        await getAllPrescribers(dispatch, user?.id).then(() => setIsLoading(false));
+    };
+
+    useEffect(() => {
+        if (!isFetchedPrescribers.current) {
+            fetchAllPrescribers();
+            isFetchedPrescribers.current = true;
         }
-    ];
+    }, []);
 
     return (
         <div className="bg-white rounded-lg theme-shadow p-4 h-full">
             <h1 className="text-xl font-medium tracking-tighter">Prescribers List</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6 pt-6">
-                {prescribrs.map((item: any) => (
-                    <PrescriberCard prescriber={item} isAdmin={isAdmin} isDetails={true} />
-                ))}
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 lg:gap-6 pt-6">
+                {isLoading ? (
+                    <div className="text-center py-4 w-10 text-gray-500">
+                        <Loading />
+                    </div>
+                ) : prescribersData.length > 0 ? prescribersData.map((item: any) => (
+                    <PrescriberCard key={item.prescriber} prescriber={item} isAdmin={isAdmin} isDetails={false} />
+                )) : <p>Data not found.</p>}
             </div>
         </div>
     )

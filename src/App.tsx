@@ -60,6 +60,7 @@ function App() {
               <Route path="pharmacies/add" element={<AddNewPharmacyScreen />} />
               <Route path="requests" element={<PharmacyRequests isAdmin={true} />} />
               <Route path="requests/:id/request-details" element={<PharmacyRequestDetails isAdmin={true} />} />
+              <Route path="prescribers" element={<Prescribers isAdmin={true} />} />
               <Route path="settings" element={<AdminSettings />} />
               <Route path="settings/change-password" element={<ChangePasswordPage />} />
               <Route path="settings/user-settings" element={<UserSettingPage />} />

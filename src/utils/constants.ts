@@ -199,7 +199,7 @@ export const adminSidebarItems = [
 export const pharmacySidebarItems = [
   { name: "Dashboard", icon: "/sidebar-dashboard.svg", path: "/pharmacy/dashboard" },
   { name: "Requests", icon: "/pharmacy-requests.png", path: "/pharmacy/requests" },
-  { name: "Prescribers", icon: "/pharmacy-requests.png", path: "/pharmacy/prescribers" },
+  { name: "Prescribers", icon: "/sidebar-Prescribers.svg", path: "/pharmacy/prescribers" },
   { name: "CMM Account Database", icon: "/cmm-account-database.png", path: "/pharmacy/cmm-account-database" },
 ];
 

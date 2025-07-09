@@ -2,6 +2,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 import authReducer from "./features/auth/authSlice";
 import globalReducer from "./features/global/globalSlice"
 import reqStatusesReducer from "./features/admin/requests/statusesSlice";
+import prescribersReducer from "./features/pharmacy/prescribers/prescribersSlice";
 
 // Admin Imports
 import adminReqsReducer from "./features/admin/requests/requestsSlice";
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     auth: authReducer,
     global: globalReducer,
     reqStatuses: reqStatusesReducer,
+    prescribers: prescribersReducer,
 
     // Admin Reducers
     adminReqs: adminReqsReducer,

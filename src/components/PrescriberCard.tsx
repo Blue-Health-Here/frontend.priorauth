@@ -33,16 +33,16 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
         <div className="bg-primary-white rounded-lg theme-shadow p-4 relative border-2 border-quaternary-navy-blue flex flex-col gap-4">
             <div className='inline-flex justify-between gap-2 items-start'>
                 <div className='inline-flex gap-4 flex-col items-start'>
-                    <Link to={isAdmin ? `/admin/prescriber/${prescriber.id}/prescriber-details` : `/pharmacy/prescriber/${prescriber.id}/prescriber-details`}>
+                    <Link to={isAdmin ? `/admin/prescriber/${prescriber.prescriber}/prescriber-details` : `/pharmacy/prescriber/${prescriber.prescriber}/prescriber-details`}>
                         <img
-                            src={prescriber.pharmacyLogo || '/images/Abstergo Ltd..png'}
+                            src={prescriber?.pharmacyLogo || '/images/Abstergo Ltd..png'}
                             alt=""
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg"
                         />
                     </Link>
-                    <Link to={isAdmin ? `/admin/prescriber/${prescriber.id}/prescriber-details` : `/pharmacy/prescriber/${prescriber.id}/prescriber-details`}>
+                    <Link to={isAdmin ? `/admin/prescriber/${prescriber.prescriber}/prescriber-details` : `/pharmacy/prescriber/${prescriber.prescriber}/prescriber-details`}>
                         <h2 className='text-sm sm:text-base md:text-lg font-semibold text-primary-black leading-[110%]'>
-                            {prescriber.name}
+                            {prescriber.prescriber}
                         </h2>
                     </Link>
                 </div>
@@ -69,7 +69,7 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
                 <InfoColumn
                     icon={<HiOutlinePhone className="text-secondary-navy-blue" />}
                     label="Phone"
-                    data={prescriber.phone}
+                    data={prescriber.prescriberPhone}
                 />
                 <InfoColumn
                     icon={<RiVipDiamondLine className="text-secondary-navy-blue" />}
@@ -79,12 +79,12 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
                 <InfoColumn
                     icon={<CiLocationOn className="text-secondary-navy-blue" />}
                     label="Address"
-                    data={prescriber.address}
+                    data={prescriber.prescriberAddress}
                 />
                 <InfoColumn
                     icon={<PiCityLight className="text-secondary-navy-blue" />}
                     label="City"
-                    data={prescriber.city}
+                    data={prescriber.prescriberCity}
                 />
             </div>
             {isDetails && (
