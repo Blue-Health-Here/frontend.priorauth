@@ -6,7 +6,7 @@ import { pharmacyValidationSchema } from '@/utils/validationSchema';
 import EditableFormSection from "@/components/common/settings/EditableFormSection";
 import SettingsCard from "@/components/common/settings/SettingsCard";
 
-export function PharmacySettings() {
+const PharmacySettings = () => {
     const [isEditingProfile, setIsEditingProfile] = useState(false);
     const [profileData, setProfileData] = useState({
         name: "Abstergo Ltd.",
@@ -59,3 +59,5 @@ export function PharmacySettings() {
         </div>
     );
 }
+
+export default PharmacySettings;

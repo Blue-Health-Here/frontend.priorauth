@@ -1,19 +1,20 @@
 import ThemeDataTable from "@/components/common/ThemeDataTable";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import FilterField from "@/components/common/FilterField";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import ThemeButton from "@/components/common/ThemeButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import AddRequestModal from "./AddRequestModal";
-import { getAllPharmacyReqs } from "@/services/pharmacyService";
+import { getAllPharmacyReqs, getAllReqStatuses } from "@/services/pharmacyService";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { filterRequestsByStatus, getFilterLabel, getStatusClass, groupByField, transformPharmacyRequest } from "@/utils/helper";
 import RequestStatusDropdownField from "./RequestStatusDropdownField";
 import SearchField from "@/components/common/SearchField";
 import Loading from "@/components/common/Loading";
+import RequestStatusDropdown from "@/components/RequestStatusDropdown";
 
-const PharmacyRequests = () => {
+const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
     const columns = [
         {
             field: 'patient',
@@ -81,7 +82,7 @@ const PharmacyRequests = () => {
             sortable: true
         }
     ];
-    // const { reqStatusesData } = useSelector((state: RootState) => state.reqStatuses);
+    const { reqStatusesData } = useSelector((state: RootState) => state.reqStatuses);
     const { reqsData } = useSelector((state: RootState) => state.pharmacyReqs);
     const [requestsData, setRequestsData] = useState<any>([]);
     const [visibleColumns, setVisibleColumns] = useState(columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: col.visible !== false }), {}));
@@ -101,10 +102,16 @@ const PharmacyRequests = () => {
     const fetchInitialData = async () => {
         setIsLoading(true);
         try {
-            await Promise.all([
-                // getAllReqStatuses(dispatch),
-                getAllPharmacyReqs(dispatch),
-            ]);
+            if (isAdmin) {
+                await Promise.all([
+                    getAllReqStatuses(dispatch),
+                    getAllPharmacyReqs(dispatch),
+                ]);
+            } else {
+                await Promise.all([
+                    getAllPharmacyReqs(dispatch),
+                ]);
+            }
         } finally {
             setIsLoading(false);
         }
@@ -120,11 +127,25 @@ const PharmacyRequests = () => {
     useEffect(() => {
         if (reqsData.length > 0) {
             setRequestsData(reqsData.map((item: any) => ({ ...transformPharmacyRequest(item) })))
-            setFilteredStatuses(reqsData.map((item: any) => ({ name: item.paStatus, statusClass: getStatusClass(item.paStatus) })))
+            setFilteredStatuses(reqsData.map((item: any) => ({ 
+                id: item.request_status, name: item.paStatus, statusClass: getStatusClass(item.paStatus) 
+            })))
         }
     }, [reqsData]);
-
+    
+    const handleSubmitStatusChange = async (values: any) => {
+        console.log(values, "values");
+    };
+    
     const requestStatusTemplate = (rowData: any, field: any) => {
+        if (isAdmin) {
+            return <RequestStatusDropdown
+                className={`!border-0 max-w-58 !text-sm status-dropdown`}
+                selectedValue={rowData[field]} 
+                handleChange={handleSubmitStatusChange}
+                data={reqStatusesData.map((item: any) => ({ name: item.name, code: item.id }))} 
+            />
+        }
         const statusClass = getStatusClass(rowData[field]);
         return (
             <div className={`text-sm font-medium truncate px-4 py-2 rounded-full max-w-58 ${statusClass}`}>
@@ -164,7 +185,6 @@ const PharmacyRequests = () => {
 
     const handleFilterChange = (field: string) => {
         setSelectedFilterField(field);
-        // console.log("Selected filter:", field);
     };
 
     const tableHeader = (
@@ -204,7 +224,7 @@ const PharmacyRequests = () => {
                     />
                 </div>
             </div>
-            <h2 className="mt-2 capitalize bg-status-bg-sky-blue w-max font-semibold text-primary-black text-sm px-3 py-1 rounded-lg">
+            <h2 className="mt-2 capitalize bg-status-bg-sky-blue w-max font-semibold text-primary-black text-sm px-4 py-2 rounded-lg">
                 {getFilterLabel(selectedFilterField)}
             </h2>
         </>
@@ -250,7 +270,7 @@ const PharmacyRequests = () => {
                 setIsModalOpen(false);
                 if (isAdded) fetchInitialData();
             }} />}
-            <div className="flex justify-between gap-4 items-center pb-4 h-16">
+            <div className="flex justify-between gap-4 items-center pb-2 h-16">
                 <h2 className='text-lg sm:text-xl lg:text-2xl font-semibold text-primary-black whitespace-nowrap'>Your Requests</h2>
                 <div className="inline-flex h-full gap-2 ml-auto">
                     <ThemeButton type="button" className="!h-full min-w-max rounded-xl" variant="secondary">

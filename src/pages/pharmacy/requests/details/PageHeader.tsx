@@ -3,7 +3,7 @@ import { User } from "@/utils/types";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const PageHeader: React.FC<any> = ({ requestDetails }) => {
+const PageHeader: React.FC<any> = ({ requestDetails, isAdmin }) => {
     const navigate = useNavigate();
     const storedUser = localStorage.getItem("user");
     let user: User | null = null;
@@ -29,11 +29,13 @@ const PageHeader: React.FC<any> = ({ requestDetails }) => {
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, [navigate]);
+    
+    console.log(isAdmin, "isAdmin")
 
     return (
         <div className="flex justify-between items-center flex-wrap gap-4 mb-4">
             <h2 className="text-lg font-bold text-gray-800 inline-flex gap-2 items-center">
-                <img onClick={() => navigate("/pharmacy/requests")} src='/header-left-logo-arrow.svg'
+                <img onClick={() => navigate(isAdmin ? "/admin/requests" : "/pharmacy/requests")} src='/header-left-logo-arrow.svg'
                     alt='header left logo arrow' className={`w-8 h-8 bg-gray-100 p-2 rounded-lg cursor-pointer`} />
                 <span>{requestDetails && requestDetails.patientName}</span>
             </h2>
