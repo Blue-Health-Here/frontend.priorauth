@@ -35,6 +35,7 @@ const PharmacyRequests = lazy(() => import("./pages/pharmacy/requests"));
 const PharmacyRequestDetails = lazy(() => import("./pages/pharmacy/requests/details"));
 const CMMAccountDatabase = lazy(() => import("./pages/pharmacy/cmm-account"));
 const PharmacySettings = lazy(() => import("./pages/pharmacy/settings"));
+const Prescribers = lazy(() => import("./pages/prescribers"));
 
 function App() {
   return (
@@ -74,6 +75,8 @@ function App() {
               <Route path="dashboard" element={<PharmacyDashboard />} />
               <Route path="requests" element={<PharmacyRequests isAdmin={false} />} />
               <Route path="requests/:id/request-details" element={<PharmacyRequestDetails isAdmin={false} />} />
+              <Route path="prescribers" element={<Prescribers isAdmin={false} />} />
+              {/* <Route path="prescribers/:id/prescriber-details" element={<PharmacyRequestDetails isAdmin={false} />} /> */}
               <Route path="cmm-account-database" element={<CMMAccountDatabase />} />
               <Route path="settings" element={<PharmacySettings />} />
             </Route>

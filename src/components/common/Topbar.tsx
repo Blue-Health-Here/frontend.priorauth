@@ -19,7 +19,7 @@ interface UserData {
   pictureUrl: string | null;
 }
 
-const Topbar: React.FC = () => {
+const Topbar: React.FC<any> = ({ isAdmin }) => {
   const { isSidebarOpen, isSidebarCollapsed } = useSelector((state: RootState) => state.global);
   const [isNotifDropdownOpen, setIsNotifDropdownOpen] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -164,6 +164,7 @@ const Topbar: React.FC = () => {
             </div>
             {isDropdownOpen && (
               <NavbarProfileDropdown
+                isAdmin={isAdmin}
                 onClose={() => {
                   handleLogout();
                   navigate("/login");

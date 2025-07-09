@@ -165,6 +165,7 @@ export const generateBreadcrumbItems = (pathname: string) => {
     "pharmacy-details",
     "permissions",
     "settings",
+    "prescribers"
   ];
 
   const customLabels: Record<string, string> = {
@@ -176,6 +177,8 @@ export const generateBreadcrumbItems = (pathname: string) => {
     "pharmacy-details": "Pharmacy Details",
     permissions: "Permissions",
     settings: "Settings",
+    prescribers: "Prescribers",
+    "prescriber-details": "Prescriber Details"
   };
 
   const items = pathSegments

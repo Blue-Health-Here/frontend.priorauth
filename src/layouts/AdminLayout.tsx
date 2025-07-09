@@ -29,7 +29,7 @@ const AdminLayout: React.FC = () => {
     <div className="min-h-screen bg-primary-background overflow-x-hidden">
       <Sidebar />
       <div className="w-full">
-        <Topbar />
+        <Topbar isAdmin={true} />
         <div className={`${mainContentClass} pt-[81px] transition-all duration-500 md:pt-[95px] px-4 pb-4 md:px-6 md:pb-6 overflow-hidden`}>
           <Outlet />
         </div>
