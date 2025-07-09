@@ -17,5 +17,6 @@ export const pageTitles: any = {
     // pharmacy pages titles
     "/pharmacy/dashboard": "Dashboard",
     "/pharmacy/cmm-account-database": "CMM Account Database",
-    "/pharmacy/requests": "Requests"
+    "/pharmacy/requests": "Requests",
+    "/pharmacy/prescribers": "Prescribers"
 };

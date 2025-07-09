@@ -1,16 +1,19 @@
 import { NavLink } from "react-router-dom";
-import { profileMenu } from "../../utils/constants";
+import { pharmacyProfileMenu, profileMenu } from "../../utils/constants";
 import { TbLogout2 } from "react-icons/tb";
+
 interface NavbarProfileDropdownProps {
   onClose: () => void;
+  isAdmin?: boolean;
 }
 
 const NavbarProfileDropdown: React.FC<NavbarProfileDropdownProps> = ({
   onClose,
+  isAdmin
 }) => {
   return (
     <div className="absolute right-4 top-full p-3 w-52 md:w-60 bg-white rounded-lg shadow-lg z-50">
-      {profileMenu.map((item, index) => {
+      {(isAdmin ? profileMenu : pharmacyProfileMenu).map((item, index) => {
         const Icon = item.icon;
         return (
           <NavLink
