@@ -13,8 +13,12 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const fetchAllPrescribers = async () => {
-        setIsLoading(true);
-        await getAllPrescribers(dispatch, user?.id).then(() => setIsLoading(false));
+        if (isAdmin) {
+            return;
+        } else {
+            setIsLoading(true);
+            await getAllPrescribers(dispatch, user?.id).then(() => setIsLoading(false));
+        }
     };
 
     useEffect(() => {
