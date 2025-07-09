@@ -148,7 +148,7 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
                 alt="Profile"
                 className="w-7 h-7 sm:w-8 sm:h-8 rounded-full"
               />
-              <div className="hidden sm:block py-1 pl-1">
+              <div className="hidden sm:block py-1 pl-1 pr-3">
                 <h2 className="text-primary-black font-semibold text-sm">
                   {userData.userName || `${userData.firstName} ${userData.lastName}`.trim() || 'User'}
                 </h2>

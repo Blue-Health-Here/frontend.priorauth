@@ -270,8 +270,8 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
                 setIsModalOpen(false);
                 if (isAdded) fetchInitialData();
             }} />}
-            <div className="flex justify-between gap-4 items-center pb-2 h-16">
-                <h2 className='text-lg sm:text-xl lg:text-2xl font-semibold text-primary-black whitespace-nowrap'>Your Requests</h2>
+            <div className="flex justify-between gap-4 items-center pb-2 h-14">
+                <h2 className='text-xl font-semibold text-primary-black whitespace-nowrap'>Your Requests</h2>
                 <div className="inline-flex h-full gap-2 ml-auto">
                     <ThemeButton type="button" className="!h-full min-w-max rounded-xl" variant="secondary">
                         Open Portal
