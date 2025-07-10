@@ -191,7 +191,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
 
     const tableHeader = (
         <>
-            <div className="flex gap-2 items-center h-12 flex-wrap">
+            <div className="inline-flex gap-2 items-center h-12 flex-wrap w-full">
                 <ThemeButtonTabs 
                     data={['All Requests', 'Active Requests']} 
                     activeTab={activeRequestTab} setActiveTab={setActiveRequestTab} />
@@ -260,9 +260,9 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
                 setIsModalOpen(false);
                 if (isAdded) fetchInitialData();
             }} />}
-            <div className="flex justify-between gap-4 items-center pb-2 h-14">
+            <div className="flex justify-between gap-4 items-center pb-2 h-14 flex-wrap">
                 <h2 className='text-xl font-semibold text-primary-black whitespace-nowrap'>Your Requests</h2>
-                <div className="inline-flex h-full gap-2 ml-auto">
+                <div className="inline-flex h-full gap-2 sm:ml-auto">
                     <ThemeButton type="button" className="!h-full min-w-max rounded-xl" variant="secondary">
                         Open Portal
                     </ThemeButton>

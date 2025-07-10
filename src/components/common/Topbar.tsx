@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import NavbarProfileDropdown from './NavbarProfileDropdown';
 import { handleLogout } from '../../services/authService';
-import { FaBars } from 'react-icons/fa6';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { setIsSidebarCollapsed, setIsSidebarOpen } from '../../store/features/global/globalSlice';
@@ -76,9 +75,9 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
     <div
       className={`fixed top-0 left-0 ${
         isSidebarCollapsed ? "lg:left-[80px]" : "lg:left-[280px]"
-      } right-0 p-3 sm:p-3 z-60 bg-white border-b border-gray-100`}
+      } right-0 p-3 min-h-16 sm:p-3 z-60 bg-white border-b border-gray-100 flex`}
     >
-      <nav className={`flex justify-between items-center w-full`}>
+      <nav className={`flex justify-between w-full flex-1`}>
         <div className="flex items-center gap-2">
           {isSidebarCollapsed && !isSidebarOpen && (
             <button
@@ -96,9 +95,10 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
             className="lg:hidden block"
             onClick={() => dispatch(setIsSidebarOpen(!isSidebarOpen))}
           >
-            <FaBars
-              size={21}
-              className="text-primary-sky-blue block lg:hidden"
+            <img
+              src="/sidebar.svg"
+              alt="Collapse sidebar"
+              className="w-8 h-8 p-1.5 rounded-lg cursor-pointer"
             />
           </div>
           
@@ -117,21 +117,19 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
             </span>
           </div>
         </div>
-        <div className="flex justify-end items-center gap-3.5">
-          <div className="relative" ref={notifDropdownRef}>
+        <div className="flex justify-end items-center gap-3.5 flex-1">
+          <div className="relative h-full" ref={notifDropdownRef}>
             <button
               type="button"
               onClick={() => setIsNotifDropdownOpen(!isNotifDropdownOpen)}
-              className="md:flex hidden cursor-pointer rounded-lg border border-light-stroke items-center p-2 py-1 sm:p-2.5"
+              className="flex items-center justify-between cursor-pointer h-full rounded-lg border relative border-light-stroke items-center p-2 w-10 py-1 px-2 sm:p-2.5"
             >
-              <p className="relative">
-                <img
-                  src="/notifications.png"
-                  alt="notification"
-                  className="w-4 h-4 sm:h-5 sm:w-5"
-                />
-                <span className='absolute rounded-full w-2 h-2 bg-error-clip top-0.5 right-0.5'></span>
-              </p>
+              <img
+                src="/notifications.png"
+                alt="notification"
+                className="w-4 h-4 sm:h-5 sm:w-5"
+              />
+              <span className='absolute hidden md:inline rounded-full w-2 h-2 bg-error-clip top-0.5 right-0.5'></span>
             </button>
             {isNotifDropdownOpen && <NavbarNotificationDropdown />}
           </div>
