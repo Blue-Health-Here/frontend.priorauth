@@ -4,6 +4,7 @@ import { AppDispatch } from "../store";
 import { setIsLoading } from "../store/features/global/globalSlice";
 import { setReqStatusesData } from "@/store/features/admin/requests/statusesSlice";
 import { setRequestsData } from "@/store/features/pharmacy/requests/requestsSlice";
+import { setProfileData } from "../store/features/global/globalSlice";
 
 // Types
 type ApiMethod = 'get' | 'post' | 'put' | 'delete';
@@ -128,15 +129,26 @@ const apiHandler = async <T = any>(
 
 // ============= Dashboard & Profile =============
 
-// export const fetchProfileData = async (dispatch: AppDispatch) => {
-//     return apiHandler(dispatch, 'get', '/auth/profile', {
-//         successMessage: "Profile has fetched successfully!",
-//         onSuccess: (data) => {
-//             dispatch(setProfileData(data))
-//         },
-//         onError: () => dispatch(setProfileData(null))
-//     })
-// }
+export const fetchProfileData = async (dispatch: AppDispatch) => {
+    return apiHandler(dispatch, 'get', '/auth/profile', {
+        successMessage: "Profile has fetched successfully!",
+        onSuccess: (data) => {
+            dispatch(setProfileData(data))
+        },
+        onError: () => dispatch(setProfileData(null))
+    })
+}
+// ============= Update Profile =============
+
+export const updateProfileData = async (dispatch: AppDispatch, userId: string, data: any) => {
+    return apiHandler(dispatch, 'put', `/user/update/${userId}`, {
+        data,
+        successMessage: "Profile updated successfully!",
+        onSuccess: (updatedData) => {
+            dispatch(setProfileData(updatedData));
+        }
+    });
+}
 
 // ============= Requests Statuses =============
 
@@ -197,3 +209,5 @@ export const handleAddNewRequest = async (dispatch: AppDispatch, data: any) => {
         data
     })
 };
+
+
