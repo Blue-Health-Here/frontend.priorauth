@@ -1,9 +1,9 @@
 import ThemeButton from "@/components/common/ThemeButton";
 import { User } from "@/utils/types";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const PageHeader = () => {
+const PageHeader: React.FC<any> = ({ requestDetails, isAdmin }) => {
     const navigate = useNavigate();
     const storedUser = localStorage.getItem("user");
     let user: User | null = null;
@@ -29,13 +29,15 @@ const PageHeader = () => {
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, [navigate]);
+    
+    console.log(isAdmin, "isAdmin")
 
     return (
         <div className="flex justify-between items-center flex-wrap gap-4 mb-4">
             <h2 className="text-lg font-bold text-gray-800 inline-flex gap-2 items-center">
-                <img onClick={() => navigate("/pharmacy/requests")} src='/header-left-logo-arrow.svg'
+                <img onClick={() => navigate(isAdmin ? "/admin/requests" : "/pharmacy/requests")} src='/header-left-logo-arrow.svg'
                     alt='header left logo arrow' className={`w-8 h-8 bg-gray-100 p-2 rounded-lg cursor-pointer`} />
-                <span>UBRELVY 50MG TAB</span>
+                <span>{requestDetails && requestDetails.patientName}</span>
             </h2>
             <div className="flex gap-3 self-end sm:self-auto flex-wrap">
                 <ThemeButton className="h-full min-h-12" variant="secondary">Open Portal</ThemeButton>

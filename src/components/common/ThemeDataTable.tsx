@@ -65,6 +65,8 @@ import { DataTable } from 'primereact/datatable';
 import React, { useRef } from 'react';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { AiOutlineEye } from "react-icons/ai";
+import CardHeader from './CardHeader';
+import { LiaAngleDownSolid, LiaAngleUpSolid } from "react-icons/lia";
 
 const ThemeDataTable: React.FC<any> = ({
     data = [], // can be flat [] or grouped [{ status, data }]
@@ -121,9 +123,14 @@ const ThemeDataTable: React.FC<any> = ({
             {header && <div className="mb-2">{header}</div>}
 
             {isGrouped ? (
-                <Accordion multiple activeIndex={[0]} className='theme-accordion'>
+                <Accordion multiple activeIndex={[0]} 
+                    collapseIcon={<LiaAngleUpSolid className="w-4 h-4 text-primary-black absolute right-3" />} 
+                    expandIcon={<LiaAngleDownSolid className="w-4 h-4 text-primary-black absolute right-3" />} 
+                    className='theme-accordion'>
                     {data.map((group: any, idx: number) => (
-                        <AccordionTab key={group.status + idx} header={`${group.status} (${group.data.length})`}>
+                        <AccordionTab className='mb-2' key={group.status + idx} header={(
+                            <CardHeader title={`${group.status} (${group.data.length})`} className="rounded-lg" />
+                        )}>
                             <DataTable
                                 ref={dt}
                                 value={group.data}

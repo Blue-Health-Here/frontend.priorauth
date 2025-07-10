@@ -55,7 +55,7 @@ const Sidebar: React.FC = () => {
       )}
       <aside className={asideClass}>
         <div
-          className={`p-4 flex h-[67px] border-b bg-primary-white gap-4 sm:gap-6 lg:gap-8 items-center border-r border-gray-100 ${
+          className={`p-4 flex h-[71px] border-b bg-primary-white gap-4 sm:gap-6 lg:gap-8 items-center border-r border-gray-100 ${
             isSidebarCollapsed ? "px-2 justify-center" : "justify-between"
           }`}
         >
@@ -63,7 +63,7 @@ const Sidebar: React.FC = () => {
             <img
               src={isSidebarCollapsed ? "/Group.svg" : "/images/logo.svg"}
               alt="PriorAuth Logo"
-              className="h-6 sm:h-7 lg:h-7"
+              className="h-6 sm:h-7 lg:h-8"
             />
           </Link>
           {isSidebarOpen ? (

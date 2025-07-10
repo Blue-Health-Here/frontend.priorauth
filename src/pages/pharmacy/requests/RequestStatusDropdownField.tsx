@@ -22,10 +22,9 @@ const RequestStatusDropdownField: React.FC<RequestStatusDropdownFieldProps> = ({
         const uniqueMap = new Map();
     
         data.forEach(item => {
-            if (item.request_status && item.statusClass) {
-                uniqueMap.set(item.request_status, {
-                    id: item.id,
-                    name: item.request_status,
+            if (item.name && item.statusClass) {
+                uniqueMap.set(item.name, {
+                    name: item.name,
                     sClass: item.statusClass
                 });
             }
@@ -94,14 +93,14 @@ const RequestStatusDropdownField: React.FC<RequestStatusDropdownFieldProps> = ({
                     </div>
 
                     {/* Status List */}
-                    {filteredStatuses?.length > 0 && <div className="space-y-4 max-h-56 overflow-y-scroll">
+                    {filteredStatuses?.length > 0 && <div className="space-y-4 max-h-56 overflow-y-auto">
                         {filteredStatuses.map((status, idx) => (
                             <div key={idx} className="flex items-center gap-2">
                                 <label htmlFor={`status-${idx}`} className="inline-flex items-center cursor-pointer">
                                     <CustomCheckbox
                                         id={`status-${idx}`}
-                                        checked={selectedStatuses.includes(status.id)}
-                                        onChange={() => toggleStatus(status.id)}
+                                        checked={selectedStatuses.includes(status.name)}
+                                        onChange={() => toggleStatus(status.name)}
                                         className='!border !border-medium-stroke'
                                     />
                                     <span className={`px-3 py-1 ml-2 rounded-full line-clamp-1 max-w-[240px] !text-sm lg:text-base font-normal ${status.sClass}`}>

@@ -1,101 +1,93 @@
-// App.tsx
-import { BrowserRouter as Router, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Navigate } from "react-router-dom";
 import { Routes } from "react-router";
+import { Suspense, lazy } from "react";
 import ThemeProvider from "./layouts/ThemeProvider";
 import { Toaster } from "react-hot-toast";
 
-// Routes
+// Route Guards
 import GuestRoute from "./routes/GuestRoute";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import Loading from "./components/common/Loading";
 
 // Public
-import Home from "./pages/Home";
+const Home = lazy(() => import("./pages/Home"));
 
 // Auth
-import Login from "./pages/auth/Login";
-import OTPVerification from "./pages/auth/OTPVerification";
+const Login = lazy(() => import("./pages/auth/Login"));
+const OTPVerification = lazy(() => import("./pages/auth/OTPVerification"));
 
 // Admin
-import AdminLayout from "./layouts/AdminLayout";
-import AdminDashboard from "./pages/admin/dashboard";
-import AdminPharmacies from "./pages/admin/pharmacy";
-import PharmacyDetailScreen from "./pages/admin/pharmacy/PharmacyDetailScreen";
-import AddNewPharmacyScreen from "./pages/admin/pharmacy/AddNewPharmacyScreen";
-import AdminRequests from "./pages/admin/requests";
-import RequestDetails from "./pages/admin/requests/RequestDetails";
-import AdminSettings from "./pages/admin/settings";
-import ChangePasswordPage from "./pages/admin/settings/change-password";
-import UserSettingPage from "./pages/admin/settings/user-setting";
-import NotificationScreen from "./pages/admin/notifications";
-import AdminRolesAndPermissions from "./pages/permissions";
+const AdminLayout = lazy(() => import("./layouts/AdminLayout"));
+const AdminDashboard = lazy(() => import("./pages/admin/dashboard"));
+const AdminPharmacies = lazy(() => import("./pages/admin/pharmacy"));
+const PharmacyDetailScreen = lazy(() => import("./pages/admin/pharmacy/PharmacyDetailScreen"));
+const AddNewPharmacyScreen = lazy(() => import("./pages/admin/pharmacy/AddNewPharmacyScreen"));
+const AdminSettings = lazy(() => import("./pages/admin/settings"));
+const ChangePasswordPage = lazy(() => import("./pages/admin/settings/change-password"));
+const UserSettingPage = lazy(() => import("./pages/admin/settings/user-setting"));
+const NotificationScreen = lazy(() => import("./pages/admin/notifications"));
+const AdminRolesAndPermissions = lazy(() => import("./pages/permissions"));
 
 // Pharmacy
-import PharmacyLayout from "./layouts/PharmacyLayout";
-import PharmacyDashboard from "./pages/pharmacy/dashboard";
-import PharmacyRequests from "./pages/pharmacy/requests";
-import CMMAccountDatabase from "./pages/pharmacy/cmm-account";
-import { PharmacySettings } from "./pages/pharmacy/settings";
-import PharmacyRequestDetails from './pages/pharmacy/requests/details';
+const PharmacyLayout = lazy(() => import("./layouts/PharmacyLayout"));
+const PharmacyDashboard = lazy(() => import("./pages/pharmacy/dashboard"));
+const PharmacyRequests = lazy(() => import("./pages/pharmacy/requests"));
+const PharmacyRequestDetails = lazy(() => import("./pages/pharmacy/requests/details"));
+const CMMAccountDatabase = lazy(() => import("./pages/pharmacy/cmm-account"));
+const PharmacySettings = lazy(() => import("./pages/pharmacy/settings"));
+const Prescribers = lazy(() => import("./pages/prescribers"));
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
 
-        {/* Guest Routes (only accessible if NOT logged in) */}
-        <Route element={<ThemeProvider><GuestRoute /></ThemeProvider>}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/otp-verification" element={<OTPVerification />} />
-        </Route>
-
-        {/* Admin Protected Routes */}
-        <Route
-          element={
-            <ThemeProvider>
-              <ProtectedRoute allowedRoles={["companyAdmin"]} />
-            </ThemeProvider>
-          }
-        >
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<Navigate to="dashboard" replace />} />
-            <Route path="dashboard" element={<AdminDashboard />} />
-            <Route path="pharmacies" element={<AdminPharmacies />} />
-            <Route path="pharmacies/:pharmacyId/pharmacy-details" element={<PharmacyDetailScreen />} />
-            <Route path="pharmacies/add" element={<AddNewPharmacyScreen />} />
-            <Route path="requests" element={<AdminRequests />} />
-            <Route path="requests/:id/request-details" element={<RequestDetails />} />
-            <Route path="settings" element={<AdminSettings />} />
-            <Route path="settings/change-password" element={<ChangePasswordPage />} />
-            <Route path="settings/user-settings" element={<UserSettingPage />} />
-            <Route path="notifications" element={<NotificationScreen />} />
-            <Route path="permissions" element={<AdminRolesAndPermissions />} />
+          {/* Guest Routes */}
+          <Route element={<ThemeProvider><GuestRoute /></ThemeProvider>}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/otp-verification" element={<OTPVerification />} />
           </Route>
-        </Route>
 
-        {/* Pharmacy Protected Routes */}
-        <Route
-          element={
-            <ThemeProvider>
-              <ProtectedRoute allowedRoles={["pharmacyUser"]} />
-            </ThemeProvider>
-          }
-        >
-          <Route path="/pharmacy" element={<PharmacyLayout />}>
-            <Route index element={<Navigate to="dashboard" replace />} />
-            <Route path="dashboard" element={<PharmacyDashboard />} />
-            <Route path="requests" element={<PharmacyRequests />} />
-            <Route path="requests/:id/request-details" element={<PharmacyRequestDetails />} />
-            <Route path="cmm-account-database" element={<CMMAccountDatabase />} />
-            <Route path="settings" element={<PharmacySettings />} />
+          {/* Admin Routes */}
+          <Route element={<ThemeProvider><ProtectedRoute allowedRoles={["companyAdmin"]} /></ThemeProvider>}>
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="pharmacies" element={<AdminPharmacies />} />
+              <Route path="pharmacies/:pharmacyId/pharmacy-details" element={<PharmacyDetailScreen />} />
+              <Route path="pharmacies/add" element={<AddNewPharmacyScreen />} />
+              <Route path="requests" element={<PharmacyRequests isAdmin={true} />} />
+              <Route path="requests/:id/request-details" element={<PharmacyRequestDetails isAdmin={true} />} />
+              <Route path="prescribers" element={<Prescribers isAdmin={true} />} />
+              <Route path="settings" element={<AdminSettings />} />
+              <Route path="settings/change-password" element={<ChangePasswordPage />} />
+              <Route path="settings/user-settings" element={<UserSettingPage />} />
+              <Route path="notifications" element={<NotificationScreen />} />
+              <Route path="permissions" element={<AdminRolesAndPermissions />} />
+            </Route>
           </Route>
-        </Route>
 
-        {/* Catch All */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
+          {/* Pharmacy Routes */}
+          <Route element={<ThemeProvider><ProtectedRoute allowedRoles={["pharmacyUser"]} /></ThemeProvider>}>
+            <Route path="/pharmacy" element={<PharmacyLayout />}>
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<PharmacyDashboard />} />
+              <Route path="requests" element={<PharmacyRequests isAdmin={false} />} />
+              <Route path="requests/:id/request-details" element={<PharmacyRequestDetails isAdmin={false} />} />
+              <Route path="prescribers" element={<Prescribers isAdmin={false} />} />
+              {/* <Route path="prescribers/:id/prescriber-details" element={<PharmacyRequestDetails isAdmin={false} />} /> */}
+              <Route path="cmm-account-database" element={<CMMAccountDatabase />} />
+              <Route path="settings" element={<PharmacySettings />} />
+            </Route>
+          </Route>
 
-      {/* Toaster for toast messages */}
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </Suspense>
+
       <Toaster position="top-center" />
     </Router>
   );

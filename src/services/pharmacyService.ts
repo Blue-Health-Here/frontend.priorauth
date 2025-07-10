@@ -4,6 +4,7 @@ import { AppDispatch } from "../store";
 import { setIsLoading } from "../store/features/global/globalSlice";
 import { setReqStatusesData } from "@/store/features/admin/requests/statusesSlice";
 import { setRequestsData } from "@/store/features/pharmacy/requests/requestsSlice";
+import { setPrescribersData } from "@/store/features/pharmacy/prescribers/prescribersSlice";
 
 // Types
 type ApiMethod = 'get' | 'post' | 'put' | 'delete';
@@ -160,7 +161,7 @@ export const getAllReqStatuses = async (dispatch: AppDispatch) => {
         },
         errorMessage: "Requests not found."
     })
-}
+};
 
 // ============= Requests  =============
 
@@ -184,16 +185,37 @@ export const getAllPharmacyReqs = async (dispatch: AppDispatch) => {
         },
         errorMessage: "Requests not found."
     })
-}
+};
 
 export const extractMedsICDCodes = async (dispatch: AppDispatch, data: any) => {
     return apiHandler(dispatch, 'post', '/pa_request/add/extract-meds-icd-codes', {
         data,
     })
-}
+};
 
 export const handleAddNewRequest = async (dispatch: AppDispatch, data: any) => {
     return apiHandler(dispatch, 'post', `/pa_request/add`, {
         data
+    })
+};
+
+export const getRequestDetails = async (dispatch: AppDispatch, id?: string) => {
+    return apiHandler(dispatch, 'get', `/pa_request/get_by_id/${id}`, {});
+};
+
+// ============= Get All Prescribers  =============
+
+export const getAllPrescribers = async (dispatch: AppDispatch, id?: string) => {
+    return apiHandler(dispatch, 'get', '/pa_request/prescribers/by-user/' + id, {
+        data: {},
+        onSuccess: (data) => {
+            dispatch(setPrescribersData(data))
+        },
+        onError: (error) => {
+            if (error.status === 404) {
+                dispatch(setPrescribersData([]));
+            }
+        },
+        errorMessage: "Prescribers not found."
     })
 };

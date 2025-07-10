@@ -19,7 +19,7 @@ interface UserData {
   pictureUrl: string | null;
 }
 
-const Topbar: React.FC = () => {
+const Topbar: React.FC<any> = ({ isAdmin }) => {
   const { isSidebarOpen, isSidebarCollapsed } = useSelector((state: RootState) => state.global);
   const [isNotifDropdownOpen, setIsNotifDropdownOpen] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -148,11 +148,11 @@ const Topbar: React.FC = () => {
                 alt="Profile"
                 className="w-7 h-7 sm:w-8 sm:h-8 rounded-full"
               />
-              <div className="hidden sm:block py-1">
-                <h2 className="text-primary-black font-semibold text-xs">
+              <div className="hidden sm:block py-1 pl-1 pr-3">
+                <h2 className="text-primary-black font-semibold text-sm">
                   {userData.userName || `${userData.firstName} ${userData.lastName}`.trim() || 'User'}
                 </h2>
-                <p className="text-secondary-black text-xs scale-80 -ml-2">
+                <p className="text-secondary-black text-xs">
                   {userData.email || 'No email'}
                 </p>
               </div>
@@ -164,6 +164,7 @@ const Topbar: React.FC = () => {
             </div>
             {isDropdownOpen && (
               <NavbarProfileDropdown
+                isAdmin={isAdmin}
                 onClose={() => {
                   handleLogout();
                   navigate("/login");
