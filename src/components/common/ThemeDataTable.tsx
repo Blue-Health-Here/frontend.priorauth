@@ -119,7 +119,7 @@ const ThemeDataTable: React.FC<any> = ({
     const isGrouped = Array.isArray(data) && data.length > 0 && data[0]?.data;
 
     return (
-        <div className="theme-datatable-wrapper">
+        <div className="theme-datatable-wrapper inline-flex flex-col gap-4 sm:gap-0 h-full w-full">
             {header && <div className="mb-2">{header}</div>}
 
             {isGrouped ? (
