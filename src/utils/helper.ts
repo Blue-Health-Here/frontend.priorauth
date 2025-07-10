@@ -429,7 +429,16 @@ export const getFilterLabel = (field: string): string => {
     'prescriber': 'Prescriber',
     'statusName': 'Status',
     'submittedOn': 'Submitted On',
-    'lastModified': 'Last Modified'
+    'lastModified': 'Last Modified',
+    'name': "Name",
+    'officeEmail': 'Office Email',
+    'officePassword': 'Office Password',
+    'faxNumber': 'Fax Number',
+    'contactPhone': 'Contact Phone',
+    'cmmUsername': 'Cmm Username',
+    'appPassword': 'App Password',
+    'address': 'Address', 'city': 'City', 'state': 'State',
+    'zipCode': 'Zip Code'
   };
 
   return labelMap[field] || field.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());

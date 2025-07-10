@@ -23,7 +23,7 @@ const PharmacyLayout: React.FC = () => {
 
     const mainContentClass = isSidebarCollapsed ? `
     ml-auto lg:ml-[80px]
-  ` : 'ml-auto lg:ml-[250px] xl:ml-[280px]'
+  ` : 'ml-auto lg:ml-[280px] xl:ml-[280px]'
 
     return (
         <div className="min-h-screen bg-primary-background overflow-x-hidden">
