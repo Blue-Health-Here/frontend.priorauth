@@ -1,18 +1,14 @@
 import ThemeDataTable from "@/components/common/ThemeDataTable";
 import { useEffect, useState } from "react";
 import UnlockAccessInfoModal from "./UnlockAccessInfoModal";
-import FilterField from "@/components/common/FilterField";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import SearchField from "@/components/common/SearchField";
-import ThemeButtonTabs from "@/components/ThemeButtonTabs";
-import ThemeButton from "@/components/common/ThemeButton";
-import { GoLock } from "react-icons/go";
-import { getFilterLabel, groupByField } from "@/utils/helper";
 
 const CMMAccountDatabase = () => {
     const sampleData = [
         {
             id: 1,
+            pharmacyName: 'ABC Pharmacy 1',
             name: 'Razan Ahmad',
             officeEmail: 'asadrazan12@gmail.com',
             officePassword: 'password123',
@@ -23,6 +19,7 @@ const CMMAccountDatabase = () => {
         },
         {
             id: 2,
+            pharmacyName: 'ABC Pharmacy 2',
             name: 'Liam Johnson',
             officeEmail: 'liam.johnson@email.com',
             officePassword: 'password123',
@@ -33,6 +30,7 @@ const CMMAccountDatabase = () => {
         },
         {
             id: 3,
+            pharmacyName: 'ABC Pharmacy 3',
             name: 'Razan Ahmad',
             officeEmail: 'sophia.w@email.com',
             officePassword: 'password123',
@@ -43,6 +41,7 @@ const CMMAccountDatabase = () => {
         },
         {
             id: 4,
+            pharmacyName: 'ABC Pharmacy 4',
             name: 'Noah Brown',
             officeEmail: 'noah.brown@email.com',
             officePassword: 'password123',
@@ -53,6 +52,7 @@ const CMMAccountDatabase = () => {
         },
         {
             id: 5,
+            pharmacyName: 'ABC Pharmacy 5',
             name: 'Emma Davis',
             officeEmail: 'emma.davis@email.com',
             officePassword: 'password123',
@@ -146,9 +146,6 @@ const CMMAccountDatabase = () => {
     ];
 
     const [isOpenModal, setIsOpenModal] = useState(false);
-    const [selectedFilterField, setSelectedFilterField] = useState("");
-    const [activeTab, setActiveTab] = useState("Prescribers");
-    const [filteredCMMAccountDatabase, setfilteredCMMAccountDatabase] = useState<any>([]);
     const [visibleColumns, setVisibleColumns] = useState(columns.reduce((acc: any, col: any) => ({ 
         ...acc, [col.field]: col.visible !== false 
     }), {}));
@@ -178,40 +175,20 @@ const CMMAccountDatabase = () => {
         setVisibleColumns(columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: value }), {}));
     };
 
-    const handleFilterChange = (field: string) => {
-        setSelectedFilterField(field);
-    };
-
     const header = (
         <>
             <div className="flex gap-2 items-center h-12 flex-wrap">
-                <ThemeButtonTabs 
-                    data={['Prescribers', 'Pharmacy', 'Barrons']} 
-                    activeTab={activeTab} setActiveTab={setActiveTab} />
-                <div className="inline-flex h-full items-center gap-2 ml-auto">
-                    <SearchField globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
-                    <ToggleColumnsField
-                        clearSelection={clearSelection}
-                        selectAll={selectAll}
-                        setIsChecked={setIsChecked}
-                        isChecked={isChecked}
-                        columns={columns}
-                        visibleColumns={visibleColumns}
-                        toggleColumn={toggleColumn}
-                    />
-                    <FilterField columns={columns}
-                        selectedValue={selectedFilterField} onChange={handleFilterChange} />
-                    <ThemeButton variant="primary" type="button">
-                        <p className="flex gap-2 items-center">
-                            <span>Unlock Access</span>
-                            <GoLock className="text-base" />
-                        </p>
-                    </ThemeButton>
-                </div>
+                <SearchField globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
+                <ToggleColumnsField
+                    clearSelection={clearSelection}
+                    selectAll={selectAll}
+                    setIsChecked={setIsChecked}
+                    isChecked={isChecked}
+                    columns={columns}
+                    visibleColumns={visibleColumns}
+                    toggleColumn={toggleColumn}
+                />
             </div>
-            {selectedFilterField && <h2 className="mt-2 capitalize bg-status-bg-sky-blue w-max font-semibold text-primary-black text-sm px-4 py-2 rounded-lg">
-                {getFilterLabel(selectedFilterField)}
-            </h2>}
         </>
     )
 
@@ -223,26 +200,13 @@ const CMMAccountDatabase = () => {
         }
     }, [visibleColumns]);
 
-    useEffect(() => {
-        const normalizedData = [...sampleData];
-        const filterValue = globalFilter.toLowerCase();
-        const filtered = normalizedData.filter((item: any) => {
-            if (typeof item[selectedFilterField] === 'string') {
-                return item[selectedFilterField].toLowerCase().includes(filterValue);
-            }
-            return false;
-        });
-
-        setfilteredCMMAccountDatabase(groupByField(filtered, selectedFilterField))
-    }, [selectedFilterField]);
-
     return (
         <div className='bg-primary-white rounded-2xl theme-datatable theme-shadow px-4 py-4'>
             <h2 className='text-xl font-semibold text-primary-black whitespace-nowrap pb-4'>CMM Account Database</h2>
             {isOpenModal && <UnlockAccessInfoModal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)} />}
             <ThemeDataTable
                 header={header}
-                data={selectedFilterField !== "" ? filteredCMMAccountDatabase : sampleData}
+                data={sampleData}
                 columns={columns}
                 searchPlaceholder="Search..."
                 onRowClick={handleRowClick}
