@@ -176,7 +176,6 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
     };
 
     const handleStatusChange = (status: any) => {
-        console.log(status, "status");
         if (status?.length > 0) {
             const filteredData = filterRequestsByStatus(groupByField(requestsData, selectedFilterField), status);
             setFilteredRequests(filteredData);
