@@ -4,6 +4,7 @@ import { AppDispatch } from "../store";
 import { setIsLoading, setProfileData } from "../store/features/global/globalSlice";
 import { setRequestsData } from "../store/features/admin/requests/requestsSlice";
 import { setPharmaciesData } from "../store/features/admin/pharmacies/pharmaciesSlice";
+import { setPrescribersData } from "@/store/features/pharmacy/prescribers/prescribersSlice";
 
 // Types
 type ApiMethod = 'get' | 'post' | 'put' | 'delete';
@@ -187,3 +188,19 @@ export const fetchAllRequests = async (dispatch: AppDispatch) => {
     })
 }
 
+// ============= Get All Prescribers  =============
+
+export const getAllUserPrescribers = async (dispatch: AppDispatch) => {
+    return apiHandler(dispatch, 'get', '/user/prescribers', {
+        data: {},
+        onSuccess: (data) => {
+            dispatch(setPrescribersData(data))
+        },
+        onError: (error) => {
+            if (error.status === 404) {
+                dispatch(setPrescribersData([]));
+            }
+        },
+        errorMessage: "Prescribers not found."
+    })
+};

@@ -7,6 +7,7 @@ import { RiVipDiamondLine } from "react-icons/ri";
 import { CiLocationOn } from "react-icons/ci";
 import { PiCityLight } from "react-icons/pi";
 import ThemeButton from "./common/ThemeButton";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -29,18 +30,21 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
         };
     }, []);
 
+    const pageLink = isAdmin ? `/admin/prescriber/${prescriber.prescriber.toLowerCase().trim()}/prescriber-details` : 
+        `/pharmacy/prescriber/${prescriber.prescriber.toLowerCase().trim()}/prescriber-details`
+
     return (
         <div className="bg-primary-white rounded-lg theme-shadow p-4 relative border-2 border-quaternary-navy-blue flex flex-col gap-4">
             <div className='inline-flex justify-between gap-2 items-start'>
                 <div className='inline-flex gap-4 flex-col items-start'>
-                    <Link to={isAdmin ? `/admin/prescriber/${prescriber.prescriber}/prescriber-details` : `/pharmacy/prescriber/${prescriber.prescriber}/prescriber-details`}>
+                    <Link to={pageLink}>
                         <img
                             src={prescriber?.pharmacyLogo || '/images/Abstergo Ltd..png'}
                             alt=""
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg"
                         />
                     </Link>
-                    <Link to={isAdmin ? `/admin/prescriber/${prescriber.prescriber}/prescriber-details` : `/pharmacy/prescriber/${prescriber.prescriber}/prescriber-details`}>
+                    <Link to={pageLink}>
                         <h2 className='text-sm sm:text-base md:text-lg font-semibold text-primary-black leading-[110%]'>
                             {prescriber.prescriber}
                         </h2>
@@ -53,11 +57,7 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
                         className="rounded-lg p-2 text-black cursor-pointer bg-secondary-background"
                         onClick={toggleDropdown}
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                            <circle cx="12" cy="12" r="1" />
-                            <circle cx="12" cy="5" r="1" />
-                            <circle cx="12" cy="19" r="1" />
-                        </svg>
+                        <BsThreeDotsVertical />
                     </button>
                     {isDropdownOpen && (
                         <PharmacyToolTipDropdown />

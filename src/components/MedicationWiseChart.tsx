@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import {
     Chart as ChartJS,
@@ -15,6 +15,17 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const MedicationWiseChart = () => {
     const [range, setRange] = useState("Today");
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 640); // Only check for mobile
+        };
+        
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const datasetsByRange: any = {
         Today: [
@@ -51,86 +62,94 @@ const MedicationWiseChart = () => {
                 label: "Requests",
                 backgroundColor: "#007AFF",
                 data: requests,
-                borderRadius: { topLeft: 8, topRight: 8 }, // Add top radius
+                borderRadius: { topLeft: 8, topRight: 8 },
             },
             {
                 label: "Approved",
                 backgroundColor: "#5CE543",
                 data: approved,
-                borderRadius: { topLeft: 8, topRight: 8 }, // Add top radius
+                borderRadius: { topLeft: 8, topRight: 8 },
             },
         ],
     };
 
-  const options: any = {
-    responsive: true,
-    scales: {
-        x: {
-            grid: {
-                display: false,
-            },
-            border: {
-                display: false,
-            },
-            ticks: {
-                display: true,
-                autoSkip: false,
-                maxRotation: 0,
-                minRotation: 0,
-                padding: 10,
-                callback: function(this: any, value: string | number, index: number) {
-                    // Get the full label text
-                    const label = typeof value === 'number' 
-                        ? this.chart.data.labels?.[index] || ''
-                        : value;
-                    
-                    // Truncate long labels and add ellipsis
-                    return label.length > 10 ? `${label.substring(0, 10)}...` : label;
-                }
-            },
-            barThickness: 30,
-            categoryPercentage: 0.8,
-            barPercentage: 0.9,
-        },
-        y: {
-            grid: {
-                display: true,
-                drawTicks: false,
-            },
-            border: {
-                display: false,
-            },
-            ticks: {
-                stepSize: 500,
-                callback: function(value: string | number) {
-                    return Number(value).toString();
+    const options: any = {
+        responsive: true,
+        maintainAspectRatio: true,
+        scales: {
+            x: {
+                grid: {
+                    display: false,
                 },
-                padding: 10,
+                border: {
+                    display: false,
+                },
+                ticks: {
+                    display: true,
+                    autoSkip: false,
+                    maxRotation: 0,
+                    minRotation: 0,
+                    padding: 10,
+                    callback: function(this: any, value: string | number, index: number) {
+                        const label = typeof value === 'number' 
+                            ? this.chart.data.labels?.[index] || ''
+                            : value;
+                        
+                        // More aggressive truncation for mobile only
+                        if (isMobile) {
+                            return label.length > 4 ? `${label.substring(0, 4)}..` : label;
+                        }
+                        // Keep original for tablet and desktop
+                        return label.length > 10 ? `${label.substring(0, 10)}...` : label;
+                    },
+                    font: {
+                        size: isMobile ? 10 : 12 // Only change font size for mobile
+                    }
+                },
+                barThickness: 30, // Keep original for all screens
+                categoryPercentage: 0.8,
+                barPercentage: 0.9,
             },
-            beginAtZero: true,
+            y: {
+                grid: {
+                    display: true,
+                    drawTicks: false,
+                },
+                border: {
+                    display: false,
+                },
+                ticks: {
+                    stepSize: 500,
+                    callback: function(value: string | number) {
+                        return Number(value).toString();
+                    },
+                    padding: 10,
+                },
+                beginAtZero: true,
+            },
         },
-    },
-    plugins: {
-        legend: { 
-            position: 'top',
-            align: 'start',
-            labels: {
-                boxWidth: 12,
-                padding: 10,
-                usePointStyle: true,
-                pointStyle: 'rect',
-            }
-        },
-        title: { display: false },
-        tooltip: {
-            callbacks: {
-                label: function(context: any) {
-                    return `${context.dataset.label}: ${context.parsed.y}`;
+        plugins: {
+            legend: { 
+                position: 'top',
+                align: 'start',
+                labels: {
+                    boxWidth: 12,
+                    padding: 10,
+                    usePointStyle: true,
+                    pointStyle: 'rect',
+                }
+            },
+            title: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: function(context: any) {
+                        return `${context.dataset.label}: ${context.parsed.y}`;
+                    }
                 }
             }
-        }
-    },
-};
+        },
+    };
+
     return (
         <div className="bg-white rounded-2xl p-4 theme-shadow w-full">
             <div className="flex justify-between items-center">
@@ -151,7 +170,9 @@ const MedicationWiseChart = () => {
                     ))}
                 </div>
             </div>
-            <Bar data={data} options={options} />
+            <div className="w-full h-[calc(100%-50px)]">
+                <Bar data={data} options={options} />
+            </div>
         </div>
     );
 };

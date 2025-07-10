@@ -1,5 +1,6 @@
 import Loading from "@/components/common/Loading";
 import PrescriberCard from "@/components/PrescriberCard";
+import { getAllUserPrescribers } from "@/services/adminService";
 import { getAllPrescribers } from "@/services/pharmacyService";
 import { RootState } from "@/store";
 import React, { useEffect, useRef, useState } from "react";
@@ -11,12 +12,13 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     const dispatch = useDispatch();
     const { user } = useSelector((state: RootState) => state.auth);
     const [isLoading, setIsLoading] = useState(false);
+    const [updatedPresData, setUpdatedPresData] = useState([]);
 
     const fetchAllPrescribers = async () => {
+        setIsLoading(true);
         if (isAdmin) {
-            return;
+            await getAllUserPrescribers(dispatch).then(() => setIsLoading(false));
         } else {
-            setIsLoading(true);
             await getAllPrescribers(dispatch, user?.id).then(() => setIsLoading(false));
         }
     };
@@ -28,6 +30,16 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
         }
     }, []);
 
+    useEffect(() => {
+        setUpdatedPresData(prescribersData.map((item: any) => ({ 
+            prescriber: item.prescriber || item.firstName + " " + item.lastName,
+            prescriberPhone: item.prescriberPhone || item.phone,
+            prescriberAddress: item.prescriberAddress || item.address,
+            prescriberCity: item.prescriberCity || item.city,
+            npi: item.npi
+        })))
+    }, [prescribersData]);
+
     return (
         <div className="bg-white rounded-lg theme-shadow p-4 h-full">
             <h1 className="text-xl font-medium tracking-tighter">Prescribers List</h1>
@@ -36,7 +48,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
                     <div className="text-center py-4 w-10 text-gray-500">
                         <Loading />
                     </div>
-                ) : prescribersData.length > 0 ? prescribersData.map((item: any) => (
+                ) : updatedPresData.length > 0 ? updatedPresData.map((item: any) => (
                     <PrescriberCard key={item.prescriber} prescriber={item} isAdmin={isAdmin} isDetails={false} />
                 )) : <p>Data not found.</p>}
             </div>
