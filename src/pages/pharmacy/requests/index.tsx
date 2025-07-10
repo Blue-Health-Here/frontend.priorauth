@@ -133,25 +133,26 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
         }
     }, [reqsData]);
     
-    const handleSubmitStatusChange = async (values: any) => {
-        console.log(values, "values");
+    const handleSubmitStatusChange = async (value: any) => {
+        console.log(value, "value");
     };
     
     const requestStatusTemplate = (rowData: any, field: any) => {
         if (isAdmin) {
             return <RequestStatusDropdown
-                className={`!border-0 max-w-58 !text-sm status-dropdown`}
+                className={`!border-0 max-w-48 !text-sm status-dropdown`}
                 selectedValue={rowData[field]} 
-                handleChange={handleSubmitStatusChange}
+                handleChange={(value: any) => handleSubmitStatusChange(value)}
                 data={reqStatusesData.map((item: any) => ({ name: item.name, code: item.id }))} 
             />
+        } else {
+            const statusClass = getStatusClass(rowData[field]);
+            return (
+                <div className={`text-sm font-medium truncate px-4 py-2 rounded-full max-w-58 ${statusClass}`}>
+                    {rowData[field]}
+                </div>
+            );
         }
-        const statusClass = getStatusClass(rowData[field]);
-        return (
-            <div className={`text-sm font-medium truncate px-4 py-2 rounded-full max-w-58 ${statusClass}`}>
-                {rowData[field]}
-            </div>
-        );
     };
 
     const toggleColumn = (columnField: any) => {
@@ -175,11 +176,12 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
     };
 
     const handleStatusChange = (status: any) => {
+        console.log(status, "status");
         if (status?.length > 0) {
-            const filteredData = filterRequestsByStatus(filteredRequests, status);
+            const filteredData = filterRequestsByStatus(groupByField(requestsData, selectedFilterField), status);
             setFilteredRequests(filteredData);
         } else {
-            setFilteredRequests(filteredRequests);
+            setFilteredRequests(groupByField(requestsData, selectedFilterField));
         }
     };
 

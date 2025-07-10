@@ -243,34 +243,24 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                 <PageHeader requestDetails={requestDetails} isAdmin={isAdmin} />
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-cols-5 gap-4">
                     <div className="col-span-1 lg:col-span-2 space-y-4">
-                        <div className="p-4 rounded-xl border border-quaternary-navy-blue lg:sticky lg:top-6">
+                        {requestDetails && <div className="p-4 rounded-xl border border-quaternary-navy-blue lg:sticky lg:top-6">
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                <div>
-                                    <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                        DOS
-                                    </p>
-                                    <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">
-                                        5/5/2025
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                        CMM Key
-                                    </p>
-                                    <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">
-                                        {requestDetails && requestDetails?.key}
-                                    </p>
-                                </div>
-                                <div className="col-span-2 sm:col-span-1">
-                                    <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                        CMM Key 2
-                                    </p>
-                                    <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">
-                                        BM8DJD89
-                                    </p>
-                                </div>
+                                {[
+                                    { label: "DOS", value: requestDetails.createdAt?.split("T")[0] || '-' },
+                                    { label: "CMM Key", value: requestDetails?.key },
+                                    { label: "CMM Key 2", value: requestDetails?.key },
+                                ].map((item: any, index: number) => {
+                                    return (
+                                        <div key={index}>
+                                            <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                                {item.label}
+                                            </p>
+                                            <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">{item.value}</p>
+                                        </div>
+                                    )
+                                })}
                             </div>
-                        </div>
+                        </div>}
 
                         <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
                             <CardHeader title="Status" />
