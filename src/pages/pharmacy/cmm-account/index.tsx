@@ -4,10 +4,12 @@ import UnlockAccessInfoModal from "./UnlockAccessInfoModal";
 import FilterField from "@/components/common/FilterField";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import SearchField from "@/components/common/SearchField";
+import ThemeButtonTabs from "@/components/ThemeButtonTabs";
+import ThemeButton from "@/components/common/ThemeButton";
+import { GoLock } from "react-icons/go";
+import { getFilterLabel, groupByField } from "@/utils/helper";
 
 const CMMAccountDatabase = () => {
-    const [isOpenModal, setIsOpenModal] = useState(false);
-    const [selectedFilterField, setSelectedFilterField] = useState("request_status");
     const sampleData = [
         {
             id: 1,
@@ -31,7 +33,7 @@ const CMMAccountDatabase = () => {
         },
         {
             id: 3,
-            name: 'Sophia Williams',
+            name: 'Razan Ahmad',
             officeEmail: 'sophia.w@email.com',
             officePassword: 'password123',
             faxNumber: '(987) 654-3210',
@@ -143,24 +145,21 @@ const CMMAccountDatabase = () => {
         }
     ];
 
-    const [visibleColumns, setVisibleColumns] = useState(
-        columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: col.visible !== false }), {})
-    );
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [selectedFilterField, setSelectedFilterField] = useState("");
+    const [activeTab, setActiveTab] = useState("Prescribers");
+    const [filteredCMMAccountDatabase, setfilteredCMMAccountDatabase] = useState<any>([]);
+    const [visibleColumns, setVisibleColumns] = useState(columns.reduce((acc: any, col: any) => ({ 
+        ...acc, [col.field]: col.visible !== false 
+    }), {}));
     const [isChecked, setIsChecked] = useState<boolean>(false);
     const [globalFilter, setGlobalFilter] = useState('');
 
-    const handleRowClick = (event: any) => {
-        console.log('Row clicked:', event.data);
-    };
-
+    const handleRowClick = (event: any) => {console.log('Row clicked:', event.data)};
     const handleOpenPasswordModal = (event: any) => {
         event.stopPropagation();
         event.preventDefault();
         setIsOpenModal(true);
-    };
-
-    const closeModal = () => {
-        setIsOpenModal(false);
     };
 
     const toggleColumn = (columnField: any) => {
@@ -171,42 +170,49 @@ const CMMAccountDatabase = () => {
     };
 
     const clearSelection = () => {
-        setVisibleColumns(
-            columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: false }), {})
-        );
+        setVisibleColumns(columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: false }), {}));
         setIsChecked(false);
     };
 
     const selectAll = (value: any) => {
-        setVisibleColumns(
-            columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: value }), {})
-        );
+        setVisibleColumns(columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: value }), {}));
     };
-    
+
     const handleFilterChange = (field: string) => {
         setSelectedFilterField(field);
-        // console.log("Selected filter:", field);
     };
 
     const header = (
-        <div className="flex gap-2 items-center h-12"> {/* Set fixed height here */}
-            <SearchField globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
-
-            <div className="inline-flex h-full items-center gap-2">
-                <FilterField columns={columns}
-                    selectedValue={selectedFilterField}
-                    onChange={handleFilterChange} />
-                <ToggleColumnsField
-                    clearSelection={clearSelection}
-                    selectAll={selectAll}
-                    setIsChecked={setIsChecked}
-                    isChecked={isChecked}
-                    columns={columns}
-                    visibleColumns={visibleColumns}
-                    toggleColumn={toggleColumn}
-                />
+        <>
+            <div className="flex gap-2 items-center h-12 flex-wrap">
+                <ThemeButtonTabs 
+                    data={['Prescribers', 'Pharmacy', 'Barrons']} 
+                    activeTab={activeTab} setActiveTab={setActiveTab} />
+                <div className="inline-flex h-full items-center gap-2 ml-auto">
+                    <SearchField globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
+                    <ToggleColumnsField
+                        clearSelection={clearSelection}
+                        selectAll={selectAll}
+                        setIsChecked={setIsChecked}
+                        isChecked={isChecked}
+                        columns={columns}
+                        visibleColumns={visibleColumns}
+                        toggleColumn={toggleColumn}
+                    />
+                    <FilterField columns={columns}
+                        selectedValue={selectedFilterField} onChange={handleFilterChange} />
+                    <ThemeButton variant="primary" type="button">
+                        <p className="flex gap-2 items-center">
+                            <span>Unlock Access</span>
+                            <GoLock className="text-base" />
+                        </p>
+                    </ThemeButton>
+                </div>
             </div>
-        </div>
+            {selectedFilterField && <h2 className="mt-2 capitalize bg-status-bg-sky-blue w-max font-semibold text-primary-black text-sm px-4 py-2 rounded-lg">
+                {getFilterLabel(selectedFilterField)}
+            </h2>}
+        </>
     )
 
     useEffect(() => {
@@ -217,15 +223,26 @@ const CMMAccountDatabase = () => {
         }
     }, [visibleColumns]);
 
+    useEffect(() => {
+        const normalizedData = [...sampleData];
+        const filterValue = globalFilter.toLowerCase();
+        const filtered = normalizedData.filter((item: any) => {
+            if (typeof item[selectedFilterField] === 'string') {
+                return item[selectedFilterField].toLowerCase().includes(filterValue);
+            }
+            return false;
+        });
+
+        setfilteredCMMAccountDatabase(groupByField(filtered, selectedFilterField))
+    }, [selectedFilterField]);
+
     return (
         <div className='bg-primary-white rounded-2xl theme-datatable theme-shadow px-4 py-4'>
-            <div>
-                <h2 className='text-lg sm:text-xl lg:text-2xl font-semibold text-primary-black whitespace-nowrap pb-4'>CMM Account Database</h2>
-            </div>
-            {isOpenModal && <UnlockAccessInfoModal isOpen={isOpenModal} onClose={closeModal} />}
+            <h2 className='text-xl font-semibold text-primary-black whitespace-nowrap pb-4'>CMM Account Database</h2>
+            {isOpenModal && <UnlockAccessInfoModal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)} />}
             <ThemeDataTable
                 header={header}
-                data={sampleData}
+                data={selectedFilterField !== "" ? filteredCMMAccountDatabase : sampleData}
                 columns={columns}
                 searchPlaceholder="Search..."
                 onRowClick={handleRowClick}

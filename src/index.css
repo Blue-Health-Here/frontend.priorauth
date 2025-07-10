@@ -344,10 +344,6 @@ a:focus {
   width: 2rem;
 }
 
-.custom-paginator.p-datatable .p-datatable-tbody > tr > td {
-  max-width: 7rem;
-}
-
 .custom-paginator .p-paginator-bottom .p-dropdown .p-dropdown-label {
   color: var(--status-text-lilac-sky);
   line-height: 1rem;

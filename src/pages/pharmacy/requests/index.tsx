@@ -13,6 +13,7 @@ import RequestStatusDropdownField from "./RequestStatusDropdownField";
 import SearchField from "@/components/common/SearchField";
 import Loading from "@/components/common/Loading";
 import RequestStatusDropdown from "@/components/RequestStatusDropdown";
+import ThemeButtonTabs from "@/components/ThemeButtonTabs";
 
 const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
     const columns = [
@@ -190,22 +191,10 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
 
     const tableHeader = (
         <>
-            <div className="flex gap-2 items-center h-12">
-                <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5 h-full">
-                    {['All Requests', 'Active Requests'].map((item) => (
-                        <button
-                            key={item}
-                            type='button'
-                            onClick={() => setActiveRequestTab(item)}
-                            className={`px-3 py-2 cursor-pointer rounded-md font-medium transition-colors ${activeRequestTab === item
-                                ? 'bg-quaternary-navy-blue text-primary-navy-blue'
-                                : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
-                                }`}
-                        >
-                            {item}
-                        </button>
-                    ))}
-                </div>
+            <div className="flex gap-2 items-center h-12 flex-wrap">
+                <ThemeButtonTabs 
+                    data={['All Requests', 'Active Requests']} 
+                    activeTab={activeRequestTab} setActiveTab={setActiveRequestTab} />
                 <div className="inline-flex h-full items-center gap-2 ml-auto">
                     <SearchField globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
                     <FilterField
