@@ -9,7 +9,7 @@ const SearchField: React.FC<any> = ({ globalFilter, setGlobalFilter }) => {
                 value={globalFilter}
                 onChange={(e: any) => setGlobalFilter(e.target.value)}
                 placeholder="Search for request here..."
-                className="!pl-10 !rounded-xl !border-light-stroke h-full !text-sm" // Force full height
+                className="!pl-10 !rounded-lg !border-light-stroke h-full !text-sm" // Force full height
             />
             <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                 <FiSearch className="w-4 h-4" />

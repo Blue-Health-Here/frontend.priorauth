@@ -33,7 +33,7 @@ const ToggleColumnsField: React.FC<any> = ({
             <Button
                 severity="secondary"
                 outlined
-                className="!text-sm !rounded-xl !border-light-stroke !text-secondary-black !font-medium"
+                className="!text-sm !rounded-lg !border-light-stroke !text-secondary-black !font-medium"
                 onClick={() => setShowColumnDropdown(!showColumnDropdown)}
             >
                 <span className="flex items-center gap-2">
@@ -43,7 +43,7 @@ const ToggleColumnsField: React.FC<any> = ({
             </Button>
 
             {showColumnDropdown && (
-                <div className="absolute right-0 top-full mt-1 p-4 w-64 bg-primary-white border border-light-stroke rounded-xl theme-shadow z-10">
+                <div className="absolute right-0 top-full mt-1 p-4 w-64 bg-primary-white border border-light-stroke rounded-lg theme-shadow z-10">
                     <div className="mb-4 pb-2 border-b border-light-stroke">
                         <label
                             htmlFor="select-all-columns"

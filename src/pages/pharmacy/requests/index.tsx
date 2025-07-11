@@ -8,13 +8,13 @@ import AddRequestModal from "./AddRequestModal";
 import { getAllPharmacyReqs, getAllReqStatuses, updateRequestStatus } from "@/services/pharmacyService";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { filterRequestsByStatus, getFilterLabel, getStatusClass, groupByField, transformPharmacyRequest } from "@/utils/helper";
+import { filterRequestsByStatus, getStatusClass, groupByField, transformPharmacyRequest } from "@/utils/helper";
 import RequestStatusDropdownField from "./RequestStatusDropdownField";
 import SearchField from "@/components/common/SearchField";
 import Loading from "@/components/common/Loading";
 import RequestStatusDropdown from "@/components/RequestStatusDropdown";
 import ThemeButtonTabs from "@/components/ThemeButtonTabs";
-import { getAvatarInfo } from "@/utils/avatar";
+import NameBadge from "@/components/NameBadge";
 
 const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
     const columns = [
@@ -25,23 +25,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
             filterable: true,
             sortable: true,
             customTemplate: true,
-            render: (rowData: any, field: any) => {
-                const { initials, bgColor }: any = getAvatarInfo(rowData[field].name);
-                return (
-                    <div className="flex gap-2 items-center">
-                        <span 
-                            className="w-10 h-10 rounded-full text-center align-middle leading-10"
-                            style={{
-                                backgroundColor: bgColor,
-                                color: "white",
-                            }}
-                        >
-                            {initials}
-                        </span>
-                        <span>{rowData[field].name}</span>
-                    </div>
-                )
-            }
+            render: (rowData: any, field: any) => <NameBadge data={rowData[field]} />
         },
         {
             field: 'medication',
@@ -57,23 +41,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
             filterable: true,
             sortable: true,
             customTemplate: true,
-            render: (rowData: any, field: any) => {
-                const { initials, bgColor }: any = getAvatarInfo(rowData[field].name);
-                return (
-                    <div className="flex gap-2 items-center">
-                        <span 
-                            className="flex-basis w-10 h-10 rounded-full text-center align-middle leading-10"
-                            style={{
-                                backgroundColor: bgColor,
-                                color: "white",
-                            }}
-                        >
-                            {initials}
-                        </span>
-                        <span className="flex-basis">{rowData[field].name}</span>
-                    </div>
-                )
-            }
+            render: (rowData: any, field: any) => <NameBadge data={rowData[field]} />
         },
         {
             field: 'submittedOn',
@@ -245,9 +213,9 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
                     />
                 </div>
             </div>
-            <h2 className="mt-2 capitalize bg-status-bg-sky-blue w-max font-semibold text-primary-black text-sm px-4 py-2 rounded-lg">
+            {/* <h2 className="mt-2 capitalize bg-status-bg-sky-blue w-max font-semibold text-primary-black text-sm px-4 py-2 rounded-lg">
                 {getFilterLabel(selectedFilterField)}
-            </h2>
+            </h2> */}
         </>
     );
 
@@ -286,7 +254,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
     }, [globalFilter, selectedFilterField, requestsData]);
 
     return (
-        <div className='bg-primary-white rounded-2xl theme-datatable theme-shadow px-4 py-4'>
+        <div className='bg-primary-white rounded-lg theme-datatable theme-shadow px-4 py-4'>
             {isModalOpen && <AddRequestModal isOpen={isModalOpen} onClose={(isAdded?: boolean) => {
                 setIsModalOpen(false);
                 if (isAdded) fetchInitialData();
@@ -294,10 +262,10 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
             <div className="flex justify-between gap-4 items-center pb-2 h-14 flex-wrap">
                 <h2 className='text-xl font-semibold text-primary-black whitespace-nowrap'>Your Requests</h2>
                 <div className="inline-flex h-full gap-2 sm:ml-auto">
-                    <ThemeButton type="button" className="!h-full min-w-max rounded-xl" variant="secondary">
+                    <ThemeButton type="button" className="!h-full min-w-max rounded-lg" variant="secondary">
                         Open Portal
                     </ThemeButton>
-                    <ThemeButton className="w-full !h-full rounded-xl" variant="primary" type="button" onClick={() => setIsModalOpen(true)}>
+                    <ThemeButton className="w-full !h-full rounded-lg" variant="primary" type="button" onClick={() => setIsModalOpen(true)}>
                         Add Request
                     </ThemeButton>
                 </div>
@@ -313,6 +281,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
                     data={filteredRequests}
                     columns={columns}
                     pageSize={5}
+                    selectedFilterField={selectedFilterField}
                     visibleColumns={visibleColumns}
                     globalFilter={globalFilter}
                     setGlobalFilter={setGlobalFilter}
@@ -321,18 +290,6 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
                         navigate(location.pathname + "/" + row.data.id + "/request-details")
                     }
                 />
-                // <ThemeDataTable
-                //     header={tableHeader}
-                //     data={filteredRequests}
-                //     columns={columns}
-                //     pageSize={5}
-                //     searchPlaceholder="Search"
-                //     onRowClick={(row: any) => navigate(location.pathname + "/" + row.data.id + "/request-details")}
-                //     visibleColumns={visibleColumns}
-                //     globalFilter={globalFilter}
-                //     setGlobalFilter={setGlobalFilter}
-                //     globalFilterFields={['patient.name', 'medication', 'prescriber.name', 'submittedOn', 'request_status', 'notes', 'lastModified']}
-                // />
             )}
         </div>
     );
