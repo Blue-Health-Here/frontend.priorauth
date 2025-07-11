@@ -196,7 +196,14 @@ export const getAllPharmacyReqs = async (dispatch: AppDispatch) => {
             }
         },
         errorMessage: "Requests not found."
-    })
+    });
+};
+
+export const updateRequestStatus = async (dispatch: AppDispatch, id?: string, data?: any) => {
+    return apiHandler(dispatch, 'put', `/pa_request/update/${id}`, {
+        data,
+        successMessage: 'Status has been updated successfully!'
+    });
 };
 
 export const extractMedsICDCodes = async (dispatch: AppDispatch, data: any) => {
