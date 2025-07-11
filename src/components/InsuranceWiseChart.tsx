@@ -7,16 +7,29 @@ import {
     Title,
     Tooltip,
     Legend,
+    ChartOptions
 } from "chart.js";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { timeRanges } from "@/utils/constants";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const InsuranceWiseChart = () => {
-    const [range, setRange] = useState("Today");
+type TimeRange = "Today" | "W" | "M" | "Y";
 
-    const datasetsByRange: any = {
+const InsuranceWiseChart = () => {
+    const [range, setRange] = useState<TimeRange>("Today");
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 640);
+        };
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const datasetsByRange: Record<TimeRange, number[][]> = {
         Today: [
             [1800, 1902, 1600, 1710, 1750, 1778, 1430, 1967, 1559, 2305, 856, 2245],
             [300, 400, 250, 320, 300, 420, 200, 330, 210, 280, 120, 180],
@@ -37,21 +50,23 @@ const InsuranceWiseChart = () => {
 
     const [approved, denied] = datasetsByRange[range];
 
+    const labels = [
+        "Golden State Health Plan",
+        "CareSource Insurance",
+        "Pacific Blue Cross",
+        "Northstar Health",
+        "Sunrise Health Insurance",
+        "Aspire Health Network",
+        "Evergreen Health Plan",
+        "Summit Health Insurance",
+        "Celtic Insurance Group",
+        "Sunrise Health Insurance",
+        "Bright Path Health",
+        "Aspire Health Network",
+    ].map(label => isMobile ? (label.length > 12 ? `${label.substring(0, 10)}...` : label) : label);
+
     const data = {
-        labels: [
-            "Golden State Health Plan",
-            "CareSource Insurance",
-            "Pacific Blue Cross",
-            "Northstar Health",
-            "Sunrise Health Insurance",
-            "Aspire Health Network",
-            "Evergreen Health Plan",
-            "Summit Health Insurance",
-            "Celtic Insurance Group",
-            "Sunrise Health Insurance",
-            "Bright Path Health",
-            "Aspire Health Network",
-        ],
+        labels,
         datasets: [
             {
                 label: "Approval",
@@ -68,7 +83,8 @@ const InsuranceWiseChart = () => {
         ],
     };
 
-    const options: any = {
+    // Original desktop options (unchanged)
+    const desktopOptions: ChartOptions<"bar"> = {
         indexAxis: "y",
         responsive: true,
         plugins: {
@@ -77,45 +93,88 @@ const InsuranceWiseChart = () => {
         },
         scales: {
             x: {
-                grid: {
-                    display: true 
-                },
-                 border: {
-                    display: false, 
-                },
+                grid: { display: true },
+                border: { display: false },
             },
             y: {
-                grid: {
-                    display: false 
-                },
-                 border: {
-                    display: false, 
-                },
+                grid: { display: false },
+                border: { display: false },
+            }
+        }
+    };
+
+    // Mobile-specific adjustments (only changed layout margins)
+    const mobileOptions: ChartOptions<"bar"> = {
+        ...desktopOptions,
+        maintainAspectRatio: false,
+        layout: {
+            padding: {
+                left: 20 // Add left padding to ensure labels are visible
+            }
+        },
+        plugins: {
+            ...desktopOptions.plugins,
+            legend: {
+                ...desktopOptions.plugins?.legend,
+                labels: {
+                    ...desktopOptions.plugins?.legend?.labels,
+                    boxWidth: 8,
+                    padding: 10,
+                    font: { 
+                        size: 9 
+                    }
+                }
+            }
+        },
+        scales: {
+            ...desktopOptions.scales,
+            y: {
+                ...desktopOptions.scales?.y,
+                ticks: {
+                    ...desktopOptions.scales?.y?.ticks,
+                    font: {
+                        size: 9
+                    }
+                }
+            },
+            x: {
+                ...desktopOptions.scales?.x,
+                ticks: {
+                    ...desktopOptions.scales?.x?.ticks,
+                    font: {
+                        size: 9
+                    }
+                }
             }
         }
     };
 
     return (
         <div className="bg-white rounded-2xl p-4 theme-shadow w-full">
-            <div className="flex justify-between items-center mb-2">
-                <h2 className="text-lg font-semibold">Insurance wise Analysis</h2>
-                <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5">
-                    {timeRanges.map((period) => (
+            <div className={`flex ${isMobile ? 'flex-col gap-1' : 'justify-between items-center'} mb-2`}>
+                <h2 className={`${isMobile ? 'text-sm' : 'text-lg'} font-semibold`}>Insurance Analysis</h2>
+                <div className={`flex ${isMobile ? 'flex-wrap gap-1' : 'space-x-2'} text-xs border border-quaternary-navy-blue rounded-lg p-0.5`}>
+                    {(timeRanges as TimeRange[]).map((period) => (
                         <button
                             key={period}
-                            type='button'
                             onClick={() => setRange(period)}
-                            className={`px-3 py-2 cursor-pointer rounded-md transition-colors ${range === period
+                            className={`${isMobile ? 'px-2 py-1 text-[10px]' : 'px-3 py-2'} rounded-md ${
+                                range === period
                                 ? 'bg-quaternary-navy-blue text-primary-navy-blue'
                                 : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
-                                }`}
+                            }`}
                         >
                             {period}
                         </button>
                     ))}
                 </div>
             </div>
-            <Bar data={data} options={options} />
+            <div className={isMobile ? "h-[300px] ml-4" : ""}> {/* Added ml-4 for mobile */}
+                <Bar 
+                    data={data} 
+                    options={isMobile ? mobileOptions : desktopOptions} 
+                />
+            </div>
         </div>
     );
 };

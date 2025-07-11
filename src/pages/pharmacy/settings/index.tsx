@@ -17,7 +17,7 @@ interface ProfileFormValues {
   fullAddress: string;
 }
 
-export function PharmacySettings() {
+const PharmacySettings = () => {
   const dispatch = useDispatch();
   const { profileData, isLoading } = useSelector((state: RootState) => ({
     profileData: state.global.profileData,
@@ -101,36 +101,36 @@ export function PharmacySettings() {
   }
 
   return (
-    <div className="">
-      <div className="bg-white rounded-xl theme-shadow">
-        <div className="px-6 pt-6">
-          <h1 className="text-xl font-medium tracking-tighter">
-            Profile Settings
-          </h1>
-        </div>
+    <div className="bg-white rounded-xl theme-shadow">
+      <div className="px-6 pt-6">
+        <h1 className="text-xl font-medium tracking-tighter">
+          Profile Settings
+        </h1>
+      </div>
 
-        <div className="p-6 space-y-6">
-          <SettingsCard className="bg-transparent shadow-none p-0">
-            <EditableFormSection
-              onEdit={() => setIsEditingProfile(true)}
-              onCancel={() => setIsEditingProfile(false)}
-              onSubmit={handleSubmit}
-              profileData={initialFormData}
-              isEditingProfile={isEditingProfile}
-              initialValues={{
-                name: initialFormData.name,
-                email: initialFormData.email,
-                phoneNumber: initialFormData.phoneNumber,
-                location: initialFormData.location,
-                fullAddress: initialFormData.fullAddress,
-              }}
-              validationSchema={pharmacyValidationSchema}
-            />
-          </SettingsCard>
+      <div className="p-6 space-y-6">
+        <SettingsCard className="bg-transparent shadow-none p-0">
+          <EditableFormSection
+            onEdit={() => setIsEditingProfile(true)}
+            onCancel={() => setIsEditingProfile(false)}
+            onSubmit={handleSubmit}
+            profileData={initialFormData}
+            isEditingProfile={isEditingProfile}
+            initialValues={{
+              name: initialFormData.name,
+              email: initialFormData.email,
+              phoneNumber: initialFormData.phoneNumber,
+              location: initialFormData.location,
+              fullAddress: initialFormData.fullAddress,
+            }}
+            validationSchema={pharmacyValidationSchema}
+          />
+        </SettingsCard>
 
-          <SecuritySettings />
-        </div>
+        <SecuritySettings />
       </div>
     </div>
   );
 }
+
+export default PharmacySettings;

@@ -23,8 +23,8 @@ const Header: React.FC = () => {
           <img src="/images/logo.svg" alt="PriorAuth Logo" className="h-7 sm:h-8 lg:h-10 cursor-pointer" />
         </ScrollLink>
         <nav className="hidden md:flex justify-center space-x-8 text-primary-navy-blue text-lg">
-          {homeSections.map((item) => (
-            <ScrollLink to={item.path} smooth={true} duration={800}
+          {homeSections.map((item: any, index: number) => (
+            <ScrollLink key={index} to={item.path} smooth={true} duration={800}
               className="relative after:content-[''] after:block after:h-[2px] after:bg-primary-navy-blue after:scale-x-0 after:transition-transform after:duration-300 after:origin-left hover:after:scale-x-100 after:mt-[0.px] cursor-pointer"
             >
               {item.title}

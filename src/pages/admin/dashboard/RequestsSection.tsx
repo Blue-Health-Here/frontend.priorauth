@@ -1,6 +1,6 @@
 import React from 'react'
 import DataTable from '../../../components/common/DataTable'
-import { requestsData } from '../../../utils/constants'
+// import { requestsData } from '../../../utils/constants'
 import TableHeader from '../../../components/common/TableHeader'
 
 const RequestsSection: React.FC = () => {
@@ -17,7 +17,7 @@ const RequestsSection: React.FC = () => {
         { header: 'Pharmacy', key: 'pharmacy' },
         { header: 'Status', key: 'status' },
       ]}
-      data={requestsData}
+      data={[]}
     />
   </div>
   )

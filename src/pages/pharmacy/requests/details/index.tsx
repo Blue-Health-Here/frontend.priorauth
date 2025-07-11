@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FiFileText } from "react-icons/fi";
-import { FaPlus } from "react-icons/fa6";
 import CardHeader from "@/components/common/CardHeader";
 import FileDropzone from "@/components/common/FileDropzone";
 import UploadFileList from "@/components/common/UploadFileList";
@@ -9,8 +8,11 @@ import ProgressNotesModal from "@/components/ProgressNotesModal";
 import ThemeButton from "@/components/common/ThemeButton";
 import PageHeader from "./PageHeader";
 import InfoDetails from "./InfoDetails";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { getRequestDetails } from "@/services/pharmacyService";
 
-const PharmacyRequestDetails: React.FC<any> = () => {
+const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     const statusItems = [
         {
             id: 1,
@@ -46,11 +48,30 @@ const PharmacyRequestDetails: React.FC<any> = () => {
             statusClass: "bg-status-bg-rose-blush text-status-text-rose-blush"
         }
     ];
-
+    const [isLoading, setIsLoading] = useState(false);
     const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const canvasRef = useRef(null);
+    const [requestDetails, setRequestDetails] = useState<any>(null);
+    const isFetchedReqDetails = useRef(false);
+    const dispatch = useDispatch();
+    const { id: reqId } = useParams();
+
+    useEffect(() => {
+        const fetchRequestDetails = async () => {
+            setIsLoading(true);
+            const response = await getRequestDetails(dispatch, reqId);
+            if (response) {
+                setRequestDetails(response);
+                setIsLoading(false);
+            }
+        };
+        if (!isFetchedReqDetails.current) {
+            fetchRequestDetails();
+            isFetchedReqDetails.current = true;
+        }
+    }, []);
 
     useEffect(() => {
         if (!uploadedFiles.some((file) => file.status === "uploading"))
@@ -210,43 +231,36 @@ const PharmacyRequestDetails: React.FC<any> = () => {
     const handleAddTag = (updateFn: (prev: UploadedFile[]) => UploadedFile[]) => {
         setUploadedFiles(updateFn);
     };
+
     const closeModal = () => {
         setIsModalOpen(false);
-    }
+    };
 
     return (
         <>
             <ProgressNotesModal isOpen={isModalOpen} onClose={closeModal} />
             <div className="p-4 bg-white rounded-xl theme-shadow relative">
-                <PageHeader />
+                <PageHeader requestDetails={requestDetails} isAdmin={isAdmin} />
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-cols-5 gap-4">
                     <div className="col-span-1 lg:col-span-2 space-y-4">
-                        <div className="p-4 rounded-xl border border-quaternary-navy-blue lg:sticky lg:top-6">
+                        {requestDetails && <div className="p-4 rounded-xl border border-quaternary-navy-blue lg:sticky lg:top-6">
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                <div>
-                                    <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                        DOS
-                                    </p>
-                                    <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">
-                                        5/5/2025
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                        CMM Key
-                                    </p>
-                                    <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">-</p>
-                                </div>
-                                <div className="col-span-2 sm:col-span-1">
-                                    <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                        CMM Key 2
-                                    </p>
-                                    <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">
-                                        BM8DJD89
-                                    </p>
-                                </div>
+                                {[
+                                    { label: "DOS", value: requestDetails.createdAt?.split("T")[0] || '-' },
+                                    { label: "CMM Key", value: requestDetails?.key },
+                                    { label: "CMM Key 2", value: requestDetails?.key },
+                                ].map((item: any, index: number) => {
+                                    return (
+                                        <div key={index}>
+                                            <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                                {item.label}
+                                            </p>
+                                            <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">{item.value}</p>
+                                        </div>
+                                    )
+                                })}
                             </div>
-                        </div>
+                        </div>}
 
                         <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
                             <CardHeader title="Status" />
@@ -278,27 +292,18 @@ const PharmacyRequestDetails: React.FC<any> = () => {
                                         </div>
                                     ))}
                                 </div>
-                                <div className="flex gap-4 mt-8">
-                                    <ThemeButton
-                                        variant="tertiary"
-                                        className="flex-1 gap-2 px-4 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-                                        <span className="flex gap-2 items-center">
-                                            Check Notes
-                                            <FiFileText />
-                                        </span>
-                                    </ThemeButton>
-                                    <ThemeButton
-                                        className="flex-1 gap-2 px-4 py-3 bg-blue-900 text-white rounded-lg hover:bg-blue-800 transition-colors">
-                                        <span className="flex gap-2 items-center">
-                                            Add Notes
-                                            <FaPlus />
-                                        </span>
-                                    </ThemeButton>
-                                </div>
+                                <ThemeButton
+                                    variant="tertiary"
+                                    className="mt-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                                    <span className="flex gap-2 items-center">
+                                        Check Notes
+                                        <FiFileText />
+                                    </span>
+                                </ThemeButton>
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-xl border border-quaternary-navy-blue relative">
+                        <div className="bg-white rounded-xl border border-quaternary-navy-blue relative overflow-hidden">
                             <CardHeader title="Files" />
                             <div className="p-4 flex flex-col gap-4">
                                 <div className="inline-flex flex-col gap-1">
@@ -342,7 +347,7 @@ const PharmacyRequestDetails: React.FC<any> = () => {
                         </div>
                     </div>
                     
-                    <InfoDetails />
+                    <InfoDetails isLoading={isLoading} requestDetails={requestDetails} />
                 </div>
             </div>
         </>

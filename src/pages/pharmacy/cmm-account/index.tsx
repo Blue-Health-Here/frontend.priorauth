@@ -1,16 +1,14 @@
 import ThemeDataTable from "@/components/common/ThemeDataTable";
 import { useEffect, useState } from "react";
 import UnlockAccessInfoModal from "./UnlockAccessInfoModal";
-import FilterField from "@/components/common/FilterField";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import SearchField from "@/components/common/SearchField";
 
 const CMMAccountDatabase = () => {
-    const [isOpenModal, setIsOpenModal] = useState(false);
-    const [selectedFilterField, setSelectedFilterField] = useState("request_status");
     const sampleData = [
         {
             id: 1,
+            pharmacyName: 'ABC Pharmacy 1',
             name: 'Razan Ahmad',
             officeEmail: 'asadrazan12@gmail.com',
             officePassword: 'password123',
@@ -21,6 +19,7 @@ const CMMAccountDatabase = () => {
         },
         {
             id: 2,
+            pharmacyName: 'ABC Pharmacy 2',
             name: 'Liam Johnson',
             officeEmail: 'liam.johnson@email.com',
             officePassword: 'password123',
@@ -31,7 +30,8 @@ const CMMAccountDatabase = () => {
         },
         {
             id: 3,
-            name: 'Sophia Williams',
+            pharmacyName: 'ABC Pharmacy 3',
+            name: 'Razan Ahmad',
             officeEmail: 'sophia.w@email.com',
             officePassword: 'password123',
             faxNumber: '(987) 654-3210',
@@ -41,6 +41,7 @@ const CMMAccountDatabase = () => {
         },
         {
             id: 4,
+            pharmacyName: 'ABC Pharmacy 4',
             name: 'Noah Brown',
             officeEmail: 'noah.brown@email.com',
             officePassword: 'password123',
@@ -51,6 +52,7 @@ const CMMAccountDatabase = () => {
         },
         {
             id: 5,
+            pharmacyName: 'ABC Pharmacy 5',
             name: 'Emma Davis',
             officeEmail: 'emma.davis@email.com',
             officePassword: 'password123',
@@ -143,24 +145,18 @@ const CMMAccountDatabase = () => {
         }
     ];
 
-    const [visibleColumns, setVisibleColumns] = useState(
-        columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: col.visible !== false }), {})
-    );
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [visibleColumns, setVisibleColumns] = useState(columns.reduce((acc: any, col: any) => ({ 
+        ...acc, [col.field]: col.visible !== false 
+    }), {}));
     const [isChecked, setIsChecked] = useState<boolean>(false);
     const [globalFilter, setGlobalFilter] = useState('');
 
-    const handleRowClick = (event: any) => {
-        console.log('Row clicked:', event.data);
-    };
-
+    const handleRowClick = (event: any) => {console.log('Row clicked:', event.data)};
     const handleOpenPasswordModal = (event: any) => {
         event.stopPropagation();
         event.preventDefault();
         setIsOpenModal(true);
-    };
-
-    const closeModal = () => {
-        setIsOpenModal(false);
     };
 
     const toggleColumn = (columnField: any) => {
@@ -171,31 +167,18 @@ const CMMAccountDatabase = () => {
     };
 
     const clearSelection = () => {
-        setVisibleColumns(
-            columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: false }), {})
-        );
+        setVisibleColumns(columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: false }), {}));
         setIsChecked(false);
     };
 
     const selectAll = (value: any) => {
-        setVisibleColumns(
-            columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: value }), {})
-        );
-    };
-    
-    const handleFilterChange = (field: string) => {
-        setSelectedFilterField(field);
-        // console.log("Selected filter:", field);
+        setVisibleColumns(columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: value }), {}));
     };
 
     const header = (
-        <div className="flex gap-2 items-center h-12"> {/* Set fixed height here */}
-            <SearchField globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
-
-            <div className="inline-flex h-full items-center gap-2">
-                <FilterField columns={columns}
-                    selectedValue={selectedFilterField}
-                    onChange={handleFilterChange} />
+        <>
+            <div className="flex gap-2 items-center h-12 flex-wrap">
+                <SearchField globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
                 <ToggleColumnsField
                     clearSelection={clearSelection}
                     selectAll={selectAll}
@@ -206,7 +189,7 @@ const CMMAccountDatabase = () => {
                     toggleColumn={toggleColumn}
                 />
             </div>
-        </div>
+        </>
     )
 
     useEffect(() => {
@@ -219,10 +202,8 @@ const CMMAccountDatabase = () => {
 
     return (
         <div className='bg-primary-white rounded-2xl theme-datatable theme-shadow px-4 py-4'>
-            <div>
-                <h2 className='text-lg sm:text-xl lg:text-2xl font-semibold text-primary-black whitespace-nowrap pb-4'>CMM Account Database</h2>
-            </div>
-            {isOpenModal && <UnlockAccessInfoModal isOpen={isOpenModal} onClose={closeModal} />}
+            <h2 className='text-xl font-semibold text-primary-black whitespace-nowrap pb-4'>CMM Account Database</h2>
+            {isOpenModal && <UnlockAccessInfoModal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)} />}
             <ThemeDataTable
                 header={header}
                 data={sampleData}

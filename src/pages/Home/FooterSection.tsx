@@ -16,7 +16,7 @@ const FooterSection: React.FC = () => {
         <div className="md:col-span-6 lg:col-span-4">
           <div className="flex justify-start md:justify-end flex-wrap gap-4 md:gap-8 text-sm md:text-base lg:text-lg">
             {homeSections.map((item) => (
-              <ScrollLink to={item.path} smooth={true} duration={800} className="cursor-pointer hover:text-primary-sky-blue">{item.title}</ScrollLink>
+              <ScrollLink key={item.path} to={item.path} smooth={true} duration={800} className="cursor-pointer hover:text-primary-sky-blue">{item.title}</ScrollLink>
             ))}
           </div>
         </div>
