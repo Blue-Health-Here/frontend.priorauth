@@ -1,16 +1,17 @@
-import { Formik, Form } from "formik";
+import { Formik, Form, Field } from "formik";
 import ThemeButton from "@/components/common/ThemeButton";
 import DataPoint from "./DataPoint";
 import SectionTitleGrid from "./SectionTitleGrid";
+import toast from "react-hot-toast";
 
 interface Props {
   initialValues: any;
   validationSchema: any;
   onCancel: () => void;
   onEdit: () => void;
-  onSubmit: (values: any) => void;
+  onSubmit: (values: any) => Promise<void>;
   profileData?: any;
-  isEditingProfile?: any;
+  isEditingProfile?: boolean;
 }
 
 export default function EditableFormSection({
@@ -22,13 +23,28 @@ export default function EditableFormSection({
   isEditingProfile,
   onEdit,
 }: Props) {
+  const handleSubmit = async (
+    values: any,
+    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
+  ) => {
+    try {
+      await onSubmit(values);
+    } catch (error) {
+      toast.error("Failed to update profile");
+      console.error("Update error:", error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
+      enableReinitialize
     >
-      {() => (
+      {({ isSubmitting }) => (
         <Form className="space-y-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-1">
@@ -69,15 +85,46 @@ export default function EditableFormSection({
               </button>
             ) : (
               <div className="flex gap-2">
-                <ThemeButton type="submit">
+                <ThemeButton
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={isSubmitting ? "opacity-75" : ""}
+                >
                   <div className="flex items-center gap-2 py-1 px-2">
-                    <span>Save Details</span>
+                    {isSubmitting ? (
+                      <>
+                        <svg
+                          className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        Saving...
+                      </>
+                    ) : (
+                      "Save Details"
+                    )}
                   </div>
                 </ThemeButton>
                 <ThemeButton
                   type="button"
                   variant="tertiary"
                   onClick={onCancel}
+                  disabled={isSubmitting}
                 >
                   <div className="flex items-center gap-2 py-1 px-2">
                     <span>Cancel</span>
@@ -135,20 +182,40 @@ export default function EditableFormSection({
                 data={profileData.phoneNumber}
                 isEditing={isEditingProfile}
                 type="tel"
-              
               />
-              <DataPoint
-                icon={
+
+              {isEditingProfile ? (
+                <div className="flex items-center gap-4">
                   <div className="bg-[#EBF1FF] p-0.5 rounded-md">
                     <img src="/Email.svg" alt="Email" className="w-4 h-4" />
                   </div>
-                }
-                label="Email"
-                name="email"
-                data={profileData.email}
-                isEditing={isEditingProfile}
-                type="email"
-              />
+                  <div className="flex-1">
+                    <label className="text-xs text-gray-500">Email</label>
+                    <div className="w-[456px]">
+                      {" "}
+                      <Field
+                        type="email"
+                        name="email"
+                        disabled
+                        className="w-full text-[#A8A8A8] bg-[#EBEBEB] border border-[#E5E7EB] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent h-[38px]"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <DataPoint
+                  icon={
+                    <div className="bg-[#EBF1FF] p-0.5 rounded-md">
+                      <img src="/Email.svg" alt="Email" className="w-4 h-4" />
+                    </div>
+                  }
+                  label="Email"
+                  name="email"
+                  data={profileData.email}
+                  isEditing={false}
+                />
+              )}
+
               <DataPoint
                 icon={
                   <div className="bg-[#EBF1FF] p-0.5 rounded-md">
