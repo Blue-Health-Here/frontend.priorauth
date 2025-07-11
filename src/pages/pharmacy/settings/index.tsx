@@ -19,11 +19,12 @@ interface ProfileFormValues {
 
 const PharmacySettings = () => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.auth);
   const { profileData, isLoading } = useSelector((state: RootState) => ({
     profileData: state.global.profileData,
     isLoading: state.global.isLoading
   }));
-  
+
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [initialFormData, setInitialFormData] = useState({
     name: "",
@@ -84,15 +85,15 @@ const PharmacySettings = () => {
       location: values.location,
       address: values.fullAddress,
     };
-    
+
     await updateProfileData(dispatch, profileData.id, updateData);
-    
+
     // Update local state
     setInitialFormData(prev => ({
       ...prev,
       ...values
     }));
-    
+
     setIsEditingProfile(false);
   };
 
@@ -131,7 +132,7 @@ const PharmacySettings = () => {
           />
         </SettingsCard>
 
-        <SecuritySettings />
+        {user?.id && <SecuritySettings userId={user?.id} />}
       </div>
     </div>
   );

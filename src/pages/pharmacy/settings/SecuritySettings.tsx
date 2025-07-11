@@ -1,9 +1,13 @@
-import { Form, Formik } from "formik";
+import { Formik, Form } from "formik";
 import InputField from "@/components/common/form/InputField";
 import ThemeButton from "@/components/common/ThemeButton";
 import { changePasswordValidationSchema } from "@/utils/validationSchema";
 import { FiCheck, FiXCircle, FiAlertTriangle } from "react-icons/fi";
 import { useState } from "react";
+import { updateProfilePassword } from "@/services/pharmacyService";
+import { AppDispatch } from "@/store";
+import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 
 const passwordRequirements = [
   { label: "At least 8 characters", test: (pwd: string) => pwd.length >= 8 },
@@ -16,70 +20,140 @@ const passwordRequirements = [
   },
 ];
 
-const SecuritySettings = () => {
-  const [isChangingPassword, setIsChangingPassword] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+const SecuritySettings = ({ userId }: { userId: string }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleSubmit = async (values: {
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+  }) => {
+    try {
+      await updateProfilePassword(dispatch, userId, {
+        oldPassword: values.currentPassword,
+        newPassword: values.newPassword,
+      });
+      setIsEditing(false);
+    } catch (error) {
+      toast.error("Failed to update password");
+      console.error("Password update error:", error);
+    }
+  };
 
   return (
     <div className="bg-white rounded-lg border border-[#CBDAFF] p-3">
       <h3 className="text-base font-semibold text-foreground mb-4">
         Security Settings
       </h3>
-      {!isChangingPassword ? (
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-md bg-[#EBF1FF] flex items-center justify-center p-1">
-              <img src="/Vector (13).svg" alt="Password" className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="text-md text-muted-foreground font-medium">
-                Password
-              </p>
-            </div>
-          </div>
-          <button
-            onClick={() => setIsChangingPassword(true)}
-            className="flex items-center cursor-pointer justify-center gap-2 bg-[#EBF1FF] text-[#163066] text-sm font-semibold rounded-lg px-4 py-2 transition-colors hover:bg-[#EBF1FF]/90"
-          >
-            Change Password
-          </button>
-        </div>
-      ) : (
-        <Formik
-          initialValues={{
-            currentPassword: "",
-            newPassword: "",
-            confirmPassword: "",
-          }}
-          validationSchema={changePasswordValidationSchema}
-          onSubmit={(values, { setSubmitting, resetForm }) => {
-            console.log(values, "values");
-            // Simulate API call
-            setTimeout(() => {
-              setSuccessMessage("Password changed successfully!");
-              setSubmitting(false);
-              resetForm();
-              setTimeout(() => {
-                setIsChangingPassword(false);
-                setSuccessMessage("");
-              }, 2000);
-            }, 1000);
-          }}
-        >
-          {({ values, errors, touched, isSubmitting, handleSubmit }) => {
-            const passwordRequirementsMet = passwordRequirements.map((req) =>
-              req.test(values.newPassword)
-            );
-            const passwordsMatch =
-              values.newPassword &&
-              values.confirmPassword &&
-              values.newPassword === values.confirmPassword;
-            const currentPasswordMatchesNew =
-              values.currentPassword &&
-              values.newPassword &&
-              values.currentPassword === values.newPassword;
-            return (
-              <Form onSubmit={handleSubmit}>
+
+      <Formik
+        initialValues={{
+          currentPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        }}
+        validationSchema={changePasswordValidationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          isSubmitting,
+          handleSubmit,
+          resetForm,
+        }) => {
+          const passwordRequirementsMet = passwordRequirements.map((req) =>
+            req.test(values.newPassword)
+          );
+          const passwordsMatch =
+            values.newPassword &&
+            values.confirmPassword &&
+            values.newPassword === values.confirmPassword;
+          const currentPasswordMatchesNew =
+            values.currentPassword &&
+            values.newPassword &&
+            values.currentPassword === values.newPassword;
+
+          return (
+            <Form onSubmit={handleSubmit}>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-md bg-[#EBF1FF] flex items-center justify-center p-1">
+                    <img
+                      src="/Vector (13).svg"
+                      alt="Password"
+                      className="w-5 h-5"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-md text-muted-foreground font-medium">
+                      Password
+                    </p>
+                  </div>
+                </div>
+
+                {!isEditing ? (
+                  <button
+                    type="button"
+                    onClick={() => setIsEditing(true)}
+                    className="flex items-center cursor-pointer justify-center gap-2 bg-[#EBF1FF] text-[#163066] text-sm font-semibold rounded-lg px-4 py-2 transition-colors hover:bg-[#EBF1FF]/90"
+                  >
+                    Change Password
+                  </button>
+                ) : (
+                  <div className="flex gap-2">
+                    <ThemeButton
+                      type="submit"
+                      className="flex items-center gap-2 py-3"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <svg
+                            className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                          Updating...
+                        </>
+                      ) : (
+                        "Update Password"
+                      )}
+                    </ThemeButton>
+                    <ThemeButton
+                      type="button"
+                      variant="tertiary"
+                      className="flex items-center gap-2 py-3 px-3"
+                      onClick={() => {
+                        setIsEditing(false);
+                        resetForm();
+                      }}
+                      disabled={isSubmitting}
+                    >
+                      <span>Cancel</span>
+                    </ThemeButton>
+                  </div>
+                )}
+              </div>
+
+              {isEditing && (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   {/* Left Side - Password Form */}
                   <div className="space-y-6">
@@ -176,37 +250,6 @@ const SecuritySettings = () => {
                           </ul>
                         </div>
                       )}
-
-                    {/* Success Message */}
-                    {successMessage && (
-                      <div className="bg-green-50 border border-green-200 rounded-md p-3 mb-2 flex items-center gap-2">
-                        <FiCheck className="h-4 w-4 text-green-600" />
-                        <span className="text-green-800 text-xs">
-                          {successMessage}
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Action Buttons */}
-                    {/* Action Buttons */}
-                    <div className="flex gap-2">
-                      <ThemeButton
-                        type="submit"
-                        className="flex items-center gap-2 py-3"
-                        disabled={isSubmitting}
-                      >
-                        <span>Update Password</span>
-                      </ThemeButton>
-                      <ThemeButton
-                        type="button"
-                        variant="tertiary"
-                        className="flex items-center gap-2 py-3 px-3"
-                        onClick={() => setIsChangingPassword(false)}
-                        disabled={isSubmitting}
-                      >
-                        <span>Cancel</span>
-                      </ThemeButton>
-                    </div>
                   </div>
 
                   {/* Right Side - Password Requirements */}
@@ -262,11 +305,11 @@ const SecuritySettings = () => {
                     </div>
                   </div>
                 </div>
-              </Form>
-            );
-          }}
-        </Formik>
-      )}
+              )}
+            </Form>
+          );
+        }}
+      </Formik>
     </div>
   );
 };
