@@ -15,6 +15,7 @@ import Loading from "@/components/common/Loading";
 import RequestStatusDropdown from "@/components/RequestStatusDropdown";
 import ThemeButtonTabs from "@/components/ThemeButtonTabs";
 import NameBadge from "@/components/NameBadge";
+import NotesCell from "./NotesCell";
 
 const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
     const columns = [
@@ -67,9 +68,10 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
             sortable: true,
             customTemplate: true,
             render: (rowData: any, field: any) => (
-                <div className="line-clamp-1 w-40">
-                    {rowData[field]}
-                </div>
+                // <div className="line-clamp-1 w-40">
+                //     {rowData[field]}
+                // </div>
+                <NotesCell note={rowData[field]} />
             )
         },
         {
