@@ -1,6 +1,6 @@
 import { Button } from "primereact/button";
 import React, { useEffect, useRef, useState } from "react";
-import { FaChevronDown, FaX } from "react-icons/fa6";
+import { FaChevronDown, FaChevronRight, FaX } from "react-icons/fa6";
 import CustomCheckbox from "./form/CustomCheckbox";
 
 const ToggleColumnsField: React.FC<any> = ({ 
@@ -10,7 +10,9 @@ const ToggleColumnsField: React.FC<any> = ({
     isChecked,
     columns,
     visibleColumns,
-    toggleColumn, className 
+    toggleColumn, 
+    className,
+    buttonText = "Fields"
 }) => {
     const [showColumnDropdown, setShowColumnDropdown] = useState(false);
     const columnDropdownRef = useRef<HTMLDivElement>(null);
@@ -33,12 +35,14 @@ const ToggleColumnsField: React.FC<any> = ({
             <Button
                 severity="secondary"
                 outlined
-                className="!text-sm !rounded-xl !border-light-stroke !text-secondary-black !font-medium"
+                className="!text-sm !rounded-xl !border-light-stroke !text-secondary-black !font-medium whitespace-nowrap !px-3 md:!px-4"
                 onClick={() => setShowColumnDropdown(!showColumnDropdown)}
             >
                 <span className="flex items-center gap-2">
-                    Fields
-                    <FaChevronDown className="w-4 h-4" />
+                    <span className="text-xs md:text-sm">{buttonText}</span>
+                    {/* ONLY CHANGE: Right arrow for mobile (same w-3 h-3), Down arrow for desktop (same w-3 h-3) */}
+                    <FaChevronRight className="w-3 h-3 md:hidden" />
+                    <FaChevronDown className="hidden w-3 h-3 md:block" />
                 </span>
             </Button>
 
