@@ -176,7 +176,7 @@ const CMMAccountDatabase = () => {
 
     const handleOpenPasswordModal = (event: any) => {
         event.preventDefault();
-        setIsOpenModal(true);
+        setIsOpenModal(true)
     };
 
     const toggleColumn = (columnField: any) => {
