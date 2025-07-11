@@ -104,6 +104,7 @@ const ThemeDataTable: React.FC<any> = ({
                     key={column.field}
                     field={column.field}
                     header={column.header}
+                    className={column.className}
                     body={
                         column.type === 'password'
                             ? () => passwordBodyTemplate()

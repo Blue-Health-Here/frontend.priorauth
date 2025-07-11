@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SecuritySettings from "./SecuritySettings";
 import { pharmacyValidationSchema } from "@/utils/validationSchema";
 import EditableFormSection from "@/components/common/settings/EditableFormSection";
@@ -37,31 +37,35 @@ const PharmacySettings = () => {
     deniedRequests: "0",
     prescribers: "0",
   });
+  const isFetchedProfile = useRef(false);
+  const loadProfileData = async () => {
+    try {
+      await fetchProfileData(dispatch);
+    } catch (error) {
+      console.error("Failed to fetch profile data:", error);
+    }
+  };
 
   useEffect(() => {
-    const loadProfileData = async () => {
-      try {
-        await fetchProfileData(dispatch);
-      } catch (error) {
-        console.error("Failed to fetch profile data:", error);
-      }
-    };
-    loadProfileData();
-  }, [dispatch]);
+    if (!isFetchedProfile.current) {
+      loadProfileData();
+      isFetchedProfile.current = true;
+    }
+  }, []);
 
   useEffect(() => {
     if (profileData) {
       setInitialFormData({
-        name: profileData.name || "",
-        joinedDate: profileData.joinedDate || "",
-        lastRequest: profileData.lastRequest || "",
-        phoneNumber: profileData.phoneNumber || "",
-        email: profileData.email || "",
-        location: profileData.location || "",
-        fullAddress: profileData.fullAddress || "",
-        approvedRequests: profileData.approvedRequests?.toString() || "0",
-        deniedRequests: profileData.deniedRequests?.toString() || "0",
-        prescribers: profileData.prescribers?.toString() || "0",
+        name: profileData.userName || "-",
+        joinedDate: profileData.joinedDate.split("T")[0] || "-",
+        lastRequest: profileData.lastRequestDate.split("T")[0] || "-",
+        phoneNumber: profileData.phoneNumber || "-",
+        email: profileData.email || "-",
+        location: profileData.location || "-",
+        fullAddress: profileData.fullAddress || "-",
+        approvedRequests: profileData.approvedRequestCount?.toString() || "0",
+        deniedRequests: profileData.deniedRequestCount?.toString() || "0",
+        prescribers: profileData.prescriberCount?.toString() || "0",
       });
     }
   }, [profileData]);
@@ -80,7 +84,7 @@ const PharmacySettings = () => {
       location: values.location,
       address: values.fullAddress,
     };
-
+    
     await updateProfileData(dispatch, profileData.id, updateData);
     
     // Update local state

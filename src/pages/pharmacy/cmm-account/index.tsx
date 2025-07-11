@@ -3,84 +3,113 @@ import { useEffect, useState } from "react";
 import UnlockAccessInfoModal from "./UnlockAccessInfoModal";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import SearchField from "@/components/common/SearchField";
+import { getAvatarInfo } from "@/utils/avatar";
 
 const CMMAccountDatabase = () => {
     const sampleData = [
         {
             id: 1,
-            pharmacyName: 'ABC Pharmacy 1',
+            prescriber: { name: 'Razan Ahmad', image: "/images/Abstergo Ltd..png" },
             name: 'Razan Ahmad',
             officeEmail: 'asadrazan12@gmail.com',
             officePassword: 'password123',
             faxNumber: '(484) 350-3141',
             contactPhone: '610-402-5391',
             cmmUsername: 'asadrazan12',
-            appPassword: 'password123'
+            appPassword: 'password123',
+            zipCode: '19104',
+            accountInfo: 'ebb9c0be-fd03-4abd-aa54-566f7bcef67f'
         },
         {
             id: 2,
-            pharmacyName: 'ABC Pharmacy 2',
+            prescriber: { name: 'Liam Johnson', image: "/images/Acme Co..png" },
             name: 'Liam Johnson',
             officeEmail: 'liam.johnson@email.com',
             officePassword: 'password123',
             faxNumber: '(123) 456-7890',
             contactPhone: '321-654-0987',
             cmmUsername: 'liamjohnson',
-            appPassword: 'password123'
+            appPassword: 'password123',
+            zipCode: '90210',
+            accountInfo: '4ab0ee81-6f60-4e9d-ac44-6330a9803f53'
         },
         {
             id: 3,
-            pharmacyName: 'ABC Pharmacy 3',
+            prescriber: { name: 'Sophia Williams', image: "/images/Barone LLC..png" },
             name: 'Razan Ahmad',
             officeEmail: 'sophia.w@email.com',
             officePassword: 'password123',
             faxNumber: '(987) 654-3210',
             contactPhone: '654-321-0987',
             cmmUsername: 'sophiaw',
-            appPassword: 'password123'
+            appPassword: 'password123',
+            zipCode: '10001',
+            accountInfo: 'ebb9c0be-fd03-4abd-aa54-566f7bcef67f'
         },
         {
             id: 4,
-            pharmacyName: 'ABC Pharmacy 4',
+            prescriber: { name: 'Noah Brown', image: "/images/Big Kahuna Ltd..png" },
             name: 'Noah Brown',
             officeEmail: 'noah.brown@email.com',
             officePassword: 'password123',
             faxNumber: '(555) 123-4567',
             contactPhone: '765-432-1098',
             cmmUsername: 'noahbrown',
-            appPassword: 'password123'
+            appPassword: 'password123',
+            zipCode: '60614',
+            accountInfo: '4ab0ee81-6f60-4e9d-ac44-6330a9803f53'
         },
         {
             id: 5,
-            pharmacyName: 'ABC Pharmacy 5',
+            prescriber: { name: 'Olivia Jones', image: "/images/notify3.png" },
             name: 'Emma Davis',
-            officeEmail: 'emma.davis@email.com',
+            officeEmail: 'olivia.jones@email.com',
             officePassword: 'password123',
             faxNumber: '(777) 888-9999',
             contactPhone: '456-789-0123',
             cmmUsername: 'emmadavis',
-            appPassword: 'password123'
+            appPassword: 'password123',
+            zipCode: '30301',
+            accountInfo: 'ebb9c0be-fd03-4abd-aa54-566f7bcef67f'
         }
     ];
 
     const columns = [
         {
-            field: 'name',
-            header: 'Name',
+            field: 'prescriber',
+            header: 'Prescriber Name',
             visible: true,
             filterable: true,
-            sortable: true
+            sortable: true,
+            customTemplate: true,
+            render: (rowData: any, field: any) => {
+                const { initials, bgColor }: any = getAvatarInfo(rowData[field].name);
+                return (
+                    <div className="flex gap-2 items-center">
+                        <span 
+                            className="w-10 h-10 rounded-full text-center align-middle leading-10"
+                            style={{
+                                backgroundColor: bgColor,
+                                color: "white",
+                            }}
+                        >
+                            {initials}
+                        </span>
+                        <span>{rowData[field].name}</span>
+                    </div>
+                )
+            }
         },
         {
-            field: 'officeEmail',
-            header: 'Office Email',
+            field: 'cmmUsername',
+            header: 'CMM Username',
             visible: true,
             filterable: true,
             sortable: true
         },
         {
             field: 'officePassword',
-            header: 'Office Password',
+            header: 'CMM Password',
             type: 'password',
             visible: true,
             filterable: false,
@@ -94,18 +123,20 @@ const CMMAccountDatabase = () => {
             sortable: true
         },
         {
-            field: 'contactPhone',
-            header: 'Contact Phone',
+            field: 'officeEmail',
+            header: 'Gmail',
             visible: true,
             filterable: true,
-            sortable: true
+            sortable: true,
+            className: '!min-w-[240px]'
         },
         {
-            field: 'cmmUsername',
-            header: 'CMM Username',
+            field: 'zipCode',
+            header: 'Zip Code',
             visible: true,
-            filterable: true,
-            sortable: true
+            filterable: false,
+            sortable: false,
+            className: '!min-w-40'
         },
         {
             field: 'appPassword',
@@ -116,32 +147,12 @@ const CMMAccountDatabase = () => {
             sortable: false
         },
         {
-            field: 'address',
-            header: 'Address',
-            visible: false,
+            field: 'accountInfo',
+            header: 'Account Info',
+            visible: true,
             filterable: false,
-            sortable: false
-        },
-        {
-            field: 'city',
-            header: 'City',
-            visible: false,
-            filterable: false,
-            sortable: false
-        },
-        {
-            field: 'state',
-            header: 'State',
-            visible: false,
-            filterable: false,
-            sortable: false
-        },
-        {
-            field: 'zipCode',
-            header: 'Zip Code',
-            visible: false,
-            filterable: false,
-            sortable: false
+            sortable: false,
+            className: 'whitespace-nowrap !max-w-max'
         }
     ];
 
@@ -152,9 +163,7 @@ const CMMAccountDatabase = () => {
     const [isChecked, setIsChecked] = useState<boolean>(false);
     const [globalFilter, setGlobalFilter] = useState('');
 
-    const handleRowClick = (event: any) => {console.log('Row clicked:', event.data)};
     const handleOpenPasswordModal = (event: any) => {
-        event.stopPropagation();
         event.preventDefault();
         setIsOpenModal(true);
     };
@@ -209,7 +218,6 @@ const CMMAccountDatabase = () => {
                 data={sampleData}
                 columns={columns}
                 searchPlaceholder="Search..."
-                onRowClick={handleRowClick}
                 visibleColumns={visibleColumns}
                 globalFilter={globalFilter}
                 setGlobalFilter={setGlobalFilter}
