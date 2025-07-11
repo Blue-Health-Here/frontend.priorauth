@@ -67,6 +67,7 @@ import { Accordion, AccordionTab } from 'primereact/accordion';
 import { AiOutlineEye } from "react-icons/ai";
 import CardHeader from './CardHeader';
 import { LiaAngleDownSolid, LiaAngleUpSolid } from "react-icons/lia";
+import { getFilterLabel, getStatusClass } from '@/utils/helper';
 
 const ThemeDataTable: React.FC<any> = ({
     data = [], // can be flat [] or grouped [{ status, data }]
@@ -80,7 +81,7 @@ const ThemeDataTable: React.FC<any> = ({
     visibleColumns,
     header,
     globalFilter,
-    globalFilterFields
+    globalFilterFields, selectedFilterField = ''
 }) => {
     const dt = useRef(null);
 
@@ -118,19 +119,35 @@ const ThemeDataTable: React.FC<any> = ({
 
     // Detect if `data` is grouped or flat
     const isGrouped = Array.isArray(data) && data.length > 0 && data[0]?.data;
-
+    console.log(selectedFilterField, "selectedFilterField")
     return (
         <div className="theme-datatable-wrapper inline-flex flex-col gap-4 sm:gap-0 h-full w-full">
-            {header && <div className="mb-2">{header}</div>}
+            {header && <div className="mb-4">{header}</div>}
 
             {isGrouped ? (
                 <Accordion multiple activeIndex={[0]} 
-                    collapseIcon={<LiaAngleUpSolid className="w-4 h-4 text-primary-black absolute right-3" />} 
-                    expandIcon={<LiaAngleDownSolid className="w-4 h-4 text-primary-black absolute right-3" />} 
-                    className='theme-accordion'>
-                    {data.map((group: any, idx: number) => (
-                        <AccordionTab className='mb-2' key={group.status + idx} header={(
-                            <CardHeader title={`${group.status} (${group.data.length})`} className="rounded-lg" />
+                    collapseIcon={<LiaAngleUpSolid className="w-8 h-8 p-1.5 text-primary-black bg-quaternary-navy-blue rounded-lg" />} 
+                    expandIcon={<LiaAngleDownSolid className="w-8 h-8 p-1.5 text-primary-black bg-quaternary-navy-blue rounded-lg" />} 
+                    className='theme-datatable-accordion'>
+                    {data.map((group: any, idx: number) => {            
+                        const statusClass = selectedFilterField === "statusName" ? getStatusClass(group.status) : '';
+                        return <AccordionTab className='mb-4' key={group.status + idx} header={(
+                            <>
+                                {selectedFilterField && 
+                                    <p className={'!text-gray-color text-sm font-light' + (selectedFilterField === "statusName" ? " pb-2" : "")}>
+                                        {getFilterLabel(selectedFilterField)}</p>}
+                                <CardHeader 
+                                    title={(
+                                        <>
+                                            {selectedFilterField !== "statusName" ? 
+                                                <span className='!text-primary-black pb-2'>{group.status}</span> : 
+                                                <span className={`text-sm font-medium truncate px-4 py-2 rounded-full ${statusClass}`}>{group.status}</span>}
+                                            <span className='pl-2 !text-gray-color font-normal'>({group.data.length})</span>
+                                        </>
+                                    )} 
+                                    className="rounded-lg !bg-transparent !p-0 !pt-1.5" 
+                                />
+                            </>
                         )}>
                             <DataTable
                                 ref={dt}
@@ -153,7 +170,7 @@ const ThemeDataTable: React.FC<any> = ({
                                 {renderColumns()}
                             </DataTable>
                         </AccordionTab>
-                    ))}
+                    })}
                 </Accordion>
             ) : (
                 <DataTable

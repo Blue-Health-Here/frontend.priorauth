@@ -31,7 +31,7 @@ const FilterField: React.FC<FilterFieldProps> = ({ columns, selectedValue, onCha
             <Button
                 severity="secondary"
                 outlined
-                className="!text-sm !rounded-xl !border-light-stroke !text-secondary-black !font-medium"
+                className="!text-sm !rounded-lg !border-light-stroke !text-secondary-black !font-medium"
                 onClick={() => setShowFiltersDropdown(!showFiltersDropdown)}
             >
                 <span className="flex items-center gap-2">
@@ -41,7 +41,7 @@ const FilterField: React.FC<FilterFieldProps> = ({ columns, selectedValue, onCha
             </Button>
 
             {showFiltersDropdown && (
-                <div className="absolute right-0 p-4 top-full mt-1 w-64 bg-primary-white border border-light-stroke rounded-xl theme-shadow z-10">
+                <div className="absolute right-0 p-4 top-full mt-1 w-64 bg-primary-white border border-light-stroke rounded-lg theme-shadow z-10">
                     <p className="text-sm text-primary-black mb-4">Group By options</p>
                     <div className="space-y-4">
                         {columns.filter(col => col.filterable).map((column) => (
