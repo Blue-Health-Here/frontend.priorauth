@@ -5,6 +5,7 @@ import { setIsLoading } from "../store/features/global/globalSlice";
 import { setReqStatusesData } from "@/store/features/admin/requests/statusesSlice";
 import { setRequestsData } from "@/store/features/pharmacy/requests/requestsSlice";
 import { setPrescribersData } from "@/store/features/pharmacy/prescribers/prescribersSlice";
+import { setProfilePassword } from "../store/features/global/globalSlice";
 
 // Types
 type ApiMethod = 'get' | 'post' | 'put' | 'delete';
@@ -219,3 +220,14 @@ export const getAllPrescribers = async (dispatch: AppDispatch, id?: string) => {
         errorMessage: "Prescribers not found."
     })
 };
+
+// ============= Update settings Password  =============
+export const updateProfilePassword = async (dispatch: AppDispatch, userId: string, data: any) => {
+    return apiHandler(dispatch, 'post', `/user/change-password/${userId}`, {
+        data,
+        successMessage: "Profile password updated successfully!",
+        onSuccess: (updatedData) => {
+            dispatch(setProfilePassword(updatedData));
+        }
+    });
+}

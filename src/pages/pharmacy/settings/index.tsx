@@ -21,6 +21,24 @@ const PharmacySettings = () => {
         prescribers: "17",
     });
 
+    const getUserId = () => {
+        if (typeof window !== 'undefined') {
+            const user = localStorage.getItem('user');
+            if (user) {
+                try {
+                    const parsedUser = JSON.parse(user);
+                    return parsedUser.id || '';
+                } catch (e) {
+                    console.error('Error parsing user from localStorage', e);
+                    return '';
+                }
+            }
+        }
+        return '';
+    };
+
+    const userId = getUserId();
+
     return (
         <div className="">
             <div className="bg-white rounded-xl theme-shadow">
@@ -52,8 +70,7 @@ const PharmacySettings = () => {
                             }}
                         />
                     </SettingsCard>
-
-                    <SecuritySettings />
+                    {userId && <SecuritySettings userId={userId} />}
                 </div>
             </div>
         </div>
