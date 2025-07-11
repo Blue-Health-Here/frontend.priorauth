@@ -5,7 +5,7 @@ import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import ThemeButton from "@/components/common/ThemeButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import AddRequestModal from "./AddRequestModal";
-import { getAllPharmacyReqs, getAllReqStatuses } from "@/services/pharmacyService";
+import { getAllPharmacyReqs, getAllReqStatuses, updateRequestStatus } from "@/services/pharmacyService";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { filterRequestsByStatus, getFilterLabel, getStatusClass, groupByField, transformPharmacyRequest } from "@/utils/helper";
@@ -14,6 +14,7 @@ import SearchField from "@/components/common/SearchField";
 import Loading from "@/components/common/Loading";
 import RequestStatusDropdown from "@/components/RequestStatusDropdown";
 import ThemeButtonTabs from "@/components/ThemeButtonTabs";
+import { getAvatarInfo } from "@/utils/avatar";
 
 const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
     const columns = [
@@ -24,9 +25,23 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
             filterable: true,
             sortable: true,
             customTemplate: true,
-            render: (rowData: any, field: any) => (
-                <p>{rowData[field].name}</p>
-            )
+            render: (rowData: any, field: any) => {
+                const { initials, bgColor }: any = getAvatarInfo(rowData[field].name);
+                return (
+                    <div className="flex gap-2 items-center">
+                        <span 
+                            className="w-10 h-10 rounded-full text-center align-middle leading-10"
+                            style={{
+                                backgroundColor: bgColor,
+                                color: "white",
+                            }}
+                        >
+                            {initials}
+                        </span>
+                        <span>{rowData[field].name}</span>
+                    </div>
+                )
+            }
         },
         {
             field: 'medication',
@@ -42,9 +57,23 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
             filterable: true,
             sortable: true,
             customTemplate: true,
-            render: (rowData: any, field: any) => (
-                <p>{rowData[field].name}</p>
-            )
+            render: (rowData: any, field: any) => {
+                const { initials, bgColor }: any = getAvatarInfo(rowData[field].name);
+                return (
+                    <div className="flex gap-2 items-center">
+                        <span 
+                            className="flex-basis w-10 h-10 rounded-full text-center align-middle leading-10"
+                            style={{
+                                backgroundColor: bgColor,
+                                color: "white",
+                            }}
+                        >
+                            {initials}
+                        </span>
+                        <span className="flex-basis">{rowData[field].name}</span>
+                    </div>
+                )
+            }
         },
         {
             field: 'submittedOn',
@@ -134,8 +163,10 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
         }
     }, [reqsData]);
     
-    const handleSubmitStatusChange = async (value: any) => {
-        console.log(value, "value");
+    const handleSubmitStatusChange = async (value: any, rowData: any) => {
+        await updateRequestStatus(dispatch, rowData?.id, { 
+            statusId: value.code, paStatus: value.name 
+        }).then(() => fetchInitialData());
     };
     
     const requestStatusTemplate = (rowData: any, field: any) => {
@@ -143,7 +174,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
             return <RequestStatusDropdown
                 className={`!border-0 max-w-48 !text-sm status-dropdown`}
                 selectedValue={rowData[field]} 
-                handleChange={(value: any) => handleSubmitStatusChange(value)}
+                handleChange={(value: any) => handleSubmitStatusChange(value, rowData)}
                 data={reqStatusesData.map((item: any) => ({ name: item.name, code: item.id }))} 
             />
         } else {
