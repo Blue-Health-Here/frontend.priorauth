@@ -335,7 +335,7 @@ a:focus {
   font-weight: 300;
 }
 
-.custom-paginator > .p-datatable-wrapper {
+.custom-paginator > .p-datatable-wrapper > .p-datatable-table > .p-datatable-thead {
   border-radius: 8px;
 }
 
@@ -388,3 +388,6 @@ a:focus {
   padding-right: 50px;
 }
 
+.theme-datatable-accordion .p-datatable-wrapper {
+  overflow: visible !important;
+}
