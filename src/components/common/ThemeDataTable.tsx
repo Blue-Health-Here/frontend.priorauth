@@ -77,7 +77,6 @@ const ThemeDataTable: React.FC<any> = ({
     emptyMessage = "No data available",
     isPaginator = true,
     handleClickOpenPasswordModal,
-    visibleColumns,
     header,
     globalFilter,
     globalFilterFields
@@ -98,7 +97,6 @@ const ThemeDataTable: React.FC<any> = ({
 
     const renderColumns = () => {
         return columns
-            .filter((column: any) => visibleColumns[column.field])
             .map((column: any) => (
                 <Column
                     key={column.field}

@@ -221,11 +221,7 @@ const CMMAccountDatabase = () => {
     );
 
     // Mobile view shows only first 2 columns by default
-    const mobileVisibleColumns = {
-        ...columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: false }), {}),
-        prescriber: true,
-        cmmUsername: true
-    };
+   
 
     return (
         <div className='bg-primary-white rounded-2xl theme-datatable theme-shadow px-4 py-4'>
@@ -237,7 +233,6 @@ const CMMAccountDatabase = () => {
                     data={sampleData}
                     columns={columns}
                     searchPlaceholder="Search..."
-                    visibleColumns={isMobile ? mobileVisibleColumns : visibleColumns}
                     globalFilter={globalFilter}
                     setGlobalFilter={setGlobalFilter}
                     handleClickOpenPasswordModal={handleOpenPasswordModal}
