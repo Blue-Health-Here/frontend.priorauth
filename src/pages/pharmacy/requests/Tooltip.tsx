@@ -31,9 +31,8 @@ export const Tooltip: React.FC<Props> = ({
                     id={id.current}
                     role="tooltip"
                     className={`
-                        absolute z-50 w-[220px] sm:w-auto max-w-[90vw] rounded-lg px-4 py-4 text-xs sm:text-sm shadow-lg
-                        bg-primary-navy-blue text-white
-                        ${placement === "top" ? "bottom-full mb-2" : "top-full mt-2"}
+                        absolute z-50 w-[220px] sm:w-auto max-w-[270px] rounded-lg px-4 py-4 text-xs sm:text-sm shadow-lg
+                        bg-primary-navy-blue text-white ${placement === "top" ? "bottom-full mb-2" : "top-full mt-2"}
                     `}
                 >
                     {content}

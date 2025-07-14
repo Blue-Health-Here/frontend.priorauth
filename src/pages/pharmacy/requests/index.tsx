@@ -68,9 +68,6 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
             sortable: true,
             customTemplate: true,
             render: (rowData: any, field: any) => (
-                // <div className="line-clamp-1 w-40">
-                //     {rowData[field]}
-                // </div>
                 <NotesCell note={rowData[field]} />
             )
         },

@@ -44,10 +44,10 @@ export default function EditableFormSection({
       onSubmit={handleSubmit}
       enableReinitialize
     >
-      {({ isSubmitting }) => (
+      {({ isSubmitting, setFieldValue, values }) => (
         <Form className="space-y-6">
           <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-1">
+            {/* <div className="flex items-center gap-1">
               <div className="relative">
                 <img
                   src="/Ellipse 431.png"
@@ -64,6 +64,41 @@ export default function EditableFormSection({
                   </div>
                 )}
               </div>
+              <div>
+                <DataPoint
+                  name="name"
+                  data={profileData.name}
+                  isEditing={isEditingProfile}
+                  type="text"
+                />
+              </div>
+            </div> */}
+            {/* Profile Image Upload */}
+            <div className="flex items-center gap-4">
+              <label htmlFor="profileImage">
+                <div className="relative cursor-pointer">
+                  <img
+                    src={values.profileImage ? URL.createObjectURL(values.profileImage) : "/Ellipse 431.png"}
+                    alt="Profile"
+                    className="w-18 h-18 rounded-full border border-light-stroke theme-shadow object-cover"
+                  />
+                  {isEditingProfile && (
+                    <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                      <img src="/Vector (12).svg" alt="Edit" className="w-3 h-3" />
+                    </div>
+                  )}
+                </div>
+              </label>
+              <input
+                id="profileImage"
+                name="profileImage"
+                type="file"
+                accept="image/*"
+                onChange={(event: any) => {
+                  setFieldValue("profileImage", event.currentTarget.files[0]);
+                }}
+                className="hidden"
+              />
               <div>
                 <DataPoint
                   name="name"
