@@ -68,7 +68,7 @@ const ThemeButton: React.FC<any> = ({
             )}
 
             {/* Button Text */}
-            <span>{children}</span>
+            {children}
 
             {/* Right Icon */}
             {Icon && iconPosition === 'right' && (

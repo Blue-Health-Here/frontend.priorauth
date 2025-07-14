@@ -29,8 +29,6 @@ const PageHeader: React.FC<any> = ({ requestDetails, isAdmin }) => {
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, [navigate]);
-    
-    console.log(isAdmin, "isAdmin")
 
     return (
         <div className="flex justify-between items-center flex-wrap gap-4 mb-4">
@@ -41,7 +39,10 @@ const PageHeader: React.FC<any> = ({ requestDetails, isAdmin }) => {
             </h2>
             <div className="flex gap-3 self-end sm:self-auto flex-wrap">
                 <ThemeButton className="h-full min-h-12" variant="secondary">Open Portal</ThemeButton>
-                <ThemeButton className="h-full min-h-12" variant="primary">Submit Progress Notes</ThemeButton>
+                <ThemeButton className="h-full min-h-12 !flex gap-2 items-center" variant="primary">
+                    <span>Submit Progress Notes</span>
+                    <img src="/images/next-arrow.svg" alt="next arrow" className="" loading="lazy" />
+                </ThemeButton>
             </div>
         </div>
     )

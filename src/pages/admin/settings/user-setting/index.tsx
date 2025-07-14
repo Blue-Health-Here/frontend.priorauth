@@ -27,7 +27,7 @@ const UserSettingPage: React.FC = () => {
   }
 
   return (
-    <div className="rounded-2xl bg-primary-white shadow-lg px-5 pt-6 pb-5 md:min-h-[calc(100vh-11rem)] relative">
+    <div className="rounded-2xl bg-primary-white theme-shadow px-5 pt-6 pb-5 md:min-h-[calc(100vh-11rem)] relative">
       <h2 className="text-lg md:text-xl font-semibold mb-4">Display Settings</h2>
       <div className="flex items-center flex-wrap gap-4">
         <div className="relative">

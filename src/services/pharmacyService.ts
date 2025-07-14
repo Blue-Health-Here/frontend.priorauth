@@ -223,6 +223,10 @@ export const getRequestDetails = async (dispatch: AppDispatch, id?: string) => {
     return apiHandler(dispatch, 'get', `/pa_request/get_by_id/${id}`, {});
 };
 
+export const getRequestStatuses = async (dispatch: AppDispatch, id?: string) => {
+    return apiHandler(dispatch, 'get', `/status-history/get_by_id/${id}`, {});
+};
+
 // ============= Get All Prescribers  =============
 
 export const getAllPrescribers = async (dispatch: AppDispatch, id?: string) => {
