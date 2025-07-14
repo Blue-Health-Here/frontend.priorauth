@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { UploadedFile } from "../../utils/types";
+import CustomCheckbox from "./form/CustomCheckbox";
+import ThemeButton from "./ThemeButton";
 
 const predefinedTags = [
   "Denial Letter",
@@ -63,11 +65,11 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
       prev.map((f) =>
         f.id === file.id
           ? {
-              ...f,
-              fileTags: f.fileTags?.includes(tag)
-                ? f.fileTags.filter((t) => t !== tag)
-                : [...(f.fileTags || []), tag],
-            }
+            ...f,
+            fileTags: f.fileTags?.includes(tag)
+              ? f.fileTags.filter((t) => t !== tag)
+              : [...(f.fileTags || []), tag],
+          }
           : f
       )
     );
@@ -88,8 +90,8 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
   };
 
   return (
-    <div className="border border-quaternary-navy-blue rounded-xl p-2">
-      <div className="flex items-center justify-between gap-3">
+    <div className="border border-quaternary-navy-blue rounded-xl p-2.5 relative">
+      <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <img
             src="/uploading_state.svg"
@@ -115,12 +117,12 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-end gap-2 flex-col-reverse">
           {isAddTags && (
             <button
               type="button"
               onClick={toggleDropdown}
-              className="text-blue-600 text-sm underline whitespace-nowrap"
+              className="text-blue-navigation-link-button cursor-pointer text-sm underline whitespace-nowrap"
             >
               {file.showTagDropdown ? "Hide Tags" : "Add Tags"}
             </button>
@@ -133,23 +135,7 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
                 : "text-red-500 hover:text-red-700"
             }
           >
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d={
-                  file.status === "uploading"
-                    ? "M6 18L18 6M6 6l12 12" // Cross icon
-                    : "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                } // Trash icon
-              />
-            </svg>
+            <img src="/images/delete.svg" alt="delete icon" className="" />
           </button>
         </div>
       </div>
@@ -172,23 +158,29 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
       {file.showTagDropdown && (
         <div
           ref={dropdownRef}
-          className="absolute right-6 bottom-14 mt-2 z-20 bg-white border border-gray-200 shadow-xl rounded-lg p-4 w-72"
+          className="absolute right-0 bottom-9 mt-2 z-20 bg-primary-white border border-light-stroke theme-shadow rounded-lg p-4 w-72"
         >
           <input
             type="text"
             placeholder="Search Tags"
-            className="w-full mb-3 border border-gray-300 rounded px-3 py-2 text-sm"
+            className="w-full mb-3 border border-light-stroke rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-dark-stroke"
           />
 
           <div className="space-y-2 max-h-40 overflow-auto mb-3">
             {predefinedTags.map((tag) => (
-              <label key={tag} className="flex items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
+              <label
+                htmlFor={tag}
+                className="flex items-center gap-2 text-sm cursor-pointer"
+              >
+                <CustomCheckbox
+                  id={tag}
                   checked={file.fileTags?.includes(tag) || false}
                   onChange={() => toggleTag(tag)}
+                  className='!border'
                 />
-                {tag}
+                <span className="text-xs md:text-sm text-secondary-black ml-2 font-medium font-secondary">
+                  {tag}
+                </span>
               </label>
             ))}
           </div>
@@ -199,14 +191,9 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
               value={customTag}
               onChange={(e) => setCustomTag(e.target.value)}
               placeholder="Add custom tag"
-              className="flex-1 border border-gray-300 rounded px-3 py-2 text-sm"
+              className="flex-1 border border-light-stroke rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-dark-stroke"
             />
-            <button
-              onClick={addCustomTag}
-              className="bg-blue-600 text-white text-sm px-4 py-2 rounded"
-            >
-              Add
-            </button>
+            <ThemeButton onClick={addCustomTag} variant="primary" className="rounded-lg" type="button">Add</ThemeButton>
           </div>
         </div>
       )}
