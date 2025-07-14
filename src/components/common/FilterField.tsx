@@ -42,7 +42,7 @@ const FilterField: React.FC<FilterFieldProps> = ({ columns, selectedValue, onCha
 
             {showFiltersDropdown && (
                 <div className="absolute right-0 p-4 top-full mt-1 w-64 bg-primary-white border border-light-stroke rounded-lg theme-shadow z-10">
-                    <p className="text-sm text-primary-black mb-4">Group By options</p>
+                    <p className="text-sm text-primary-black mb-4 font-semibold">Group By options</p>
                     <div className="space-y-4">
                         {columns.filter(col => col.filterable).map((column) => (
                             <label
@@ -55,7 +55,7 @@ const FilterField: React.FC<FilterFieldProps> = ({ columns, selectedValue, onCha
                                     name="filter-option"
                                     onChange={() => onChange(column.field)}
                                     checked={selectedValue === column.field}
-                                    className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                                    className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-quaternary-navy-blue"
                                 />
                                 <span className="text-xs md:text-sm text-secondary-black ml-2 font-medium font-secondary">
                                     {column.header}

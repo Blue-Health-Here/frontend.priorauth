@@ -196,7 +196,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
                 <div className="inline-flex h-full items-center gap-2 ml-auto">
                     <SearchField globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
                     <FilterField
-                        columns={columns}
+                        columns={columns.filter((item: any) => item.field !== "notes")}
                         selectedValue={selectedFilterField}
                         onChange={handleFilterChange}
                     />
