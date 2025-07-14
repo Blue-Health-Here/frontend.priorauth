@@ -2,7 +2,6 @@ import { Form, Formik } from 'formik';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import InputField from '../../../../components/common/form/InputField';
-import Button from '../../../../components/common/Button';
 import { changePasswordValidationSchema } from '../../../../utils/validationSchema';
 import ThemeButton from '@/components/common/ThemeButton';
 
