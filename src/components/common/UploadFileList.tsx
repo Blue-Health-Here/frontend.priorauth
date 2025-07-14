@@ -6,13 +6,17 @@ interface UploadFileListProps {
     files: UploadedFile[];
     removeFile: (id: string) => void;
     handleAddTag?: any;
-    isAddTags?: boolean
+    isAddTags?: boolean;
+    className?: string;
 }
 
-const UploadFileList: React.FC<UploadFileListProps> = ({ files, removeFile, handleAddTag, isAddTags = true }) => (
-    <div className="space-y-3 overflow-y-auto max-h-96">
+const UploadFileList: React.FC<UploadFileListProps> = ({ files, removeFile, handleAddTag, isAddTags = true, className }) => (
+    <div className={`max-h-96 ${className}`}>
         {files.map((file) => (
-            <UploadFileItem key={file.id} file={file} removeFile={(id) => removeFile(id)} handleAddTag={handleAddTag} isAddTags={isAddTags} />
+            <UploadFileItem 
+                key={file.id} 
+                file={file} removeFile={(id) => removeFile(id)} 
+                handleAddTag={handleAddTag} isAddTags={isAddTags} />
         ))}
     </div>
 );

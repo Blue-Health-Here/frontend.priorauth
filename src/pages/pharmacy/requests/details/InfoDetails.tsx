@@ -3,6 +3,7 @@ import { transformRequestDetails } from "@/utils/helper";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import React, { useEffect, useState } from "react";
 import { LiaAngleDownSolid, LiaAngleUpSolid } from "react-icons/lia";
+import CommentsSection from "./CommentsSection";
 
 const InfoDetails: React.FC<any> = ({ requestDetails }) => {
     const [details, setDetails] = useState<any>([]);
@@ -63,6 +64,8 @@ const InfoDetails: React.FC<any> = ({ requestDetails }) => {
                 className='theme-accordion'>
                 {createRequestInfoTabs()}
             </Accordion>
+            
+            <CommentsSection />
         </div>
     )
 };

@@ -224,7 +224,7 @@ export const getRequestDetails = async (dispatch: AppDispatch, id?: string) => {
 };
 
 export const getRequestStatuses = async (dispatch: AppDispatch, id?: string) => {
-    return apiHandler(dispatch, 'get', `/status-history/get_by_id/${id}`, {});
+    return apiHandler(dispatch, 'get', `/status-history/get_by_id/${id}/statuses`, {});
 };
 
 // ============= Get All Prescribers  =============

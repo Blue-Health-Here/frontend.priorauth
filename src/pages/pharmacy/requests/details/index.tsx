@@ -1,55 +1,20 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { FiFileText } from "react-icons/fi";
 import CardHeader from "@/components/common/CardHeader";
 import FileDropzone from "@/components/common/FileDropzone";
 import UploadFileList from "@/components/common/UploadFileList";
 import { UploadedFile } from "@/utils/types";
 import ProgressNotesModal from "@/components/ProgressNotesModal";
-import ThemeButton from "@/components/common/ThemeButton";
 import PageHeader from "./PageHeader";
 import InfoDetails from "./InfoDetails";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getRequestDetails, getRequestStatuses } from "@/services/pharmacyService";
 import Loading from "@/components/common/Loading";
+import StatusTimeline from "./StatusTimeline";
 
 const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
-    const statusItems = [
-        {
-            id: 1,
-            title: "Awaiting Prescribers Tax ID",
-            status: "waiting",
-            date: null,
-            isActive: false,
-            statusClass: "bg-status-success-bg-color text-status-success-text-color"
-        },
-        {
-            id: 2,
-            title: "Approved With Progress Notes",
-            status: "approved",
-            date: "25-02-2025",
-            note: "Fax form is ready. Submission to insurance is pending MD's signature.",
-            isActive: true,
-            statusClass: "bg-status-success-bg-color text-status-success-text-color"
-        },
-        {
-            id: 3,
-            title: "Awaiting MD's Signature on Fax Form",
-            status: "waiting",
-            date: "25-02-2025",
-            isActive: false,
-            statusClass: "bg-status-bg-lilac-sky text-status-text-lilac-sky"
-        },
-        {
-            id: 4,
-            title: "Denied",
-            status: "denied",
-            date: "25-02-2025",
-            isActive: false,
-            statusClass: "bg-status-bg-rose-blush text-status-text-rose-blush"
-        }
-    ];
-    const [isLoading, setIsLoading] = useState(false);
+    const [statuses, setReqStatuses] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -62,25 +27,25 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
-    
+
             const [detailsRes, statusesRes] = await Promise.all([
                 getRequestDetails(dispatch, reqId),
                 getRequestStatuses(dispatch, reqId),
             ]);
-    
+
             if (detailsRes) {
                 setRequestDetails(detailsRes);
             }
-            console.log(statusesRes, "statusesRes");
+            // console.log(statusesRes, "statusesRes");
+            setReqStatuses(statusesRes);
             setIsLoading(false);
         };
-    
+
         if (!isFetchedReqDetails.current) {
             fetchData();
             isFetchedReqDetails.current = true;
         }
     }, [dispatch, reqId]);
-    
 
     useEffect(() => {
         if (!uploadedFiles.some((file) => file.status === "uploading"))
@@ -258,48 +223,16 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                             <div className="col-span-1 lg:col-span-2 space-y-4">
                                 <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
                                     <CardHeader title="Status" />
-                                    <div className="p-4">
-                                        <div className="relative flex flex-col gap-4">
-                                            <div className="absolute left-2.5 top-0 bottom-0 w-1.5 bg-gray-200"></div>
-                                            {statusItems.map((item: any, index: number) => (
-                                                <div key={index} className={`relative flex items-center gap-4 ${item.isActive ? 'border border-dashed border-blue-navigation-link-button rounded-xl opacity-100' : 'opacity-50'}`}>
-                                                    <div className="p-1 bg-white rounded-full inline-flex justify-center items-center ml-1">
-                                                        <div className={`relative z-10 w-2.5 h-2.5 rounded-full flex-shrink-0 p-1`}>
-                                                            <div className="absolute inset-0 rounded-full bg-blue-500"></div>
-                                                        </div>
-                                                    </div>
+                                    <StatusTimeline
+                                        currentStatus={statuses ? statuses.currentStatus : null}
+                                        previousStatuses={statuses ? statuses.previousStatuses : []}
+                                    />
 
-                                                    <div className={`p-2 w-full`}>
-                                                        <div className="flex justify-between items-center gap-4 w-full">
-                                                            <span className={`px-4 py-1 rounded-full line-clamp-1 text-xs sm:text-sm lg:text-base font-normal ${item.statusClass}`}>
-                                                                {item.title}
-                                                            </span>
-                                                            {item.date && (
-                                                                <span className="text-quaternary-white text-sm whitespace-nowrap">{item.date}</span>
-                                                            )}
-                                                        </div>
-
-                                                        {item.note && (
-                                                            <p className="text-tertiary-black text-md mt-2 italic">{item.note}</p>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <ThemeButton
-                                            variant="tertiary"
-                                            className="mt-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-                                            <span className="flex gap-2 items-center">
-                                                Check Notes
-                                                <FiFileText />
-                                            </span>
-                                        </ThemeButton>
-                                    </div>
                                 </div>
 
                                 <div className="bg-white rounded-xl border border-quaternary-navy-blue relative overflow-hidden">
                                     <CardHeader title="Files" />
-                                    <div className="p-4 flex flex-col gap-4">
+                                    <div className="p-4 flex flex-col gap-4 relative">
                                         <div className="inline-flex flex-col gap-1">
                                             <h3 className="text-base font-medium text-primary-black">Progress Notes</h3>
                                             <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] overflow-hidden">
@@ -328,9 +261,10 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                                         </div>
 
                                         {uploadedFiles.length > 0 && (
-                                            <div className="inline-flex flex-col gap-1">
+                                            <div className="inline-flex flex-col gap-2">
                                                 <h3 className="text-sm font-medium text-secondary-black">{uploadedFiles.length} files uploading...</h3>
                                                 <UploadFileList
+                                                    className="grid grid-cols-1 md:grid-cols-2 gap-4"
                                                     files={uploadedFiles}
                                                     removeFile={(id: any) => removeFile(id)}
                                                     handleAddTag={handleAddTag}
@@ -340,7 +274,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <InfoDetails requestDetails={requestDetails} />
                         </div>
                     </>
