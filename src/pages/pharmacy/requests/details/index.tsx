@@ -10,7 +10,8 @@ import PageHeader from "./PageHeader";
 import InfoDetails from "./InfoDetails";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getRequestDetails } from "@/services/pharmacyService";
+import { getRequestDetails, getRequestStatuses } from "@/services/pharmacyService";
+import Loading from "@/components/common/Loading";
 
 const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     const statusItems = [
@@ -59,19 +60,27 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     const { id: reqId } = useParams();
 
     useEffect(() => {
-        const fetchRequestDetails = async () => {
+        const fetchData = async () => {
             setIsLoading(true);
-            const response = await getRequestDetails(dispatch, reqId);
-            if (response) {
-                setRequestDetails(response);
-                setIsLoading(false);
+    
+            const [detailsRes, statusesRes] = await Promise.all([
+                getRequestDetails(dispatch, reqId),
+                getRequestStatuses(dispatch, reqId),
+            ]);
+    
+            if (detailsRes) {
+                setRequestDetails(detailsRes);
             }
+            console.log(statusesRes, "statusesRes");
+            setIsLoading(false);
         };
+    
         if (!isFetchedReqDetails.current) {
-            fetchRequestDetails();
+            fetchData();
             isFetchedReqDetails.current = true;
         }
-    }, []);
+    }, [dispatch, reqId]);
+    
 
     useEffect(() => {
         if (!uploadedFiles.some((file) => file.status === "uploading"))
@@ -240,115 +249,102 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
         <>
             <ProgressNotesModal isOpen={isModalOpen} onClose={closeModal} />
             <div className="p-4 bg-white rounded-xl theme-shadow relative">
-                <PageHeader requestDetails={requestDetails} isAdmin={isAdmin} />
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-cols-5 gap-4">
-                    <div className="col-span-1 lg:col-span-2 space-y-4">
-                        {requestDetails && <div className="p-4 rounded-xl border border-quaternary-navy-blue lg:sticky lg:top-6">
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                {[
-                                    { label: "DOS", value: requestDetails.createdAt?.split("T")[0] || '-' },
-                                    { label: "CMM Key", value: requestDetails?.key },
-                                    { label: "CMM Key 2", value: requestDetails?.key },
-                                ].map((item: any, index: number) => {
-                                    return (
-                                        <div key={index}>
-                                            <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                                {item.label}
-                                            </p>
-                                            <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">{item.value}</p>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        </div>}
+                {isLoading ? (
+                    <Loading />
+                ) : (
+                    <>
+                        <PageHeader requestDetails={requestDetails} isAdmin={isAdmin} />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div className="col-span-1 lg:col-span-2 space-y-4">
+                                <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
+                                    <CardHeader title="Status" />
+                                    <div className="p-4">
+                                        <div className="relative flex flex-col gap-4">
+                                            <div className="absolute left-2.5 top-0 bottom-0 w-1.5 bg-gray-200"></div>
+                                            {statusItems.map((item: any, index: number) => (
+                                                <div key={index} className={`relative flex items-center gap-4 ${item.isActive ? 'border border-dashed border-blue-navigation-link-button rounded-xl opacity-100' : 'opacity-50'}`}>
+                                                    <div className="p-1 bg-white rounded-full inline-flex justify-center items-center ml-1">
+                                                        <div className={`relative z-10 w-2.5 h-2.5 rounded-full flex-shrink-0 p-1`}>
+                                                            <div className="absolute inset-0 rounded-full bg-blue-500"></div>
+                                                        </div>
+                                                    </div>
 
-                        <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
-                            <CardHeader title="Status" />
-                            <div className="p-4">
-                                <div className="relative flex flex-col gap-4">
-                                    <div className="absolute left-2.5 top-0 bottom-0 w-1.5 bg-gray-200"></div>
-                                    {statusItems.map((item: any, index: number) => (
-                                        <div key={index} className={`relative flex items-center gap-4 ${item.isActive ? 'border border-dashed border-blue-navigation-link-button rounded-xl opacity-100' : 'opacity-50'}`}>
-                                            <div className="p-1 bg-white rounded-full inline-flex justify-center items-center ml-1">
-                                                <div className={`relative z-10 w-2.5 h-2.5 rounded-full flex-shrink-0 p-1`}>
-                                                    <div className="absolute inset-0 rounded-full bg-blue-500"></div>
+                                                    <div className={`p-2 w-full`}>
+                                                        <div className="flex justify-between items-center gap-4 w-full">
+                                                            <span className={`px-4 py-1 rounded-full line-clamp-1 text-xs sm:text-sm lg:text-base font-normal ${item.statusClass}`}>
+                                                                {item.title}
+                                                            </span>
+                                                            {item.date && (
+                                                                <span className="text-quaternary-white text-sm whitespace-nowrap">{item.date}</span>
+                                                            )}
+                                                        </div>
+
+                                                        {item.note && (
+                                                            <p className="text-tertiary-black text-md mt-2 italic">{item.note}</p>
+                                                        )}
+                                                    </div>
                                                 </div>
-                                            </div>
-
-                                            <div className={`p-2 w-full`}>
-                                                <div className="flex justify-between items-center gap-4 w-full">
-                                                    <span className={`px-4 py-1 rounded-full line-clamp-1 text-xs sm:text-sm lg:text-base font-normal ${item.statusClass}`}>
-                                                        {item.title}
-                                                    </span>
-                                                    {item.date && (
-                                                        <span className="text-quaternary-white text-sm whitespace-nowrap">{item.date}</span>
-                                                    )}
-                                                </div>
-
-                                                {item.note && (
-                                                    <p className="text-tertiary-black text-md mt-2 italic">{item.note}</p>
-                                                )}
-                                            </div>
+                                            ))}
                                         </div>
-                                    ))}
-                                </div>
-                                <ThemeButton
-                                    variant="tertiary"
-                                    className="mt-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-                                    <span className="flex gap-2 items-center">
-                                        Check Notes
-                                        <FiFileText />
-                                    </span>
-                                </ThemeButton>
-                            </div>
-                        </div>
-
-                        <div className="bg-white rounded-xl border border-quaternary-navy-blue relative overflow-hidden">
-                            <CardHeader title="Files" />
-                            <div className="p-4 flex flex-col gap-4">
-                                <div className="inline-flex flex-col gap-1">
-                                    <h3 className="text-base font-medium text-primary-black">Progress Notes</h3>
-                                    <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] overflow-hidden">
-                                        <button
-                                            type="button"
-                                            onClick={() => setIsModalOpen(true)}
-                                            className="flex w-full items-center justify-center cursor-pointer gap-2 py-4 px-3 bg-white rounded-lg"
-                                        >
-                                            <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
-                                                Upload Progress Notes
-                                            </p>
-                                            <img src="/upload-new.svg" alt="upload new img" className="" />
-                                        </button>
+                                        <ThemeButton
+                                            variant="tertiary"
+                                            className="mt-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                                            <span className="flex gap-2 items-center">
+                                                Check Notes
+                                                <FiFileText />
+                                            </span>
+                                        </ThemeButton>
                                     </div>
                                 </div>
-                                <div className="inline-flex flex-col gap-1">
-                                    <h3 className="text-base font-medium text-primary-black">Upload Files</h3>
-                                    <FileDropzone
-                                        isDragging={isDragging}
-                                        onDragOver={handleDragOver}
-                                        onDragLeave={handleDragLeave}
-                                        onDrop={handleDrop}
-                                        onFileChange={handleFileChange}
-                                        className="!p-3"
-                                    />
-                                </div>
 
-                                {uploadedFiles.length > 0 && (
-                                    <div className="inline-flex flex-col gap-1">
-                                        <h3 className="text-sm font-medium text-secondary-black">{uploadedFiles.length} files uploading...</h3>
-                                        <UploadFileList
-                                            files={uploadedFiles}
-                                            removeFile={(id: any) => removeFile(id)}
-                                            handleAddTag={handleAddTag}
-                                        />
+                                <div className="bg-white rounded-xl border border-quaternary-navy-blue relative overflow-hidden">
+                                    <CardHeader title="Files" />
+                                    <div className="p-4 flex flex-col gap-4">
+                                        <div className="inline-flex flex-col gap-1">
+                                            <h3 className="text-base font-medium text-primary-black">Progress Notes</h3>
+                                            <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] overflow-hidden">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setIsModalOpen(true)}
+                                                    className="flex w-full items-center justify-center cursor-pointer gap-2 py-4 px-3 bg-white rounded-lg"
+                                                >
+                                                    <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
+                                                        Upload Progress Notes
+                                                    </p>
+                                                    <img src="/upload-new.svg" alt="upload new img" className="" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className="inline-flex flex-col gap-1">
+                                            <h3 className="text-base font-medium text-primary-black">Upload Files</h3>
+                                            <FileDropzone
+                                                isDragging={isDragging}
+                                                onDragOver={handleDragOver}
+                                                onDragLeave={handleDragLeave}
+                                                onDrop={handleDrop}
+                                                onFileChange={handleFileChange}
+                                                className="!p-3"
+                                            />
+                                        </div>
+
+                                        {uploadedFiles.length > 0 && (
+                                            <div className="inline-flex flex-col gap-1">
+                                                <h3 className="text-sm font-medium text-secondary-black">{uploadedFiles.length} files uploading...</h3>
+                                                <UploadFileList
+                                                    files={uploadedFiles}
+                                                    removeFile={(id: any) => removeFile(id)}
+                                                    handleAddTag={handleAddTag}
+                                                />
+                                            </div>
+                                        )}
                                     </div>
-                                )}
+                                </div>
                             </div>
+                            
+                            <InfoDetails requestDetails={requestDetails} />
                         </div>
-                    </div>
-                    
-                    <InfoDetails isLoading={isLoading} requestDetails={requestDetails} />
-                </div>
+                    </>
+                )}
             </div>
         </>
     );

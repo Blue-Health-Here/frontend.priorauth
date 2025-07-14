@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import InputField from '../../../../components/common/form/InputField';
 import Button from '../../../../components/common/Button';
 import { changePasswordValidationSchema } from '../../../../utils/validationSchema';
+import ThemeButton from '@/components/common/ThemeButton';
 
 const ChangePasswordPage: React.FC = () => {
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ const ChangePasswordPage: React.FC = () => {
   };
 
   return (
-    <div className="rounded-2xl bg-primary-white shadow-lg px-5 pt-6 pb-5 md:min-h-[calc(100vh-11rem)] relative">
+    <div className="rounded-2xl bg-primary-white theme-shadow px-5 pt-6 pb-5 md:min-h-[calc(100vh-11rem)] relative">
       <h2 className="text-lg md:text-xl font-semibold mb-4">Change Password</h2>
 
       <Formik
@@ -159,7 +160,13 @@ const ChangePasswordPage: React.FC = () => {
               </div>
             </div>
             <div className="md:absolute bottom-0 md:bottom-5 md:right-5 flex flex-col md:flex-row gap-3 mt-6 md:mt-20">
-              <Button
+              <ThemeButton variant="tertiary" className="!px-7 !py-3" onClick={handleCancel} type="button">
+                Cancel
+              </ThemeButton>
+              <ThemeButton variant="primary" className="!px-7 !py-3" type="submit">
+                Update
+              </ThemeButton>
+              {/* <Button
                 title="Cancel"
                 textColor="text-primary-sky-blue"
                 className="w-full md:w-24 px-6 bg-primary-white border border-primary-sky-blue hover:bg-primary-sky-blue hover:text-primary-white"
@@ -170,7 +177,7 @@ const ChangePasswordPage: React.FC = () => {
                 title="Update"
                 className="w-full md:w-24 px-6 bg-primary-blue text-white"
                 type="submit"
-              />
+              /> */}
             </div>
           </Form>
         )}
