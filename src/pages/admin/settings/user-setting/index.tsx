@@ -143,7 +143,6 @@ const UserSettingPage: React.FC = () => {
                     placeholder="Name"
                     variant="default"
                   />
-                  <ErrorMessage name="name" component="div" className="text-red-500 font-bold text-xs mt-1" />
                 </div>
                 <div>
                   <InputField
@@ -152,7 +151,6 @@ const UserSettingPage: React.FC = () => {
                     placeholder="Enter Email"
                     variant="default"
                   />
-                  <ErrorMessage name="email" component="div" className="text-red-500 font-bold text-xs mt-1" />
                 </div>
                 <div>
                   <InputField
@@ -161,7 +159,6 @@ const UserSettingPage: React.FC = () => {
                     placeholder="Phone Number"
                     variant="default"
                   />
-                  <ErrorMessage name="phone" component="div" className="text-red-500 font-bold text-xs mt-1" />
                 </div>
                 {/* <div>
                   <InputField
@@ -191,7 +188,6 @@ const UserSettingPage: React.FC = () => {
                     placeholder="Address"
                     variant="default"
                   />
-                  <ErrorMessage name="address" component="div" className="text-red-500 font-bold text-xs mt-1" />
                 </div>
               </div>
             </div>

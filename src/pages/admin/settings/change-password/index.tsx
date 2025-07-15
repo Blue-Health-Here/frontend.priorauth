@@ -149,11 +149,6 @@ const ChangePasswordPage: React.FC = () => {
                       isPassword={true}
                       className={`${getFieldBorderColor('currentPassword', values, errors, touched)}`}
                     />
-                    {errors.currentPassword && touched.currentPassword && (
-                      <div className="text-red-500 text-sm mt-1">
-                        {errors.currentPassword}
-                      </div>
-                    )}
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -166,11 +161,6 @@ const ChangePasswordPage: React.FC = () => {
                       isPassword={true}
                       className={`${getFieldBorderColor('newPassword', values, errors, touched)}`}
                     />
-                    {errors.newPassword && touched.newPassword && (
-                      <div className="text-red-500 text-sm mt-1">
-                        {errors.newPassword}
-                      </div>
-                    )}
                     {currentPasswordMatchesNew && (
                       <div className="flex items-center gap-2 mt-2">
                         <div className="w-4 h-4 rounded-full flex items-center justify-center bg-orange-100 text-orange-600">
@@ -192,11 +182,6 @@ const ChangePasswordPage: React.FC = () => {
                         isPassword={true}
                         className={`${getFieldBorderColor('confirmPassword', values, errors, touched)}`}
                       />
-                      {errors.confirmPassword && touched.confirmPassword && (
-                        <div className="text-red-500 text-sm mt-1">
-                          {errors.confirmPassword}
-                        </div>
-                      )}
                       {values.confirmPassword.length > 0 && (
                         <div className="flex items-center gap-2 mt-2">
                           <div
