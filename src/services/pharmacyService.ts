@@ -241,6 +241,10 @@ export const postChartNotesFiles = async (dispatch: AppDispatch, id?: string, fo
     });
 };
 
+export const postStartAiAnalysis = async (dispatch: AppDispatch, id?: string) => {
+    return apiHandler(dispatch, 'post', `/pa_request/add/${id}/chartNotesAnalyzer`, {});
+};
+
 // ============= Get All Prescribers  =============
 
 export const getAllPrescribers = async (dispatch: AppDispatch, id?: string) => {

@@ -120,6 +120,19 @@ export const getCurrentBadgeColors = (status?: string) => {
   return activeBadge;
 };
 
+export const getStatusColor = (status: string) => {
+  switch (status) {
+    case "Criteria Met":
+      return "bg-green-100 text-green-700";
+    case "Criteria Partially Met":
+      return "bg-yellow-100 text-yellow-700";
+    case "Criteria Not Met":
+      return "bg-red-100 text-red-700";
+    default:
+      return "bg-gray-100 text-gray-700";
+  }
+};
+
 export function formatNumberWithUnits(value: any, decimalPlaces = 1) {
   if (value < 1000) return value.toString();
 
