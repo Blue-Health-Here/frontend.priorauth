@@ -11,6 +11,8 @@ import { useParams } from "react-router-dom";
 import { getRequestDetails, getRequestStatuses, postGenerateMedicalNecessity } from "@/services/pharmacyService";
 import Loading from "@/components/common/Loading";
 import StatusTimeline from "./StatusTimeline";
+import SideDrawer from "@/components/SideDrawer";
+import RequestDetailsContent from "./SideDrawerReqDetailsContent";
 
 const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     const [statuses, setReqStatuses] = useState<any>(null);
@@ -24,6 +26,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     const dispatch = useDispatch();
     const { id: reqId } = useParams();
     const [isLoadingMedicalNecessity, setIsLoadingMedicalNecessity] = useState<boolean>(false);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -230,6 +233,15 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     return (
         <>
             <ProgressNotesModal isOpen={isModalOpen} onClose={closeModal} />
+            <SideDrawer
+                isOpen={isDrawerOpen}
+                onClose={() => setIsDrawerOpen(false)}
+                title=""
+                width="w-[500px]"
+                position="right"
+            >
+                <RequestDetailsContent />
+            </SideDrawer>
             <div className="p-4 bg-white rounded-xl theme-shadow relative">
                 {isLoading ? (
                     <Loading />
@@ -244,7 +256,6 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                                         currentStatus={statuses ? statuses.currentStatus : null}
                                         previousStatuses={statuses ? statuses.previousStatuses : []}
                                     />
-
                                 </div>
                                 <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
                                     <CardHeader title="Progress Notes" />

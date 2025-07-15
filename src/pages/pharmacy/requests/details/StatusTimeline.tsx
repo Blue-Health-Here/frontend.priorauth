@@ -73,7 +73,7 @@ const StatusTimeline: React.FC<any> = ({ currentStatus, previousStatuses }) => {
 
                     <ThemeButton
                         variant="tertiary"
-                        className="mt-4 border border-quaternary-navy-blue rounded-lg text-primary-navy-blue hover:bg-gray-50 transition-colors"
+                        className="border border-quaternary-navy-blue rounded-lg text-primary-navy-blue hover:bg-gray-50 transition-colors"
                     >
                         <span className="flex gap-2 items-center">
                             Check Notes

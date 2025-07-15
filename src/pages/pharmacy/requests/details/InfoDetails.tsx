@@ -4,9 +4,14 @@ import { Accordion, AccordionTab } from "primereact/accordion";
 import React, { useEffect, useState } from "react";
 import { LiaAngleDownSolid, LiaAngleUpSolid } from "react-icons/lia";
 import CommentsSection from "./CommentsSection";
+import { useDispatch, useSelector } from "react-redux";
+import { setRequestComments } from "@/store/features/pharmacy/requests/requestsSlice";
+import { RootState } from "@/store";
 
 const InfoDetails: React.FC<any> = ({ requestDetails }) => {
     const [details, setDetails] = useState<any>([]);
+    const dispatch = useDispatch();
+    const { reqComments } = useSelector((state: RootState) => state.pharmacyReqs);
 
     useEffect(() => {
         if (requestDetails) {
@@ -38,6 +43,10 @@ const InfoDetails: React.FC<any> = ({ requestDetails }) => {
         });
     };
 
+    const handleChange = (comments: any) => {
+        dispatch(setRequestComments({ request_id: requestDetails.id, comments }));
+    };
+
     return (
         <div className="sm:col-span-1 lg:col-span-2 space-y-4">
             {requestDetails && <div className="p-4 rounded-xl border border-quaternary-navy-blue lg:sticky lg:top-6">
@@ -65,7 +74,7 @@ const InfoDetails: React.FC<any> = ({ requestDetails }) => {
                 {createRequestInfoTabs()}
             </Accordion>
             
-            <CommentsSection />
+            <CommentsSection initialComments={reqComments} onChange={handleChange} />
         </div>
     )
 };
