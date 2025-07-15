@@ -65,20 +65,29 @@ const RequestStatusDropdownField: React.FC<RequestStatusDropdownFieldProps> = ({
 
     return (
         <div className={`relative ${className}`} ref={dropdownRef}>
-            <Button
-                severity="secondary"
-                outlined
-                className="!text-sm !rounded-xl !border-light-stroke !text-secondary-black !font-medium"
+            {/* Single unified button that works for both mobile and desktop */}
+            <button
+                className="flex items-center justify-between w-full text-sm font-medium text-secondary-black
+                           md:border md:border-light-stroke md:rounded-xl md:px-3 md:py-3 md:bg-white"
                 onClick={() => setShowDropdown(prev => !prev)}
             >
-                <span className="flex items-center gap-2">
-                    Status
-                    <FaChevronDown className="w-4 h-4" />
-                </span>
-            </Button>
+                <span>Status</span>
+                <FaChevronDown className="w-3 h-3" />
+            </button>
 
             {showDropdown && (
-                <div className="absolute right-0 top-full mt-1 p-4 w-80 bg-primary-white border border-light-stroke rounded-xl theme-shadow z-10">
+                <div className="fixed md:absolute inset-0 md:inset-auto md:right-0 md:top-full md:mt-1 p-4 w-full md:w-80 bg-primary-white border border-light-stroke rounded-none md:rounded-xl theme-shadow z-50 md:z-10">
+                    {/* Close button for mobile */}
+                    <div className="md:hidden flex justify-between items-center mb-4">
+                        <h3 className="text-lg font-semibold">Filter Status</h3>
+                        <button 
+                            onClick={() => setShowDropdown(false)}
+                            className="text-gray-500"
+                        >
+                            <FaX className="w-5 h-5" />
+                        </button>
+                    </div>
+
                     {/* Search Input */}
                     <div className="relative mb-4">
                         <InputText
@@ -93,7 +102,7 @@ const RequestStatusDropdownField: React.FC<RequestStatusDropdownFieldProps> = ({
                     </div>
 
                     {/* Status List */}
-                    {filteredStatuses?.length > 0 && <div className="space-y-4 max-h-56 overflow-y-auto">
+                    {filteredStatuses?.length > 0 && <div className="space-y-4 max-h-[60vh] md:max-h-56 overflow-y-auto">
                         {filteredStatuses.map((status, idx) => (
                             <div key={idx} className="flex items-center gap-2">
                                 <label htmlFor={`status-${idx}`} className="inline-flex items-center cursor-pointer">

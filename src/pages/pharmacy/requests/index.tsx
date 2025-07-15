@@ -418,7 +418,6 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
 
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium mb-2">Status</label>
                 <RequestStatusDropdownField
                   data={filteredStatuses}
                   onChange={(selected) => {
@@ -430,9 +429,6 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">
-                  Filter By
-                </label>
                 <FilterField
                   columns={columns}
                   selectedValue={selectedFilterField}
