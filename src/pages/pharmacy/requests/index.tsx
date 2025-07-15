@@ -93,7 +93,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
     const isFetchedStatuses = useRef(false);
     const [isLoading, setIsLoading] = useState(false);
     const [filteredStatuses, setFilteredStatuses] = useState([]);
-    const [selectedFilterField, setSelectedFilterField] = useState("patient");
+    const [selectedFilterField, setSelectedFilterField] = useState("");
     const [filteredRequests, setFilteredRequests] = useState<any[]>([]);
 
     const fetchInitialData = async () => {
@@ -277,7 +277,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
             ) : (
                 <ThemeDataTable
                     header={tableHeader}
-                    data={filteredRequests}
+                    data={selectedFilterField !== "" ? filteredRequests : requestsData}
                     columns={columns}
                     pageSize={5}
                     selectedFilterField={selectedFilterField}

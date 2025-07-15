@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { deleteUploadedProgressNote, setRequestProgressNotes } from "@/store/features/pharmacy/requests/requestProgressNotesSlice";
 import { RootState } from "@/store";
+import { postChartNotesFiles } from "@/services/pharmacyService";
 
 interface ProgressNotesModalProps {
   isOpen: boolean;
@@ -184,15 +185,27 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
     setIsDragging(false);
   };
 
-  const startAnalysis = () => {
-    setAnalysisStarted(true);
-    if (uploadedFiles?.length > 0) {
-      setSelectedFile(uploadedFiles[0]);
+  const startAnalysis = async () => {
+    console.log(uploadedFiles, "uploadedFiles");
+    try {
+      const formData = new FormData();
+      uploadedFiles.map((item: any) => item.file).forEach((file: any) => {
+        formData.append("chartNotes", file);
+      });
+      const response = await postChartNotesFiles(dispatch, requestId, formData)
+      if (response) {
+        setAnalysisStarted(true);
+        if (uploadedFiles?.length > 0) {
+          setSelectedFile(uploadedFiles[0]);
+        }
+        dispatch(setRequestProgressNotes({
+          requestId,
+          uploadedFiles
+        }));
+      }
+    } catch (error: any) {
+      console.log(error?.message);
     }
-    dispatch(setRequestProgressNotes({
-      requestId,
-      uploadedFiles
-    }));
   };
 
   const redoAnalysis = () => {
@@ -232,8 +245,6 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
     }
   };
 
-  // const removeFile = (id: string) =>
-  //   setUploadedFiles((prev) => prev.filter((file) => file.id !== id));
   const removeFile = (id: string, requestId?: string) => {
     setUploadedFiles((prevFiles) => {
       const updated = prevFiles.filter((file) => file.id !== id);

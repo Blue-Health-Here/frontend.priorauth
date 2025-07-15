@@ -9,7 +9,7 @@ import { setPrescribersData } from "@/store/features/pharmacy/prescribers/prescr
 import { setProfilePassword } from "../store/features/global/globalSlice";
 
 // Types
-type ApiMethod = 'get' | 'post' | 'put' | 'delete';
+type ApiMethod = 'get' | 'post' | 'put' | 'delete' | 'patch';
 type ApiResponse<T = any> = {
     data?: T & { success?: boolean };
     status?: number;
@@ -78,13 +78,21 @@ const apiHandler = async <T = any>(
             case 'put':
                 response = await axiosAdmin.put(url, data, config);
                 break;
+                break;
+            case 'patch':
+                response = await axiosAdmin.patch(url, data, config);
+                break;
             case 'delete':
                 response = await axiosAdmin.delete(url, config);
                 break;
         }
         // console.log(response, "response api handler");
         // Handle success
-        if (response?.status === 200 || response?.data?.success || response?.status === 201) {
+        if (
+            (response && response.status === 200) ||
+            (response && response.data && response.data.success) ||
+            (response && response.status === 201)
+        ) {
             if (successMessage) {
                 toast.success(successMessage);
             }
@@ -103,24 +111,19 @@ const apiHandler = async <T = any>(
             if (errorMessage) {
                 toast.success(errorMessage);
             }
-
-            if (onError) {
-                onError(error);
-            }
         } else if (error?.status === 409) {
             if (error?.response?.data?.detail) {
                 toast.success(error.response.data.detail);
             }
-
-            if (onError) {
-                onError(error);
-            }
+        } else if (error?.status === 400) {
+            toast.error(error?.response.data.error || error?.message);
         } else {
             // Handle other errors
             toast.error(error?.message || errorMessage);
-            if (onError) {
-                onError(error);
-            }
+        }
+
+        if (onError) {
+            onError(error);
         }
 
         return null;
@@ -225,6 +228,17 @@ export const getRequestDetails = async (dispatch: AppDispatch, id?: string) => {
 
 export const getRequestStatuses = async (dispatch: AppDispatch, id?: string) => {
     return apiHandler(dispatch, 'get', `/status-history/get_by_id/${id}/statuses`, {});
+};
+
+export const postGenerateMedicalNecessity = async (dispatch: AppDispatch, id?: string) => {
+    return apiHandler(dispatch, 'post', `/pa_request/add/${id}/generate-letter-of-medical-necessity`, {});
+};
+
+export const postChartNotesFiles = async (dispatch: AppDispatch, id?: string, formData?: any) => {
+    return apiHandler(dispatch, 'patch', `/pa_request/update/${id}/chartNotes`, {
+        isFormData: true,
+        data: formData
+    });
 };
 
 // ============= Get All Prescribers  =============
