@@ -8,7 +8,7 @@ import PageHeader from "./PageHeader";
 import InfoDetails from "./InfoDetails";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getRequestDetails, getRequestStatuses } from "@/services/pharmacyService";
+import { getRequestDetails, getRequestStatuses, postGenerateMedicalNecessity } from "@/services/pharmacyService";
 import Loading from "@/components/common/Loading";
 import StatusTimeline from "./StatusTimeline";
 
@@ -23,6 +23,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     const isFetchedReqDetails = useRef(false);
     const dispatch = useDispatch();
     const { id: reqId } = useParams();
+    const [isLoadingMedicalNecessity, setIsLoadingMedicalNecessity] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -210,6 +211,22 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
         setIsModalOpen(false);
     };
 
+    const generateMedicalNecessity = async () => {
+        setIsLoadingMedicalNecessity(true);
+        try {
+            const response = await postGenerateMedicalNecessity(dispatch, reqId);
+            if (response) {
+                // console.log("dasdasd");
+                setIsLoadingMedicalNecessity(false);
+            };
+        } catch (error: any) {
+            // console.log(error, "error");
+            // toast.error(error?.message);
+        } finally {
+            setIsLoadingMedicalNecessity(false);
+        }
+    };
+
     return (
         <>
             <ProgressNotesModal isOpen={isModalOpen} onClose={closeModal} />
@@ -229,26 +246,51 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                                     />
 
                                 </div>
-
+                                <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
+                                    <CardHeader title="Progress Notes" />
+                                    <div className="p-4">
+                                        <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] overflow-hidden">
+                                            <button
+                                                type="button"
+                                                onClick={() => setIsModalOpen(true)}
+                                                className="flex w-full items-center justify-center cursor-pointer gap-2 py-4 px-3 bg-white rounded-lg"
+                                            >
+                                                <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
+                                                    Upload Progress Notes
+                                                </p>
+                                                <img src="/upload-new.svg" alt="upload new img" className="" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div className="bg-white rounded-xl border border-quaternary-navy-blue relative overflow-hidden">
-                                    <CardHeader title="Files" />
+                                    <CardHeader title="Other Files" />
                                     <div className="p-4 flex flex-col gap-4 relative">
-                                        <div className="inline-flex flex-col gap-1">
-                                            <h3 className="text-base font-medium text-primary-black">Progress Notes</h3>
-                                            <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] overflow-hidden">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setIsModalOpen(true)}
-                                                    className="flex w-full items-center justify-center cursor-pointer gap-2 py-4 px-3 bg-white rounded-lg"
-                                                >
-                                                    <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
-                                                        Upload Progress Notes
+                                        <div className="inline-flex flex-col gap-2">
+                                            <h3 className="text-base font-medium text-primary-black">Generate File</h3>
+                                            <div className="inline-flex flex-col gap-4 p-4 max-w-[400px] border border-quaternary-navy-blue rounded-lg">
+                                                <img src="/AI_PDF_large.svg" alt="pdf icon" className="w-12 h-12" />
+                                                <div className="">
+                                                    <h3 className="text-base font-medium text-primary-black">Letter of Medical Necessity</h3>
+                                                    <p className="text-quaternary-white text-sm">
+                                                        You can generate letter of medical necessity directly inside the platform using our latest AI Models
                                                     </p>
-                                                    <img src="/upload-new.svg" alt="upload new img" className="" />
-                                                </button>
+                                                </div>
+                                                <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] overflow-hidden">
+                                                    <button
+                                                        type="button"
+                                                        onClick={generateMedicalNecessity}
+                                                        className="flex w-full items-center justify-center cursor-pointer gap-2 py-4 px-3 bg-white rounded-lg"
+                                                    >
+                                                        <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
+                                                            {isLoadingMedicalNecessity ? "Generating..." : "Generate"}
+                                                        </p>
+                                                        <img src={"/Group (2).svg"} alt="AI Icon" className="w-4.5 h-4.5" />
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="inline-flex flex-col gap-1">
+                                        <div className="inline-flex flex-col gap-2">
                                             <h3 className="text-base font-medium text-primary-black">Upload Files</h3>
                                             <FileDropzone
                                                 isDragging={isDragging}
