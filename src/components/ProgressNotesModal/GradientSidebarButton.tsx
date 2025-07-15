@@ -1,6 +1,6 @@
 import React from "react";
 
-const GradientSidebarButton: React.FC<any> = ({ analysisStarted, disabled, startAnalysis, redoAnalysis }) => {
+const GradientSidebarButton: React.FC<any> = ({ analysisStarted, disabled, startAnalysis, redoAnalysis, isLoadingStartAnalysis }) => {
     const renderBtnContent = () => {
         return !analysisStarted ? (
             <div className="flex items-center gap-3">
@@ -41,7 +41,7 @@ const GradientSidebarButton: React.FC<any> = ({ analysisStarted, disabled, start
                         : "bg-white text-sm font-medium"
                 }`}
             >
-                {renderBtnContent()}
+                {isLoadingStartAnalysis ? "Analyzing..." : renderBtnContent()}
             </div>
         </button>
     );

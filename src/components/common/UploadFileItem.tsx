@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { UploadedFile } from "../../utils/types";
 import CustomCheckbox from "./form/CustomCheckbox";
 import ThemeButton from "./ThemeButton";
+import { Link } from "react-router-dom";
 
 const predefinedTags = [
   "Denial Letter",
@@ -99,9 +100,17 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
             className="h-8 w-8"
           />
           <div className="flex flex-col min-w-0">
-            <p className="text-sm font-medium text-primary-black truncate">
-              {file.name}
-            </p>
+            {file.url ? (              
+              <Link to={file.url} target="_blank">
+                <p className="text-sm font-medium text-primary-black truncate">
+                  {file.name}
+                </p>
+              </Link>
+            ) : (
+              <p className="text-sm font-medium text-primary-black truncate">
+                {file.name}
+              </p>
+            )}
             {file.fileTags?.length > 0 && (
               <div className="flex gap-1 mt-1">
                 <div className="px-2 py-1 rounded-lg text-xs font-medium bg-quaternary-navy-blue text-secondary-navy-blue truncate">

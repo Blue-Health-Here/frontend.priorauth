@@ -191,7 +191,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
         <>
             <div className="inline-flex gap-2 items-center h-12 flex-wrap w-full">
                 <ThemeButtonTabs 
-                    data={['All Requests', 'Active Requests']} 
+                    data={['All Requests', 'Active Requests']} className="min-w-[300px] max-w-[300px]"
                     activeTab={activeRequestTab} setActiveTab={setActiveRequestTab} />
                 <div className="inline-flex h-full items-center gap-2 ml-auto">
                     <SearchField globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
