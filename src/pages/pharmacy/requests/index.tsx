@@ -25,7 +25,7 @@ import Loading from "@/components/common/Loading";
 import RequestStatusDropdown from "@/components/RequestStatusDropdown";
 import ThemeButtonTabs from "@/components/ThemeButtonTabs";
 import { getAvatarInfo } from "@/utils/avatar";
-import { FaPlus, FaTimes } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 
 const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
   const columns = [
@@ -148,6 +148,8 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
   const [selectedFilterField, setSelectedFilterField] = useState("patient");
   const [filteredRequests, setFilteredRequests] = useState<any[]>([]);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
+  
 
   const fetchInitialData = async () => {
     setIsLoading(true);
@@ -395,9 +397,8 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
         />
       )}
 
-      {/* Mobile Sidebar */}
       {mobileSidebarOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
+        <div className="fixed inset-0 z-100 md:hidden">
           {/* Overlay */}
           <div
             className="absolute inset-0 bg-gray-50 bg-opacity-50"
@@ -405,56 +406,83 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
           ></div>
 
           {/* Sidebar Content */}
-          <div className="absolute right-0 top-0 h-full w-[90%] max-w-sm bg-white shadow-lg p-4 overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold">Filters</h3>
-              <button
-                onClick={() => setMobileSidebarOpen(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <FaTimes size={20} />
-              </button>
+          <div className="absolute right-0 top-0 h-full w-[90%] max-w-sm bg-white shadow-lg p-4 overflow-y-auto flex flex-col">
+            <div className="flex-1">
+              <div className="flex items-center px-4 pl-0 pt-1 gap-3">
+                <button
+                  onClick={() => setMobileSidebarOpen(false)}
+                  className="bg-[#F5F5F5] p-2 rounded-md"
+                >
+                  <img
+                    src="/Vector (15).svg"
+                    alt="Close sidebar"
+                    className="w-4 h-4"
+                  />
+                </button>
+                <h3 className="text-lg font-semibold text-[#1E1E1E]">
+                  Filters
+                </h3>
+              </div>
+              <div className="h-px bg-gray-200 -mx-4 w-[calc(100%+2rem)] my-4"></div>
+
+              <div className="space-y-2">
+                <div>
+                  <RequestStatusDropdownField
+                    data={filteredStatuses}
+                    onChange={(selected) => {
+                      setSelectedStatuses(selected);
+                      handleStatusChange(selected);
+                    }}
+                    className="w-full"
+                  />
+                </div>
+                <div className="h-[1px] w-full bg-gray-200 mb-4"></div>
+
+                <div>
+                  <FilterField
+                    columns={columns}
+                    selectedValue={selectedFilterField}
+                    onChange={(field) => {
+                      handleFilterChange(field);
+                    }}
+                    className="w-full"
+                  />
+                </div>
+                <div className="h-[1px] w-full bg-gray-200 mb-4"></div>
+
+                <div>
+                  <ToggleColumnsField
+                    clearSelection={clearSelection}
+                    selectAll={selectAll}
+                    setIsChecked={setIsChecked}
+                    isChecked={isChecked}
+                    columns={columns}
+                    visibleColumns={visibleColumns}
+                    toggleColumn={toggleColumn}
+                    className="w-full"
+                  />
+                </div>
+              </div>
             </div>
 
-            <div className="space-y-6">
-              <div>
-                <RequestStatusDropdownField
-                  data={filteredStatuses}
-                  onChange={(selected) => {
-                    handleStatusChange(selected);
-                    setMobileSidebarOpen(false);
-                  }}
-                  className="w-full"
-                />
-              </div>
-
-              <div>
-                <FilterField
-                  columns={columns}
-                  selectedValue={selectedFilterField}
-                  onChange={(field) => {
-                    handleFilterChange(field);
-                    setMobileSidebarOpen(false);
-                  }}
-                  className="w-full"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Columns
-                </label>
-                <ToggleColumnsField
-                  clearSelection={clearSelection}
-                  selectAll={selectAll}
-                  setIsChecked={setIsChecked}
-                  isChecked={isChecked}
-                  columns={columns}
-                  visibleColumns={visibleColumns}
-                  toggleColumn={toggleColumn}
-                  className="w-full"
-                />
-              </div>
+            <div className="flex gap-3 pt-4 bg-white">
+              <button
+                onClick={() => {
+                  setSelectedStatuses([]);
+                  setSelectedFilterField("patient");
+                  setGlobalFilter("");
+                  clearSelection();
+                }}
+                className="flex-1 py-3  rounded-lg bg-[#EBF1FF] text-[#163066] text-sm font-medium"
+              >
+                Reset All
+              </button>
+              <button
+                onClick={() => setMobileSidebarOpen(false)}
+                className="flex-1 py-2 rounded-lg bg-[#163066] text-white text-sm "
+              >
+                Apply Filters
+              </button>
             </div>
           </div>
         </div>
