@@ -248,7 +248,6 @@ export const getAllPrescribers = async (dispatch: AppDispatch, id?: string) => {
 export const updateProfilePassword = async (dispatch: AppDispatch, userId: string, data: any) => {
     return apiHandler(dispatch, 'post', `/user/change-password/${userId}`, {
         data,
-        successMessage: "Profile password updated successfully!",
         onSuccess: (updatedData) => {
             dispatch(setProfilePassword(updatedData));
         }
