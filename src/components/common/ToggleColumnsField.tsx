@@ -106,17 +106,6 @@ const ToggleColumnsField: React.FC<ToggleColumnsFieldProps> = ({
               ))}
             </div>
 
-
-            <div className="mt-4 pt-2 border-t border-light-stroke">
-              <button
-                onClick={clearSelection}
-                className="flex items-center gap-2 cursor-pointer justify-between w-full text-sm font-medium text-secondary-black"
-              >
-                Clear Selection
-                <FaX className="w-3 h-3" />
-              </button>
-            </div>
-
             <div className="mt-4 pt-2 border-t border-light-stroke">
               <button
                 onClick={clearSelection}

@@ -157,6 +157,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
   };
 
   const toggleColumn = (columnField: any) => {
+    console.log(columnField, "Dasdas");
     setVisibleColumns((prev: any) => ({
       ...prev,
       [columnField]: !prev[columnField]
@@ -227,11 +228,9 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
           activeTab={activeRequestTab}
           setActiveTab={setActiveRequestTab}
         />
-
       </div>
 
       {/* Desktop Header */}
-
       <div className="hidden md:block">
         <div className="inline-flex gap-2 items-center h-12 flex-wrap w-full">
           <ThemeButtonTabs
@@ -300,6 +299,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
         setIsModalOpen(false);
         if (isAdded) fetchInitialData();
       }} />}
+      
       {mobileSidebarOpen && (
         <div className="fixed inset-0 z-100 md:hidden">
           {/* Overlay */}
@@ -392,7 +392,6 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
             </div>
           </div>
         </div>
-
       )}
 
       <div className="hidden md:flex justify-between gap-4 items-center pb-2 h-14 flex-wrap">
