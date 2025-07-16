@@ -1,6 +1,7 @@
 import { FiFileText } from "react-icons/fi";
 import ThemeButton from "@/components/common/ThemeButton";
 import React, { useEffect, useState } from "react";
+import { formatDateTime, getStatusClass } from "@/utils/helper";
 
 interface StatusTimelineProps {
   currentStatus: any;
@@ -8,29 +9,28 @@ interface StatusTimelineProps {
   onCheckNotes?: () => void;
 }
 
-const StatusTimeline: React.FC<StatusTimelineProps> = ({ 
-  currentStatus, 
+const StatusTimeline: React.FC<StatusTimelineProps> = ({
+  currentStatus,
   previousStatuses,
-  onCheckNotes 
+  onCheckNotes
 }) => {
   const [statusItems, setStatusItems] = useState<any>([]);
-
   useEffect(() => {
     if (currentStatus) {
       setStatusItems([
         {
           title: currentStatus.name,
-          date: formatDate(currentStatus.date),
+          date: formatDateTime(currentStatus.date),
           isActive: true,
-          note: "",
-          statusClass: "bg-blue-100 text-blue-800",
+          note: "", // optionally add current note
+          statusClass: getStatusClass(currentStatus.name), // highlight for active
         },
         ...(previousStatuses.length > 0 ? previousStatuses.map((status: any) => ({
           title: status.name,
-          date: formatDate(status.date),
+          date: formatDateTime(status.date),
           isActive: false,
-          note: "",
-          statusClass: "bg-gray-100 text-gray-800",
+          note: "", // optionally populate if API supports notes
+          statusClass: getStatusClass(status.name), // style for past
         })) : [])
       ]);
     } else {
@@ -47,11 +47,10 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
             {statusItems.map((item: any, index: any) => (
               <div
                 key={index}
-                className={`relative flex items-center gap-4 ${
-                  item.isActive
-                    ? "border border-dashed border-blue-navigation-link-button rounded-xl opacity-100" 
+                className={`relative flex items-center gap-4 ${item.isActive
+                    ? "border border-dashed border-blue-navigation-link-button rounded-xl opacity-100"
                     : "opacity-50"
-                }`}
+                  }`}
               >
                 <div className="p-1 bg-white rounded-full inline-flex justify-center items-center ml-1">
                   <div className="relative z-10 w-2.5 h-2.5 rounded-full flex-shrink-0 p-1">
@@ -62,7 +61,7 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
                 <div className="p-2 w-full">
                   <div className="flex justify-between items-center gap-4 w-full">
                     <span
-                      className={`px-4 py-1 rounded-full line-clamp-1 text-xs sm:text-sm lg:text-base font-normal ${item.statusClass}`}
+                      className={`px-4 py-1 rounded-full line-clamp-1 text-xs sm:text-sm lg:text-base font-medium ${item.statusClass}`}
                     >
                       {item.title}
                     </span>
@@ -100,14 +99,5 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
     </div>
   );
 };
-
-function formatDate(dateStr: any) {
-  if (!dateStr) return "";
-  const date = new Date(dateStr);
-  return date.toLocaleString("en-US", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  });
-}
 
 export default StatusTimeline;
