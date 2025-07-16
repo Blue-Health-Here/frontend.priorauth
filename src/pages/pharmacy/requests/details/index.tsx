@@ -166,6 +166,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                     }
                 })
             );
+            console.log(newFiles, "newFiles");
             setUploadedFiles((prev: any) => [...prev, ...newFiles]);
         }
     };
@@ -215,14 +216,38 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
         setUploadedFiles(updateFn);
     };
 
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
+    useEffect(() => {
+        if (!uploadedFiles.some((file) => file.status === "uploading"))
+            return;
+
+        const interval = setInterval(() => {
+            setUploadedFiles((prevFiles) =>
+                prevFiles.map((file) => {
+                    if (file.status === "uploading") {
+                        const newProgress = Math.min(
+                            file.progress + Math.random() * 20,
+                            100
+                        );
+                        return {
+                            ...file,
+                            progress: newProgress,
+                            status: newProgress >= 100 ? "completed" : "uploading",
+                        };
+                    }
+                    return file;
+                })
+            );
+        }, 500);
+        return () => clearInterval(interval);
+    }, [uploadedFiles]);
 
     // console.log(requestDetails, uploadedFiles, "requestDetails")
     return (
         <>
-            <ProgressNotesModal isOpen={isModalOpen} onClose={closeModal} chartNotes={requestDetails?.chartNotes || []} />
+            <ProgressNotesModal isOpen={isModalOpen} onClose={(isAdded?: boolean) => {
+                setIsModalOpen(false);
+                if (isAdded) getRequestStatuses(dispatch, reqId);
+            }} chartNotes={requestDetails?.chartNotes || []} />
             <SideDrawer
                 isOpen={isDrawerOpen}
                 onClose={() => setIsDrawerOpen(false)}
@@ -281,17 +306,17 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                                                 onFileChange={handleFileChange}
                                                 className="!p-3"
                                             />
-                                            <p className="text-[#9E9E9E] text-sm font-medium">Accepts: 
+                                            <p className="text-[#9E9E9E] text-sm font-medium">Accepts:
                                                 <span className="text-[#525252]"> Denial Letter, Appeal Form, Blank Fax Form, Letter of Medical Necessity</span></p>
                                         </div>
 
                                         {uploadedFiles.length > 0 && (
                                             <div className="inline-flex flex-col gap-2">
                                                 <h3 className="text-sm font-medium text-secondary-black">
-                                                    {uploadedFiles.some((item: any) => item.status !== "completed") ? (
-                                                        <span>Uploaded Files</span>
+                                                    {uploadedFiles.some((item: any) => item.status === "uploading") ? (
+                                                        <span>{uploadedFiles.filter((item: any) => item.status === "uploading").length} files uploading...</span>
                                                     ) : (
-                                                        <span>{uploadedFiles.length} files uploading...</span>
+                                                        <span>Uploaded Files</span>
                                                     )}
                                                 </h3>
                                                 <UploadFileList

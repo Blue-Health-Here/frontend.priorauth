@@ -1,4 +1,7 @@
+import usePdfPreview from '@/hooks/usePdfPreview';
+
 const RenderFilePreview: React.FC<any> = ({ file, isLarge, selectedItem, handleSelectFile }) => {
+    const previewPdfUrl = file.type === 'application/pdf' || file.mimeType === 'application/pdf' ? usePdfPreview(file.url) : file.url;
     if (!file.url) return null;
 
     const containerClass = isLarge
@@ -7,7 +10,7 @@ const RenderFilePreview: React.FC<any> = ({ file, isLarge, selectedItem, handleS
 
     if (file.type.startsWith('image/') || file.mimeType.startsWith('image/')) {
         return (
-            <div key={file.id} onClick={() => handleSelectFile(file)} 
+            <div key={file.id} onClick={() => handleSelectFile(file)}
                 className={selectedItem.name === file.name ? containerClass + ' relative border-primary-sky-blue' : containerClass + ' relative'}>
                 <img src={file.url} alt={file.name} className="max-h-full max-w-full object-cover h-full w-full" />
                 <p className="absolute bottom-0 left-0 right-0 p-2 text-center bg-white ">
@@ -20,11 +23,11 @@ const RenderFilePreview: React.FC<any> = ({ file, isLarge, selectedItem, handleS
         );
     } else if (file.type === 'application/pdf' || file.mimeType === 'application/pdf') {
         return (
-            <div key={file.id} onClick={() => handleSelectFile(file)} 
+            <div key={file.id} onClick={() => handleSelectFile(file)}
                 className={selectedItem.name === file.name ? containerClass + ' relative border-primary-sky-blue' : containerClass + ' relative'}>
                 {file.file ? (
                     <img src={file.url} alt={file.name} className="max-h-full max-w-full object-cover h-full" />
-                ) : <iframe src={file.url} name="iframe_all" height="100%" width="100%"></iframe>}
+                ) : <img src={previewPdfUrl || ""} alt='preview url' className='max-h-full max-w-full object-cover h-full' />}
                 <p className="absolute bottom-0 left-0 right-0 p-2 text-center bg-white ">
                     <span className="font-medium text-xs line-clamp-1 text-secondary-black">{file.name}</span>
                 </p>
@@ -36,7 +39,7 @@ const RenderFilePreview: React.FC<any> = ({ file, isLarge, selectedItem, handleS
     } else if (file.type.startsWith('text/') || file.type === 'application/msword' ||
         file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
         return (
-            <div key={file.id} onClick={() => handleSelectFile(file)} 
+            <div key={file.id} onClick={() => handleSelectFile(file)}
                 className={selectedItem.name === file.name ? containerClass + ' relative border-primary-sky-blue' : containerClass + ' relative'}>
                 <div className="absolute inset-0 flex items-center justify-center">
                     <svg className="h-7 w-7 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -53,7 +56,7 @@ const RenderFilePreview: React.FC<any> = ({ file, isLarge, selectedItem, handleS
         );
     } else {
         return (
-            <div key={file.id} onClick={() => handleSelectFile(file)} 
+            <div key={file.id} onClick={() => handleSelectFile(file)}
                 className={selectedItem.name === file.name ? containerClass + ' relative border-primary-sky-blue' : containerClass + ' relative'}>
                 <div className="absolute inset-0 flex items-center justify-center">
                     <svg className="h-12 w-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
