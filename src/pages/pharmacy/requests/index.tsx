@@ -97,7 +97,6 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
   const [selectedFilterField, setSelectedFilterField] = useState("");
   const [filteredRequests, setFilteredRequests] = useState<any[]>([]);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
 
   const fetchInitialData = async () => {
     setIsLoading(true);
@@ -335,7 +334,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
                   <RequestStatusDropdownField
                     data={filteredStatuses}
                     onChange={(selected) => {
-                      setSelectedStatuses(selected);
+                      // setSelectedStatuses(selected);
                       handleStatusChange(selected);
                     }}
                     className="w-full"
@@ -375,7 +374,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
             <div className="flex gap-3 pt-4 bg-white">
               <button
                 onClick={() => {
-                  setSelectedStatuses([]);
+                  // setSelectedStatuses([]);
                   setSelectedFilterField("patient");
                   setGlobalFilter("");
                   clearSelection();

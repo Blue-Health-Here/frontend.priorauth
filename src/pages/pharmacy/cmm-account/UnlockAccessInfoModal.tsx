@@ -3,7 +3,7 @@ import ModalHeader from "@/components/common/ModalHeader";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import ThemeButton from "@/components/common/ThemeButton";
 import { Form, Formik, FormikValues } from "formik";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
