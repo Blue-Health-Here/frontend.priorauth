@@ -1,9 +1,11 @@
+import api from "@/api/instance";
 import ThemeButton from "@/components/common/ThemeButton";
 import { postGenerateMedicalNecessity } from "@/services/pharmacyService";
+import { RootState } from "@/store";
 import React, { useEffect, useState } from "react";
 import { FiDownload } from "react-icons/fi";
 import { TfiReload } from "react-icons/tfi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 const LetterOfMedicalNecessity: React.FC<any> = ({ requestDetails }) => {
@@ -12,6 +14,7 @@ const LetterOfMedicalNecessity: React.FC<any> = ({ requestDetails }) => {
     const [medicalNecessityFile, setMedicalNecessityFile] = useState<null>(null);
     const dispatch = useDispatch();
     const { id: reqId } = useParams();
+    const { user } = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
         if (requestDetails) {
@@ -36,8 +39,39 @@ const LetterOfMedicalNecessity: React.FC<any> = ({ requestDetails }) => {
         }
     };
 
-    const downloadMedicalNecessityLetter = () => {
+    // const handleDownload = () => {
+    //     if (medicalNecessityFile) {
+    //         const file = medicalNecessityFile as { url: string; fileName: string };
+    //         const link = document.createElement("a");
+    //         link.href = file.url;
+    //         link.rel = "noopener noreferrer";
+    //         link.download = file.fileName;
+    //         document.body.appendChild(link);
+    //         link.click();
+    //         document.body.removeChild(link);
+    //     }
+    // };
 
+    const handleDownload = async () => {
+        // console.log(user, medicalNecessityFile, "dasdas");
+        if (medicalNecessityFile && user) {
+            const file = medicalNecessityFile as { url: string; fileName: string };
+            try {
+                const response = await api.get(file.url, {
+                    responseType: "blob"
+                });
+                const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement("a");
+                link.href = blobUrl;
+                link.download = file.fileName || "medical_necessity.pdf";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(blobUrl); // Cleanup
+            } catch (error) {
+                console.error("Download failed:", error);
+            }
+        }
     };
 
     return (
@@ -61,10 +95,10 @@ const LetterOfMedicalNecessity: React.FC<any> = ({ requestDetails }) => {
             </div>
             {medicalNecessityFile && !isReGenerateAgain ? (
                 <div className="flex gap-2 items-center h-12">
-                    <ThemeButton variant="primary" className="flex-1" onClick={downloadMedicalNecessityLetter}>
+                    <ThemeButton variant="primary" className="flex-1" onClick={handleDownload}>
                         <span className="flex gap-2 items-center text-sm">
                             Download
-                            <FiDownload className="h-5" />
+                            <FiDownload className="w-5 h-4" />
                         </span>
                     </ThemeButton>
                     <TfiReload 

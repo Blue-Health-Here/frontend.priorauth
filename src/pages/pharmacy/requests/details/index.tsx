@@ -144,6 +144,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             const fileArray = Array.from(e.target.files);
+            console.log(fileArray, "fileArray");
             const newFiles = await Promise.all(
                 fileArray.map(async (file) => {
                     if (file.type === "application/pdf") {
@@ -280,11 +281,19 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                                                 onFileChange={handleFileChange}
                                                 className="!p-3"
                                             />
+                                            <p className="text-[#9E9E9E] text-sm font-medium">Accepts: 
+                                                <span className="text-[#525252]"> Denial Letter, Appeal Form, Blank Fax Form, Letter of Medical Necessity</span></p>
                                         </div>
 
                                         {uploadedFiles.length > 0 && (
                                             <div className="inline-flex flex-col gap-2">
-                                                <h3 className="text-sm font-medium text-secondary-black">{uploadedFiles.length} files uploading...</h3>
+                                                <h3 className="text-sm font-medium text-secondary-black">
+                                                    {uploadedFiles.some((item: any) => item.status !== "completed") ? (
+                                                        <span>Uploaded Files</span>
+                                                    ) : (
+                                                        <span>{uploadedFiles.length} files uploading...</span>
+                                                    )}
+                                                </h3>
                                                 <UploadFileList
                                                     className="grid grid-cols-1 md:grid-cols-2 gap-4"
                                                     files={uploadedFiles}
