@@ -98,7 +98,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
 
     return (
         <ModalWrapper>
-            <ModalHeader title="Add Request" onClose={onClose} />
+            <ModalHeader title="Add Request" onClose={() => onClose(false)} />
             <div className="flex flex-col gap-4 min-w-lg">
                 <Formik
                     initialValues={formData}

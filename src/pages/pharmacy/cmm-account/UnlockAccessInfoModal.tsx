@@ -3,7 +3,7 @@ import ModalHeader from "@/components/common/ModalHeader";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import ThemeButton from "@/components/common/ThemeButton";
 import { Form, Formik, FormikValues } from "formik";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
@@ -19,29 +19,26 @@ const UnlockAccessInfoModal: React.FC<UnlockAccessInfoModalProps> = ({ isOpen, o
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const navigate = useNavigate();
 
-    useEffect(() => {
+
+    const handleSubmit = async (values: FormikValues) => {
+    try {
+        setLoginError(false);
+        console.log(values, isOpen, "values");
+
         const userData = localStorage.getItem("user");
         const token = userData ? JSON.parse(userData) : null;
 
         if (token) {
-            navigate("/admin");
-            return;
+            navigate("/admin"); // ✅ Safe to do it here
+        } else {
+            toast.error("Invalid password or not logged in.");
         }
-    }, []);
+    } catch (error: any) {
+        setLoginError(true);
+        toast.error(error?.message);
+    }
+};
 
-    const handleSubmit = async (values: FormikValues) => {
-        try {
-            setLoginError(false);
-            console.log(values, isOpen, "values");
-            //   const response = await submitLogin(dispatch, values);
-            //   if (response) {
-            //     navigate("/admin");
-            //   }
-        } catch (error: any) {
-            setLoginError(true);
-            toast.error(error?.message);
-        }
-    };
 
     return (
         <ModalWrapper>
