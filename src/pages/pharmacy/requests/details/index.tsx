@@ -8,7 +8,7 @@ import PageHeader from "./PageHeader";
 import InfoDetails from "./InfoDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getRequestDetails, getRequestStatuses, postGenerateMedicalNecessity } from "@/services/pharmacyService";
+import { getRequestDetails, getRequestStatuses } from "@/services/pharmacyService";
 import Loading from "@/components/common/Loading";
 import StatusTimeline from "./StatusTimeline";
 import SideDrawer from "@/components/SideDrawer";
