@@ -335,7 +335,7 @@ a:focus {
   font-weight: 300;
 }
 
-.custom-paginator > .p-datatable-wrapper {
+.custom-paginator > .p-datatable-wrapper > .p-datatable-table > .p-datatable-thead {
   border-radius: 8px;
 }
 
@@ -370,5 +370,28 @@ a:focus {
 }
 .custom-paginator.p-datatable .p-datatable-tbody > tr > td {
   min-width: 200px;
-  max-width: 230px;
+  max-width: 200px;
+}
+
+.theme-datatable-accordion .p-accordion-header .p-accordion-header-link {
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  border-radius: 10px;
+  font-size: 14px;
+  gap: 1rem;
+}
+
+.theme-datatable-accordion .p-accordion-content {
+  border: none;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.theme-datatable-accordion .p-datatable-wrapper {
+  overflow: visible !important;
+}
+
+.custom-paginator.p-datatable > .p-datatable-wrapper {
+  overflow: visible !important;
 }

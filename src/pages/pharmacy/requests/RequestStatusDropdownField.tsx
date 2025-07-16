@@ -57,7 +57,6 @@ const RequestStatusDropdownField: React.FC<RequestStatusDropdownFieldProps> = ({
     const updated = selectedStatuses.includes(status)
       ? selectedStatuses.filter((s) => s !== status)
       : [...selectedStatuses, status];
-
     setSelectedStatuses(updated);
     onChange?.(updated);
   };

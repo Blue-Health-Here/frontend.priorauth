@@ -1,54 +1,23 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { FiFileText } from "react-icons/fi";
 import CardHeader from "@/components/common/CardHeader";
 import FileDropzone from "@/components/common/FileDropzone";
 import UploadFileList from "@/components/common/UploadFileList";
 import { UploadedFile } from "@/utils/types";
 import ProgressNotesModal from "@/components/ProgressNotesModal";
-import ThemeButton from "@/components/common/ThemeButton";
 import PageHeader from "./PageHeader";
 import InfoDetails from "./InfoDetails";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getRequestDetails } from "@/services/pharmacyService";
+import { getRequestDetails, getRequestStatuses } from "@/services/pharmacyService";
+import Loading from "@/components/common/Loading";
+import StatusTimeline from "./StatusTimeline";
+import SideDrawer from "@/components/SideDrawer";
+import RequestDetailsContent from "./SideDrawerReqDetailsContent";
+import LetterOfMedicalNecessity from "./LetterOfMedicalNecessity";
 
 const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
-    const statusItems = [
-        {
-            id: 1,
-            title: "Awaiting Prescribers Tax ID",
-            status: "waiting",
-            date: null,
-            isActive: false,
-            statusClass: "bg-status-success-bg-color text-status-success-text-color"
-        },
-        {
-            id: 2,
-            title: "Approved With Progress Notes",
-            status: "approved",
-            date: "25-02-2025",
-            note: "Fax form is ready. Submission to insurance is pending MD's signature.",
-            isActive: true,
-            statusClass: "bg-status-success-bg-color text-status-success-text-color"
-        },
-        {
-            id: 3,
-            title: "Awaiting MD's Signature on Fax Form",
-            status: "waiting",
-            date: "25-02-2025",
-            isActive: false,
-            statusClass: "bg-status-bg-lilac-sky text-status-text-lilac-sky"
-        },
-        {
-            id: 4,
-            title: "Denied",
-            status: "denied",
-            date: "25-02-2025",
-            isActive: false,
-            statusClass: "bg-status-bg-rose-blush text-status-text-rose-blush"
-        }
-    ];
-    const [isLoading, setIsLoading] = useState(false);
+    const [statuses, setReqStatuses] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -57,21 +26,34 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     const isFetchedReqDetails = useRef(false);
     const dispatch = useDispatch();
     const { id: reqId } = useParams();
+    const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
     useEffect(() => {
-        const fetchRequestDetails = async () => {
+        const fetchData = async () => {
             setIsLoading(true);
-            const response = await getRequestDetails(dispatch, reqId);
-            if (response) {
-                setRequestDetails(response);
-                setIsLoading(false);
+
+            const [detailsRes, statusesRes] = await Promise.all([
+                getRequestDetails(dispatch, reqId),
+                getRequestStatuses(dispatch, reqId),
+            ]);
+
+            if (detailsRes) {
+                setRequestDetails(detailsRes);
+                setUploadedFiles(detailsRes?.files.map((item: any) => ({ ...item, name: item.fileName, type: item.mimeType })))
+            } else {
+                setRequestDetails(null);
+                setUploadedFiles([]);
             }
+            // console.log(statusesRes, "statusesRes");
+            setReqStatuses(statusesRes);
+            setIsLoading(false);
         };
+
         if (!isFetchedReqDetails.current) {
-            fetchRequestDetails();
+            fetchData();
             isFetchedReqDetails.current = true;
         }
-    }, []);
+    }, [dispatch, reqId]);
 
     useEffect(() => {
         if (!uploadedFiles.some((file) => file.status === "uploading"))
@@ -95,7 +77,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
             );
         }, 500);
         return () => clearInterval(interval);
-    }, [uploadedFiles]);
+    }, []);
 
     const loadPdfJs = useCallback(() => {
         return new Promise((resolve, reject) => {
@@ -162,6 +144,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             const fileArray = Array.from(e.target.files);
+            console.log(fileArray, "fileArray");
             const newFiles = await Promise.all(
                 fileArray.map(async (file) => {
                     if (file.type === "application/pdf") {
@@ -236,119 +219,97 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
         setIsModalOpen(false);
     };
 
+    // console.log(requestDetails, uploadedFiles, "requestDetails")
     return (
         <>
-            <ProgressNotesModal isOpen={isModalOpen} onClose={closeModal} />
+            <ProgressNotesModal isOpen={isModalOpen} onClose={closeModal} chartNotes={requestDetails?.chartNotes || []} />
+            <SideDrawer
+                isOpen={isDrawerOpen}
+                onClose={() => setIsDrawerOpen(false)}
+                title=""
+                width="w-[500px]"
+                position="right"
+            >
+                <RequestDetailsContent />
+            </SideDrawer>
             <div className="p-4 bg-white rounded-xl theme-shadow relative">
-                <PageHeader requestDetails={requestDetails} isAdmin={isAdmin} />
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-cols-5 gap-4">
-                    <div className="col-span-1 lg:col-span-2 space-y-4">
-                        {requestDetails && <div className="p-4 rounded-xl border border-quaternary-navy-blue lg:sticky lg:top-6">
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                {[
-                                    { label: "DOS", value: requestDetails.createdAt?.split("T")[0] || '-' },
-                                    { label: "CMM Key", value: requestDetails?.key },
-                                    { label: "CMM Key 2", value: requestDetails?.key },
-                                ].map((item: any, index: number) => {
-                                    return (
-                                        <div key={index}>
-                                            <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                                {item.label}
-                                            </p>
-                                            <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">{item.value}</p>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        </div>}
-
-                        <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
-                            <CardHeader title="Status" />
-                            <div className="p-4">
-                                <div className="relative flex flex-col gap-4">
-                                    <div className="absolute left-2.5 top-0 bottom-0 w-1.5 bg-gray-200"></div>
-                                    {statusItems.map((item: any, index: number) => (
-                                        <div key={index} className={`relative flex items-center gap-4 ${item.isActive ? 'border border-dashed border-blue-navigation-link-button rounded-xl opacity-100' : 'opacity-50'}`}>
-                                            <div className="p-1 bg-white rounded-full inline-flex justify-center items-center ml-1">
-                                                <div className={`relative z-10 w-2.5 h-2.5 rounded-full flex-shrink-0 p-1`}>
-                                                    <div className="absolute inset-0 rounded-full bg-blue-500"></div>
-                                                </div>
-                                            </div>
-
-                                            <div className={`p-2 w-full`}>
-                                                <div className="flex justify-between items-center gap-4 w-full">
-                                                    <span className={`px-4 py-1 rounded-full line-clamp-1 text-xs sm:text-sm lg:text-base font-normal ${item.statusClass}`}>
-                                                        {item.title}
-                                                    </span>
-                                                    {item.date && (
-                                                        <span className="text-quaternary-white text-sm whitespace-nowrap">{item.date}</span>
-                                                    )}
-                                                </div>
-
-                                                {item.note && (
-                                                    <p className="text-tertiary-black text-md mt-2 italic">{item.note}</p>
-                                                )}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                                <ThemeButton
-                                    variant="tertiary"
-                                    className="mt-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-                                    <span className="flex gap-2 items-center">
-                                        Check Notes
-                                        <FiFileText />
-                                    </span>
-                                </ThemeButton>
-                            </div>
-                        </div>
-
-                        <div className="bg-white rounded-xl border border-quaternary-navy-blue relative overflow-hidden">
-                            <CardHeader title="Files" />
-                            <div className="p-4 flex flex-col gap-4">
-                                <div className="inline-flex flex-col gap-1">
-                                    <h3 className="text-base font-medium text-primary-black">Progress Notes</h3>
-                                    <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] overflow-hidden">
-                                        <button
-                                            type="button"
-                                            onClick={() => setIsModalOpen(true)}
-                                            className="flex w-full items-center justify-center cursor-pointer gap-2 py-4 px-3 bg-white rounded-lg"
-                                        >
-                                            <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
-                                                Upload Progress Notes
-                                            </p>
-                                            <img src="/upload-new.svg" alt="upload new img" className="" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className="inline-flex flex-col gap-1">
-                                    <h3 className="text-base font-medium text-primary-black">Upload Files</h3>
-                                    <FileDropzone
-                                        isDragging={isDragging}
-                                        onDragOver={handleDragOver}
-                                        onDragLeave={handleDragLeave}
-                                        onDrop={handleDrop}
-                                        onFileChange={handleFileChange}
-                                        className="!p-3"
+                {isLoading ? (
+                    <Loading />
+                ) : (
+                    <>
+                        <PageHeader requestDetails={requestDetails} isAdmin={isAdmin} />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div className="col-span-1 lg:col-span-2 space-y-4">
+                                <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
+                                    <CardHeader title="Status" />
+                                    <StatusTimeline
+                                        currentStatus={statuses ? statuses.currentStatus : null}
+                                        previousStatuses={statuses ? statuses.previousStatuses : []}
                                     />
                                 </div>
-
-                                {uploadedFiles.length > 0 && (
-                                    <div className="inline-flex flex-col gap-1">
-                                        <h3 className="text-sm font-medium text-secondary-black">{uploadedFiles.length} files uploading...</h3>
-                                        <UploadFileList
-                                            files={uploadedFiles}
-                                            removeFile={(id: any) => removeFile(id)}
-                                            handleAddTag={handleAddTag}
-                                        />
+                                <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
+                                    <CardHeader title="Progress Notes" />
+                                    <div className="p-4">
+                                        <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] overflow-hidden">
+                                            <button
+                                                type="button"
+                                                onClick={() => setIsModalOpen(true)}
+                                                className="flex w-full items-center justify-center cursor-pointer gap-2 py-4 px-3 bg-white rounded-lg"
+                                            >
+                                                <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
+                                                    {requestDetails?.chartNotes?.length > 0 ? "View Progress Notes" : "Upload Progress Notes"}
+                                                </p>
+                                                <img src="/upload-new.svg" alt="upload new img" className="" />
+                                            </button>
+                                        </div>
                                     </div>
-                                )}
+                                </div>
+                                <div className="bg-white rounded-xl border border-quaternary-navy-blue relative overflow-hidden">
+                                    <CardHeader title="Other Files" />
+                                    <div className="p-4 flex flex-col gap-4 relative">
+                                        <div className="inline-flex flex-col gap-2">
+                                            <h3 className="text-base font-medium text-primary-black">Generate File</h3>
+                                            <LetterOfMedicalNecessity requestDetails={requestDetails} />
+                                        </div>
+                                        <div className="inline-flex flex-col gap-2">
+                                            <h3 className="text-base font-medium text-primary-black">Upload Files</h3>
+                                            <FileDropzone
+                                                isDragging={isDragging}
+                                                onDragOver={handleDragOver}
+                                                onDragLeave={handleDragLeave}
+                                                onDrop={handleDrop}
+                                                onFileChange={handleFileChange}
+                                                className="!p-3"
+                                            />
+                                            <p className="text-[#9E9E9E] text-sm font-medium">Accepts: 
+                                                <span className="text-[#525252]"> Denial Letter, Appeal Form, Blank Fax Form, Letter of Medical Necessity</span></p>
+                                        </div>
+
+                                        {uploadedFiles.length > 0 && (
+                                            <div className="inline-flex flex-col gap-2">
+                                                <h3 className="text-sm font-medium text-secondary-black">
+                                                    {uploadedFiles.some((item: any) => item.status !== "completed") ? (
+                                                        <span>Uploaded Files</span>
+                                                    ) : (
+                                                        <span>{uploadedFiles.length} files uploading...</span>
+                                                    )}
+                                                </h3>
+                                                <UploadFileList
+                                                    className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                                                    files={uploadedFiles}
+                                                    removeFile={(id: any) => removeFile(id)}
+                                                    handleAddTag={handleAddTag}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
+
+                            <InfoDetails requestDetails={requestDetails} />
                         </div>
-                    </div>
-                    
-                    <InfoDetails isLoading={isLoading} requestDetails={requestDetails} />
-                </div>
+                    </>
+                )}
             </div>
         </>
     );

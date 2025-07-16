@@ -1,6 +1,6 @@
 import React from "react";
 
-const GradientSidebarButton: React.FC<any> = ({ analysisStarted, disabled, startAnalysis, redoAnalysis }) => {
+const GradientSidebarButton: React.FC<any> = ({ analysisStarted, disabled, startAnalysis, redoAnalysis, isLoadingStartAnalysis }) => {
     const renderBtnContent = () => {
         return !analysisStarted ? (
             <div className="flex items-center gap-3">
@@ -28,7 +28,7 @@ const GradientSidebarButton: React.FC<any> = ({ analysisStarted, disabled, start
             type="button"
             disabled={disabled}
             onClick={!analysisStarted ? startAnalysis : redoAnalysis}
-            className={`relative sticky bottom-4 left-4 right-4 rounded-lg p-[1px] ${
+            className={`relative sticky cursor-pointer bottom-4 left-4 right-4 rounded-lg p-[1px] ${
                 disabled
                     ? "bg-gray-200 cursor-not-allowed"
                     : "bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B]"
@@ -41,7 +41,7 @@ const GradientSidebarButton: React.FC<any> = ({ analysisStarted, disabled, start
                         : "bg-white text-sm font-medium"
                 }`}
             >
-                {renderBtnContent()}
+                {isLoadingStartAnalysis ? "Analyzing..." : renderBtnContent()}
             </div>
         </button>
     );

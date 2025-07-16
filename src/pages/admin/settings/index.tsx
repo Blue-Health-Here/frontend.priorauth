@@ -24,7 +24,7 @@ const AdminSettings: React.FC = () => {
   console.log(profileData, "profileData");
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
       {userSettingsData.map((item, idx) => (
         <UserSettingsCard
           key={idx}

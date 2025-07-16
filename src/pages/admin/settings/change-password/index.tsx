@@ -1,15 +1,60 @@
 import { Form, Formik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import InputField from '../../../../components/common/form/InputField';
-import Button from '../../../../components/common/Button';
 import { changePasswordValidationSchema } from '../../../../utils/validationSchema';
+import ThemeButton from '@/components/common/ThemeButton';
+import { FiCheck, FiXCircle, FiAlertTriangle } from 'react-icons/fi';
+import { updateProfilePassword } from '@/services/pharmacyService';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../../store';
+import toast from 'react-hot-toast';
+
+const passwordRequirements = [
+  { label: "At least 8 characters", test: (pwd: string) => pwd.length >= 8 },
+  { label: "One uppercase letter", test: (pwd: string) => /[A-Z]/.test(pwd) },
+  { label: "One lowercase letter", test: (pwd: string) => /[a-z]/.test(pwd) },
+  { label: "One number", test: (pwd: string) => /\d/.test(pwd) },
+  {
+    label: "One special character",
+    test: (pwd: string) => /[!@#$%^&*(),.?":{}|<>]/.test(pwd),
+  },
+];
 
 const ChangePasswordPage: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { profileData } = useSelector((state: RootState) => state.global);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleCancel = () => {
     navigate('/admin/settings');
+  };
+
+  const handleSubmit = async (values: {
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+  }) => {
+    if (!profileData?.id) {
+      toast.error("User ID not available");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await updateProfilePassword(dispatch, profileData.id, {
+        oldPassword: values.currentPassword,
+        newPassword: values.newPassword,
+      });
+      toast.success("Password updated successfully!");
+      navigate('/admin/settings');
+    } catch (error) {
+      toast.error("Failed to update password");
+      console.error("Password update error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const getFieldBorderColor = (fieldName: string, values: any, errors: any, touched: any) => {
@@ -59,7 +104,7 @@ const ChangePasswordPage: React.FC = () => {
   };
 
   return (
-    <div className="rounded-2xl bg-primary-white shadow-lg px-5 pt-6 pb-5 md:min-h-[calc(100vh-11rem)] relative">
+    <div className="rounded-2xl bg-primary-white theme-shadow px-5 pt-6 pb-5 md:min-h-[calc(100vh-11rem)] relative">
       <h2 className="text-lg md:text-xl font-semibold mb-4">Change Password</h2>
 
       <Formik
@@ -69,111 +114,172 @@ const ChangePasswordPage: React.FC = () => {
           confirmPassword: '',
         }}
         validationSchema={changePasswordValidationSchema}
-        onSubmit={(values) => {
-          console.log('Submitted Values:', values);
-        }}
+        onSubmit={handleSubmit}
       >
-        {({ handleSubmit, setTouched, values, errors, touched }) => (
-          <Form
-            onSubmit={(e) => {
-              setTouched({
-                currentPassword: true,
-                newPassword: true,
-                confirmPassword: true,
-              });
-              handleSubmit(e);
-            }}
-          >
-            <div className="mt-10 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="relative">
-                  <InputField
-                    name="currentPassword"
-                    label="Current Password"
-                    placeholder="Enter Password"
-                    variant="default"
-                    isPassword={true}
-                    className={`${getFieldBorderColor('currentPassword', values, errors, touched)}`}
-                  />
-                  {errors.currentPassword && touched.currentPassword && (
-                    <div className="text-red-500 text-sm mt-1">
-                      {errors.currentPassword}
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="relative">
-                  <InputField
-                    name="newPassword"
-                    label="New Password"
-                    placeholder="Enter Password"
-                    variant="default"
-                    isPassword={true}
-                    className={`${getFieldBorderColor('newPassword', values, errors, touched)}`}
-                  />
-                  {errors.newPassword && touched.newPassword && (
-                    <div className="text-red-500 text-sm mt-1">
-                      {errors.newPassword}
-                    </div>
-                  )}
-                </div>
-                <div className="space-y-2">
+        {({ handleSubmit, setTouched, values, errors, touched }) => {
+          
+          const passwordsMatch =
+            values.newPassword &&
+            values.confirmPassword &&
+            values.newPassword === values.confirmPassword;
+          const currentPasswordMatchesNew =
+            values.currentPassword &&
+            values.newPassword &&
+            values.currentPassword === values.newPassword;
+
+          return (
+            <Form
+              onSubmit={(e) => {
+                setTouched({
+                  currentPassword: true,
+                  newPassword: true,
+                  confirmPassword: true,
+                });
+                handleSubmit(e);
+              }}
+            >
+              <div className="mt-10 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   <div className="relative">
                     <InputField
-                      name="confirmPassword"
-                      label="Confirm Password"
+                      name="currentPassword"
+                      label="Current Password"
                       placeholder="Enter Password"
                       variant="default"
                       isPassword={true}
-                      className={`${getFieldBorderColor('confirmPassword', values, errors, touched)}`}
+                      className={`${getFieldBorderColor('currentPassword', values, errors, touched)}`}
                     />
-                    {errors.confirmPassword && touched.confirmPassword && (
-                      <div className="text-red-500 text-sm mt-1">
-                        {errors.confirmPassword}
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="relative">
+                    <InputField
+                      name="newPassword"
+                      label="New Password"
+                      placeholder="Enter Password"
+                      variant="default"
+                      isPassword={true}
+                      className={`${getFieldBorderColor('newPassword', values, errors, touched)}`}
+                    />
+                    {currentPasswordMatchesNew && (
+                      <div className="flex items-center gap-2 mt-2">
+                        <div className="w-4 h-4 rounded-full flex items-center justify-center bg-orange-100 text-orange-600">
+                          <FiAlertTriangle className="w-2.5 h-2.5" />
+                        </div>
+                        <span className="text-xs text-orange-600">
+                          New password must be different from current password
+                        </span>
                       </div>
                     )}
                   </div>
-                  <div className="text-sm space-y-1">
-                    <p className="font-medium text-quaternary-white">Your password must contain:</p>
-                    <p className={getRuleColor('uppercase', values.newPassword, touched, values.confirmPassword)}>
-                      • Uppercase letter
-                    </p>
-                    <p className={getRuleColor('lowercase', values.newPassword, touched, values.confirmPassword)}>
-                      • Lowercase letter
-                    </p>
-                    <p className={getRuleColor('special', values.newPassword, touched, values.confirmPassword)}>
-                      • Special character
-                    </p>
-                    <p className={getRuleColor('number', values.newPassword, touched, values.confirmPassword)}>
-                      • A number
-                    </p>
-                    <p className={getRuleColor('length', values.newPassword, touched, values.confirmPassword)}>
-                      • At least 8 characters long
-                    </p>
-                    <p className={getRuleColor('match', values.newPassword, touched, values.confirmPassword)}>
-                      • Passwords must match
-                    </p>
+                  <div className="space-y-2">
+                    <div className="relative">
+                      <InputField
+                        name="confirmPassword"
+                        label="Confirm Password"
+                        placeholder="Enter Password"
+                        variant="default"
+                        isPassword={true}
+                        className={`${getFieldBorderColor('confirmPassword', values, errors, touched)}`}
+                      />
+                      {values.confirmPassword.length > 0 && (
+                        <div className="flex items-center gap-2 mt-2">
+                          <div
+                            className={`w-4 h-4 rounded-full flex items-center justify-center ${
+                              passwordsMatch
+                                ? "bg-green-100 text-green-600"
+                                : "bg-red-100 text-red-600"
+                            }`}
+                          >
+                            {passwordsMatch ? (
+                              <FiCheck className="w-2.5 h-2.5" />
+                            ) : (
+                              <FiXCircle className="w-2.5 h-2.5" />
+                            )}
+                          </div>
+                          <span
+                            className={`text-xs ${
+                              passwordsMatch
+                                ? "text-green-600 font-medium"
+                                : "text-red-600"
+                            }`}
+                          >
+                            {passwordsMatch
+                              ? "Passwords match"
+                              : "Passwords do not match"}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="text-sm space-y-1">
+                      <p className="font-medium text-quaternary-white">Password Requirements:</p>
+                      {passwordRequirements.map((requirement, index) => (
+                        <p 
+                          key={index} 
+                          className={getRuleColor(
+                            ['length', 'uppercase', 'lowercase', 'number', 'special'][index], 
+                            values.newPassword, 
+                            touched
+                          )}
+                        >
+                          • {requirement.label}
+                        </p>
+                      ))}
+                      <p className={getRuleColor('match', values.newPassword, touched, values.confirmPassword)}>
+                        • Passwords must match
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="md:absolute bottom-0 md:bottom-5 md:right-5 flex flex-col md:flex-row gap-3 mt-6 md:mt-20">
-              <Button
-                title="Cancel"
-                textColor="text-primary-sky-blue"
-                className="w-full md:w-24 px-6 bg-primary-white border border-primary-sky-blue hover:bg-primary-sky-blue hover:text-primary-white"
-                noHover
-                onClick={handleCancel}
-              />
-              <Button
-                title="Update"
-                className="w-full md:w-24 px-6 bg-primary-blue text-white"
-                type="submit"
-              />
-            </div>
-          </Form>
-        )}
+              <div className="md:absolute bottom-0 md:bottom-5 md:right-5 flex flex-col md:flex-row gap-3 mt-6 md:mt-20">
+                <ThemeButton 
+                  variant="tertiary" 
+                  className="!px-7 !py-3" 
+                  onClick={handleCancel} 
+                  type="button"
+                  disabled={isSubmitting}
+                >
+                  Cancel
+                </ThemeButton>
+                <ThemeButton 
+                  variant="primary" 
+                  className="!px-7 !py-3" 
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <svg
+                        className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Updating...
+                    </>
+                  ) : (
+                    "Update Password"
+                  )}
+                </ThemeButton>
+              </div>
+            </Form>
+          );
+        }}
       </Formik>
     </div>
   );

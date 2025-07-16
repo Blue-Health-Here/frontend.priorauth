@@ -1,12 +1,11 @@
 import { Button } from "primereact/button";
 import React, { useEffect, useRef, useState } from "react";
 import { PiSlidersHorizontalBold } from "react-icons/pi";
-import { FaX } from "react-icons/fa6";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { LiaAngleDownSolid, LiaAngleUpSolid } from "react-icons/lia";
 
 interface FilterFieldProps {
-  columns: any[];
+  columns: { field: string; header: string; filterable?: boolean }[];
   selectedValue: string;
   onChange: (value: string) => void;
   className?: string;
@@ -37,6 +36,36 @@ const FilterField: React.FC<FilterFieldProps> = ({
     };
   }, []);
 
+
+  /** Radio‑button helper  */
+  const RadioItem = ({
+    id,
+    value,
+    label,
+  }: {
+    id: string;
+    value: string;
+    label: string;
+  }) => (
+    <label
+      htmlFor={id}
+      className="flex items-start rounded-lg cursor-pointer peer-disabled:cursor-not-allowed"
+    >
+      <input
+        id={id}
+        type="radio"
+        name="filter-option"
+        value={value}
+        checked={selectedValue === value}
+        onChange={() => onChange(value)}
+        className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-quaternary-navy-blue"
+      />
+      <span className="text-xs md:text-sm text-secondary-black ml-2 font-medium font-secondary">
+        {label}
+      </span>
+    </label>
+  );
+
   return (
     <div className={`relative ${className}`} ref={dropdownRef}>
       {/* Desktop version - unchanged */}
@@ -56,26 +85,19 @@ const FilterField: React.FC<FilterFieldProps> = ({
           <div className="absolute right-0 top-full mt-1 w-64 bg-primary-white border border-light-stroke rounded-xl theme-shadow z-10 p-4">
             <p className="text-sm text-primary-black mb-4">Group By options</p>
             <div className="space-y-4">
+              {/* “None” / clear‑selection option */}
+              <RadioItem id="filter-none" value="" label="None (clear grouping)" />
+
+              {/* Actual columns */}
               {columns
                 .filter((col) => col.filterable)
-                .map((column) => (
-                  <label
-                    key={column.field}
-                    htmlFor={`filter-${column.field}`}
-                    className="flex items-start rounded-lg peer-disabled:cursor-not-allowed cursor-pointer"
-                  >
-                    <input
-                      id={`filter-${column.field}`}
-                      type="radio"
-                      name="filter-option"
-                      onChange={() => onChange(column.field)}
-                      checked={selectedValue === column.field}
-                      className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                    />
-                    <span className="text-xs md:text-sm text-secondary-black ml-2 font-medium font-secondary">
-                      {column.header}
-                    </span>
-                  </label>
+                .map((col) => (
+                  <RadioItem
+                    key={col.field}
+                    id={`filter-${col.field}`}
+                    value={col.field}
+                    label={col.header}
+                  />
                 ))}
             </div>
           </div>
@@ -84,14 +106,14 @@ const FilterField: React.FC<FilterFieldProps> = ({
 
       {/* Mobile version - Enhanced for responsiveness */}
       <div className="md:hidden">
-        <Accordion 
-          multiple 
+        <Accordion
+          multiple
           activeIndex={[]}
-          collapseIcon={<LiaAngleUpSolid className="w-3.5 h-3.5 text-primary-black absolute right-3" />} 
-          expandIcon={<LiaAngleDownSolid className="w-3.5 h-3.5 text-primary-black absolute right-3" />} 
+          collapseIcon={<LiaAngleUpSolid className="w-3.5 h-3.5 text-primary-black absolute right-3" />}
+          expandIcon={<LiaAngleDownSolid className="w-3.5 h-3.5 text-primary-black absolute right-3" />}
           className="theme-accordion"
         >
-          <AccordionTab 
+          <AccordionTab
             header={
               <div className="flex items-center gap-2">
                 <div className="w-5 h-5 rounded-sm bg-[#EBF1FF] flex items-center justify-center">

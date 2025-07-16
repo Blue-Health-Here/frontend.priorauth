@@ -1,23 +1,25 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import GradientSidebarButton from "./GradientSidebarButton";
 import RenderFilePreview from "./RenderFilePreview";
-import RenderNoteCard from "./RenderNoteCard";
 import { UploadedFile } from "@/utils/types";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import ModalHeader from "@/components/common/ModalHeader";
 import FileDropzone from "@/components/common/FileDropzone";
-import ThemeButton from "@/components/common/ThemeButton";
-import { notesAiAnalysisData } from "@/utils/constants";
 import UploadFileList from "../common/UploadFileList";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { deleteUploadedProgressNote, setRequestProgressNotes } from "@/store/features/pharmacy/requests/requestProgressNotesSlice";
-import { RootState } from "@/store";
+import { deleteUploadedProgressNote } from "@/store/features/pharmacy/requests/requestProgressNotesSlice";
+import { postChartNotesFiles, postStartAiAnalysis } from "@/services/pharmacyService";
+import ProgressNotesAnalysis from "./ProgressNotesAnalysis";
+import Loading from "../common/Loading";
 
 interface ProgressNotesModalProps {
   isOpen: boolean;
   onClose: () => void;
+  chartNotes?: any[];
+  requestDetails?: any;
 }
+
 declare global {
   interface Window {
     pdfjsLib: any;
@@ -27,8 +29,9 @@ declare global {
 const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   isOpen,
   onClose,
+  chartNotes = []
 }) => {
-  const { reqsProgressNotesUploaded } = useSelector((state: RootState) => state.pharmacyRequestProgressNotes);
+  // const { reqsProgressNotesUploaded } = useSelector((state: RootState) => state.pharmacyRequestProgressNotes);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [previouslyUploadedFiles, setPreviouslyUploadedFiles] = useState<
     UploadedFile[]
@@ -39,27 +42,28 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   const canvasRef = useRef(null);
   const dispatch = useDispatch();
   const { id: requestId } = useParams();
+  const [analysisDetails, setAnalysisDetails] = useState<any>(null);
+  const [isLoadingStartAnalysis, setIsLoadingStartAnalysis] = useState<boolean>(false);
+  const [isLoadingForUploadFiles, setIsLoadingForUploadFiles] = useState<boolean>(false);
 
   useEffect(() => {
-    const reqFound = reqsProgressNotesUploaded.find((item: any) => item.requestId === requestId);
-    if (reqFound) {
+    if (chartNotes?.length > 0) {
       setUploadedFiles(
-        reqFound.uploadedFiles.map((item: any) => {
-          // Only create URL if item.file is a valid File object
-          let url = "";
-          if (item && item.file && typeof item.file === "object" && item.file instanceof File) {
-            url = URL.createObjectURL(item.file);
-          } else if (item && typeof item.url === "string") {
-            // If file is missing but url exists (e.g., from server), use that
-            url = item.url;
+        chartNotes.map((item: any) => {
+          return {
+            ...item,
+            name: item.fileName,
+            type: item.mimeType,
+            status: "completed"
           }
-          return { ...item, url };
         })
       );
+      // setAnalysisStarted(true);
+      // setSelectedFile(chartNotes[0]);
     } else {
       setUploadedFiles([]);
     }
-  }, [requestId, reqsProgressNotesUploaded]);
+  }, [chartNotes]);
 
   useEffect(() => {
     if (!isOpen || !uploadedFiles.some((file) => file.status === "uploading"))
@@ -149,29 +153,30 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   if (!isOpen) return null;
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsLoadingForUploadFiles(true);
     if (e.target.files && e.target.files.length > 0) {
       const fileArray = Array.from(e.target.files);
-      const newFiles = await Promise.all(
-        fileArray.map(async (file) => {
-          if (file.type === "application/pdf") {
-            const response: any = await convertPdfToImage(file);
-            return response;
-          } else {
+      try {
+        const formData = new FormData();
+        fileArray.forEach((file: any) => {
+          formData.append("chartNotes", file);
+        });
+        const response = await postChartNotesFiles(dispatch, requestId, formData)
+        if (response) {
+          setUploadedFiles((prev: any) => [...prev, ...response?.chartNotes?.map((item: any) => {
             return {
-              id: Math.random().toString(36).substring(2, 9),
-              name: file.name,
-              size: file.size,
-              type: file.type,
-              lastModified: file.lastModified,
-              progress: 0,
-              status: "uploading" as const,
-              file: file,
-              url: URL.createObjectURL(file),
-            };
-          }
-        })
-      );
-      setUploadedFiles((prev: any) => [...prev, ...newFiles]);
+              ...item,
+              name: item.fileName,
+              type: item.mimeType,
+            }
+          })]);
+        }
+      } catch (error: any) {
+        console.log(error?.message);
+        setUploadedFiles([]);
+      } finally {
+        setIsLoadingForUploadFiles(false);
+      }
     }
   };
 
@@ -184,15 +189,24 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
     setIsDragging(false);
   };
 
-  const startAnalysis = () => {
-    setAnalysisStarted(true);
-    if (uploadedFiles?.length > 0) {
-      setSelectedFile(uploadedFiles[0]);
+  const startAnalysis = async () => {
+    setIsLoadingStartAnalysis(true)
+    const updatedFiles = [...uploadedFiles, ...previouslyUploadedFiles];
+    try {
+      const response = await postStartAiAnalysis(dispatch, requestId);
+      if (response) {
+        setAnalysisStarted(true);
+        setAnalysisDetails(response);
+        setSelectedFile(updatedFiles[0]);
+        setUploadedFiles(updatedFiles);
+      }
+    } catch (error: any) {
+      console.log(error?.message);
+      setAnalysisDetails([]);
+      setAnalysisStarted(false);
+    } finally {
+      setIsLoadingStartAnalysis(false);
     }
-    dispatch(setRequestProgressNotes({
-      requestId,
-      uploadedFiles
-    }));
   };
 
   const redoAnalysis = () => {
@@ -232,8 +246,6 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
     }
   };
 
-  // const removeFile = (id: string) =>
-  //   setUploadedFiles((prev) => prev.filter((file) => file.id !== id));
   const removeFile = (id: string, requestId?: string) => {
     setUploadedFiles((prevFiles) => {
       const updated = prevFiles.filter((file) => file.id !== id);
@@ -249,9 +261,9 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
     });
   };
 
-  const handleDownloadReport = () => { };
   const handleSelectFile = (file: any) => setSelectedFile(file);
 
+  console.log(uploadedFiles, analysisDetails, "uploadedFiles");
   return (
     <ModalWrapper>
       <ModalHeader title="AI Analysis" onClose={onClose} />
@@ -275,7 +287,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                     onFileChange={handleFileChange}
                   />
 
-                  {uploadedFiles.length > 0 && (
+                  {uploadedFiles.length > 0 && !isLoadingForUploadFiles ? (
                     <div className="mt-4">
                       <div className="px-2 py-2">
                         <h4 className="text-sm font-medium text-gray-700">
@@ -300,7 +312,9 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                         removeFile={removeFile}
                       />
                     </div>
-                  )}
+                  ): isLoadingForUploadFiles ? (
+                    <Loading />
+                  ) : null}
                 </div>
 
                 {/* Previously Uploaded Files Section */}
@@ -332,8 +346,8 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                 </h4>
                 <div
                   className={`${uploadedFiles.length === 1
-                      ? "flex justify-center flex-1"
-                      : "grid grid-cols-2 gap-4 flex-1"
+                    ? "flex justify-center flex-1"
+                    : "grid grid-cols-2 gap-4 flex-1"
                     }`}
                 >
                   {uploadedFiles.map((file) => (
@@ -351,12 +365,12 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
 
             <GradientSidebarButton
               disabled={
-                uploadedFiles.length === 0 ||
-                uploadedFiles.some((file) => file.status !== "completed")
+                uploadedFiles.length === 0 && previouslyUploadedFiles.length === 0
               }
               analysisStarted={analysisStarted}
               redoAnalysis={redoAnalysis}
               startAnalysis={startAnalysis}
+              isLoadingStartAnalysis={isLoadingStartAnalysis}
             />
           </div>
 
@@ -371,88 +385,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                 />
               </div>
             ) : (
-              <div className="w-full h-full overflow-y-auto p-8 pr-3">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-                  <h2 className="text-primary-black font-medium text-xl">
-                    Progress Notes Analysis
-                  </h2>
-                  <ThemeButton
-                    className="w-max sm:w-auto min-h-12"
-                    variant="primary"
-                    onClick={handleDownloadReport}
-                  >
-                    Download Report
-                  </ThemeButton>
-                </div>
-
-                <div className="flex flex-col lg:flex-row gap-4">
-                  <div className="flex-1 flex flex-col gap-4">
-                    {notesAiAnalysisData.map((item, index) => (
-                      <RenderNoteCard
-                        item={item}
-                        key={index}
-                        handleDownloadReport={handleDownloadReport}
-                      />
-                    ))}
-                  </div>
-
-                  <div className="lg:w-1/3 flex flex-col gap-4">
-                    <div className="border border-primary-sky-blue rounded-theme-r flex flex-col gap-5 bg-primary-white p-4">
-                      <div className="flex items-center justify-between gap-4">
-                        <h3 className="font-semibold">Recommendation</h3>
-                        <img
-                          src="/copy-icon.svg"
-                          alt="copy icon"
-                          className="cursor-pointer"
-                        />
-                      </div>
-                      <p className="text-primary-black text-sm">
-                        The patient has type 2 diabetes mellitus without
-                        complications (E11.9), hyperuricemia (E79.0), essential
-                        hypertension (110), chronic rhinitis (J31.0), and fatty
-                        liver disease (K76.0). Elevated glucose levels were
-                        noted.
-                      </p>
-                    </div>
-
-                    <div className="magic-lines rounded-lg overflow-hidden">
-                      <div className="flex flex-col gap-5 bg-primary-white p-4 bg-white rounded-lg">
-                        <div className="flex items-center justify-between gap-4">
-                          <h3 className="font-semibold magic-title">
-                            Magic Lines
-                          </h3>
-                          <img
-                            src="/magic-copy-icon.svg"
-                            alt="copy icon"
-                            className="cursor-pointer"
-                          />
-                        </div>
-                        <div className="text-primary-black text-sm">
-                          <p>
-                            The patient has trialed and failed, experienced
-                            contraindications, or had intolerances to at least
-                            two preventive migraine medications:
-                          </p>
-                          <ul className="list-disc pl-5 space-y-2 mt-2">
-                            <li>
-                              Propranolol 20mg BID (XX/XX/2023 - XX/XX/2023),
-                              which worsened headaches.
-                            </li>
-                            <li>
-                              Amitriptyline 25mg daily (XX/XX/2023 -
-                              XX/XX/2023), which caused excessive drowsiness.
-                            </li>
-                            <li>
-                              Topiramate 100mg daily (XX/XX/2023 - XX/XX/2023),
-                              which caused memory issues.
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ProgressNotesAnalysis analysisDetails={analysisDetails} />
             )}
           </div>
         </div>

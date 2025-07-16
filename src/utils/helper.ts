@@ -120,6 +120,19 @@ export const getCurrentBadgeColors = (status?: string) => {
   return activeBadge;
 };
 
+export const getStatusColor = (status: string) => {
+  switch (status) {
+    case "Criteria Met":
+      return "bg-green-100 text-green-700";
+    case "Criteria Partially Met":
+      return "bg-yellow-100 text-yellow-700";
+    case "Criteria Not Met":
+      return "bg-red-100 text-red-700";
+    default:
+      return "bg-gray-100 text-gray-700";
+  }
+};
+
 export function formatNumberWithUnits(value: any, decimalPlaces = 1) {
   if (value < 1000) return value.toString();
 
@@ -459,6 +472,7 @@ export const transformRequestDetails = (data: any) => {
     {
       label: "Medication",
       data: [
+        { label: "Medication Name",  value: data.medication },
         { label: "Rx Number", value: data.rxNumber || "-" },
         { label: "NDC", value: data.ndc || "-" },
         { label: "Days", value: data.days || "-" },
@@ -505,3 +519,12 @@ export const transformRequestDetails = (data: any) => {
     }
   ];
 };
+
+export const timeAgo = (date: any) => {
+  const dateObj = new Date(date);
+  const diff = (Date.now() - dateObj.getTime()) / 1000;
+  if (diff < 60) return `${Math.floor(diff)}s ago`;
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+  return `${Math.floor(diff / 86400)} days ago`;
+}

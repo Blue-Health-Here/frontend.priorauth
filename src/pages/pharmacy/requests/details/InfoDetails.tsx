@@ -1,12 +1,17 @@
 import CardHeader from "@/components/common/CardHeader";
-import Loading from "@/components/common/Loading";
 import { transformRequestDetails } from "@/utils/helper";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import React, { useEffect, useState } from "react";
 import { LiaAngleDownSolid, LiaAngleUpSolid } from "react-icons/lia";
+import CommentsSection from "./CommentsSection";
+import { useDispatch, useSelector } from "react-redux";
+import { setRequestComments } from "@/store/features/pharmacy/requests/requestsSlice";
+import { RootState } from "@/store";
 
-const InfoDetails: React.FC<any> = ({ isLoading, requestDetails }) => {
+const InfoDetails: React.FC<any> = ({ requestDetails }) => {
     const [details, setDetails] = useState<any>([]);
+    const dispatch = useDispatch();
+    const { reqComments } = useSelector((state: RootState) => state.pharmacyReqs);
 
     useEffect(() => {
         if (requestDetails) {
@@ -38,18 +43,38 @@ const InfoDetails: React.FC<any> = ({ isLoading, requestDetails }) => {
         });
     };
 
+    const handleChange = (comments: any) => {
+        dispatch(setRequestComments({ request_id: requestDetails.id, comments }));
+    };
+
     return (
-        <div className="sm:col-span-1 lg:col-span-3 space-y-4">
-            {isLoading ? (
-                <Loading />
-            ) : (
-                <Accordion multiple activeIndex={[0]} 
-                    collapseIcon={<LiaAngleUpSolid className="w-4 h-4 text-primary-black absolute right-3" />} 
-                    expandIcon={<LiaAngleDownSolid className="w-4 h-4 text-primary-black absolute right-3" />} 
-                    className='theme-accordion'>
-                    {createRequestInfoTabs()}
-                </Accordion>
-            )}
+        <div className="sm:col-span-1 lg:col-span-2 space-y-4">
+            {requestDetails && <div className="p-4 rounded-xl border border-quaternary-navy-blue lg:sticky lg:top-6">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {[
+                        { label: "DOS", value: requestDetails.createdAt?.split("T")[0] || '-' },
+                        { label: "CMM Key", value: requestDetails?.key },
+                        { label: "CMM Key 2", value: requestDetails?.key },
+                    ].map((item: any, index: number) => {
+                        return (
+                            <div key={index}>
+                                <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                    {item.label}
+                                </p>
+                                <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">{item.value}</p>
+                            </div>
+                        )
+                    })}
+                </div>
+            </div>}
+            <Accordion multiple activeIndex={[0]} 
+                collapseIcon={<LiaAngleUpSolid className="w-4 h-4 text-primary-black absolute right-3" />} 
+                expandIcon={<LiaAngleDownSolid className="w-4 h-4 text-primary-black absolute right-3" />} 
+                className='theme-accordion'>
+                {createRequestInfoTabs()}
+            </Accordion>
+            
+            <CommentsSection initialComments={reqComments} onChange={handleChange} />
         </div>
     )
 };

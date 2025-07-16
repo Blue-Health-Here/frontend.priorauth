@@ -106,6 +106,17 @@ const ToggleColumnsField: React.FC<ToggleColumnsFieldProps> = ({
               ))}
             </div>
 
+
+            <div className="mt-4 pt-2 border-t border-light-stroke">
+              <button
+                onClick={clearSelection}
+                className="flex items-center gap-2 cursor-pointer justify-between w-full text-sm font-medium text-secondary-black"
+              >
+                Clear Selection
+                <FaX className="w-3 h-3" />
+              </button>
+            </div>
+
             <div className="mt-4 pt-2 border-t border-light-stroke">
               <button
                 onClick={clearSelection}
@@ -121,14 +132,14 @@ const ToggleColumnsField: React.FC<ToggleColumnsFieldProps> = ({
 
       {/* Mobile version - Enhanced for responsiveness */}
       <div className="md:hidden">
-        <Accordion 
-          multiple 
+        <Accordion
+          multiple
           activeIndex={[]}
-          collapseIcon={<LiaAngleUpSolid className="w-3.5 h-3.5 text-primary-black absolute right-3" />} 
-          expandIcon={<LiaAngleDownSolid className="w-3.5 h-3.5 text-primary-black absolute right-3" />} 
+          collapseIcon={<LiaAngleUpSolid className="w-3.5 h-3.5 text-primary-black absolute right-3" />}
+          expandIcon={<LiaAngleDownSolid className="w-3.5 h-3.5 text-primary-black absolute right-3" />}
           className="theme-accordion"
         >
-          <AccordionTab 
+          <AccordionTab
             header={
               <div className="flex items-center gap-2">
                 <div className="w-5 h-5 rounded-sm bg-[#EBF1FF] flex items-center justify-center">

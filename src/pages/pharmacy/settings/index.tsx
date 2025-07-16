@@ -27,6 +27,7 @@ const PharmacySettings = () => {
 
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [initialFormData, setInitialFormData] = useState({
+    profileImg: "",
     name: "",
     joinedDate: "",
     lastRequest: "",
@@ -57,9 +58,10 @@ const PharmacySettings = () => {
   useEffect(() => {
     if (profileData) {
       setInitialFormData({
+        profileImg: profileData.pictureUrl || null,
         name: profileData.userName || "-",
-        joinedDate: profileData.joinedDate.split("T")[0] || "-",
-        lastRequest: profileData.lastRequestDate.split("T")[0] || "-",
+        joinedDate: profileData.joinedDate?.split("T")[0] || "-",
+        lastRequest: profileData.lastRequestDate?.split("T")[0] || "-",
         phoneNumber: profileData.phoneNumber || "-",
         email: profileData.email || "-",
         location: profileData.location || "-",
@@ -72,6 +74,8 @@ const PharmacySettings = () => {
   }, [profileData]);
 
   const handleSubmit = async (values: ProfileFormValues) => {
+    console.log(values, "values");
+
     if (!profileData?.id) {
       console.error("User ID not available");
       return;
@@ -122,6 +126,7 @@ const PharmacySettings = () => {
             profileData={initialFormData}
             isEditingProfile={isEditingProfile}
             initialValues={{
+              profileImage: initialFormData.profileImg,
               name: initialFormData.name,
               email: initialFormData.email,
               phoneNumber: initialFormData.phoneNumber,
