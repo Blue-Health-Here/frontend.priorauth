@@ -1,6 +1,6 @@
 // pageTitles.js
 export const pageTitles: any = {
-    "/admin/dashboard": "Dashboard",
+    "/admin/analytics": "Analytics",
     "/admin/pharmacies": "Pharmacies",
     "/admin/pharmacies/add": "Add New Pharmacy",
     "/admin/pharmacies/:pharmacyId": "Pharmacy Details",
@@ -15,7 +15,7 @@ export const pageTitles: any = {
     "/admin/settings/user-settings": "User Settings",
 
     // pharmacy pages titles
-    "/pharmacy/dashboard": "Dashboard",
+    "/pharmacy/analytics": "Analytics",
     "/pharmacy/cmm-account-database": "CMM Account Database",
     "/pharmacy/requests": "Requests",
     "/pharmacy/prescribers": "Prescribers"

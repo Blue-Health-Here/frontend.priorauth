@@ -170,7 +170,7 @@ export const generateBreadcrumbItems = (pathname: string) => {
     .filter((segment) => segment);
 
   const allowedSegments = [
-    "dashboard",
+    "analytics",
     "requests",
     "request-details",
     "cmm-account-database",
@@ -182,7 +182,7 @@ export const generateBreadcrumbItems = (pathname: string) => {
   ];
 
   const customLabels: Record<string, string> = {
-    dashboard: "Dashboard",
+    analytics: "Analytics",
     requests: "Requests",
     "request-details": "Request Details",
     "cmm-account-database": "CMM Account Database",

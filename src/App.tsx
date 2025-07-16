@@ -53,8 +53,8 @@ function App() {
           {/* Admin Routes */}
           <Route element={<ThemeProvider><ProtectedRoute allowedRoles={["companyAdmin"]} /></ThemeProvider>}>
             <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<Navigate to="dashboard" replace />} />
-              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route index element={<Navigate to="requests" replace />} />
+              <Route path="analytics" element={<AdminDashboard />} />
               <Route path="pharmacies" element={<AdminPharmacies />} />
               <Route path="pharmacies/:pharmacyId/pharmacy-details" element={<PharmacyDetailScreen />} />
               <Route path="pharmacies/add" element={<AddNewPharmacyScreen />} />
@@ -72,8 +72,8 @@ function App() {
           {/* Pharmacy Routes */}
           <Route element={<ThemeProvider><ProtectedRoute allowedRoles={["pharmacyUser"]} /></ThemeProvider>}>
             <Route path="/pharmacy" element={<PharmacyLayout />}>
-              <Route index element={<Navigate to="dashboard" replace />} />
-              <Route path="dashboard" element={<PharmacyDashboard />} />
+              <Route index element={<Navigate to="requests" replace />} />
+              <Route path="analytics" element={<PharmacyDashboard />} />
               <Route path="requests" element={<PharmacyRequests isAdmin={false} />} />
               <Route path="requests/:id/request-details" element={<PharmacyRequestDetails isAdmin={false} />} />
               <Route path="prescribers" element={<Prescribers isAdmin={false} />} />
