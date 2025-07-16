@@ -58,6 +58,8 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
           }
         })
       );
+      // setAnalysisStarted(true);
+      // setSelectedFile(chartNotes[0]);
     } else {
       setUploadedFiles([]);
     }

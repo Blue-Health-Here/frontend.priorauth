@@ -472,6 +472,7 @@ export const transformRequestDetails = (data: any) => {
     {
       label: "Medication",
       data: [
+        { label: "Medication Name",  value: data.medication },
         { label: "Rx Number", value: data.rxNumber || "-" },
         { label: "NDC", value: data.ndc || "-" },
         { label: "Days", value: data.days || "-" },

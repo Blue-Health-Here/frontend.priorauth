@@ -119,7 +119,7 @@ const ThemeDataTable: React.FC<any> = ({
 
     // Detect if `data` is grouped or flat
     const isGrouped = Array.isArray(data) && data.length > 0 && data[0]?.data;
-    console.log(selectedFilterField, "selectedFilterField")
+    // console.log(selectedFilterField, "selectedFilterField")
     return (
         <div className="theme-datatable-wrapper inline-flex flex-col gap-4 sm:gap-0 h-full w-full">
             {header && <div className="mb-4">{header}</div>}
