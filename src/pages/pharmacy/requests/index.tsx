@@ -50,7 +50,8 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
       header: 'Submitted On',
       visible: true,
       filterable: true,
-      sortable: true
+      sortable: true,
+      className: "!min-w-12 !max-w-12"
     },
     {
       field: 'statusName',

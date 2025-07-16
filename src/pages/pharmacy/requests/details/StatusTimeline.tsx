@@ -1,6 +1,7 @@
 import { FiFileText } from "react-icons/fi";
 import ThemeButton from "@/components/common/ThemeButton";
 import React, { useEffect, useState } from "react";
+import { getStatusClass } from "@/utils/helper";
 
 const StatusTimeline: React.FC<any> = ({ currentStatus, previousStatuses }) => {
     // Combine statuses: oldest first, current status last (active)
@@ -14,14 +15,14 @@ const StatusTimeline: React.FC<any> = ({ currentStatus, previousStatuses }) => {
                     date: formatDate(currentStatus.date),
                     isActive: true,
                     note: "", // optionally add current note
-                    statusClass: "bg-blue-100 text-blue-800", // highlight for active
+                    statusClass: getStatusClass(currentStatus.name), // highlight for active
                 },
                 ...(previousStatuses.length > 0 ? previousStatuses.map((status: any) => ({
                     title: status.name,
                     date: formatDate(status.date),
                     isActive: false,
                     note: "", // optionally populate if API supports notes
-                    statusClass: "bg-gray-100 text-gray-800", // style for past
+                    statusClass: getStatusClass(status.name), // style for past
                 })) : [])
             ]);
         } else {
@@ -50,7 +51,7 @@ const StatusTimeline: React.FC<any> = ({ currentStatus, previousStatuses }) => {
                                 <div className="p-2 w-full">
                                     <div className="flex justify-between items-center gap-4 w-full">
                                         <span
-                                            className={`px-4 py-1 rounded-full line-clamp-1 text-xs sm:text-sm lg:text-base font-normal ${item.statusClass}`}
+                                            className={`px-4 py-1 rounded-full line-clamp-1 font-medium text-xs sm:text-sm lg:text-base ${item.statusClass}`}
                                         >
                                             {item.title}
                                         </span>
