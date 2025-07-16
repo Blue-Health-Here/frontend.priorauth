@@ -60,30 +60,6 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     }
   }, [dispatch, reqId]);
 
-  useEffect(() => {
-    if (!uploadedFiles.some((file) => file.status === "uploading"))
-      return;
-    const interval = setInterval(() => {
-      setUploadedFiles((prevFiles) =>
-        prevFiles.map((file) => {
-          if (file.status === "uploading") {
-            const newProgress = Math.min(
-              file.progress + Math.random() * 20,
-              100
-            );
-            return {
-              ...file,
-              progress: newProgress,
-              status: newProgress >= 100 ? "completed" : "uploading",
-            };
-          }
-          return file;
-        })
-      );
-    }, 500);
-    return () => clearInterval(interval);
-  }, []);
-
   const convertPdfToImage = useCallback(async (file: any) => {
     try {
       const pdfjsLib: any = await loadPdfJs();

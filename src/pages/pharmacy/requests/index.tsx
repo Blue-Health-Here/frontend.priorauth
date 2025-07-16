@@ -414,7 +414,14 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
       ) : (
         <ThemeDataTable
           header={tableHeader}
-          data={selectedFilterField !== "" ? filteredRequests : requestsData}
+          data={
+            selectedFilterField !== ""
+              ? filteredRequests
+              : requestsData.sort(
+                  (a: any, b: any) =>
+                    new Date(b.submittedOn).getTime() - new Date(a.submittedOn).getTime()
+                )
+          }
           columns={columns}
           pageSize={5}
           selectedFilterField={selectedFilterField}
