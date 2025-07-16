@@ -8,333 +8,373 @@ import PageHeader from "./PageHeader";
 import InfoDetails from "./InfoDetails";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getRequestDetails, getRequestStatuses, postGenerateMedicalNecessity } from "@/services/pharmacyService";
+import {
+  getRequestDetails,
+  getRequestStatuses,
+  postGenerateMedicalNecessity,
+} from "@/services/pharmacyService";
 import Loading from "@/components/common/Loading";
 import StatusTimeline from "./StatusTimeline";
 import SideDrawer from "@/components/SideDrawer";
 import RequestDetailsContent from "./SideDrawerReqDetailsContent";
 
 const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
-    const [statuses, setReqStatuses] = useState<any>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
-    const [isDragging, setIsDragging] = useState<boolean>(false);
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const canvasRef = useRef(null);
-    const [requestDetails, setRequestDetails] = useState<any>(null);
-    const isFetchedReqDetails = useRef(false);
-    const dispatch = useDispatch();
-    const { id: reqId } = useParams();
-    const [isLoadingMedicalNecessity, setIsLoadingMedicalNecessity] = useState<boolean>(false);
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [statuses, setReqStatuses] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const canvasRef = useRef(null);
+  const [requestDetails, setRequestDetails] = useState<any>(null);
+  const isFetchedReqDetails = useRef(false);
+  const dispatch = useDispatch();
+  const { id: reqId } = useParams();
+  const [isLoadingMedicalNecessity, setIsLoadingMedicalNecessity] =
+    useState<boolean>(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [comments, setComments] = useState<any[]>([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
 
-            const [detailsRes, statusesRes] = await Promise.all([
-                getRequestDetails(dispatch, reqId),
-                getRequestStatuses(dispatch, reqId),
-            ]);
+      const [detailsRes, statusesRes] = await Promise.all([
+        getRequestDetails(dispatch, reqId),
+        getRequestStatuses(dispatch, reqId),
+      ]);
 
-            if (detailsRes) {
-                setRequestDetails(detailsRes);
-            }
-            // console.log(statusesRes, "statusesRes");
-            setReqStatuses(statusesRes);
-            setIsLoading(false);
+      if (detailsRes) {
+        setRequestDetails(detailsRes);
+      }
+      setReqStatuses(statusesRes);
+      setIsLoading(false);
+    };
+
+    if (!isFetchedReqDetails.current) {
+      fetchData();
+      isFetchedReqDetails.current = true;
+    }
+  }, [dispatch, reqId]);
+
+  useEffect(() => {
+    if (!uploadedFiles.some((file) => file.status === "uploading")) return;
+    const interval = setInterval(() => {
+      setUploadedFiles((prevFiles) =>
+        prevFiles.map((file) => {
+          if (file.status === "uploading") {
+            const newProgress = Math.min(
+              file.progress + Math.random() * 20,
+              100
+            );
+            return {
+              ...file,
+              progress: newProgress,
+              status: newProgress >= 100 ? "completed" : "uploading",
+            };
+          }
+          return file;
+        })
+      );
+    }, 500);
+    return () => clearInterval(interval);
+  }, [uploadedFiles]);
+
+  const loadPdfJs = useCallback(() => {
+    return new Promise((resolve, reject) => {
+      // @ts-ignore
+      if (window.pdfjsLib) {
+        // @ts-ignore
+        resolve(window.pdfjsLib);
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+      script.onload = () => {
+        // @ts-ignore // Set worker path
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+        // @ts-ignore
+        resolve(window.pdfjsLib);
+      };
+      script.onerror = () => reject(new Error("Failed to load PDF.js"));
+      document.head.appendChild(script);
+    });
+  }, []);
+
+  const convertPdfToImage = useCallback(
+    async (file: any) => {
+      try {
+        const pdfjsLib: any = await loadPdfJs();
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        const page = await pdf.getPage(1);
+        const viewport = page.getViewport({ scale: 2.0 });
+
+        const canvas: any = canvasRef.current;
+        const context = canvas.getContext("2d");
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = {
+          canvasContext: context,
+          viewport: viewport,
         };
 
-        if (!isFetchedReqDetails.current) {
-            fetchData();
-            isFetchedReqDetails.current = true;
-        }
-    }, [dispatch, reqId]);
+        await page.render(renderContext).promise;
 
-    useEffect(() => {
-        if (!uploadedFiles.some((file) => file.status === "uploading"))
-            return;
-        const interval = setInterval(() => {
-            setUploadedFiles((prevFiles) =>
-                prevFiles.map((file) => {
-                    if (file.status === "uploading") {
-                        const newProgress = Math.min(
-                            file.progress + Math.random() * 20,
-                            100
-                        );
-                        return {
-                            ...file,
-                            progress: newProgress,
-                            status: newProgress >= 100 ? "completed" : "uploading",
-                        };
-                    }
-                    return file;
-                })
-            );
-        }, 500);
-        return () => clearInterval(interval);
-    }, [uploadedFiles]);
+        const imageDataUrl = canvas.toDataURL("image/png", 0.9);
+        return {
+          id: Math.random().toString(36).substring(2, 9),
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          lastModified: file.lastModified,
+          progress: 0,
+          status: "uploading" as const,
+          file: file,
+          url: imageDataUrl,
+          fileTags: [],
+        };
+      } catch (err) {
+        console.error("Error converting PDF to image:", err);
+      }
+    },
+    [loadPdfJs]
+  );
 
-    const loadPdfJs = useCallback(() => {
-        return new Promise((resolve, reject) => {
-            // @ts-ignore
-            if (window.pdfjsLib) {
-                // @ts-ignore
-                resolve(window.pdfjsLib);
-                return;
-            }
-
-            const script = document.createElement("script");
-            script.src =
-                "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
-            script.onload = () => {
-                // @ts-ignore // Set worker path
-                window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-                    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-                // @ts-ignore
-                resolve(window.pdfjsLib);
-            };
-            script.onerror = () => reject(new Error("Failed to load PDF.js"));
-            document.head.appendChild(script);
-        });
-    }, []);
-
-    const convertPdfToImage = useCallback(async (file: any) => {
-        try {
-            const pdfjsLib: any = await loadPdfJs();
-            const arrayBuffer = await file.arrayBuffer();
-            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-            const page = await pdf.getPage(1);
-            const viewport = page.getViewport({ scale: 2.0 });
-
-            const canvas: any = canvasRef.current;
-            const context = canvas.getContext("2d");
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-
-            const renderContext = {
-                canvasContext: context,
-                viewport: viewport,
-            };
-
-            await page.render(renderContext).promise;
-
-            const imageDataUrl = canvas.toDataURL("image/png", 0.9);
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const fileArray = Array.from(e.target.files);
+      const newFiles = await Promise.all(
+        fileArray.map(async (file) => {
+          if (file.type === "application/pdf") {
+            const response: any = await convertPdfToImage(file);
+            return response;
+          } else {
             return {
-                id: Math.random().toString(36).substring(2, 9),
-                name: file.name,
-                size: file.size,
-                type: file.type,
-                lastModified: file.lastModified,
-                progress: 0,
-                status: "uploading" as const,
-                file: file,
-                url: imageDataUrl,
-                fileTags: []
+              id: Math.random().toString(36).substring(2, 9),
+              name: file.name,
+              size: file.size,
+              type: file.type,
+              lastModified: file.lastModified,
+              progress: 0,
+              status: "uploading" as const,
+              file: file,
+              url: file ? URL.createObjectURL(file) : "",
+              fileTags: [],
             };
-        } catch (err) {
-            console.error("Error converting PDF to image:", err);
-        }
-    }, [loadPdfJs]);
+          }
+        })
+      );
+      setUploadedFiles((prev: any) => [...prev, ...newFiles]);
+    }
+  };
 
-    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files.length > 0) {
-            const fileArray = Array.from(e.target.files);
-            const newFiles = await Promise.all(
-                fileArray.map(async (file) => {
-                    if (file.type === "application/pdf") {
-                        const response: any = await convertPdfToImage(file);
-                        return response;
-                    } else {
-                        return {
-                            id: Math.random().toString(36).substring(2, 9),
-                            name: file.name,
-                            size: file.size,
-                            type: file.type,
-                            lastModified: file.lastModified,
-                            progress: 0,
-                            status: "uploading" as const,
-                            file: file,
-                            url: file ? URL.createObjectURL(file) : "",
-                            fileTags: []
-                        };
-                    }
-                })
-            );
-            setUploadedFiles((prev: any) => [...prev, ...newFiles]);
-        }
-    };
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
 
-    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        setIsDragging(true);
-    };
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
 
-    const handleDragLeave = () => {
-        setIsDragging(false);
-    };
+  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
 
-    const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        setIsDragging(false);
-
-        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-            const fileArray = Array.from(e.dataTransfer.files);
-            const newFiles = await Promise.all(
-                fileArray.map(async (file) => {
-                    if (file.type === "application/pdf") {
-                        const response: any = await convertPdfToImage(file);
-                        return response;
-                    } else {
-                        return {
-                            id: Math.random().toString(36).substring(2, 9),
-                            name: file.name,
-                            size: file.size,
-                            type: file.type,
-                            lastModified: file.lastModified,
-                            progress: 0,
-                            status: "uploading" as const,
-                            file: file,
-                            url: URL.createObjectURL(file),
-                            fileTags: []
-                        };
-                    }
-                })
-            );
-            setUploadedFiles((prev: any) => [...prev, ...newFiles]);
-        }
-    };
-
-    const removeFile = (id: string) => setUploadedFiles((prev: any) => prev.filter((file: any) => file.id !== id));
-    const handleAddTag = (updateFn: (prev: UploadedFile[]) => UploadedFile[]) => {
-        setUploadedFiles(updateFn);
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
-
-    const generateMedicalNecessity = async () => {
-        setIsLoadingMedicalNecessity(true);
-        try {
-            const response = await postGenerateMedicalNecessity(dispatch, reqId);
-            if (response) {
-                // console.log("dasdasd");
-                setIsLoadingMedicalNecessity(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const fileArray = Array.from(e.dataTransfer.files);
+      const newFiles = await Promise.all(
+        fileArray.map(async (file) => {
+          if (file.type === "application/pdf") {
+            const response: any = await convertPdfToImage(file);
+            return response;
+          } else {
+            return {
+              id: Math.random().toString(36).substring(2, 9),
+              name: file.name,
+              size: file.size,
+              type: file.type,
+              lastModified: file.lastModified,
+              progress: 0,
+              status: "uploading" as const,
+              file: file,
+              url: URL.createObjectURL(file),
+              fileTags: [],
             };
-        } catch (error: any) {
-            // console.log(error, "error");
-            // toast.error(error?.message);
-        } finally {
-            setIsLoadingMedicalNecessity(false);
-        }
-    };
+          }
+        })
+      );
+      setUploadedFiles((prev: any) => [...prev, ...newFiles]);
+    }
+  };
 
-    return (
-        <>
-            <ProgressNotesModal isOpen={isModalOpen} onClose={closeModal} />
-            <SideDrawer
-                isOpen={isDrawerOpen}
-                onClose={() => setIsDrawerOpen(false)}
-                title=""
-                width="w-[500px]"
-                position="right"
-            >
-                <RequestDetailsContent />
-            </SideDrawer>
-            <div className="p-4 bg-white rounded-xl theme-shadow relative">
-                {isLoading ? (
-                    <Loading />
-                ) : (
-                    <>
-                        <PageHeader requestDetails={requestDetails} isAdmin={isAdmin} />
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div className="col-span-1 lg:col-span-2 space-y-4">
-                                <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
-                                    <CardHeader title="Status" />
-                                    <StatusTimeline
-                                        currentStatus={statuses ? statuses.currentStatus : null}
-                                        previousStatuses={statuses ? statuses.previousStatuses : []}
-                                    />
-                                </div>
-                                <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
-                                    <CardHeader title="Progress Notes" />
-                                    <div className="p-4">
-                                        <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] overflow-hidden">
-                                            <button
-                                                type="button"
-                                                onClick={() => setIsModalOpen(true)}
-                                                className="flex w-full items-center justify-center cursor-pointer gap-2 py-4 px-3 bg-white rounded-lg"
-                                            >
-                                                <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
-                                                    Upload Progress Notes
-                                                </p>
-                                                <img src="/upload-new.svg" alt="upload new img" className="" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="bg-white rounded-xl border border-quaternary-navy-blue relative overflow-hidden">
-                                    <CardHeader title="Other Files" />
-                                    <div className="p-4 flex flex-col gap-4 relative">
-                                        <div className="inline-flex flex-col gap-2">
-                                            <h3 className="text-base font-medium text-primary-black">Generate File</h3>
-                                            <div className="inline-flex flex-col gap-4 p-4 max-w-[400px] border border-quaternary-navy-blue rounded-lg">
-                                                <img src="/AI_PDF_large.svg" alt="pdf icon" className="w-12 h-12" />
-                                                <div className="">
-                                                    <h3 className="text-base font-medium text-primary-black">Letter of Medical Necessity</h3>
-                                                    <p className="text-quaternary-white text-sm">
-                                                        You can generate letter of medical necessity directly inside the platform using our latest AI Models
-                                                    </p>
-                                                </div>
-                                                <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] overflow-hidden">
-                                                    <button
-                                                        type="button"
-                                                        onClick={generateMedicalNecessity}
-                                                        className="flex w-full items-center justify-center cursor-pointer gap-2 py-4 px-3 bg-white rounded-lg"
-                                                    >
-                                                        <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
-                                                            {isLoadingMedicalNecessity ? "Generating..." : "Generate"}
-                                                        </p>
-                                                        <img src={"/Group (2).svg"} alt="AI Icon" className="w-4.5 h-4.5" />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="inline-flex flex-col gap-2">
-                                            <h3 className="text-base font-medium text-primary-black">Upload Files</h3>
-                                            <FileDropzone
-                                                isDragging={isDragging}
-                                                onDragOver={handleDragOver}
-                                                onDragLeave={handleDragLeave}
-                                                onDrop={handleDrop}
-                                                onFileChange={handleFileChange}
-                                                className="!p-3"
-                                            />
-                                        </div>
+  const removeFile = (id: string) =>
+    setUploadedFiles((prev: any) => prev.filter((file: any) => file.id !== id));
+  const handleAddTag = (updateFn: (prev: UploadedFile[]) => UploadedFile[]) => {
+    setUploadedFiles(updateFn);
+  };
 
-                                        {uploadedFiles.length > 0 && (
-                                            <div className="inline-flex flex-col gap-2">
-                                                <h3 className="text-sm font-medium text-secondary-black">{uploadedFiles.length} files uploading...</h3>
-                                                <UploadFileList
-                                                    className="grid grid-cols-1 md:grid-cols-2 gap-4"
-                                                    files={uploadedFiles}
-                                                    removeFile={(id: any) => removeFile(id)}
-                                                    handleAddTag={handleAddTag}
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
+  const handleCheckNotes = () => {
+    setIsDrawerOpen(true);
+  };
 
-                            <InfoDetails requestDetails={requestDetails} />
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const generateMedicalNecessity = async () => {
+    setIsLoadingMedicalNecessity(true);
+    try {
+      const response = await postGenerateMedicalNecessity(dispatch, reqId);
+      if (response) {
+        setIsLoadingMedicalNecessity(false);
+      }
+    } catch (error: any) {
+    } finally {
+      setIsLoadingMedicalNecessity(false);
+    }
+  };
+  localStorage.setItem("pharmacyRequestStatuses", JSON.stringify(statuses));
+
+  return (
+    <>
+      <ProgressNotesModal isOpen={isModalOpen} onClose={closeModal} />
+      <SideDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        title="Request Details"
+        width="w-[500px]"
+        position="right"
+      >
+        <RequestDetailsContent
+          comments={comments}
+          setComments={setComments}
+          initialTab="Status & Notes"
+          onClose={() => setIsDrawerOpen(false)} 
+        />
+      </SideDrawer>
+      <div className="p-4 bg-white rounded-xl theme-shadow relative">
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <>
+            <PageHeader requestDetails={requestDetails} isAdmin={isAdmin} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="col-span-1 lg:col-span-2 space-y-4">
+                <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
+                  <CardHeader title="Status" />
+                  <StatusTimeline
+                    currentStatus={statuses ? statuses.currentStatus : null}
+                    previousStatuses={statuses ? statuses.previousStatuses : []}
+                    onCheckNotes={handleCheckNotes}
+                  />
+                </div>
+                <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
+                  <CardHeader title="Progress Notes" />
+                  <div className="p-4">
+                    <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] overflow-hidden">
+                      <button
+                        type="button"
+                        onClick={() => setIsModalOpen(true)}
+                        className="flex w-full items-center justify-center cursor-pointer gap-2 py-4 px-3 bg-white rounded-lg"
+                      >
+                        <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
+                          Upload Progress Notes
+                        </p>
+                        <img
+                          src="/upload-new.svg"
+                          alt="upload new img"
+                          className=""
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white rounded-xl border border-quaternary-navy-blue relative overflow-hidden">
+                  <CardHeader title="Other Files" />
+                  <div className="p-4 flex flex-col gap-4 relative">
+                    <div className="inline-flex flex-col gap-2">
+                      <h3 className="text-base font-medium text-primary-black">
+                        Generate File
+                      </h3>
+                      <div className="inline-flex flex-col gap-4 p-4 max-w-[400px] border border-quaternary-navy-blue rounded-lg">
+                        <img
+                          src="/AI_PDF_large.svg"
+                          alt="pdf icon"
+                          className="w-12 h-12"
+                        />
+                        <div className="">
+                          <h3 className="text-base font-medium text-primary-black">
+                            Letter of Medical Necessity
+                          </h3>
+                          <p className="text-quaternary-white text-sm">
+                            You can generate letter of medical necessity
+                            directly inside the platform using our latest AI
+                            Models
+                          </p>
                         </div>
-                    </>
-                )}
+                        <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] overflow-hidden">
+                          <button
+                            type="button"
+                            onClick={generateMedicalNecessity}
+                            className="flex w-full items-center justify-center cursor-pointer gap-2 py-4 px-3 bg-white rounded-lg"
+                          >
+                            <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
+                              {isLoadingMedicalNecessity
+                                ? "Generating..."
+                                : "Generate"}
+                            </p>
+                            <img
+                              src={"/Group (2).svg"}
+                              alt="AI Icon"
+                              className="w-4.5 h-4.5"
+                            />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="inline-flex flex-col gap-2">
+                      <h3 className="text-base font-medium text-primary-black">
+                        Upload Files
+                      </h3>
+                      <FileDropzone
+                        isDragging={isDragging}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                        onFileChange={handleFileChange}
+                        className="!p-3"
+                      />
+                    </div>
+
+                    {uploadedFiles.length > 0 && (
+                      <div className="inline-flex flex-col gap-2">
+                        <h3 className="text-sm font-medium text-secondary-black">
+                          {uploadedFiles.length} files uploading...
+                        </h3>
+                        <UploadFileList
+                          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                          files={uploadedFiles}
+                          removeFile={(id: any) => removeFile(id)}
+                          handleAddTag={handleAddTag}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <InfoDetails requestDetails={requestDetails} />
             </div>
-        </>
-    );
+          </>
+        )}
+      </div>
+    </>
+  );
 };
 
 export default PharmacyRequestDetails;
