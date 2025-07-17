@@ -3,12 +3,9 @@ import PharmacyToolTipDropdown from "./common/PharmacyToolTipDropdown";
 import React, { useEffect, useRef, useState } from "react";
 import { HiOutlinePhone } from "react-icons/hi2";
 import InfoColumn from "./common/InfoColumn";
-import { RiVipDiamondLine } from "react-icons/ri";
-import { CiLocationOn } from "react-icons/ci";
-import { PiCityLight } from "react-icons/pi";
-import ThemeButton from "./common/ThemeButton";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { formatPrescriberToUsername } from "@/utils/helper";
+import ThemeButton from "./common/ThemeButton";
 
 const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -35,16 +32,15 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
         `/pharmacy/prescribers/${formatPrescriberToUsername(prescriber.prescriber)}/prescriber-details`;
 
     return (
-        <Link to={pageLink} 
-            className="bg-primary-white rounded-lg theme-shadow cursor-pointer p-4 relative border-2 border-quaternary-navy-blue flex flex-col gap-4">
-            <div className='inline-flex justify-between gap-2 items-start'>
-                <div className='inline-flex gap-4 flex-col items-start'>
+        <div className="bg-primary-white rounded-lg theme-shadow p-4 relative border-2 border-[#EBEBEB] w-full max-w-full sm:max-w-md">
+            <div className='inline-flex justify-between gap-2 items-start mb-4 w-full'>
+                <div className='inline-flex gap-2 flex-col items-start'>
                     <img
                         src={prescriber?.pharmacyLogo || '/images/Abstergo Ltd..png'}
                         alt=""
-                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg"
+                        className="w-9 h-9 sm:w-14 sm:h-14 rounded-lg"
                     />
-                    <h2 className='text-sm sm:text-base md:text-lg font-semibold text-primary-black leading-[110%]'>
+                    <h2 className='text-sm sm:text-base md:text-lg font-semibold text-primary-black leading-[110%] mt-3'>
                         {prescriber.prescriber}
                     </h2>
                 </div>
@@ -52,10 +48,10 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
                 <div ref={dropdownRef} className='relative'>
                     <button
                         type='button'
-                        className="rounded-lg p-2 text-black cursor-pointer bg-secondary-background"
+                        className="rounded-lg p-1.5 text-black cursor-pointer bg-[#F5F5F5] hover:bg-[#EBEBEB]"
                         onClick={toggleDropdown}
                     >
-                        <BsThreeDotsVertical />
+                        <BsThreeDotsVertical className="text-sm" />
                     </button>
                     {isDropdownOpen && (
                         <PharmacyToolTipDropdown />
@@ -63,34 +59,78 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
                 </div>
             </div>
 
-            <div className="flex flex-col justify-between sm:justify-center gap-2 sm:gap-4">
-                <InfoColumn
-                    icon={<HiOutlinePhone className="text-secondary-navy-blue" />}
-                    label="Phone"
-                    data={prescriber.prescriberPhone}
-                />
-                <InfoColumn
-                    icon={<RiVipDiamondLine className="text-secondary-navy-blue" />}
-                    label="NPI"
-                    data={prescriber.npi}
-                />
-                <InfoColumn
-                    icon={<CiLocationOn className="text-secondary-navy-blue" />}
-                    label="Address"
-                    data={prescriber.prescriberAddress}
-                />
-                <InfoColumn
-                    icon={<PiCityLight className="text-secondary-navy-blue" />}
-                    label="City"
-                    data={prescriber.prescriberCity}
-                />
+            {/* Mobile Layout - Single Column */}
+            <div className="md:hidden space-y-3">
+                <div className="flex justify-between">
+                    <span className="text-sm text-gray-500">Total Requests</span>
+                    <span className="text-sm font-medium">{prescriber.totalRequests || "N/A"}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-sm text-gray-500">Phone</span>
+                    <span className="text-sm font-medium">{prescriber.prescriberPhone}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-sm text-gray-500">NPI</span>
+                    <span className="text-sm font-medium">{prescriber.npi}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-sm text-gray-500">Address</span>
+                    <span className="text-sm font-medium">{prescriber.prescriberAddress}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-sm text-gray-500">City</span>
+                    <span className="text-sm font-medium">{prescriber.prescriberCity}</span>
+                </div>
+            </div>
+
+            {/* Desktop Layout - Two Columns */}
+            <div className="hidden md:grid grid-cols-2 gap-4">
+                <div className="space-y-4">
+                    <InfoColumn
+                        icon={<img src="/requests.svg" alt="Requests" className="w-4 h-4" />}
+                        label="Total Requests"
+                        data={prescriber.totalRequests || "N/A"}
+                    />
+                    <InfoColumn
+                        icon={<img src="/npi.svg" alt="NPI" className="w-4 h-4" />}
+                        label="NPI"
+                        data={prescriber.npi}
+                    />
+                    <InfoColumn
+                        icon={<img src="/address.svg" alt="Address" className="w-4 h-4" />}
+                        label="Address"
+                        data={prescriber.prescriberAddress}
+                    />
+                </div>
+                <div className="space-y-4">
+                    <InfoColumn
+                        icon={<HiOutlinePhone className="text-secondary-navy-blue" />}
+                        label="Phone"
+                        data={prescriber.prescriberPhone}
+                    />
+                    <InfoColumn
+                        icon={<img src="/city.svg" alt="City" className="w-4 h-4" />}
+                        label="City"
+                        data={prescriber.prescriberCity}
+                    />
+                </div>
+            </div>
+            
+            {/* Full-width horizontal separator with reduced spacing */}
+            <div className="border-t border-[#EBEBEB] mt-4 -mx-4"></div>
+            
+            {/* View button with reduced padding and spacing */}
+            <div className="flex justify-end pt-4">
+                <Link to={pageLink}>
+                    <ThemeButton variant="tertiary">View</ThemeButton>
+                </Link>
             </div>
             {isDetails && (
                 <ThemeButton variant="secondary">
                     View Details
                 </ThemeButton>
             )}
-        </Link>
+        </div>
     );
 };
 

@@ -9,6 +9,7 @@ interface FilterFieldProps {
   selectedValue: string;
   onChange: (value: string) => void;
   className?: string;
+  label?: string
 }
 
 const FilterField: React.FC<FilterFieldProps> = ({
@@ -16,6 +17,7 @@ const FilterField: React.FC<FilterFieldProps> = ({
   selectedValue,
   onChange,
   className,
+  label = "Group By"
 }) => {
   const [showFiltersDropdown, setShowFiltersDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -77,7 +79,7 @@ const FilterField: React.FC<FilterFieldProps> = ({
           onClick={() => setShowFiltersDropdown(!showFiltersDropdown)}
         >
           <span className="flex items-center gap-2 whitespace-nowrap">
-            Group By <PiSlidersHorizontalBold className="w-4 h-4" />
+            {label} <PiSlidersHorizontalBold className="w-4 h-4" />
           </span>
         </Button>
 
