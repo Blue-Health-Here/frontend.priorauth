@@ -8,7 +8,7 @@ import AddRequestModal from "./AddRequestModal";
 import { getAllPharmacyReqs, getAllReqStatuses, updateRequestStatus } from "@/services/pharmacyService";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { filterRequestsByStatus, getStatusClass, groupByField, transformPharmacyRequest } from "@/utils/helper";
+import { filterRequestsByStatus, formatPrescriberToUsername, getStatusClass, groupByField, transformPharmacyRequest } from "@/utils/helper";
 import RequestStatusDropdownField from "./RequestStatusDropdownField";
 import SearchField from "@/components/common/SearchField";
 import Loading from "@/components/common/Loading";
@@ -17,8 +17,9 @@ import ThemeButtonTabs from "@/components/ThemeButtonTabs";
 import NameBadge from "@/components/NameBadge";
 import NotesCell from "./NotesCell";
 import { FaPlus } from "react-icons/fa6";
+import RequestTitle from "./RequestTitle";
 
-const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
+const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
   const columns = [
     {
       field: 'patient',
@@ -70,7 +71,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
       sortable: true,
       customTemplate: true,
       render: (rowData: any, field: any) => (
-        <NotesCell note={rowData[field]} />
+        <NotesCell note={rowData[field] || "-"} />
       )
     },
     {
@@ -126,7 +127,11 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
 
   useEffect(() => {
     if (reqsData.length > 0) {
-      setRequestsData(reqsData.map((item: any) => ({ ...transformPharmacyRequest(item) })))
+      const filteredData = prescriber ? reqsData.filter((item: any) => {
+        const prescriberUsername = formatPrescriberToUsername(item.prescriber || "");
+        return prescriberUsername === prescriber;
+      }) : reqsData;
+      setRequestsData(filteredData.map((item: any) => ({ ...transformPharmacyRequest(item) })))
       setFilteredStatuses(reqsData.map((item: any) => ({
         id: item.request_status, name: item.paStatus, statusClass: getStatusClass(item.paStatus)
       })))
@@ -134,9 +139,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
   }, [reqsData]);
 
   const handleSubmitStatusChange = async (value: any, rowData: any) => {
-    await updateRequestStatus(dispatch, rowData?.id, {
-      statusId: value.code, paStatus: value.name
-    }).then(() => fetchInitialData());
+    await updateRequestStatus(dispatch, rowData?.id, { statusId: value.code, paStatus: value.name });
   };
 
   const requestStatusTemplate = (rowData: any, field: any) => {
@@ -196,9 +199,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
       {/* Mobile Header */}
       <div className="md:hidden flex flex-col gap-3 w-full">
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-primary-black">
-            Your Requests
-          </h2>
+          <RequestTitle isAdmin={isAdmin} prescriber={prescriber} />
           <button
             onClick={() => setIsModalOpen(true)}
             className="w-7 h-7 flex items-center justify-center bg-[#EBF1FF] rounded-md"
@@ -396,15 +397,18 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
       )}
 
       <div className="hidden md:flex justify-between gap-4 items-center pb-2 h-14 flex-wrap">
-        <h2 className='text-xl font-semibold text-primary-black whitespace-nowrap'>Your Requests</h2>
-        <div className="inline-flex h-full gap-2 sm:ml-auto">
-          <ThemeButton type="button" className="!h-full min-w-max rounded-lg" variant="secondary">
-            Open Portal
-          </ThemeButton>
-          <ThemeButton className="w-full !h-full rounded-lg" variant="primary" type="button" onClick={() => setIsModalOpen(true)}>
-            Add Request
-          </ThemeButton>
-        </div>
+        <RequestTitle isAdmin={isAdmin} prescriber={prescriber} />
+        {/* <h2 className='text-xl font-semibold text-primary-black whitespace-nowrap'>Your Requests</h2> */}
+        {!prescriber && (
+          <div className="inline-flex h-full gap-2 sm:ml-auto">
+            <ThemeButton type="button" className="!h-full min-w-max rounded-lg" variant="secondary">
+              Open Portal
+            </ThemeButton>
+            <ThemeButton className="w-full !h-full rounded-lg" variant="primary" type="button" onClick={() => setIsModalOpen(true)}>
+              Add Request
+            </ThemeButton>
+          </div>
+        )}
       </div>
 
       {isLoading ? (
@@ -423,11 +427,12 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
                 )
           }
           columns={columns}
-          pageSize={5}
+          pageSize={10}
           selectedFilterField={selectedFilterField}
           visibleColumns={visibleColumns}
           globalFilter={globalFilter}
           setGlobalFilter={setGlobalFilter}
+          themeDataTableClass={"theme-table"}
           globalFilterFields={['patient.name', 'medication', 'prescriber.name', 'submittedOn', 'statusName', 'notes', 'lastModified']}
           onRowClick={(row: any) =>
             navigate(location.pathname + "/" + row.data.id + "/request-details")

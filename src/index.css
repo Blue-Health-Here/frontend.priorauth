@@ -395,3 +395,7 @@ a:focus {
 .custom-paginator.p-datatable > .p-datatable-wrapper {
   overflow: visible !important;
 }
+
+/* .custom-paginator.theme-table .p-datatable-wrapper {
+  overflow: auto !important;
+} */

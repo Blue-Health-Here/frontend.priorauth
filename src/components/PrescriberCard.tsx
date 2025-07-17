@@ -4,6 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { HiOutlinePhone } from "react-icons/hi2";
 import InfoColumn from "./common/InfoColumn";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { formatPrescriberToUsername } from "@/utils/helper";
+import ThemeButton from "./common/ThemeButton";
 
 const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -25,28 +27,23 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
-
-    const pageLink = isAdmin ? `/admin/prescriber/${prescriber.prescriber.toLowerCase().trim()}/prescriber-details` : 
-        `/pharmacy/prescriber/${prescriber.prescriber.toLowerCase().trim()}/prescriber-details`;
+    
+    const pageLink = isAdmin ? `/admin/prescribers/${formatPrescriberToUsername(prescriber.prescriber)}/prescriber-details` : 
+        `/pharmacy/prescribers/${formatPrescriberToUsername(prescriber.prescriber)}/prescriber-details`;
 
     return (
-        <div className="bg-primary-white rounded-lg theme-shadow p-4 relative border-2 border-[#EBEBEB] w-full sm:w-[416px] max-w-full sm:max-w-md">
-            <div className='flex justify-between items-start mb-4'>
-                <div className='flex gap-4 items-start'>
-                    <div className='flex flex-col'>
-                        <Link to={pageLink}>
-                            <img
-                                src={prescriber?.pharmacyLogo || '/images/Abstergo Ltd..png'}
-                                alt="Prescriber Logo"
-                                className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg"
-                            />
-                        </Link>
-                        <Link to={pageLink}>
-                            <h2 className='text-sm sm:text-base md:text-lg font-semibold text-primary-black leading-[110%] mt-3'>
-                                {prescriber.prescriber}
-                            </h2>
-                        </Link>
-                    </div>
+        <Link to={pageLink} 
+            className="bg-primary-white rounded-lg theme-shadow p-4 relative border-2 border-[#EBEBEB] w-full sm:w-[416px] max-w-full sm:max-w-md">
+            <div className='inline-flex justify-between gap-2 items-start mb-4'>
+                <div className='inline-flex gap-4 flex-col items-start'>
+                    <img
+                        src={prescriber?.pharmacyLogo || '/images/Abstergo Ltd..png'}
+                        alt=""
+                        className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg"
+                    />
+                    <h2 className='text-sm sm:text-base md:text-lg font-semibold text-primary-black leading-[110%] mt-3'>
+                        {prescriber.prescriber}
+                    </h2>
                 </div>
 
                 <div ref={dropdownRef} className='relative'>
@@ -131,7 +128,12 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
                     View
                 </button>
             </div>
-        </div>
+            {isDetails && (
+                <ThemeButton variant="secondary">
+                    View Details
+                </ThemeButton>
+            )}
+        </Link>
     );
 };
 

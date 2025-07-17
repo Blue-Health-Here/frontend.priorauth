@@ -5,6 +5,7 @@ import { timeAgo } from "@/utils/helper";
 import { useCallback, useEffect, useState } from "react";
 import { FiFileText } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
+import ActivityLogItem from "@/components/common/ActvityLogItem";
 
 interface StatusItem {
   name: string;
@@ -23,9 +24,9 @@ interface RequestDetailsContentProps {
 
 const RequestDetailsContent: React.FC<RequestDetailsContentProps> = ({
   comments = [],
-  setComments = () => {},
+  setComments = () => { },
   initialTab = "Comments",
-  onClose = () => {},
+  onClose = () => { },
 }) => {
   const [activeTab, setActiveTab] = useState(initialTab);
   const [statusItems, setStatusItems] = useState<StatusItem[]>([]);
@@ -139,18 +140,16 @@ const RequestDetailsContent: React.FC<RequestDetailsContentProps> = ({
                     {statusItems.map((item, index) => (
                       <div
                         key={index}
-                        className={`relative flex items-center gap-4 ${
-                          item.isActive
-                            ? "border border-dashed border-blue-navigation-link-button rounded-xl opacity-100"
-                            : "opacity-50"
-                        }`}
+                        className={`relative flex items-center gap-4 ${item.isActive
+                          ? "border border-dashed border-blue-navigation-link-button rounded-xl opacity-100"
+                          : "opacity-50"
+                          }`}
                       >
                         <div className="p-1 bg-white rounded-full inline-flex justify-center items-center ml-1">
                           <div className="relative z-10 w-2.5 h-2.5 rounded-full flex-shrink-0 p-1">
                             <div
-                              className={`absolute inset-0 rounded-full ${
-                                item.isActive ? "bg-blue-500" : "bg-gray-400"
-                              }`}
+                              className={`absolute inset-0 rounded-full ${item.isActive ? "bg-blue-500" : "bg-gray-400"
+                                }`}
                             ></div>
                           </div>
                         </div>
@@ -259,7 +258,7 @@ const RequestDetailsContent: React.FC<RequestDetailsContentProps> = ({
             {comments.length > 0 && (
               <div className="space-y-6 p-3 border-b border-quaternary-navy-blue">
                 <AnimatePresence>
-                  {comments.map((c) => (
+                  {comments.map((c: any) => (
                     <motion.div
                       key={c.id}
                       initial={{ opacity: 0, y: -4 }}
@@ -316,11 +315,73 @@ const RequestDetailsContent: React.FC<RequestDetailsContentProps> = ({
         )}
 
         {activeTab === "Revision History" && (
-          <div className="p-4">
-            <div className="text-center text-gray-500 py-8">
-              <FiFileText className="w-12 h-12 mx-auto mb-2 text-gray-400" />
-              <p>No revision history available</p>
-            </div>
+          <div className="p-4 space-y-4">
+            <ActivityLogItem
+              name="Tucer Carlson"
+              actor="Tucker Carlson"
+              action="updated status"
+              timestamp="2 days ago"
+              statusBadges={[
+                {
+                  text: "Awaiting MD's Signature on Fax Form",
+                  colorClass: "text-[#1D4ED8] bg-blue-50 border border-[#19AD4B]",
+                },
+                {
+                  text: "Denied",
+                  colorClass: "text-[#B91C1C] bg-red-50 border border-[#FF2E37]",
+                  strike: true,
+                },
+              ]}
+            />
+
+            <ActivityLogItem
+              name="System"
+              action="Progress Notes"
+              timestamp="2 days ago"
+            />
+
+            <ActivityLogItem
+              name="John Dee"
+              actor="John Doe"
+              action="uploaded a new file"
+              timestamp="2 days ago"
+              file={{
+                name: "Vaccination_Records_April_2023.pdf",
+              }}
+            />
+
+            <ActivityLogItem
+              name="System"
+              action="Medical Letter of Necessity generated via API"
+              timestamp="2 days ago"
+              file={{
+                name: "Medical Letter of Necessity.pdf",
+              }}
+            />
+
+            <ActivityLogItem
+              name="System"
+              action="New Request Generated"
+              timestamp="2 days ago"
+              info={[
+                { label: "Patient Name", value: "CHENG, MICHELLE" },
+                { label: "Member ID", value: "728597627" },
+              ]}
+            />
+
+            <ActivityLogItem
+              name="System"
+              action="Fax Request"
+              timestamp="2 days ago"
+            />
+
+            <ActivityLogItem
+              name="ProdAdmin"
+              actor="PriorAuthAdmin"
+              action="added notes"
+              timestamp="2 days ago"
+              notes={`A calls was made to the Help Desk to check the status of the Prior Authorization. The agent stated that the case is under clinical review and additional information is required: supporting chart notes. The agent stated to fax that information to 866-249-6155 and Case ID: 25-098223468 should be mentioned while submitting that information. (AA)`}
+            />
           </div>
         )}
       </div>
