@@ -11,15 +11,15 @@ const InfoColumn: React.FC<InfoColumnProps> = ({ icon, label, data }) => {
         <div className="flex items-center gap-3">
             {icon && (
                 <div
-                    className="w-8 h-8 rounded-md flex items-center justify-center p-0.5"
+                    className="w-6 h-6 rounded-md flex items-center justify-center p-0.5"
                     style={{ backgroundColor: '#EBF1FF' }}
                 >
                     {icon}
                 </div>
             )}
             <div className="flex-1">
-                {label && <p className="text-sm text-muted-foreground text-secondary-black">{label}</p>}
-                <p className="text-md font-semibold text-primary-black">{data}</p>
+                {label && <p className="text-xs text-muted-foreground text-secondary-black">{label}</p>}
+                <p className="text-sm font-semibold text-primary-black">{data}</p>
             </div>
         </div>
     )
