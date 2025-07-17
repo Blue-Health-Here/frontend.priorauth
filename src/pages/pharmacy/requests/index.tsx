@@ -70,7 +70,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
       sortable: true,
       customTemplate: true,
       render: (rowData: any, field: any) => (
-        <NotesCell note={rowData[field]} />
+        <NotesCell note={rowData[field] || "-"} />
       )
     },
     {
@@ -421,7 +421,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
                 )
           }
           columns={columns}
-          pageSize={5}
+          pageSize={10}
           selectedFilterField={selectedFilterField}
           visibleColumns={visibleColumns}
           globalFilter={globalFilter}

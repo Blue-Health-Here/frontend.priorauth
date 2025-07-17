@@ -377,7 +377,7 @@ export function transformPharmacyRequest(data: any) {
     submittedOn: data.createdAt?.split("T")[0] || '-', // Extract just the date
     request_status: data.statusId || '',
     statusName: data?.paStatus || '',
-    notes: data.rejectionclaim || '–',
+    notes: data?.notes,
     lastModified: formatDateTime(data.createdAt), // Custom date formatting below
     statusClass: getStatusClass(data.statusId) // Assume you have this function elsewhere
   };
