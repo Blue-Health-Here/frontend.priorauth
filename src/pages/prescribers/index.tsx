@@ -61,7 +61,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
         const filterValue = globalFilter.toLowerCase();
         const filtered = updatedPresData.filter((item: any) => {
             if (activeTab === "Active List" && item.isArchived) return false;
-            if (activeTab === "Archives" && !item.isArchived) return false;
+            if (activeTab === "Archives" && item.isArchived) return false;
             
             if (typeof item[selectedFilterField] === 'string') {
                 return item[selectedFilterField].toLowerCase().includes(filterValue);
@@ -87,7 +87,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
             <div className="flex flex-col gap-4 pb-6">
                 <div className="flex justify-between items-center">
                     <h1 className="text-xl font-medium tracking-tighter">
-                        {activeTab === "Active List" ? "Prescribers List" : "Archived Prescribers"}
+                        {activeTab === "Active List" ? "Prescribers List" : "Prescribers List"}
                     </h1>
                     <button 
                         onClick={handleInviteClick}
