@@ -134,9 +134,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
   }, [reqsData]);
 
   const handleSubmitStatusChange = async (value: any, rowData: any) => {
-    await updateRequestStatus(dispatch, rowData?.id, {
-      statusId: value.code, paStatus: value.name
-    }).then(() => fetchInitialData());
+    await updateRequestStatus(dispatch, rowData?.id, { statusId: value.code, paStatus: value.name });
   };
 
   const requestStatusTemplate = (rowData: any, field: any) => {
@@ -428,6 +426,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin }) => {
           visibleColumns={visibleColumns}
           globalFilter={globalFilter}
           setGlobalFilter={setGlobalFilter}
+          themeDataTableClass={"theme-table"}
           globalFilterFields={['patient.name', 'medication', 'prescriber.name', 'submittedOn', 'statusName', 'notes', 'lastModified']}
           onRowClick={(row: any) =>
             navigate(location.pathname + "/" + row.data.id + "/request-details")

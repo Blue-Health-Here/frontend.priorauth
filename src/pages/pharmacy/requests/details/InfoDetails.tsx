@@ -54,7 +54,6 @@ const InfoDetails: React.FC<any> = ({ requestDetails }) => {
                     {[
                         { label: "DOS", value: requestDetails.createdAt?.split("T")[0] || '-' },
                         { label: "CMM Key", value: requestDetails?.key },
-                        { label: "CMM Key 2", value: requestDetails?.key },
                     ].map((item: any, index: number) => {
                         return (
                             <div key={index}>

@@ -1,9 +1,10 @@
 import ThemeDataTable from "@/components/common/ThemeDataTable";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import UnlockAccessInfoModal from "./UnlockAccessInfoModal";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import SearchField from "@/components/common/SearchField";
 import { getAvatarInfo } from "@/utils/avatar";
+import useWindowSize from "@/hooks/useWindowSize";
 
 const CMMAccountDatabase = () => {
     const sampleData = [
@@ -162,17 +163,8 @@ const CMMAccountDatabase = () => {
     }), {}));
     const [isChecked, setIsChecked] = useState<boolean>(false);
     const [globalFilter, setGlobalFilter] = useState('');
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth < 768);
-        };
-        
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    const windowSize = useWindowSize();
+    const isMobile = windowSize.width < 768;
 
     const handleOpenPasswordModal = (event: any) => {
         event.preventDefault();
@@ -220,9 +212,6 @@ const CMMAccountDatabase = () => {
         </div>
     );
 
-    // Mobile view shows only first 2 columns by default
-   
-
     return (
         <div className='bg-primary-white rounded-2xl theme-datatable theme-shadow px-4 py-4'>
             <h2 className='text-xl font-semibold text-primary-black whitespace-nowrap pb-4'>CMM Account Database</h2>
@@ -232,11 +221,13 @@ const CMMAccountDatabase = () => {
                     header={header}
                     data={sampleData}
                     columns={columns}
+                    visibleColumns={visibleColumns}
                     searchPlaceholder="Search..."
                     globalFilter={globalFilter}
                     setGlobalFilter={setGlobalFilter}
                     handleClickOpenPasswordModal={handleOpenPasswordModal}
                     className={isMobile ? "min-w-[600px]" : ""}
+                    themeDataTableClass={"theme-table"}
                 />
             </div>
         </div>
