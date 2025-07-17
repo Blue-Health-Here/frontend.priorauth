@@ -8,7 +8,7 @@ import PageHeader from "./PageHeader";
 import InfoDetails from "./InfoDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getRequestDetails, getRequestStatuses } from "@/services/pharmacyService";
+import { deleteReqUploadedFile, getRequestDetails, getRequestStatuses } from "@/services/pharmacyService";
 import Loading from "@/components/common/Loading";
 import StatusTimeline from "./StatusTimeline";
 import SideDrawer from "@/components/SideDrawer";
@@ -16,6 +16,7 @@ import RequestDetailsContent from "./SideDrawerReqDetailsContent";
 import LetterOfMedicalNecessity from "./LetterOfMedicalNecessity";
 import { loadPdfJs } from "@/services/pdfService";
 import { RootState } from "@/store";
+import toast from "react-hot-toast";
 
 const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   const [statuses, setReqStatuses] = useState<any>(null);
@@ -168,7 +169,18 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     }
   };
 
-  const removeFile = (id: string) => setUploadedFiles((prev: any) => prev.filter((file: any) => file.id !== id));
+  const removeFile = async (id: string) => {
+    try {
+      const response = await deleteReqUploadedFile(dispatch, reqId, id);
+      if (response.success) {
+        setUploadedFiles((prev: any) => prev.filter((file: any) => file.id !== id))
+        toast.success(response.message);
+      }
+    } catch (error: any) {
+      toast.error(error?.message);
+    }
+  };
+
   const handleAddTag = (updateFn: (prev: UploadedFile[]) => UploadedFile[]) => {
     setUploadedFiles(updateFn);
   };

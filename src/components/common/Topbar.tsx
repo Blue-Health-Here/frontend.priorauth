@@ -78,7 +78,7 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
       } right-0 p-3 min-h-16 sm:p-3 z-60 bg-white border-b border-gray-100 flex`}
     >
       <nav className={`flex justify-between w-full flex-1`}>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-1">
           {isSidebarCollapsed && !isSidebarOpen && (
             <button
               onClick={() => dispatch(setIsSidebarCollapsed(false))}
@@ -102,7 +102,8 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
             />
           </div>
           
-          <BreadCrumb className='!text-lg !sm:text-xl !font-semibold !text-primary-black !p-0 !border-0' model={breadcrumbItems} separatorIcon={<HiOutlineSlash />} />
+          <BreadCrumb className='!text-lg !sm:text-xl !font-semibold !text-primary-black !p-0 !border-0' 
+            model={breadcrumbItems} separatorIcon={<HiOutlineSlash />} />
         </div>
         <div className="hidden lg:flex items-center justify-center flex-1">
           <div className="relative mx-2 w-[400px]">
