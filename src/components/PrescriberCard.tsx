@@ -85,35 +85,32 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
 
             {/* Desktop Layout - Two Columns */}
             <div className="hidden md:grid grid-cols-2 gap-4">
-                <div className="space-y-4">
-                    <InfoColumn
-                        icon={<img src="/requests.svg" alt="Requests" className="w-4 h-4" />}
-                        label="Total Requests"
-                        data={prescriber.totalRequests || "N/A"}
-                    />
-                    <InfoColumn
-                        icon={<img src="/npi.svg" alt="NPI" className="w-4 h-4" />}
-                        label="NPI"
-                        data={prescriber.npi}
-                    />
-                    <InfoColumn
-                        icon={<img src="/address.svg" alt="Address" className="w-4 h-4" />}
-                        label="Address"
-                        data={prescriber.prescriberAddress}
-                    />
-                </div>
-                <div className="space-y-4">
-                    <InfoColumn
-                        icon={<HiOutlinePhone className="text-secondary-navy-blue" />}
-                        label="Phone"
-                        data={prescriber.prescriberPhone}
-                    />
-                    <InfoColumn
-                        icon={<img src="/city.svg" alt="City" className="w-4 h-4" />}
-                        label="City"
-                        data={prescriber.prescriberCity}
-                    />
-                </div>
+                <InfoColumn
+                    icon={<img src="/requests.svg" alt="Requests" className="w-4 h-4" />}
+                    label="Total Requests"
+                    data={prescriber.totalRequests || "N/A"}
+                />
+                <InfoColumn
+                    icon={<img src="/npi.svg" alt="NPI" className="w-4 h-4" />}
+                    label="NPI"
+                    data={prescriber.npi}
+                />
+                <InfoColumn
+                    icon={<HiOutlinePhone className="text-secondary-navy-blue" />}
+                    label="Phone"
+                    data={prescriber.prescriberPhone}
+                />
+                <InfoColumn
+                    icon={<img src="/city.svg" alt="City" className="w-4 h-4" />}
+                    label="City"
+                    data={prescriber.prescriberCity}
+                />
+                <InfoColumn
+                    icon={<img src="/address.svg" alt="Address" className="w-4 h-4" />}
+                    label="Address"
+                    data={prescriber.prescriberAddress}
+                    className="col-span-2"
+                />
             </div>
             
             {/* Full-width horizontal separator with reduced spacing */}
