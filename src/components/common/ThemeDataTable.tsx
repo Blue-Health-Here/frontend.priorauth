@@ -79,7 +79,7 @@ const ThemeDataTable: React.FC<any> = ({
     isPaginator = true,
     handleClickOpenPasswordModal,
     header, visibleColumns,
-    globalFilter,
+    globalFilter, themeDataTableClass,
     globalFilterFields, selectedFilterField = ''
 }) => {
     const dt = useRef(null);
@@ -184,7 +184,7 @@ const ThemeDataTable: React.FC<any> = ({
                     header={null}
                     emptyMessage={emptyMessage}
                     loading={loading}
-                    className="custom-paginator"
+                    className={`custom-paginator ${themeDataTableClass}`}
                     onRowClick={onRowClick}
                     rowClassName={() =>
                         'cursor-pointer hover:!bg-gray-50 active:bg-gray-100 transition duration-200'

@@ -482,7 +482,7 @@ export const transformRequestDetails = (data: any) => {
       ]
     },
     {
-      label: "Patient Information",
+      label: "Patient",
       data: [
         { label: "Patient Name", value: data.patientName || "-" },
         { label: "Member ID", value: data.memberId || "-" },
@@ -493,7 +493,7 @@ export const transformRequestDetails = (data: any) => {
       ]
     },
     {
-      label: "Insurance Information",
+      label: "Insurance",
       data: [
         { label: "Insurance", value: data.insurance || "-" },
         { label: "FORM", value: data.form || "-" },
@@ -505,7 +505,7 @@ export const transformRequestDetails = (data: any) => {
       ]
     },
     {
-      label: "Prescriber Information",
+      label: "Prescriber",
       data: [
         { label: "Pharmacy", value: data.pharmacy || "-" },
         { label: "Prescriber", value: data.prescriber || "-" },

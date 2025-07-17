@@ -15,7 +15,7 @@ const useWindowSize = () => {
 
     // Set initial size once mounted
     handleResize();
-    
+
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
