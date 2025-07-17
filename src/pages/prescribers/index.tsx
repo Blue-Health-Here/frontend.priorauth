@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SearchField from "@/components/common/SearchField";
 import ThemeButtonTabs from "@/components/ThemeButtonTabs";
 import FilterField from "@/components/common/FilterField";
+import ThemeButton from "@/components/common/ThemeButton";
 
 const Prescribers: React.FC<any> = ({ isAdmin }) => {
     const { prescribersData } = useSelector((state: RootState) => state.prescribers);
@@ -22,10 +23,10 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     const [selectedFilterField, setSelectedFilterField] = useState("prescriber");
 
     const filterOptions = [
-        { field: "prescriber", header: "Name" },
-        { field: "prescriberPhone", header: "Phone" },
-        { field: "prescriberAddress", header: "Address" },
-        { field: "npi", header: "NPI" }
+        { field: "prescriber", filterable: true, header: "Name" },
+        { field: "prescriberPhone", filterable: true, header: "Phone" },
+        { field: "prescriberAddress", filterable: true, header: "Address" },
+        { field: "npi", filterable: true, header: "NPI" }
     ];
 
     const fetchAllPrescribers = async () => {
@@ -84,18 +85,17 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
 
     return (
         <div className="bg-white rounded-lg theme-shadow p-4 h-full">
-            <div className="flex flex-col gap-4 pb-6">
+            <div className="flex flex-col gap-2 pb-4">
                 <div className="flex justify-between items-center">
                     <h1 className="text-xl font-medium tracking-tighter">
                         {activeTab === "Active List" ? "Prescribers List" : "Prescribers List"}
                     </h1>
-                    <button 
-                        onClick={handleInviteClick}
-                        className="flex items-center gap-2 bg-[#163066] text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                        <span className="hidden md:inline text-sm">Invite Link</span>
-                        <img src="/invite-link.svg" alt="" className="w-2.5 h-2.5" />
-                    </button>
+                    <ThemeButton variant="primary" onClick={handleInviteClick}>
+                        <span className="hidden md:inline-flex gap-2 items-center text-sm">
+                            Invite Link
+                            <img src="/invite-link.svg" alt="" className="w-3.5 h-3.5" />
+                        </span>
+                    </ThemeButton>
                 </div>
                 
                 {/* Mobile Header Layout */}
@@ -108,6 +108,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
                             className="flex-1"
                         />
                         <FilterField
+                            label="Sort By"
                             columns={filterOptions}
                             selectedValue={selectedFilterField}
                             onChange={setSelectedFilterField}
@@ -141,6 +142,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
                             className="min-w-[200px]"
                         />
                         <FilterField
+                            label="Sort By"
                             columns={filterOptions}
                             selectedValue={selectedFilterField}
                             onChange={setSelectedFilterField}
@@ -149,7 +151,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 lg:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
                 {isLoading ? (
                     <div className="text-center py-4 w-10 text-gray-500 col-span-full">
                         <Loading />

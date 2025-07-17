@@ -32,14 +32,13 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
         `/pharmacy/prescribers/${formatPrescriberToUsername(prescriber.prescriber)}/prescriber-details`;
 
     return (
-        <Link to={pageLink} 
-            className="bg-primary-white rounded-lg theme-shadow p-4 relative border-2 border-[#EBEBEB] w-full sm:w-[416px] max-w-full sm:max-w-md">
-            <div className='inline-flex justify-between gap-2 items-start mb-4'>
-                <div className='inline-flex gap-4 flex-col items-start'>
+        <div className="bg-primary-white rounded-lg theme-shadow p-4 relative border-2 border-[#EBEBEB] w-full max-w-full sm:max-w-md">
+            <div className='inline-flex justify-between gap-2 items-start mb-4 w-full'>
+                <div className='inline-flex gap-2 flex-col items-start'>
                     <img
                         src={prescriber?.pharmacyLogo || '/images/Abstergo Ltd..png'}
                         alt=""
-                        className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg"
+                        className="w-9 h-9 sm:w-14 sm:h-14 rounded-lg"
                     />
                     <h2 className='text-sm sm:text-base md:text-lg font-semibold text-primary-black leading-[110%] mt-3'>
                         {prescriber.prescriber}
@@ -121,19 +120,17 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
             <div className="border-t border-[#EBEBEB] mt-4 -mx-4"></div>
             
             {/* View button with reduced padding and spacing */}
-            <div className="flex justify-end px-4 pt-3">
-                <button 
-                    className="px-3 py-1 text-[#163066] border border-[#CBDAFF] rounded-lg hover:bg-[#F5F8FF] transition-colors font-medium text-sm" 
-                >
-                    View
-                </button>
+            <div className="flex justify-end pt-4">
+                <Link to={pageLink}>
+                    <ThemeButton variant="tertiary">View</ThemeButton>
+                </Link>
             </div>
             {isDetails && (
                 <ThemeButton variant="secondary">
                     View Details
                 </ThemeButton>
             )}
-        </Link>
+        </div>
     );
 };
 
