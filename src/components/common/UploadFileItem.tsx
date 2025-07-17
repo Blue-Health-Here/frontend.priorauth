@@ -138,11 +138,7 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
           )}
           <button
             onClick={() => removeFile(file.id)}
-            className={
-              file.status === "uploading"
-                ? "text-black"
-                : "text-red-500 hover:text-red-700"
-            }
+            className={file.status === "uploading" ? "text-black cursor-pointer" : "text-red-500 hover:text-red-700 cursor-pointer"}
           >
             <img src="/images/delete.svg" alt="delete icon" className="" />
           </button>

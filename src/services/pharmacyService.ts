@@ -249,6 +249,10 @@ export const fetchAiAnalysis = async (dispatch: AppDispatch, id?: string) => {
     return apiHandler(dispatch, 'get', `/pa_request/get_by_id/chartNotesAnalysis/${id}`, {});
 };
 
+export const deleteReqUploadedFile = async (dispatch: AppDispatch, reqId?: string,  id?: string) => {
+    return apiHandler(dispatch, 'delete', `/pa_request/delete/${reqId}/file/${id}`, {});
+};
+
 // ============= Get All Prescribers  =============
 
 export const getAllPrescribers = async (dispatch: AppDispatch, id?: string) => {
