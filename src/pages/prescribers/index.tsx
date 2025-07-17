@@ -9,6 +9,7 @@ import SearchField from "@/components/common/SearchField";
 import ThemeButtonTabs from "@/components/ThemeButtonTabs";
 import FilterField from "@/components/common/FilterField";
 import ThemeButton from "@/components/common/ThemeButton";
+import InviteLinkModal from "./InviteLinkModal";
 
 const Prescribers: React.FC<any> = ({ isAdmin }) => {
     const { prescribersData } = useSelector((state: RootState) => state.prescribers);
@@ -21,6 +22,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     const [activeTab, setActiveTab] = useState("Active List");
     const [globalFilter, setGlobalFilter] = useState("");
     const [selectedFilterField, setSelectedFilterField] = useState("prescriber");
+    const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
 
     const filterOptions = [
         { field: "prescriber", filterable: true, header: "Name" },
@@ -62,7 +64,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
         const filterValue = globalFilter.toLowerCase();
         const filtered = updatedPresData.filter((item: any) => {
             if (activeTab === "Active List" && item.isArchived) return false;
-            if (activeTab === "Archives" && item.isArchived) return false;
+            if (activeTab === "Archives" && !item.isArchived) return false;
             
             if (typeof item[selectedFilterField] === 'string') {
                 return item[selectedFilterField].toLowerCase().includes(filterValue);
@@ -79,8 +81,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     };
 
     const handleInviteClick = () => {
-        console.log("Invite button clicked");
-        // Add your invite logic here
+        setIsInviteModalOpen(true);
     };
 
     return (
@@ -165,6 +166,18 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
                     />
                 )) : <p className="col-span-full">No {activeTab === "Active List" ? "active" : "archived"} prescribers found.</p>}
             </div>
+
+            {/* Invite Link Modal */}
+            {isInviteModalOpen && (
+                <InviteLinkModal 
+                    isOpen={isInviteModalOpen}
+                    onClose={() => setIsInviteModalOpen(false)}
+                    prescribers={updatedPresData.map(p => ({
+                        id: p.id,
+                        name: p.prescriber
+                    }))}
+                />
+            )}
         </div>
     );
 };
