@@ -472,7 +472,7 @@ export const transformRequestDetails = (data: any) => {
     {
       label: "Medication",
       data: [
-        { label: "Medication Name",  value: data.medication },
+        { label: "Medication Name", value: data.medication },
         { label: "Rx Number", value: data.rxNumber || "-" },
         { label: "NDC", value: data.ndc || "-" },
         { label: "Days", value: data.days || "-" },
@@ -527,4 +527,21 @@ export const timeAgo = (date: any) => {
   if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
   if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
   return `${Math.floor(diff / 86400)} days ago`;
+}
+
+// Converts a prescriber name to a URL-safe username
+export function formatPrescriberToUsername(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, "") // remove non-alphanumeric except space
+    .trim()
+    .replace(/\s+/g, "-"); // replace spaces with hyphen
+}
+
+// Converts a username back to a prescriber name (approximate reverse)
+export function formatUsernameToPrescriber(username: string): string {
+  return username
+    .split("-")
+    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
 }
