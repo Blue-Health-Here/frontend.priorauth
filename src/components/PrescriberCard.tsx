@@ -30,7 +30,7 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
         `/pharmacy/prescriber/${prescriber.prescriber.toLowerCase().trim()}/prescriber-details`;
 
     return (
-        <div className="bg-primary-white rounded-lg theme-shadow p-4 relative border-2 border-[#EBEBEB] w-[416px] max-w-md">
+        <div className="bg-primary-white rounded-lg theme-shadow p-4 relative border-2 border-[#EBEBEB] w-full sm:w-[416px] max-w-full sm:max-w-md">
             <div className='flex justify-between items-start mb-4'>
                 <div className='flex gap-4 items-start'>
                     <div className='flex flex-col'>
@@ -63,7 +63,32 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            {/* Mobile Layout - Single Column */}
+            <div className="md:hidden space-y-3">
+                <div className="flex justify-between">
+                    <span className="text-sm text-gray-500">Total Requests</span>
+                    <span className="text-sm font-medium">{prescriber.totalRequests || "N/A"}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-sm text-gray-500">Phone</span>
+                    <span className="text-sm font-medium">{prescriber.prescriberPhone}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-sm text-gray-500">NPI</span>
+                    <span className="text-sm font-medium">{prescriber.npi}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-sm text-gray-500">Address</span>
+                    <span className="text-sm font-medium">{prescriber.prescriberAddress}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-sm text-gray-500">City</span>
+                    <span className="text-sm font-medium">{prescriber.prescriberCity}</span>
+                </div>
+            </div>
+
+            {/* Desktop Layout - Two Columns */}
+            <div className="hidden md:grid grid-cols-2 gap-4">
                 <div className="space-y-4">
                     <InfoColumn
                         icon={<img src="/requests.svg" alt="Requests" className="w-4 h-4" />}
