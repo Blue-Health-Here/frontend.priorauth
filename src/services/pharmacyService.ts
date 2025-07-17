@@ -245,6 +245,10 @@ export const postStartAiAnalysis = async (dispatch: AppDispatch, id?: string) =>
     return apiHandler(dispatch, 'post', `/pa_request/add/${id}/chartNotesAnalyzer`, {});
 };
 
+export const fetchAiAnalysis = async (dispatch: AppDispatch, id?: string) => {
+    return apiHandler(dispatch, 'get', `/pa_request/get_by_id/chartNotesAnalysis/${id}`, {});
+};
+
 // ============= Get All Prescribers  =============
 
 export const getAllPrescribers = async (dispatch: AppDispatch, id?: string) => {

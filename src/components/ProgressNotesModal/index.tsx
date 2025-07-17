@@ -9,13 +9,14 @@ import UploadFileList from "../common/UploadFileList";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { deleteUploadedProgressNote } from "@/store/features/pharmacy/requests/requestProgressNotesSlice";
-import { postChartNotesFiles, postStartAiAnalysis } from "@/services/pharmacyService";
+import { fetchAiAnalysis, postChartNotesFiles, postStartAiAnalysis } from "@/services/pharmacyService";
 import ProgressNotesAnalysis from "./ProgressNotesAnalysis";
 import Loading from "../common/Loading";
+import { loadPdfJs } from "@/services/pdfService";
 
 interface ProgressNotesModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (isAdded?: boolean) => void;
   chartNotes?: any[];
   requestDetails?: any;
 }
@@ -58,12 +59,20 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
           }
         })
       );
-      // setAnalysisStarted(true);
-      // setSelectedFile(chartNotes[0]);
+      handleFetchAiAnalysis();
     } else {
       setUploadedFiles([]);
     }
   }, [chartNotes]);
+
+  const handleFetchAiAnalysis = async () => {
+    const response = await fetchAiAnalysis(dispatch, requestId);
+    if (response) {
+      setAnalysisDetails(response);
+      setAnalysisStarted(true);
+      setSelectedFile(chartNotes[0]);
+    }
+  }
 
   useEffect(() => {
     if (!isOpen || !uploadedFiles.some((file) => file.status === "uploading"))
@@ -89,26 +98,6 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
     }, 500);
     return () => clearInterval(interval);
   }, [uploadedFiles, isOpen]);
-
-  const loadPdfJs = useCallback(() => {
-    return new Promise((resolve, reject) => {
-      if (window.pdfjsLib) {
-        resolve(window.pdfjsLib);
-        return;
-      }
-
-      const script = document.createElement("script");
-      script.src =
-        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
-      script.onload = () => {
-        window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-        resolve(window.pdfjsLib);
-      };
-      script.onerror = () => reject(new Error("Failed to load PDF.js"));
-      document.head.appendChild(script);
-    });
-  }, []);
 
   const convertPdfToImage = useCallback(
     async (file: any) => {
@@ -266,7 +255,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   console.log(uploadedFiles, analysisDetails, "uploadedFiles");
   return (
     <ModalWrapper>
-      <ModalHeader title="AI Analysis" onClose={onClose} />
+      <ModalHeader title="AI Analysis" onClose={() => onClose(analysisDetails ? true : false)} />
       <div
         className="w-[1536px] overflow-hidden z-50 flex"
         style={{ height: "calc(100vh - 4rem)" }}

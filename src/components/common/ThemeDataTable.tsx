@@ -78,9 +78,8 @@ const ThemeDataTable: React.FC<any> = ({
     emptyMessage = "No data available",
     isPaginator = true,
     handleClickOpenPasswordModal,
-    visibleColumns,
-    header,
-    globalFilter,
+    header, visibleColumns,
+    globalFilter, themeDataTableClass,
     globalFilterFields, selectedFilterField = ''
 }) => {
     const dt = useRef(null);
@@ -98,8 +97,7 @@ const ThemeDataTable: React.FC<any> = ({
     };
 
     const renderColumns = () => {
-        return columns
-            .filter((column: any) => visibleColumns[column.field])
+        return columns.filter((column: any) => visibleColumns[column.field])
             .map((column: any) => (
                 <Column
                     key={column.field}
@@ -186,7 +184,7 @@ const ThemeDataTable: React.FC<any> = ({
                     header={null}
                     emptyMessage={emptyMessage}
                     loading={loading}
-                    className="custom-paginator"
+                    className={`custom-paginator ${themeDataTableClass}`}
                     onRowClick={onRowClick}
                     rowClassName={() =>
                         'cursor-pointer hover:!bg-gray-50 active:bg-gray-100 transition duration-200'

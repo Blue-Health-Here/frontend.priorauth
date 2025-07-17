@@ -12,7 +12,7 @@ import CaseAnalysisCard from "./CaseAnalysisCard";
 const PharmacyDashboard = () => {
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-xl text-primary-black font-medium">Dashboard</h1>
+      <h1 className="text-xl text-primary-black font-medium">Analytics</h1>
       <PARequestsSection />
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-12 gap-4">
         <div className="sm:col-span-2 xl:col-span-6">

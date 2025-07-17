@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast";
 import GuestRoute from "./routes/GuestRoute";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Loading from "./components/common/Loading";
+import PrescriberDetails from "./pages/prescribers/details";
 
 // Public
 const Home = lazy(() => import("./pages/Home"));
@@ -53,14 +54,15 @@ function App() {
           {/* Admin Routes */}
           <Route element={<ThemeProvider><ProtectedRoute allowedRoles={["companyAdmin"]} /></ThemeProvider>}>
             <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<Navigate to="dashboard" replace />} />
-              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route index element={<Navigate to="requests" replace />} />
+              <Route path="analytics" element={<AdminDashboard />} />
               <Route path="pharmacies" element={<AdminPharmacies />} />
               <Route path="pharmacies/:pharmacyId/pharmacy-details" element={<PharmacyDetailScreen />} />
               <Route path="pharmacies/add" element={<AddNewPharmacyScreen />} />
               <Route path="requests" element={<PharmacyRequests isAdmin={true} />} />
               <Route path="requests/:id/request-details" element={<PharmacyRequestDetails isAdmin={true} />} />
               <Route path="prescribers" element={<Prescribers isAdmin={true} />} />
+              <Route path="prescribers/:username/prescriber-details" element={<PrescriberDetails isAdmin={true} />} />
               <Route path="settings" element={<AdminSettings />} />
               <Route path="settings/change-password" element={<ChangePasswordPage />} />
               <Route path="settings/user-settings" element={<UserSettingPage />} />
@@ -72,12 +74,12 @@ function App() {
           {/* Pharmacy Routes */}
           <Route element={<ThemeProvider><ProtectedRoute allowedRoles={["pharmacyUser"]} /></ThemeProvider>}>
             <Route path="/pharmacy" element={<PharmacyLayout />}>
-              <Route index element={<Navigate to="dashboard" replace />} />
-              <Route path="dashboard" element={<PharmacyDashboard />} />
+              <Route index element={<Navigate to="requests" replace />} />
+              <Route path="analytics" element={<PharmacyDashboard />} />
               <Route path="requests" element={<PharmacyRequests isAdmin={false} />} />
               <Route path="requests/:id/request-details" element={<PharmacyRequestDetails isAdmin={false} />} />
               <Route path="prescribers" element={<Prescribers isAdmin={false} />} />
-              {/* <Route path="prescribers/:id/prescriber-details" element={<PharmacyRequestDetails isAdmin={false} />} /> */}
+              <Route path="prescribers/:username/prescriber-details" element={<PrescriberDetails isAdmin={false} />} />
               <Route path="cmm-account-database" element={<CMMAccountDatabase />} />
               <Route path="settings" element={<PharmacySettings />} />
             </Route>

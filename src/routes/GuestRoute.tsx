@@ -18,11 +18,11 @@ const GuestRoute = () => {
   }
 
   if (user?.roleCode === "companyAdmin") {
-    return <Navigate to="/admin/dashboard" replace />;
+    return <Navigate to="/admin/requests" replace />;
   }
 
   if (user?.roleCode === "pharmacyUser") {
-    return <Navigate to="/pharmacy/dashboard" replace />;
+    return <Navigate to="/pharmacy/requests" replace />;
   }
 
   return <Outlet />;

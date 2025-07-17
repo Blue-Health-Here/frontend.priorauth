@@ -1,9 +1,10 @@
 import ThemeDataTable from "@/components/common/ThemeDataTable";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import UnlockAccessInfoModal from "./UnlockAccessInfoModal";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import SearchField from "@/components/common/SearchField";
 import { getAvatarInfo } from "@/utils/avatar";
+import useWindowSize from "@/hooks/useWindowSize";
 
 const CMMAccountDatabase = () => {
     const sampleData = [
@@ -162,10 +163,12 @@ const CMMAccountDatabase = () => {
     }), {}));
     const [isChecked, setIsChecked] = useState<boolean>(false);
     const [globalFilter, setGlobalFilter] = useState('');
+    const windowSize = useWindowSize();
+    const isMobile = windowSize.width < 768;
 
     const handleOpenPasswordModal = (event: any) => {
         event.preventDefault();
-        setIsOpenModal(true);
+        setIsOpenModal(true)
     };
 
     const toggleColumn = (columnField: any) => {
@@ -185,44 +188,48 @@ const CMMAccountDatabase = () => {
     };
 
     const header = (
-        <>
-            <div className="flex gap-2 items-center h-12 flex-wrap">
-                <SearchField globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
-                <ToggleColumnsField
-                    clearSelection={clearSelection}
-                    selectAll={selectAll}
-                    setIsChecked={setIsChecked}
-                    isChecked={isChecked}
-                    columns={columns}
-                    visibleColumns={visibleColumns}
-                    toggleColumn={toggleColumn}
-                />
+        <div className="flex flex-col md:flex-row gap-2 md:items-center h-12">
+            <div className="flex gap-2 w-full">
+                <div className={isMobile ? "flex-1 min-w-0" : "flex-grow md:flex-grow-0"}>
+                    <SearchField 
+                        globalFilter={globalFilter} 
+                        setGlobalFilter={setGlobalFilter} 
+                    />
+                </div>
+                <div className={isMobile ? "flex-shrink-0" : ""}>
+                    <ToggleColumnsField
+                        clearSelection={clearSelection}
+                        selectAll={selectAll}
+                        setIsChecked={setIsChecked}
+                        isChecked={isChecked}
+                        columns={columns}
+                        visibleColumns={visibleColumns}
+                        toggleColumn={toggleColumn}
+                        buttonText={isMobile ? "Actions" : "Fields"}
+                    />
+                </div>
             </div>
-        </>
-    )
-
-    useEffect(() => {
-        if (Object.keys(visibleColumns).filter((item) => visibleColumns[item]).length === columns.length) {
-            setIsChecked(true);
-        } else {
-            setIsChecked(false);
-        }
-    }, [visibleColumns]);
+        </div>
+    );
 
     return (
         <div className='bg-primary-white rounded-2xl theme-datatable theme-shadow px-4 py-4'>
             <h2 className='text-xl font-semibold text-primary-black whitespace-nowrap pb-4'>CMM Account Database</h2>
             {isOpenModal && <UnlockAccessInfoModal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)} />}
-            <ThemeDataTable
-                header={header}
-                data={sampleData}
-                columns={columns}
-                searchPlaceholder="Search..."
-                visibleColumns={visibleColumns}
-                globalFilter={globalFilter}
-                setGlobalFilter={setGlobalFilter}
-                handleClickOpenPasswordModal={handleOpenPasswordModal}
-            />
+            <div className={isMobile ? "overflow-x-auto" : ""}>
+                <ThemeDataTable
+                    header={header}
+                    data={sampleData}
+                    columns={columns}
+                    visibleColumns={visibleColumns}
+                    searchPlaceholder="Search..."
+                    globalFilter={globalFilter}
+                    setGlobalFilter={setGlobalFilter}
+                    handleClickOpenPasswordModal={handleOpenPasswordModal}
+                    className={isMobile ? "min-w-[600px]" : ""}
+                    themeDataTableClass={"theme-table"}
+                />
+            </div>
         </div>
     );
 };

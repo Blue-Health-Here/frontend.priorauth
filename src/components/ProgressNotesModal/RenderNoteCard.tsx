@@ -9,9 +9,9 @@ const RenderNoteCard: React.FC<any> = ({ expanded, item, value, handleToggle }) 
                     {value.status}
                 </span>}
             </div>
-            {value.summary && <div className="text-sm md:text-base text-primary-black pb-4">
-                {value.summary || "---"}
-            </div>}
+            <div className="text-sm md:text-base text-primary-black pb-4">
+                {value.summary || "-"}
+            </div>
             <button onClick={() => handleToggle(item)}
                 className="text-secondary-black flex gap-2 bg-secondary-background rounded-md text-xs sm:text-sm cursor-pointer rounded-md px-4 py-2 transition-colors">
                 <span>Reasoning</span>
@@ -19,7 +19,7 @@ const RenderNoteCard: React.FC<any> = ({ expanded, item, value, handleToggle }) 
             </button>
             {expanded === item && (
                 <div className="mt-2 p-3 text-gray-800 text-sm bg-gray-50 rounded-lg border border-light-stroke">
-                    {value.reasoning}
+                    {value.reasoning || "-"}
                 </div>
             )}
         </div>

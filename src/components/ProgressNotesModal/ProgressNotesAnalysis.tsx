@@ -26,12 +26,32 @@ const ProgressNotesAnalysis: React.FC<any> = ({ analysisDetails }) => {
             </div>
 
             <div className="flex flex-col lg:flex-row gap-4">
-                <div className="flex-1 flex flex-col gap-4">
-                    {Object.entries(analysisDetails).filter(([key]) => key !== "magicLines" && key !== "recommendation").map(([key, value], index: number) => (
+                {/* <div className="flex-1 flex flex-col gap-4">
+                    {Object.entries(analysisDetails)
+                        .filter(([key]) => key !== "magicLines" && key !== "recommendation")
+                        .map(([key, value], index: number) => (
                         <RenderNoteCard
                             key={index}
                             item={key}
                             value={value}
+                            handleToggle={handleToggle}
+                            expanded={expanded}
+                        />
+                    ))}
+                </div> */}
+                <div className="flex-1 flex flex-col gap-4">
+                    {[
+                        "diagnosis",
+                        "previousMedications",
+                        "currentMedications",
+                        "treatmentNotes",
+                        "labResults",
+                        "additionalRelevantInformation"
+                    ].map((key, index) => (
+                        <RenderNoteCard
+                            key={index}
+                            item={key}
+                            value={analysisDetails[key]}
                             handleToggle={handleToggle}
                             expanded={expanded}
                         />

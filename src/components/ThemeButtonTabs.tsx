@@ -28,3 +28,9 @@ const ThemeButtonTabs: React.FC<ThemeButtonTabsProps> = ({ data, activeTab, setA
 };
 
 export default ThemeButtonTabs;
+
+
+
+
+
+
