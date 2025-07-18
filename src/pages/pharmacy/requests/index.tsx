@@ -76,7 +76,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
         if (!isAdmin) {
           return <NotesCell note={rowData[field] || "-"} />
         }
-        return <Input type="text" className="w-full" value={rowData[field] || ""}
+        return <Input type="text" className="w-full" placeholder="Add Notes" value={rowData[field] || ""}
           onChange={(e: any) => handleChangeNotes(e.target.value, rowData)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {

@@ -110,6 +110,7 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({ isAdmin, onCheckNotes }
     return (
       <Input
         type="text"
+        placeholder="Add Notes"
         value={item.note || ""}
         onChange={(e) => handleChange(e.target.value, index)}
         onKeyDown={(e) => {
