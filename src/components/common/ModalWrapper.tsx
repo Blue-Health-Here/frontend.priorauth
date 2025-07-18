@@ -2,8 +2,7 @@ import React from "react";
 
 interface ModalWrapperProps {
   children: React.ReactNode;
-   isOpen: boolean;
-   onClose?: () => void;
+  onClose?: () => void;
 }
 
 const ModalWrapper: React.FC<ModalWrapperProps> = ({ children }) => {

@@ -9,12 +9,11 @@ import InputField from "@/components/common/form/InputField";
 import SelectField from "@/components/common/form/SelectField";
 
 interface InviteLinkModalProps {
-    isOpen: boolean;
     onClose: () => void;
     prescribers: Array<{ id: string; name: string }>;
 }
 
-const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ isOpen, onClose, prescribers }) => {
+const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescribers }) => {
     const initialValues = {
         prescriber: "",
         password: "",
@@ -35,37 +34,32 @@ const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ isOpen, onClose, pres
     };
 
     return (
-        <ModalWrapper isOpen={isOpen} onClose={onClose}>
-            <div className="bg-white rounded-lg w-full max-w-[500px] h-[490px] mx-4 sm:w-[358px] md:w-[500px] flex flex-col overflow-hidden">
-                <ModalHeader title="Invite Link" onClose={onClose} />
-                
-                <div className="px-6 pt-4 pb-5 flex flex-col h-full"> {/* Increased bottom padding to pb-5 */}
-                    {/* Password required section */}
-                    <div className="bg-quaternary-navy-blue rounded-lg p-3 mb-6 -mx-2 w-[calc(100%+16px)]">
-                        <div className="flex items-start gap-3">
-                            <img 
-                                src="/pass-required.svg" 
-                                alt="Password required" 
-                                className="w-5 h-5 mt-0.5 flex-shrink-0"
-                            />
-                            <div>
-                                <p className="text-primary-black text-sm font-medium">
-                                    Password required to view the page
-                                </p>
-                                <p className="text-secondary-black text-xs mt-1">
-                                    Users will be required to enter the configured password to access this page by the link
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    
+        <ModalWrapper>
+            <ModalHeader title="Invite Link" onClose={onClose} />
+            <div className="bg-white rounded-lg w-full max-w-[500px] h-[490px] sm:w-[358px] md:w-[500px] flex flex-col overflow-hidden">
+                <div className="flex flex-col gap-4 h-full">
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}
                         onSubmit={handleSubmit}
                     >
                         <Form className="flex flex-col h-full">
-                            <div className="space-y-4 flex-1">
+                            <div className="space-y-4 flex-1 p-4">
+                                <div className="flex items-start gap-3 bg-quaternary-navy-blue rounded-lg p-3">
+                                    <img 
+                                        src="/pass-required.svg" 
+                                        alt="Password required" 
+                                        className="w-5 h-5 mt-0.5 flex-shrink-0"
+                                    />
+                                    <div>
+                                        <p className="text-primary-black text-sm font-medium">
+                                            Password required to view the page
+                                        </p>
+                                        <p className="text-secondary-black text-xs mt-1">
+                                            Users will be required to enter the configured password to access this page by the link
+                                        </p>
+                                    </div>
+                                </div>
                                 {/* Form fields */}
                                 <div className="space-y-2">
                                     <Label className="text-quaternary-white text-sm font-secondary">Prescriber</Label>
@@ -122,11 +116,7 @@ const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ isOpen, onClose, pres
                                 </div>
                             </div>
 
-                            {/* Full-width separator */}
-                            <div className="border-t border-gray-200 mt-5 -mx-6 w-[calc(100%+48px)]"></div>
-
-                            {/* Action buttons with slightly increased bottom space */}
-                            <div className="flex justify-end gap-3 mt-3 mb-4"> {/* Increased to mb-4 */}
+                            <div className="flex justify-end gap-4 border-t border-light-stroke p-4">
                                 <ThemeButton 
                                     onClick={onClose} 
                                     type="button" 

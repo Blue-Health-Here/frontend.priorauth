@@ -152,7 +152,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {isLoading ? (
                     <div className="text-center py-4 w-10 text-gray-500 col-span-full">
                         <Loading />
@@ -170,7 +170,6 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
             {/* Invite Link Modal */}
             {isInviteModalOpen && (
                 <InviteLinkModal 
-                    isOpen={isInviteModalOpen}
                     onClose={() => setIsInviteModalOpen(false)}
                     prescribers={updatedPresData.map(p => ({
                         id: p.id,

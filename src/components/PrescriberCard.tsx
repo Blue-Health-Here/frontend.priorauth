@@ -30,7 +30,7 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin }) => {
         `/pharmacy/prescriber/${prescriber.prescriber.toLowerCase().trim()}/prescriber-details`;
 
     return (
-        <div className="bg-primary-white rounded-lg theme-shadow p-4 relative border-2 border-[#EBEBEB] w-full sm:w-[400px] max-w-full sm:max-w-md">
+        <div className="bg-primary-white rounded-lg theme-shadow p-4 relative border-2 border-[#EBEBEB] w-full max-w-full">
             <div className='flex justify-between items-start mb-4'>
                 <div className='flex gap-4 items-start'>
                     <div className='flex flex-col'>
