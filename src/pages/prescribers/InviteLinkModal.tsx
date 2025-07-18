@@ -36,7 +36,7 @@ const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescribers 
     return (
         <ModalWrapper>
             <ModalHeader title="Invite Link" onClose={onClose} />
-            <div className="bg-white rounded-lg w-full max-w-[500px] h-[490px] sm:w-[358px] md:w-[500px] flex flex-col overflow-hidden">
+            <div className="bg-white rounded-lg w-full max-w-[500px] h-[450px] sm:w-[358px] md:w-[500px] flex flex-col overflow-hidden">
                 <div className="flex flex-col gap-4 h-full">
                     <Formik
                         initialValues={initialValues}

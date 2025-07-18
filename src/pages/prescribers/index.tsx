@@ -63,16 +63,13 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     useEffect(() => {
         const filterValue = globalFilter.toLowerCase();
         const filtered = updatedPresData.filter((item: any) => {
-            if (activeTab === "Active List" && item.isArchived) return false;
-            if (activeTab === "Archives" && !item.isArchived) return false;
-            
             if (typeof item[selectedFilterField] === 'string') {
                 return item[selectedFilterField].toLowerCase().includes(filterValue);
             }
             return false;
         });
         setFilteredPresData(filtered);
-    }, [globalFilter, selectedFilterField, updatedPresData, activeTab]);
+    }, [globalFilter, selectedFilterField, updatedPresData]);
 
     const handleArchiveToggle = (prescriberId: string, archiveStatus: boolean) => {
         setUpdatedPresData(prev => prev.map(item => 
@@ -89,7 +86,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
             <div className="flex flex-col gap-2 pb-4">
                 <div className="flex justify-between items-center">
                     <h1 className="text-xl font-medium tracking-tighter">
-                        {activeTab === "Active List" ? "Prescribers List" : "Prescribers List"}
+                        Prescribers List
                     </h1>
                     <ThemeButton variant="primary" onClick={handleInviteClick}>
                         <span className="hidden md:inline-flex gap-2 items-center text-sm">
@@ -99,7 +96,6 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
                     </ThemeButton>
                 </div>
                 
-                {/* Mobile Header Layout */}
                 <div className="md:hidden flex flex-col gap-3">
                     <div className="flex justify-between items-center gap-2">
                         <SearchField 
@@ -124,7 +120,6 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
                     />
                 </div>
                 
-                {/* Desktop Header Layout */}
                 <div className="hidden md:flex flex-col md:flex-row md:items-center justify-between gap-3 w-full">
                     <div className="flex items-center gap-4">
                         <ThemeButtonTabs
@@ -139,7 +134,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
                         <SearchField 
                             globalFilter={globalFilter}
                             setGlobalFilter={setGlobalFilter}
-                            placeholder={`Search ${activeTab.toLowerCase()} here`}
+                            placeholder="Search prescribers here"
                             className="min-w-[200px]"
                         />
                         <FilterField
@@ -163,11 +158,12 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
                         prescriber={item}
                         isAdmin={isAdmin}
                         onArchiveToggle={handleArchiveToggle}
+                        isArchivedView={activeTab === "Archives"}
+                        showUnarchiveButton={activeTab === "Archives"}
                     />
-                )) : <p className="col-span-full">No {activeTab === "Active List" ? "active" : "archived"} prescribers found.</p>}
+                )) : <p className="col-span-full">No prescribers found.</p>}
             </div>
 
-            {/* Invite Link Modal */}
             {isInviteModalOpen && (
                 <InviteLinkModal 
                     onClose={() => setIsInviteModalOpen(false)}
