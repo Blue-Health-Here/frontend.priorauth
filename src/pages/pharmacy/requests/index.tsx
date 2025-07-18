@@ -18,6 +18,8 @@ import NameBadge from "@/components/NameBadge";
 import NotesCell from "./NotesCell";
 import { FaPlus } from "react-icons/fa6";
 import RequestTitle from "./RequestTitle";
+import { Input } from "@/components/ui/input";
+import toast from "react-hot-toast";
 
 const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
   const columns = [
@@ -70,9 +72,21 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
       filterable: true,
       sortable: true,
       customTemplate: true,
-      render: (rowData: any, field: any) => (
-        <NotesCell note={rowData[field] || "-"} />
-      )
+      render: (rowData: any, field: any) => {
+        if (!isAdmin) {
+          return <NotesCell note={rowData[field] || "-"} />
+        }
+        return <Input type="text" className="w-full" value={rowData[field] || ""}
+          onChange={(e: any) => handleChangeNotes(e.target.value, rowData)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleSubmitNote(rowData);
+            }
+          }}
+          onBlur={() => handleSubmitNote(rowData)}
+        />
+      }
     },
     {
       field: 'lastModified',
@@ -139,7 +153,32 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
   }, [reqsData]);
 
   const handleSubmitStatusChange = async (value: any, rowData: any) => {
-    await updateRequestStatus(dispatch, rowData?.id, { statusId: value.code, paStatus: value.name });
+    try {
+      await updateRequestStatus(dispatch, rowData?.id, {
+        statusId: value.code,
+        paStatus: value.name,
+        notes: null,
+      });
+      await getAllPharmacyReqs(dispatch);
+    } catch (error: any) {
+      toast.error(error?.message);
+    }
+  };
+
+  const handleChangeNotes = (value: any, rowData: any) => {
+    rowData['notes'] = value;
+  };
+
+  const handleSubmitNote = async (data: any) => {
+    if (!data.notes || !data.notes?.trim()) return;
+    try {
+      await updateRequestStatus(dispatch, data?.id, {
+        notes: data.notes
+      }, 'Notes have been added.');
+      await getAllPharmacyReqs(dispatch);
+    } catch (error: any) {
+      toast.error(error?.message);
+    }
   };
 
   const requestStatusTemplate = (rowData: any, field: any) => {
@@ -161,7 +200,6 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
   };
 
   const toggleColumn = (columnField: any) => {
-    console.log(columnField, "Dasdas");
     setVisibleColumns((prev: any) => ({
       ...prev,
       [columnField]: !prev[columnField]
@@ -301,7 +339,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
         setIsModalOpen(false);
         if (isAdded) fetchInitialData();
       }} />}
-      
+
       {mobileSidebarOpen && (
         <div className="fixed inset-0 z-100 md:hidden">
           {/* Overlay */}
@@ -422,9 +460,9 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
             selectedFilterField !== ""
               ? filteredRequests
               : requestsData.sort(
-                  (a: any, b: any) =>
-                    new Date(b.submittedOn).getTime() - new Date(a.submittedOn).getTime()
-                )
+                (a: any, b: any) =>
+                  new Date(b.submittedOn).getTime() - new Date(a.submittedOn).getTime()
+              )
           }
           columns={columns}
           pageSize={10}
