@@ -203,10 +203,10 @@ export const getAllPharmacyReqs = async (dispatch: AppDispatch) => {
     });
 };
 
-export const updateRequestStatus = async (dispatch: AppDispatch, id?: string, data?: any) => {
+export const updateRequestStatus = async (dispatch: AppDispatch, id?: string, data?: any, successMessage = 'Status has been updated successfully!') => {
     return apiHandler(dispatch, 'put', `/pa_request/update/${id}`, {
         data,
-        successMessage: 'Status has been updated successfully!'
+        successMessage: successMessage
     });
 };
 
