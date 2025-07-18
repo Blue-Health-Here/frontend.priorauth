@@ -4,10 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { HiOutlinePhone } from "react-icons/hi2";
 import InfoColumn from "./common/InfoColumn";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { formatPrescriberToUsername } from "@/utils/helper";
-import ThemeButton from "./common/ThemeButton";
 
-const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
+const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -27,22 +25,28 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
-    
-    const pageLink = isAdmin ? `/admin/prescribers/${formatPrescriberToUsername(prescriber.prescriber)}/prescriber-details` : 
-        `/pharmacy/prescribers/${formatPrescriberToUsername(prescriber.prescriber)}/prescriber-details`;
+
+    const pageLink = isAdmin ? `/admin/prescriber/${prescriber.prescriber.toLowerCase().trim()}/prescriber-details` : 
+        `/pharmacy/prescriber/${prescriber.prescriber.toLowerCase().trim()}/prescriber-details`;
 
     return (
-        <div className="bg-primary-white rounded-lg theme-shadow p-4 relative border-2 border-[#EBEBEB] w-full max-w-full sm:max-w-md">
-            <div className='inline-flex justify-between gap-2 items-start mb-4 w-full'>
-                <div className='inline-flex gap-2 flex-col items-start'>
-                    <img
-                        src={prescriber?.pharmacyLogo || '/images/Abstergo Ltd..png'}
-                        alt=""
-                        className="w-9 h-9 sm:w-14 sm:h-14 rounded-lg"
-                    />
-                    <h2 className='text-sm sm:text-base md:text-lg font-semibold text-primary-black leading-[110%] mt-3'>
-                        {prescriber.prescriber}
-                    </h2>
+        <div className="bg-primary-white rounded-lg theme-shadow p-4 relative border-2 border-[#EBEBEB] w-full max-w-full">
+            <div className='flex justify-between items-start mb-4'>
+                <div className='flex gap-4 items-start'>
+                    <div className='flex flex-col'>
+                        <Link to={pageLink}>
+                            <img
+                                src={prescriber?.pharmacyLogo || '/images/Abstergo Ltd..png'}
+                                alt="Prescriber Logo"
+                                className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg"
+                            />
+                        </Link>
+                        <Link to={pageLink}>
+                            <h2 className='text-sm sm:text-base md:text-lg font-semibold text-primary-black leading-[110%] mt-3'>
+                                {prescriber.prescriber}
+                            </h2>
+                        </Link>
+                    </div>
                 </div>
 
                 <div ref={dropdownRef} className='relative'>
@@ -59,7 +63,7 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
                 </div>
             </div>
 
-            {/* Mobile Layout - Single Column */}
+            {/* Mobile Layout */}
             <div className="md:hidden space-y-3">
                 <div className="flex justify-between">
                     <span className="text-sm text-gray-500">Total Requests</span>
@@ -73,9 +77,11 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
                     <span className="text-sm text-gray-500">NPI</span>
                     <span className="text-sm font-medium">{prescriber.npi}</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex flex-col">
                     <span className="text-sm text-gray-500">Address</span>
-                    <span className="text-sm font-medium">{prescriber.prescriberAddress}</span>
+                    <span className="text-sm font-medium break-words">
+                        {prescriber.prescriberAddress}
+                    </span>
                 </div>
                 <div className="flex justify-between">
                     <span className="text-sm text-gray-500">City</span>
@@ -83,7 +89,7 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
                 </div>
             </div>
 
-            {/* Desktop Layout - Two Columns */}
+            {/* Desktop Layout - Modified Grid */}
             <div className="hidden md:grid grid-cols-2 gap-4">
                 <InfoColumn
                     icon={<img src="/requests.svg" alt="Requests" className="w-4 h-4" />}
@@ -113,20 +119,17 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
                 />
             </div>
             
-            {/* Full-width horizontal separator with reduced spacing */}
             <div className="border-t border-[#EBEBEB] mt-4 -mx-4"></div>
             
-            {/* View button with reduced padding and spacing */}
-            <div className="flex justify-end pt-4">
+            <div className="flex justify-end px-4 pt-3">
                 <Link to={pageLink}>
-                    <ThemeButton variant="tertiary">View</ThemeButton>
+                    <button 
+                        className="px-3 py-1 text-[#163066] border border-[#CBDAFF] rounded-lg hover:bg-[#F5F8FF] transition-colors font-medium text-sm" 
+                    >
+                        View
+                    </button>
                 </Link>
             </div>
-            {isDetails && (
-                <ThemeButton variant="secondary">
-                    View Details
-                </ThemeButton>
-            )}
         </div>
     );
 };
