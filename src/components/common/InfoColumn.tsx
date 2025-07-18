@@ -4,11 +4,12 @@ interface InfoColumnProps {
     icon?: React.ReactNode
     label?: string
     data?: string
+    className?: string
 }
 
-const InfoColumn: React.FC<InfoColumnProps> = ({ icon, label, data }) => {
+const InfoColumn: React.FC<InfoColumnProps> = ({ icon, label, data, className }) => {
     return (
-        <div className="flex items-center gap-3">
+        <div className={`flex items-center gap-3 ${className}`}>
             {icon && (
                 <div
                     className="w-6 h-6 rounded-md flex items-center justify-center p-0.5"

@@ -5,7 +5,7 @@ import { HiOutlinePhone } from "react-icons/hi2";
 import InfoColumn from "./common/InfoColumn";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
-const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
+const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -91,42 +91,32 @@ const PrescriberCard: React.FC<any> = ({ prescriber, isAdmin, isDetails }) => {
 
             {/* Desktop Layout - Modified Grid */}
             <div className="hidden md:grid grid-cols-2 gap-4">
-                <div className="space-y-4">
-                    <InfoColumn
-                        icon={<img src="/requests.svg" alt="Requests" className="w-4 h-4" />}
-                        label="Total Requests"
-                        data={prescriber.totalRequests || "N/A"}
-                    />
-                    <InfoColumn
-                        icon={<img src="/npi.svg" alt="NPI" className="w-4 h-4" />}
-                        label="NPI"
-                        data={prescriber.npi}
-                    />
-                </div>
-                <div className="space-y-4">
-                    <InfoColumn
-                        icon={<HiOutlinePhone className="text-secondary-navy-blue" />}
-                        label="Phone"
-                        data={prescriber.prescriberPhone}
-                    />
-                    <InfoColumn
-                        icon={<img src="/city.svg" alt="City" className="w-4 h-4" />}
-                        label="City"
-                        data={prescriber.prescriberCity}
-                    />
-                </div>
-                {/* Full-width Address row */}
-                <div className="col-span-2">
-                    <InfoColumn
-                        icon={<img src="/address.svg" alt="Address" className="w-4 h-4" />}
-                        label="Address"
-                        data={
-                            <span className="block break-words">
-                                {prescriber.prescriberAddress}
-                            </span>
-                        }
-                    />
-                </div>
+                <InfoColumn
+                    icon={<img src="/requests.svg" alt="Requests" className="w-4 h-4" />}
+                    label="Total Requests"
+                    data={prescriber.totalRequests || "N/A"}
+                />
+                <InfoColumn
+                    icon={<img src="/npi.svg" alt="NPI" className="w-4 h-4" />}
+                    label="NPI"
+                    data={prescriber.npi}
+                />
+                <InfoColumn
+                    icon={<HiOutlinePhone className="text-secondary-navy-blue" />}
+                    label="Phone"
+                    data={prescriber.prescriberPhone}
+                />
+                <InfoColumn
+                    icon={<img src="/city.svg" alt="City" className="w-4 h-4" />}
+                    label="City"
+                    data={prescriber.prescriberCity}
+                />
+                <InfoColumn
+                    icon={<img src="/address.svg" alt="Address" className="w-4 h-4" />}
+                    label="Address"
+                    data={prescriber.prescriberAddress}
+                    className="col-span-2"
+                />
             </div>
             
             <div className="border-t border-[#EBEBEB] mt-4 -mx-4"></div>
