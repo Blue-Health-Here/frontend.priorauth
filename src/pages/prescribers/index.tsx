@@ -151,7 +151,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
       </div>
 
       {!isModifying && (
-        <div className="flex flex-col gap-3 mb-6">
+        <div className="flex flex-col gap-3 mb-4">
           {/* Mobile */}
           <div className="md:hidden flex flex-col gap-3">
             <div className="flex justify-between items-center gap-2">
@@ -335,7 +335,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
               />
             ))
           ) : (
-            <div className="col-span-full text-center py-8 text-gray-500">
+            <div className="col-span-full text-left text-gray-500 text-sm">
               No prescribers found
             </div>
           )}
