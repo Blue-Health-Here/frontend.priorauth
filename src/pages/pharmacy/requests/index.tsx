@@ -1,11 +1,11 @@
 import ThemeDataTable from "@/components/common/ThemeDataTable";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import FilterField from "@/components/common/FilterField";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import ThemeButton from "@/components/common/ThemeButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import AddRequestModal from "./AddRequestModal";
-import { getAllPharmacyReqs, getAllReqStatuses, updateRequestStatus } from "@/services/pharmacyService";
+import { getAllPharmacyReqs, getAllReqStatuses, updateRequestNotes, updateRequestStatus } from "@/services/pharmacyService";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { filterRequestsByStatus, formatPrescriberToUsername, getStatusClass, groupByField, transformPharmacyRequest } from "@/utils/helper";
@@ -22,7 +22,11 @@ import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
 
 const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
-  const columns = [
+  const { reqStatusesData } = useSelector((state: RootState) => state.reqStatuses);
+  const { reqsData } = useSelector((state: RootState) => state.pharmacyReqs);
+  const [requestsData, setRequestsData] = useState<any>([]);
+  
+  const columns = useMemo(() => [
     {
       field: 'patient',
       header: 'Name',
@@ -73,19 +77,18 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
       sortable: true,
       customTemplate: true,
       render: (rowData: any, field: any) => {
-        if (!isAdmin) {
-          return <NotesCell note={rowData[field] || "-"} />
+        if (rowData.isEditing) {
+          return (
+            <Input
+              type="text"
+              className="w-full"
+              value={rowData[field] || ""}
+              onKeyDown={(e) => handleKeyDown(e, rowData)}
+              onChange={(e) => handleChangeNotes(e.target.value, rowData)}
+            />
+          );
         }
-        return <Input type="text" className="w-full" placeholder="Add Notes" value={rowData[field] || ""}
-          onChange={(e: any) => handleChangeNotes(e.target.value, rowData)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              handleSubmitNote(rowData);
-            }
-          }}
-          onBlur={() => handleSubmitNote(rowData)}
-        />
+        return <NotesCell note={rowData[field] || "-"} handleEditNote={(e: any) => handleEditNote(e, rowData)} />;
       }
     },
     {
@@ -95,10 +98,8 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
       filterable: true,
       sortable: true
     }
-  ];
-  const { reqStatusesData } = useSelector((state: RootState) => state.reqStatuses);
-  const { reqsData } = useSelector((state: RootState) => state.pharmacyReqs);
-  const [requestsData, setRequestsData] = useState<any>([]);
+  ], [requestsData]);
+
   const [visibleColumns, setVisibleColumns] = useState(columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: col.visible !== false }), {}));
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [globalFilter, setGlobalFilter] = useState('');
@@ -145,8 +146,9 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
         const prescriberUsername = formatPrescriberToUsername(item.prescriber || "");
         return prescriberUsername === prescriber;
       }) : reqsData;
-      setRequestsData(filteredData.map((item: any) => ({ ...transformPharmacyRequest(item) })))
-      setFilteredStatuses(reqsData.map((item: any) => ({
+      const updatedArr = filteredData.map((item: any) => transformPharmacyRequest(item));
+      setRequestsData(updatedArr);
+      setFilteredStatuses(filteredData.map((item: any) => ({
         id: item.request_status, name: item.paStatus, statusClass: getStatusClass(item.paStatus)
       })))
     }
@@ -165,19 +167,57 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
     }
   };
 
-  const handleChangeNotes = (value: any, rowData: any) => {
-    rowData['notes'] = value;
+  const handleChangeNotes = (value: string, rowData: any) => {
+    const updatedRequests = requestsData.map((item: any) => {
+      if (item.id === rowData.id) {
+        return {
+          ...item,
+          notes: value,
+        };
+      }
+      return item;
+    });
+  
+    setRequestsData(updatedRequests);
+  };
+
+  const handleEditNote = (e: any, rowData: any) => {
+    e?.preventDefault();
+  
+    const updatedRequests = requestsData.map((item: any) => {
+      if (item.id === rowData.id) {
+        return {
+          ...item,
+          isEditing: true,
+        };
+      }
+      return item;
+    });
+  
+    setRequestsData(updatedRequests);
   };
 
   const handleSubmitNote = async (data: any) => {
-    if (!data.notes || !data.notes?.trim()) return;
+    if (!data.notes || !data.notes.trim()) return;
+  
     try {
-      await updateRequestStatus(dispatch, data?.id, {
-        notes: data.notes
-      }, 'Notes have been added.');
+      await updateRequestNotes(dispatch, data.id, { notes: data.notes });
       await getAllPharmacyReqs(dispatch);
+  
+      setRequestsData((prevData: any[]) =>
+        prevData.map((item: any) =>
+          item.id === data.id ? { ...item, isEditing: false } : item
+        )
+      );
     } catch (error: any) {
       toast.error(error?.message);
+    }
+  };
+  
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>, item: any) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      await handleSubmitNote(item);
     }
   };
 
