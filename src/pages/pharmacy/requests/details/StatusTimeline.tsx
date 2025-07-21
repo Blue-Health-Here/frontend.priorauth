@@ -1,46 +1,128 @@
+import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 import { FiFileText } from "react-icons/fi";
+import { FaPlus } from "react-icons/fa6";
+
 import ThemeButton from "@/components/common/ThemeButton";
-import React, { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
 import { formatDateTime, getStatusClass } from "@/utils/helper";
+import { getRequestStatuses, updateRequestStatus } from "@/services/pharmacyService";
 
 interface StatusTimelineProps {
-  currentStatus: any;
-  previousStatuses: any[];
+  isAdmin?: boolean;
   onCheckNotes?: () => void;
 }
 
-const StatusTimeline: React.FC<StatusTimelineProps> = ({
-  currentStatus,
-  previousStatuses,
-  onCheckNotes
-}) => {
-  const [statusItems, setStatusItems] = useState<any>([]);
+const StatusTimeline: React.FC<StatusTimelineProps> = ({ isAdmin, onCheckNotes }) => {
+  const [statusItems, setStatusItems] = useState<any[]>([]);
+  const dispatch = useDispatch();
+  const { id: reqId } = useParams();
+  const isFetchedReqStatuses = useRef(false);
+
   useEffect(() => {
-    if (currentStatus) {
-      const sortedPreviousStatuses = [...previousStatuses].sort(
+    if (!isFetchedReqStatuses.current) {
+      fetchData();
+      isFetchedReqStatuses.current = true;
+    }
+  }, [dispatch, reqId]);
+
+  const fetchData = async () => {
+    const response = await getRequestStatuses(dispatch, reqId);
+    if (response?.currentStatus) {
+      const current = response.currentStatus;
+      const previous = [...response.previousStatuses].sort(
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
 
-      setStatusItems([
+      const allStatuses = [
         {
-          title: currentStatus.name,
-          date: formatDateTime(currentStatus.date),
+          ...current,
+          date: formatDateTime(current.date),
           isActive: true,
-          note: "", // optionally add current note
-          statusClass: getStatusClass(currentStatus.name),
+          note: current.notes,
+          statusClass: getStatusClass(current.name),
+          showNotesButton: !!current.notes
         },
-        ...sortedPreviousStatuses.map((status: any) => ({
-          title: status.name,
-          date: formatDateTime(status.date),
+        ...previous.map((s: any) => ({
+          ...s,
+          date: formatDateTime(s.date),
           isActive: false,
-          note: "", // optionally populate if API supports notes
-          statusClass: getStatusClass(status.name),
-        })),
-      ]);
+          note: s.notes,
+          statusClass: getStatusClass(s.name),
+          showNotesButton: !!s.notes
+        }))
+      ];
+
+      setStatusItems(allStatuses);
     } else {
       setStatusItems([]);
     }
-  }, [currentStatus, previousStatuses]);
+  };
+
+  const handleAddNotes = (index: number) => {
+    const updated = [...statusItems];
+    updated[index].showNotesButton = true;
+    setStatusItems(updated);
+  };
+
+  const handleChange = (value: string, index: number) => {
+    const updated = [...statusItems];
+    updated[index].note = value;
+    setStatusItems(updated);
+  };
+
+  const handleSubmitNote = async (item: any, index: number) => {
+    if (!item.note?.trim()) return;
+
+    try {
+      await updateRequestStatus(dispatch, reqId, { notes: item.note }, "Notes have been added.");
+      const updated = [...statusItems];
+      updated[index].showNotesButton = false;
+      setStatusItems(updated);
+    } catch (error: any) {
+      toast.error(error?.message);
+    }
+  };
+
+  const renderNoteSection = (item: any, index: number) => {
+    if (!isAdmin && !item.note) {
+      return <p>-</p>;
+    }
+
+    if (item.note) {
+      return <p className="text-tertiary-black text-md mt-2 italic">{item.note}</p>;
+    }
+
+    if (!item.showNotesButton) {
+      return (
+        <ThemeButton
+          onClick={() => handleAddNotes(index)}
+          variant="secondary"
+          className="!py-2 !px-3 !text-xs"
+        >
+          Add Notes <FaPlus />
+        </ThemeButton>
+      );
+    }
+
+    return (
+      <Input
+        type="text"
+        placeholder="Add Notes"
+        value={item.note || ""}
+        onChange={(e) => handleChange(e.target.value, index)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            handleSubmitNote(item, index);
+          }
+        }}
+        onBlur={() => handleSubmitNote(item, index)}
+      />
+    );
+  };
 
   return (
     <div className="p-4 flex items-center justify-center flex-col gap-4">
@@ -49,26 +131,27 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
           <div className="max-h-[260px] overflow-auto w-full">
             <div className="relative flex flex-col gap-4 w-full">
               <div className="absolute left-2.5 top-0 bottom-0 w-1.5 bg-gray-200"></div>
-              {statusItems.map((item: any, index: any) => (
+
+              {statusItems.map((item, index) => (
                 <div
                   key={index}
                   className={`relative flex items-center gap-4 ${item.isActive
-                    ? "border border-dashed border-blue-navigation-link-button rounded-xl opacity-100"
-                    : "opacity-50"
+                      ? "border border-dashed border-blue-navigation-link-button rounded-xl opacity-100"
+                      : "opacity-50"
                     }`}
                 >
-                  <div className="p-1 bg-white rounded-full inline-flex justify-center items-center ml-1">
-                    <div className="relative z-10 w-2.5 h-2.5 rounded-full flex-shrink-0 p-1">
+                  <div className="p-1 bg-white rounded-full ml-1">
+                    <div className="relative z-10 w-2.5 h-2.5 rounded-full">
                       <div className="absolute inset-0 rounded-full bg-blue-500"></div>
                     </div>
                   </div>
 
-                  <div className="p-2 w-full">
+                  <div className="p-2 w-full flex flex-col gap-2 items-start">
                     <div className="flex justify-between items-center gap-4 w-full">
                       <span
                         className={`px-4 py-1 rounded-full line-clamp-1 text-xs sm:text-sm lg:text-base font-medium ${item.statusClass}`}
                       >
-                        {item.title}
+                        {item.name}
                       </span>
                       {item.date && (
                         <span className="text-quaternary-white text-sm whitespace-nowrap">
@@ -77,11 +160,7 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
                       )}
                     </div>
 
-                    {item.note && (
-                      <p className="text-tertiary-black text-md mt-2 italic">
-                        {item.note}
-                      </p>
-                    )}
+                    {renderNoteSection(item, index)}
                   </div>
                 </div>
               ))}
@@ -94,8 +173,7 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
             onClick={onCheckNotes}
           >
             <span className="flex gap-2 items-center">
-              Check Notes
-              <FiFileText />
+              Check Notes <FiFileText />
             </span>
           </ThemeButton>
         </>

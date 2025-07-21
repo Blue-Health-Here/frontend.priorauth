@@ -1,9 +1,9 @@
 import React from "react";
 
 interface PharmacyToolTipDropdownProps {
-  isArchived: boolean;
-  onArchiveToggle: (status: boolean) => void;
-  onModify: () => void;
+  onModify?: () => void;
+  isArchived?: boolean;
+  onArchiveToggle?: (status: boolean) => void;
 }
 
 const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({ 
@@ -16,7 +16,7 @@ const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({
       {/* Modify Option */}
       <button
         className="group flex w-full items-center gap-x-1.5 px-3 py-2 cursor-pointer transition font-secondary text-secondary-black hover:bg-gray-50"
-        onClick={onModify}
+        onClick={() => onModify && onModify()}
       >
         <img src="/modify.svg" alt="modify icon" className="w-4 h-4" />
         <span className="text-xs md:text-sm">Modify</span>
@@ -25,10 +25,10 @@ const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({
       {/* Archive/Unarchive Option */}
       <button
         className="group flex items-center w-full gap-x-1.5 px-3 py-2 text-sm cursor-pointer transition hover:bg-gray-50"
-        onClick={() => onArchiveToggle(!isArchived)}
+        onClick={() => onArchiveToggle && onArchiveToggle(!isArchived)}
       >
         <img 
-          src={isArchived ? "/unarchive.svg" : "/archive.svg"} 
+          src={isArchived ? "/archive.svg" : "/archive.svg"} 
           alt={isArchived ? "unarchive icon" : "archive icon"} 
           className="w-4 h-4" 
         />

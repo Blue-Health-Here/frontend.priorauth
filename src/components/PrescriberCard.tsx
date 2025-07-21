@@ -80,8 +80,8 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
           {isDropdownOpen && (
             <PharmacyToolTipDropdown 
               isArchived={prescriber.isArchived}
-              onArchiveToggle={(status) => onArchiveToggle(prescriber.id, status)}
               onModify={onModify}
+              onArchiveToggle={(status) => onArchiveToggle(prescriber.prescriber, status)}
             />
           )}
         </div>
@@ -154,7 +154,7 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
           <ThemeButton 
             variant="primary" 
             className="bg-primary-navy-blue text-primary-white"
-            onClick={() => onArchiveToggle(prescriber.id, false)}
+            onClick={() => onArchiveToggle(prescriber.prescriber, false)}
           >
             Unarchive
           </ThemeButton>

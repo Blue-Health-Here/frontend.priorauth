@@ -3,7 +3,7 @@ import PrescriberCard from "@/components/PrescriberCard";
 import { getAllUserPrescribers } from "@/services/adminService";
 import { getAllPrescribers } from "@/services/pharmacyService";
 import { RootState } from "@/store";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SearchField from "@/components/common/SearchField";
 import ThemeButtonTabs from "@/components/ThemeButtonTabs";
@@ -15,21 +15,21 @@ import * as Yup from "yup";
 import FormField from "./FormField";
 
 const Prescribers: React.FC<any> = ({ isAdmin }) => {
-  const { prescribersData } = useSelector(
-    (state: RootState) => state.prescribers
-  );
-  const isFetchedPrescribers = useRef(false);
-  const dispatch = useDispatch();
-  const { user } = useSelector((state: RootState) => state.auth);
-  const [isLoading, setIsLoading] = useState(false);
-  const [updatedPresData, setUpdatedPresData] = useState<any[]>([]);
-  const [filteredPresData, setFilteredPresData] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState("Active List");
-  const [globalFilter, setGlobalFilter] = useState("");
-  const [selectedFilterField, setSelectedFilterField] = useState("prescriber");
-  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [selectedPrescriber, setSelectedPrescriber] = useState<any>(null);
   const [isModifying, setIsModifying] = useState(false);
+  const { prescribersData } = useSelector((state: RootState) => state.prescribers);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+  const isFetchedPrescribers = useRef(false);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [updatedPresData, setUpdatedPresData] = useState<any[]>([]);
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [selectedFilterField, setSelectedFilterField] = useState("prescriber");
+  const [activeTab, setActiveTab] = useState("Active List");
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+
+  const isArchiveTab = activeTab === "Archives";
 
   const filterOptions = [
     { field: "prescriber", filterable: true, header: "Name" },
@@ -40,13 +40,9 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
 
   const fetchAllPrescribers = async () => {
     setIsLoading(true);
-    if (isAdmin) {
-      await getAllUserPrescribers(dispatch).then(() => setIsLoading(false));
-    } else {
-      await getAllPrescribers(dispatch, user?.id).then(() =>
-        setIsLoading(false)
-      );
-    }
+    const fetchFn = isAdmin ? getAllUserPrescribers : () => getAllPrescribers(dispatch, user?.id);
+    await fetchFn(dispatch);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -57,7 +53,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   }, []);
 
   useEffect(() => {
-    const transformedData = prescribersData.map((item: any) => ({
+    const transformed = prescribersData.map((item: any) => ({
       ...item,
       prescriber: item.prescriber || `${item.firstName} ${item.lastName}`,
       prescriberPhone: item.prescriberPhone || item.phone,
@@ -65,35 +61,39 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
       prescriberCity: item.prescriberCity || item.city,
       isArchived: item.isArchived || false,
     }));
-    setUpdatedPresData(transformedData);
-    setFilteredPresData(transformedData);
+    setUpdatedPresData(transformed);
   }, [prescribersData]);
 
-  useEffect(() => {
+  const filteredPresData = useMemo(() => {
     const filterValue = globalFilter.toLowerCase();
-    const filtered = updatedPresData.filter((item: any) => {
-      if (typeof item[selectedFilterField] === "string") {
-        return item[selectedFilterField].toLowerCase().includes(filterValue);
-      }
-      return false;
+    return updatedPresData.filter((item) => {
+      const value = item[selectedFilterField];
+      return typeof value === "string" && value.toLowerCase().includes(filterValue);
     });
-    setFilteredPresData(filtered);
-  }, [globalFilter, selectedFilterField, updatedPresData]);
+  }, [updatedPresData, globalFilter, selectedFilterField]);
 
-  const handleArchiveToggle = (
-    prescriberId: string,
-    archiveStatus: boolean
-  ) => {
-    setUpdatedPresData((prev) =>
-      prev.map((item) =>
-        item.id === prescriberId ? { ...item, isArchived: archiveStatus } : item
-      )
-    );
+  const displayedPrescribers = useMemo(() => {
+    return filteredPresData.filter(item => item.isArchived === isArchiveTab);
+  }, [filteredPresData, isArchiveTab]);
+
+  const handleArchiveToggle = (name: string, archiveStatus: boolean) => {
+    setUpdatedPresData(prev => {
+      const updated = [...prev];
+      const index = updated.findIndex(item => item.prescriber === name);
+      if (index !== -1) {
+        updated[index] = { ...updated[index], isArchived: archiveStatus };
+      }
+      return updated;
+    });
   };
 
-  const handleInviteClick = () => {
-    setIsInviteModalOpen(true);
-  };
+  const handleInviteClick = () => setIsInviteModalOpen(true);
+
+  // const handleTab = (value: string) => setActiveTab(value);
+
+  // const handleInviteClick = () => {
+  //   setIsInviteModalOpen(true);
+  // };
 
   const handleModifyPrescriber = (prescriber: any) => {
     setSelectedPrescriber(prescriber);
@@ -323,8 +323,8 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
             <div className="col-span-full flex justify-center py-8">
               <Loading />
             </div>
-          ) : filteredPresData.length > 0 ? (
-            filteredPresData.map((item) => (
+          ) : displayedPrescribers.length > 0 ? (
+            displayedPrescribers.map((item) => (
               <PrescriberCard
                 key={item.id}
                 prescriber={item}
