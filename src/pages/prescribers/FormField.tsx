@@ -2,8 +2,9 @@
 import InputField from '@/components/common/form/InputField';
 import { Label } from '@/components/common/Label';
 import PropTypes from 'prop-types';
+import React from 'react';
 
-const FormField = ({ 
+const FormField: React.FC<any> = ({ 
   iconSrc, 
   iconAlt, 
   label, 
