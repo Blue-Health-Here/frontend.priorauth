@@ -21,14 +21,15 @@ interface PrescriberCardProps {
   isAdmin: boolean;
   onArchiveToggle: (id: string, status: boolean) => void;
   showUnarchiveButton: boolean;
-  isArchivedView?: boolean; 
+  onModify: () => void;
 }
 
 const PrescriberCard: React.FC<PrescriberCardProps> = ({ 
   prescriber, 
   isAdmin, 
   onArchiveToggle,
-  showUnarchiveButton 
+  showUnarchiveButton,
+  onModify
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -79,6 +80,7 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
           {isDropdownOpen && (
             <PharmacyToolTipDropdown 
               isArchived={prescriber.isArchived}
+              onModify={onModify}
               onArchiveToggle={(status) => onArchiveToggle(prescriber.prescriber, status)}
             />
           )}
