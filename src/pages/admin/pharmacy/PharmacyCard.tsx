@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PharmacyCardProps } from '../../../utils/types';
 import { Link } from 'react-router-dom';
-import PharmacyToolTipDropdown from '../../../components/common/PharmacyToolTipDropdown';
+import PharmacyToolTipDropdown from '@/components/common/PharmacyToolTipDropdown';
 
 const PharmacyCard: React.FC<PharmacyCardProps> = ({ pharmacy }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);

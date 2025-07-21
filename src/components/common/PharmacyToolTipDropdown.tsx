@@ -2,8 +2,8 @@ import { NavLink } from "react-router-dom";
 import React from "react";
 
 interface PharmacyToolTipDropdownProps {
-  isArchived: boolean;
-  onArchiveToggle: (status: boolean) => void;
+  isArchived?: boolean;
+  onArchiveToggle?: (status: boolean) => void;
 }
 
 const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({ 
@@ -28,7 +28,7 @@ const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({
 
       <button
         className="group flex items-center w-full gap-x-1.5 px-3 py-2 text-sm cursor-pointer transition hover:bg-gray-50"
-        onClick={() => onArchiveToggle(!isArchived)}
+        onClick={() => onArchiveToggle && onArchiveToggle(!isArchived)}
       >
         <img 
           src={isArchived ? "/unarchive.svg" : "/archive.svg"} 
