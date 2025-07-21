@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import { FiFileText } from "react-icons/fi";
+import { FiEdit, FiFileText } from "react-icons/fi";
 import { FaPlus } from "react-icons/fa6";
 
 import ThemeButton from "@/components/common/ThemeButton";
 import { Input } from "@/components/ui/input";
 import { formatDateTime, getStatusClass } from "@/utils/helper";
-import { getRequestStatuses, updateRequestStatus } from "@/services/pharmacyService";
+import { getRequestStatuses, updateRequestNotes } from "@/services/pharmacyService";
 
 interface StatusTimelineProps {
   isAdmin?: boolean;
@@ -43,7 +43,8 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({ isAdmin, onCheckNotes }
           isActive: true,
           note: current.notes,
           statusClass: getStatusClass(current.name),
-          showNotesButton: !!current.notes
+          showNotesButton: !(current.notes && current.notes.trim() !== ""),
+          isEditing: false
         },
         ...previous.map((s: any) => ({
           ...s,
@@ -51,7 +52,8 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({ isAdmin, onCheckNotes }
           isActive: false,
           note: s.notes,
           statusClass: getStatusClass(s.name),
-          showNotesButton: !!s.notes
+          showNotesButton: !(s.notes && s.notes.trim() !== ""),
+          isEditing: false
         }))
       ];
 
@@ -63,7 +65,8 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({ isAdmin, onCheckNotes }
 
   const handleAddNotes = (index: number) => {
     const updated = [...statusItems];
-    updated[index].showNotesButton = true;
+    updated[index].isEditing = true;
+    updated[index].showNotesButton = false;
     setStatusItems(updated);
   };
 
@@ -75,10 +78,10 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({ isAdmin, onCheckNotes }
 
   const handleSubmitNote = async (item: any, index: number) => {
     if (!item.note?.trim()) return;
-
     try {
-      await updateRequestStatus(dispatch, reqId, { notes: item.note }, "Notes have been added.");
+      await updateRequestNotes(dispatch, reqId, { notes: item.note, id: item.id });
       const updated = [...statusItems];
+      updated[index].isEditing = false;
       updated[index].showNotesButton = false;
       setStatusItems(updated);
     } catch (error: any) {
@@ -86,16 +89,46 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({ isAdmin, onCheckNotes }
     }
   };
 
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>, item: any, index: any) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      await handleSubmitNote(item, index);
+    }
+  };
+
+  const handleBlur = async (item: any, index: any) => {
+    await handleSubmitNote(item, index);
+  };
+
   const renderNoteSection = (item: any, index: number) => {
     if (!isAdmin && !item.note) {
       return <p>-</p>;
     }
 
-    if (item.note) {
-      return <p className="text-tertiary-black text-md mt-2 italic">{item.note}</p>;
+    // Show input field if currently editing
+    if (item.isEditing) {
+      return (
+        <Input
+          type="text"
+          placeholder="Add Notes"
+          value={item.note || ""}
+          onKeyDown={(e) => handleKeyDown(e, item, index)}
+          onBlur={() => handleBlur(item, index)}
+          onChange={(e) => handleChange(e.target.value, index)}
+        />
+      );
     }
 
-    if (!item.showNotesButton) {
+    // Show saved note if exists
+    if (item.note && !item.isEditing) {
+      return <p className="text-tertiary-black text-md italic inline-flex justify-between gap-4 items-center">
+        {item.note}
+        <FiEdit className="cursor-pointer" onClick={() => handleAddNotes(index)} />
+      </p>;
+    }
+
+    // If no note, and showNotesButton is true, show Add Notes button
+    if (item.showNotesButton) {
       return (
         <ThemeButton
           onClick={() => handleAddNotes(index)}
@@ -107,21 +140,7 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({ isAdmin, onCheckNotes }
       );
     }
 
-    return (
-      <Input
-        type="text"
-        placeholder="Add Notes"
-        value={item.note || ""}
-        onChange={(e) => handleChange(e.target.value, index)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            handleSubmitNote(item, index);
-          }
-        }}
-        onBlur={() => handleSubmitNote(item, index)}
-      />
-    );
+    return null;
   };
 
   return (
@@ -136,8 +155,8 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({ isAdmin, onCheckNotes }
                 <div
                   key={index}
                   className={`relative flex items-center gap-4 ${item.isActive
-                      ? "border border-dashed border-blue-navigation-link-button rounded-xl opacity-100"
-                      : "opacity-50"
+                    ? "border border-dashed border-blue-navigation-link-button rounded-xl opacity-100"
+                    : "opacity-50"
                     }`}
                 >
                   <div className="p-1 bg-white rounded-full ml-1">

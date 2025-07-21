@@ -4,12 +4,14 @@ type Props = {
     content: React.ReactNode;
     placement?: "top" | "bottom";
     children: React.ReactNode;
+    handleEdit?: any
 };
 
 export const Tooltip: React.FC<Props> = ({
     content,
     placement = "bottom",
     children,
+    handleEdit
 }) => {
     const [open, setOpen] = useState(false);
     const id = useRef(`tooltip-${Math.random().toString(36).slice(2, 9)}`);
@@ -23,6 +25,7 @@ export const Tooltip: React.FC<Props> = ({
             onBlur={() => setOpen(false)}
             onTouchStart={() => setOpen(!open)} // Toggle on tap for mobile
             aria-describedby={id.current}
+            onClick={handleEdit}
         >
             {children}
 

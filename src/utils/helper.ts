@@ -377,9 +377,10 @@ export function transformPharmacyRequest(data: any) {
     submittedOn: data.createdAt?.split("T")[0] || '-', // Extract just the date
     request_status: data.statusId || '',
     statusName: data?.paStatus || '',
-    notes: data?.notes,
+    notes: data?.notes || null,
     lastModified: formatDateTime(data.createdAt), // Custom date formatting below
-    statusClass: getStatusClass(data.statusId) // Assume you have this function elsewhere
+    statusClass: getStatusClass(data.statusId), // Assume you have this function elsewhere
+    isEditing: data?.notes ? false : true
   };
 }
 

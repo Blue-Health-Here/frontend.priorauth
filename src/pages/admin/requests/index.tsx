@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react'
 import DataTable from '../../../components/common/DataTable'
 import { requestsDumyLargeData } from '../../../utils/constants'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../../../store'
+import { useDispatch } from 'react-redux'
+// import { RootState } from '../../../store'
 import { fetchAllRequests } from '../../../services/adminService'
 import RequestTableHeader from '../../../components/common/RequestTableHeader'
 
 const AdminRequests: React.FC = () => {
-    const { reqsData } = useSelector((state: RootState) => state.adminReqs);
+    // const { reqsData } = useSelector((state: RootState) => state.adminReqs);
     const isReqsFetched = useRef(false);
     const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ const AdminRequests: React.FC = () => {
         }
     }, []);
 
-    console.log(reqsData);
+    // console.log(reqsData);
     return (
         <>
             <DataTable

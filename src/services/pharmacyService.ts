@@ -253,6 +253,13 @@ export const deleteReqUploadedFile = async (dispatch: AppDispatch, reqId?: strin
     return apiHandler(dispatch, 'delete', `/pa_request/delete/${reqId}/file/${id}`, {});
 };
 
+export const updateRequestNotes = async (dispatch: AppDispatch, id?: string, data?: any) => {
+    return apiHandler(dispatch, 'patch', `/status-history/update/${id}`, {
+        data,
+        successMessage: "Notes have been added."
+    });
+};
+
 // ============= Get All Prescribers  =============
 
 export const getAllPrescribers = async (dispatch: AppDispatch, id?: string) => {
