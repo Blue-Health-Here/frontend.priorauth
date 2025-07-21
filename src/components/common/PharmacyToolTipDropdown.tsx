@@ -31,7 +31,7 @@ const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({
         onClick={() => onArchiveToggle && onArchiveToggle(!isArchived)}
       >
         <img 
-          src={isArchived ? "/unarchive.svg" : "/archive.svg"} 
+          src={isArchived ? "/archive.svg" : "/archive.svg"} 
           alt={isArchived ? "unarchive icon" : "archive icon"} 
           className="w-4 h-4" 
         />
