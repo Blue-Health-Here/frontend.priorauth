@@ -22,24 +22,6 @@ import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
 
 const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
-  // const columns = [
-  //   {
-  //     field: 'notes',
-  //     header: 'Notes',
-  //     visible: true,
-  //     filterable: true,
-  //     sortable: true,
-  //     customTemplate: true,
-  //     render: (rowData: any, field: any) => {
-  //       if (rowData[field] === null && rowData.isEditing) {
-  //         return <Input type="text" className="w-full" value={rowData[field] || ""}
-  //           onKeyDown={(e) => handleKeyDown(e, rowData)}
-  //           onChange={(e: any) => handleChangeNotes(e.target.value, rowData)} />
-  //       }
-  //       return <NotesCell note={rowData[field] || "-"} handleEditNote={(e: any) => handleEditNote(e, rowData)} />
-  //     }
-  //   },
-  // ];
   const { reqStatusesData } = useSelector((state: RootState) => state.reqStatuses);
   const { reqsData } = useSelector((state: RootState) => state.pharmacyReqs);
   const [requestsData, setRequestsData] = useState<any>([]);
