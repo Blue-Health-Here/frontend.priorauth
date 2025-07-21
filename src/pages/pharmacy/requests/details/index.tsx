@@ -19,7 +19,6 @@ import { RootState } from "@/store";
 import toast from "react-hot-toast";
 
 const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
-  const [statuses, setReqStatuses] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -36,11 +35,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-
-      const [detailsRes, statusesRes] = await Promise.all([
-        getRequestDetails(dispatch, reqId),
-        getRequestStatuses(dispatch, reqId),
-      ]);
+      const detailsRes = await getRequestDetails(dispatch, reqId);
 
       if (detailsRes) {
         setRequestDetails(detailsRes);
@@ -49,9 +44,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
         setRequestDetails(null);
         setUploadedFiles([]);
       }
-      // console.log(statusesRes, "statusesRes");
-      setReqStatuses(statusesRes);
-      localStorage.setItem("pharmacyRequestStatuses", JSON.stringify(statuses));
+      
       setIsLoading(false);
     };
 
@@ -247,8 +240,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                 <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
                   <CardHeader title="Status" />
                   <StatusTimeline
-                    currentStatus={statuses ? statuses.currentStatus : null}
-                    previousStatuses={statuses ? statuses.previousStatuses : []}
+                    isAdmin={isAdmin}
                     onCheckNotes={handleCheckNotes}
                   />
                 </div>
