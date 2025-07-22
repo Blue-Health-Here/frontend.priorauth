@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setRequestComments } from "@/store/features/pharmacy/requests/requestsSlice";
 import { RootState } from "@/store";
 
-const InfoDetails: React.FC<any> = ({ requestDetails }) => {
+const InfoDetails: React.FC<any> = ({ requestDetails, isAdmin }) => {
     const [details, setDetails] = useState<any>([]);
     const dispatch = useDispatch();
     const { reqComments } = useSelector((state: RootState) => state.pharmacyReqs);
@@ -73,7 +73,7 @@ const InfoDetails: React.FC<any> = ({ requestDetails }) => {
                 {createRequestInfoTabs()}
             </Accordion>
             
-            <CommentsSection initialComments={reqComments} onChange={handleChange} />
+            <CommentsSection initialComments={reqComments} onChange={handleChange} isAdmin={isAdmin} />
         </div>
     )
 };

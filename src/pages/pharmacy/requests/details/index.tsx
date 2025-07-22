@@ -31,7 +31,19 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   const { id: reqId } = useParams();
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [comments, setComments] = useState<any[]>(reqComments);
-  const [isLoadingForUploadFiles, setIsLoadingForUploadFiles] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log(isDrawerOpen, "isDrawerOpen");
+    if (isDrawerOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isDrawerOpen]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,7 +57,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
         setRequestDetails(null);
         setUploadedFiles([]);
       }
-      
+
       setIsLoading(false);
     };
 
@@ -94,7 +106,6 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   }, [loadPdfJs]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsLoadingForUploadFiles(true);
     if (e.target.files && e.target.files.length > 0) {
       const fileArray = Array.from(e.target.files);
       try {
@@ -114,12 +125,9 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
         }
       } catch (error: any) {
         setUploadedFiles([]);
-      } finally {
-        setIsLoadingForUploadFiles(false);
       }
     }
   };
-  console.log(isLoadingForUploadFiles, "isLoadingForUploadFiles");
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -206,7 +214,18 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     setIsDrawerOpen(true);
   };
 
-  // console.log(requestDetails, uploadedFiles, "requestDetails")
+  useEffect(() => {
+    if (isDrawerOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isDrawerOpen]);
+
   return (
     <>
       <ProgressNotesModal isOpen={isModalOpen} onClose={(isAdded?: boolean) => {
@@ -220,12 +239,12 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
         width="w-[500px]"
         position="right"
       >
-        {/* <RequestDetailsContent />   */}
         <RequestDetailsContent
           comments={comments}
           setComments={setComments}
           initialTab="Status & Notes"
-          onClose={() => setIsDrawerOpen(false)} 
+          onClose={() => setIsDrawerOpen(false)}
+          isAdmin={isAdmin}
         />
       </SideDrawer>
       <div className="p-4 bg-white rounded-xl theme-shadow relative">
@@ -241,6 +260,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                   <StatusTimeline
                     isAdmin={isAdmin}
                     onCheckNotes={handleCheckNotes}
+                    showCheckNotesBtn={true}
                   />
                 </div>
                 <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
@@ -302,7 +322,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                 </div>
               </div>
 
-              <InfoDetails requestDetails={requestDetails} />
+              <InfoDetails requestDetails={requestDetails} isAdmin={isAdmin} />
             </div>
           </>
         )}

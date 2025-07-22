@@ -59,9 +59,7 @@ const SideDrawer: React.FC<any> = ({
                         </div>
 
                         {/* Content */}
-                        <div className="h-full overflow-y-auto pb-16">
-                            {children}
-                        </div>
+                        {children}
                     </div>
                 </div>
             )}
