@@ -241,6 +241,14 @@ export const postChartNotesFiles = async (dispatch: AppDispatch, id?: string, fo
     });
 };
 
+export const postRequestUploadFiles = async (dispatch: AppDispatch, id?: string, formData?: any) => {
+    return apiHandler(dispatch, 'patch', `/pa_request/update/${id}/files/upload`, {
+        isFormData: true,
+        data: formData,
+        successMessage: "Files have been uploaded."
+    });
+};
+
 export const postStartAiAnalysis = async (dispatch: AppDispatch, id?: string) => {
     return apiHandler(dispatch, 'post', `/pa_request/add/${id}/chartNotesAnalyzer`, {});
 };

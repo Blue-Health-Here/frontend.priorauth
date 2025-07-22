@@ -8,7 +8,7 @@ import PageHeader from "./PageHeader";
 import InfoDetails from "./InfoDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { deleteReqUploadedFile, getRequestDetails, getRequestStatuses } from "@/services/pharmacyService";
+import { deleteReqUploadedFile, getRequestDetails, getRequestStatuses, postRequestUploadFiles } from "@/services/pharmacyService";
 import Loading from "@/components/common/Loading";
 import StatusTimeline from "./StatusTimeline";
 import SideDrawer from "@/components/SideDrawer";
@@ -31,6 +31,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   const { id: reqId } = useParams();
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [comments, setComments] = useState<any[]>(reqComments);
+  const [isLoadingForUploadFiles, setIsLoadingForUploadFiles] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -93,34 +94,32 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   }, [loadPdfJs]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsLoadingForUploadFiles(true);
     if (e.target.files && e.target.files.length > 0) {
       const fileArray = Array.from(e.target.files);
-      console.log(fileArray, "fileArray");
-      const newFiles = await Promise.all(
-        fileArray.map(async (file) => {
-          if (file.type === "application/pdf") {
-            const response: any = await convertPdfToImage(file);
-            return response;
-          } else {
+      try {
+        const formData = new FormData();
+        fileArray.forEach((file: any) => {
+          formData.append("files", file);
+        });
+        const response = await postRequestUploadFiles(dispatch, reqId, formData)
+        if (response) {
+          setUploadedFiles(response?.files?.map((item: any) => {
             return {
-              id: Math.random().toString(36).substring(2, 9),
-              name: file.name,
-              size: file.size,
-              type: file.type,
-              lastModified: file.lastModified,
-              progress: 0,
-              status: "uploading" as const,
-              file: file,
-              url: file ? URL.createObjectURL(file) : "",
-              fileTags: []
-            };
-          }
-        })
-      );
-      console.log(newFiles, "newFiles");
-      setUploadedFiles((prev: any) => [...prev, ...newFiles]);
+              ...item,
+              name: item.fileName,
+              type: item.mimeType,
+            }
+          }));
+        }
+      } catch (error: any) {
+        setUploadedFiles([]);
+      } finally {
+        setIsLoadingForUploadFiles(false);
+      }
     }
   };
+  console.log(isLoadingForUploadFiles, "isLoadingForUploadFiles");
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
