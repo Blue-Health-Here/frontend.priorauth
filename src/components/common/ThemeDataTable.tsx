@@ -149,57 +149,53 @@ const ThemeDataTable: React.FC<any> = ({
                                 />
                             </>
                         )}>
-                            <div className="overflow-x-auto md:overflow-x-visible">
-                                <DataTable
-                                    ref={dt}
-                                    value={group.data}
-                                    paginator={false}
-                                    rows={pageSize}
-                                    scrollable
-                                    rowsPerPageOptions={[5, 10, 25, 50]}
-                                    paginatorTemplate="CurrentPageReport PrevPageLink PageLinks NextPageLink RowsPerPageDropdown"
-                                    currentPageReportTemplate="Showing {last} of {totalRecords} entries"
-                                    globalFilter={globalFilter}
-                                    globalFilterFields={globalFilterFields}
-                                    emptyMessage={emptyMessage}
-                                    loading={loading}
-                                    className="custom-paginator min-w-[600px] md:min-w-0"
-                                    onRowClick={onRowClick}
-                                    rowClassName={() =>
-                                        'cursor-pointer hover:!bg-gray-50 active:bg-gray-100 transition duration-200'
-                                    }
-                                >
-                                    {renderColumns()}
-                                </DataTable>
-                            </div>
+                            <DataTable
+                                ref={dt}
+                                value={group.data}
+                                paginator={false}
+                                rows={pageSize}
+                                scrollable
+                                rowsPerPageOptions={[5, 10, 25, 50]}
+                                paginatorTemplate="CurrentPageReport PrevPageLink PageLinks NextPageLink RowsPerPageDropdown"
+                                currentPageReportTemplate="Showing {last} of {totalRecords} entries"
+                                globalFilter={globalFilter}
+                                globalFilterFields={globalFilterFields}
+                                emptyMessage={emptyMessage}
+                                loading={loading}
+                                className="custom-paginator min-w-[600px] md:min-w-0"
+                                onRowClick={onRowClick}
+                                rowClassName={() =>
+                                    'cursor-pointer hover:!bg-gray-50 active:bg-gray-100 transition duration-200'
+                                }
+                            >
+                                {renderColumns()}
+                            </DataTable>
                         </AccordionTab>
                     })}
                 </Accordion>
             ) : (
-                <div className="overflow-x-auto md:overflow-x-visible">
-                    <DataTable
-                        ref={dt}
-                        value={data}
-                        paginator={isPaginator}
-                        rows={pageSize}
-                        rowsPerPageOptions={[5, 10, 25, 50]}
-                        scrollable
-                        paginatorTemplate="CurrentPageReport PrevPageLink PageLinks NextPageLink RowsPerPageDropdown"
-                        currentPageReportTemplate="Showing {last} of {totalRecords} entries"
-                        globalFilter={globalFilter}
-                        globalFilterFields={globalFilterFields}
-                        header={null}
-                        emptyMessage={emptyMessage}
-                        loading={loading}
-                        className={`custom-paginator ${themeDataTableClass} min-w-[600px] md:min-w-0`}
-                        onRowClick={onRowClick}
-                        rowClassName={() =>
-                            'cursor-pointer hover:!bg-gray-50 active:bg-gray-100 transition duration-200'
-                        }
-                    >
-                        {renderColumns()}
-                    </DataTable>
-                </div>
+                <DataTable
+                    ref={dt}
+                    value={data}
+                    paginator={isPaginator}
+                    rows={pageSize}
+                    rowsPerPageOptions={[5, 10, 25, 50]}
+                    scrollable
+                    paginatorTemplate="CurrentPageReport PrevPageLink PageLinks NextPageLink RowsPerPageDropdown"
+                    currentPageReportTemplate="Showing {last} of {totalRecords} entries"
+                    globalFilter={globalFilter}
+                    globalFilterFields={globalFilterFields}
+                    header={null}
+                    emptyMessage={emptyMessage}
+                    loading={loading}
+                    className={`custom-paginator ${themeDataTableClass} min-w-[600px] md:min-w-0`}
+                    onRowClick={onRowClick}
+                    rowClassName={() =>
+                        'cursor-pointer hover:!bg-gray-50 active:bg-gray-100 transition duration-200'
+                    }
+                >
+                    {renderColumns()}
+                </DataTable>
             )}
         </div>
     );

@@ -18,8 +18,8 @@ interface StatusTimelineProps {
   className?: string;
 }
 
-const StatusTimeline: React.FC<StatusTimelineProps> = ({ 
-  isAdmin, onCheckNotes, height = 'max-h-[260px]', showCheckNotesBtn, className 
+const StatusTimeline: React.FC<StatusTimelineProps> = ({
+  isAdmin, onCheckNotes, height = 'max-h-[260px]', showCheckNotesBtn, className
 }) => {
   const [statusItems, setStatusItems] = useState<any[]>([]);
   const dispatch = useDispatch();
@@ -126,10 +126,12 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
 
     // Show saved note if exists
     if (item.note && !item.isEditing) {
-      return <p className="text-tertiary-black text-md italic inline-flex justify-between gap-4 items-center">
-        {item.note}
+      return <div className="inline-flex justify-between gap-4 items-center">
+        <p className="text-tertiary-black text-md italic line-clamp-2 max-w-screen-sm">
+          {item.note}
+        </p>
         {isAdmin && <FiEdit className="cursor-pointer" onClick={() => handleAddNotes(index)} />}
-      </p>;
+      </div>
     }
 
     // If no note, and showNotesButton is true, show Add Notes button
