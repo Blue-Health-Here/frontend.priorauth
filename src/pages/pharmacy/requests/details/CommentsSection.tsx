@@ -70,10 +70,7 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({ initialComments = [],
             <div className="w-full rounded-lg border border-quaternary-navy-blue">
                 <div className="flex items-center justify-between p-3 border-b border-quaternary-navy-blue">
                     <h2 className="text-base font-medium">Comments</h2>
-                    <ThemeButton type="button" onClick={() => {
-                        setIsDrawerOpen && setIsDrawerOpen(true);
-                        document.body.style.overflow = "hidden";
-                    }} className="h-full min-h-10 !flex gap-2 items-center" variant="tertiary">
+                    <ThemeButton type="button" onClick={() => setIsDrawerOpen && setIsDrawerOpen(true)} className="h-full min-h-10 !flex gap-2 items-center" variant="tertiary">
                         <span>View All Comments</span>
                         <RxArrowTopRight size={18} />
                     </ThemeButton>
