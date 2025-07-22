@@ -505,7 +505,6 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
           selectedFilterField={selectedFilterField}
           visibleColumns={visibleColumns}
           globalFilter={globalFilter}
-          setGlobalFilter={setGlobalFilter}
           themeDataTableClass={"theme-table"}
           globalFilterFields={['patient.name', 'medication', 'prescriber.name', 'submittedOn', 'statusName', 'notes', 'lastModified']}
           onRowClick={(row: any) =>
