@@ -149,7 +149,7 @@ const ThemeDataTable: React.FC<any> = ({
                                 />
                             </>
                         )}>
-                            <div className="overflow-x-auto md:overflow-x-visible">
+                            <div className="overflow-x-auto md:overflow-y-visible">
                                 <DataTable
                                     ref={dt}
                                     value={group.data}
@@ -176,7 +176,7 @@ const ThemeDataTable: React.FC<any> = ({
                     })}
                 </Accordion>
             ) : (
-                <div className="overflow-x-auto md:overflow-x-visible">
+                <div className="overflow-x-auto md:overflow-y-visible">
                     <DataTable
                         ref={dt}
                         value={data}
