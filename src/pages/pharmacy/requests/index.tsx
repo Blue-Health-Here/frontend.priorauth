@@ -146,7 +146,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
         const prescriberUsername = formatPrescriberToUsername(item.prescriber || "");
         return prescriberUsername === prescriber;
       }) : reqsData;
-      const updatedArr = filteredData.map((item: any) => transformPharmacyRequest(item));
+      const updatedArr = filteredData.map((item: any) => transformPharmacyRequest(item, isAdmin));
       setRequestsData(updatedArr);
       setFilteredStatuses(filteredData.map((item: any) => ({
         id: item.request_status, name: item.paStatus, statusClass: getStatusClass(item.paStatus)

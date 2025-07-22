@@ -8,7 +8,7 @@ import PageHeader from "./PageHeader";
 import InfoDetails from "./InfoDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { deleteReqUploadedFile, getRequestDetails, getRequestStatuses } from "@/services/pharmacyService";
+import { deleteReqUploadedFile, getRequestDetails, getRequestStatuses, postRequestUploadFiles } from "@/services/pharmacyService";
 import Loading from "@/components/common/Loading";
 import StatusTimeline from "./StatusTimeline";
 import SideDrawer from "@/components/SideDrawer";
@@ -33,6 +33,19 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   const [comments, setComments] = useState<any[]>(reqComments);
 
   useEffect(() => {
+    console.log(isDrawerOpen, "isDrawerOpen");
+    if (isDrawerOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isDrawerOpen]);
+
+  useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       const detailsRes = await getRequestDetails(dispatch, reqId);
@@ -44,7 +57,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
         setRequestDetails(null);
         setUploadedFiles([]);
       }
-      
+
       setIsLoading(false);
     };
 
@@ -95,30 +108,24 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const fileArray = Array.from(e.target.files);
-      console.log(fileArray, "fileArray");
-      const newFiles = await Promise.all(
-        fileArray.map(async (file) => {
-          if (file.type === "application/pdf") {
-            const response: any = await convertPdfToImage(file);
-            return response;
-          } else {
+      try {
+        const formData = new FormData();
+        fileArray.forEach((file: any) => {
+          formData.append("files", file);
+        });
+        const response = await postRequestUploadFiles(dispatch, reqId, formData)
+        if (response) {
+          setUploadedFiles(response?.files?.map((item: any) => {
             return {
-              id: Math.random().toString(36).substring(2, 9),
-              name: file.name,
-              size: file.size,
-              type: file.type,
-              lastModified: file.lastModified,
-              progress: 0,
-              status: "uploading" as const,
-              file: file,
-              url: file ? URL.createObjectURL(file) : "",
-              fileTags: []
-            };
-          }
-        })
-      );
-      console.log(newFiles, "newFiles");
-      setUploadedFiles((prev: any) => [...prev, ...newFiles]);
+              ...item,
+              name: item.fileName,
+              type: item.mimeType,
+            }
+          }));
+        }
+      } catch (error: any) {
+        setUploadedFiles([]);
+      }
     }
   };
 
@@ -207,7 +214,18 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     setIsDrawerOpen(true);
   };
 
-  // console.log(requestDetails, uploadedFiles, "requestDetails")
+  useEffect(() => {
+    if (isDrawerOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isDrawerOpen]);
+
   return (
     <>
       <ProgressNotesModal isOpen={isModalOpen} onClose={(isAdded?: boolean) => {
@@ -221,12 +239,12 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
         width="w-[500px]"
         position="right"
       >
-        {/* <RequestDetailsContent />   */}
         <RequestDetailsContent
           comments={comments}
           setComments={setComments}
           initialTab="Status & Notes"
-          onClose={() => setIsDrawerOpen(false)} 
+          onClose={() => setIsDrawerOpen(false)}
+          isAdmin={isAdmin}
         />
       </SideDrawer>
       <div className="p-4 bg-white rounded-xl theme-shadow relative">
@@ -242,6 +260,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                   <StatusTimeline
                     isAdmin={isAdmin}
                     onCheckNotes={handleCheckNotes}
+                    showCheckNotesBtn={true}
                   />
                 </div>
                 <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
@@ -303,7 +322,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                 </div>
               </div>
 
-              <InfoDetails requestDetails={requestDetails} />
+              <InfoDetails requestDetails={requestDetails} isAdmin={isAdmin} />
             </div>
           </>
         )}

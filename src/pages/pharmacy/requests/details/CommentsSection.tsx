@@ -1,10 +1,8 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeButton from "@/components/common/ThemeButton";
 import { RxArrowTopRight } from "react-icons/rx";
 import NameBadge from "@/components/NameBadge";
-// import SideDrawer from "@/components/SideDrawer";
-// import RequestDetailsContent from "./SideDrawerReqDetailsContent";
 import { timeAgo } from "@/utils/helper";
 import SideDrawer from "@/components/SideDrawer";
 import RequestDetailsContent from "./SideDrawerReqDetailsContent";
@@ -17,17 +15,29 @@ interface CommentsSectionProps {
         createdAt: Date | any
     }[],
     onChange?: (comments: any) => void;
+    isAdmin?: boolean;
 }
 
-const CommentsSection: React.FC<CommentsSectionProps> = ({ initialComments = [], onChange }) => {
+const CommentsSection: React.FC<CommentsSectionProps> = ({ initialComments = [], onChange, isAdmin }) => {
     const [comments, setComments] = useState(initialComments);
     const [input, setInput] = useState("");
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-    // derive the last two comments (newest last so that the latest one appears at the bottom)
+    useEffect(() => {
+        if (isDrawerOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
+        }
+
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [isDrawerOpen]);
+
     const lastTwo = useMemo(() => {
         return [...comments]
-            .sort((a, b) => a.createdAt - b.createdAt) // oldest → newest
+            .sort((a, b) => a.createdAt - b.createdAt)
             .slice(-2);
     }, [comments]);
 
@@ -35,7 +45,7 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({ initialComments = [],
         if (!input.trim()) return;
         const newComment = {
             id: Date.now(),
-            author: "You", // change as needed
+            author: "You",
             body: input.trim(),
             createdAt: new Date()
         };
@@ -55,7 +65,7 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({ initialComments = [],
                 position="right"
                 isClose={false}
             >
-                <RequestDetailsContent comments={comments} setComments={setComments} />
+                <RequestDetailsContent isAdmin={isAdmin} comments={comments} setComments={setComments} />
             </SideDrawer>
             <div className="w-full rounded-lg border border-quaternary-navy-blue">
                 <div className="flex items-center justify-between p-3 border-b border-quaternary-navy-blue">
