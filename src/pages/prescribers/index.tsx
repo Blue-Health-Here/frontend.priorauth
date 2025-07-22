@@ -25,17 +25,14 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [updatedPresData, setUpdatedPresData] = useState<any[]>([]);
   const [globalFilter, setGlobalFilter] = useState("");
-  const [selectedFilterField, setSelectedFilterField] = useState("prescriber");
+  const [sortDirection, setSortDirection] = useState<any>("asc");
   const [activeTab, setActiveTab] = useState("Active List");
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
-
   const isArchiveTab = activeTab === "Archives";
 
   const filterOptions = [
-    { field: "prescriber", filterable: true, header: "Name" },
-    { field: "prescriberPhone", filterable: true, header: "Phone" },
-    { field: "prescriberAddress", filterable: true, header: "Address" },
-    { field: "npi", filterable: true, header: "NPI" },
+    { field: "asc", filterable: true, header: "Name: A → Z" },
+    { field: "desc", filterable: true, header: "Name: Z → A" },
   ];
 
   const fetchAllPrescribers = async () => {
@@ -64,13 +61,29 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     setUpdatedPresData(transformed);
   }, [prescribersData]);
 
+  const sortedPresData = useMemo(() => {
+    let data = [...updatedPresData];
+
+    if (sortDirection) {
+      data.sort((a, b) => {
+        const nameA = a.prescriber?.toLowerCase() || "";
+        const nameB = b.prescriber?.toLowerCase() || "";
+    
+        const result = nameA.localeCompare(nameB);
+        return sortDirection === "asc" ? result : -result;
+      });
+    }
+  
+    return data;
+  }, [updatedPresData, sortDirection]);
+  
   const filteredPresData = useMemo(() => {
     const filterValue = globalFilter.toLowerCase();
-    return updatedPresData.filter((item) => {
-      const value = item[selectedFilterField];
-      return typeof value === "string" && value.toLowerCase().includes(filterValue);
-    });
-  }, [updatedPresData, globalFilter, selectedFilterField]);
+  
+    return sortedPresData.filter((item) =>
+      item.prescriber?.toLowerCase().includes(filterValue)
+    );
+  }, [sortedPresData, globalFilter]);
 
   const displayedPrescribers = useMemo(() => {
     return filteredPresData.filter(item => item.isArchived === isArchiveTab);
@@ -88,12 +101,6 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   };
 
   const handleInviteClick = () => setIsInviteModalOpen(true);
-
-  // const handleTab = (value: string) => setActiveTab(value);
-
-  // const handleInviteClick = () => {
-  //   setIsInviteModalOpen(true);
-  // };
 
   const handleModifyPrescriber = (prescriber: any) => {
     setSelectedPrescriber(prescriber);
@@ -164,10 +171,11 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
               <FilterField
                 label="Sort By"
                 columns={filterOptions}
-                selectedValue={selectedFilterField}
-                onChange={setSelectedFilterField}
+                selectedValue={sortDirection}
+                onChange={setSortDirection}
                 className="w-[100px]"
               />
+
             </div>
             <ThemeButtonTabs
               data={["Active List", "Archives"]}
@@ -197,8 +205,8 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
               <FilterField
                 label="Sort By"
                 columns={filterOptions}
-                selectedValue={selectedFilterField}
-                onChange={setSelectedFilterField}
+                selectedValue={sortDirection}
+                onChange={setSortDirection}
               />
             </div>
           </div>
