@@ -13,9 +13,14 @@ import { getRequestStatuses, updateRequestNotes } from "@/services/pharmacyServi
 interface StatusTimelineProps {
   isAdmin?: boolean;
   onCheckNotes?: () => void;
+  height?: string;
+  showCheckNotesBtn?: boolean;
+  className?: string;
 }
 
-const StatusTimeline: React.FC<StatusTimelineProps> = ({ isAdmin, onCheckNotes }) => {
+const StatusTimeline: React.FC<StatusTimelineProps> = ({ 
+  isAdmin, onCheckNotes, height = 'max-h-[260px]', showCheckNotesBtn, className 
+}) => {
   const [statusItems, setStatusItems] = useState<any[]>([]);
   const dispatch = useDispatch();
   const { id: reqId } = useParams();
@@ -123,7 +128,7 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({ isAdmin, onCheckNotes }
     if (item.note && !item.isEditing) {
       return <p className="text-tertiary-black text-md italic inline-flex justify-between gap-4 items-center">
         {item.note}
-        <FiEdit className="cursor-pointer" onClick={() => handleAddNotes(index)} />
+        {isAdmin && <FiEdit className="cursor-pointer" onClick={() => handleAddNotes(index)} />}
       </p>;
     }
 
@@ -144,10 +149,10 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({ isAdmin, onCheckNotes }
   };
 
   return (
-    <div className="p-4 flex items-center justify-center flex-col gap-4">
+    <div className={`p-4 flex items-center justify-center flex-col gap-4 ${className}`}>
       {statusItems.length > 0 ? (
         <>
-          <div className="max-h-[260px] overflow-auto w-full">
+          <div className={`${height} overflow-auto w-full`}>
             <div className="relative flex flex-col gap-4 w-full">
               <div className="absolute left-2.5 top-0 bottom-0 w-1.5 bg-gray-200"></div>
 
@@ -186,7 +191,7 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({ isAdmin, onCheckNotes }
             </div>
           </div>
 
-          <ThemeButton
+          {showCheckNotesBtn && <ThemeButton
             variant="tertiary"
             className="border border-quaternary-navy-blue rounded-lg text-primary-navy-blue hover:bg-gray-50 transition-colors"
             onClick={onCheckNotes}
@@ -194,7 +199,7 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({ isAdmin, onCheckNotes }
             <span className="flex gap-2 items-center">
               Check Notes <FiFileText />
             </span>
-          </ThemeButton>
+          </ThemeButton>}
         </>
       ) : (
         <p className="text-sm text-primary-black">Statuses Not Found.</p>

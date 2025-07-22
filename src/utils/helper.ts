@@ -362,7 +362,7 @@ export function getStatusClass(statusName = "") {
   return "bg-default text-default";
 }
 
-export function transformPharmacyRequest(data: any) {
+export function transformPharmacyRequest(data: any, isAdmin: boolean) {
   return {
     id: data.id,
     patient: {
@@ -380,7 +380,7 @@ export function transformPharmacyRequest(data: any) {
     notes: data?.notes || null,
     lastModified: formatDateTime(data.createdAt), // Custom date formatting below
     statusClass: getStatusClass(data.statusId), // Assume you have this function elsewhere
-    isEditing: data?.notes ? false : true
+    isEditing: data?.notes ? false : isAdmin ? true : false
   };
 }
 
