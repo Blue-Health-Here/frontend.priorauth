@@ -364,7 +364,6 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
     });
 
     if (selectedFilterField === 'request_status') {
-      // setFilteredRequests(groupRequestsByStatus(filtered, reqStatusesData));
       setFilteredRequests(groupByField(filtered, 'statusName'));
     } else if (selectedFilterField === "notes") {
       setFilteredRequests(groupByField(filtered, 'patient'));
@@ -414,7 +413,6 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
                   <RequestStatusDropdownField
                     data={filteredStatuses}
                     onChange={(selected) => {
-                      // setSelectedStatuses(selected);
                       handleStatusChange(selected);
                     }}
                     className="w-full"
@@ -454,7 +452,6 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
             <div className="flex gap-3 pt-4 bg-white">
               <button
                 onClick={() => {
-                  // setSelectedStatuses([]);
                   setSelectedFilterField("patient");
                   setGlobalFilter("");
                   clearSelection();
@@ -476,7 +473,6 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
 
       <div className="hidden md:flex justify-between gap-4 items-center pb-2 h-14 flex-wrap">
         <RequestTitle isAdmin={isAdmin} prescriber={prescriber} />
-        {/* <h2 className='text-xl font-semibold text-primary-black whitespace-nowrap'>Your Requests</h2> */}
         {!prescriber && (
           <div className="inline-flex h-full gap-2 sm:ml-auto">
             <ThemeButton type="button" className="!h-full min-w-max rounded-lg" variant="secondary">
