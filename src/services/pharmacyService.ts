@@ -106,6 +106,7 @@ const apiHandler = async <T = any>(
 
         return null;
     } catch (error: any) {
+        console.log(error, "error");
         // Handle 404 differently in some cases
         if (error?.status === 404) {
             if (errorMessage) {
