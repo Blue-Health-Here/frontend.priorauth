@@ -17,6 +17,7 @@ import LetterOfMedicalNecessity from "./LetterOfMedicalNecessity";
 import { loadPdfJs } from "@/services/pdfService";
 import toast from "react-hot-toast";
 import { setRequestComments } from "@/store/features/pharmacy/requests/requestsSlice";
+import { updateProfilePicture } from "@/services/pharmacyService";
 
 const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -42,6 +43,8 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
       document.body.style.overflow = "auto";
     };
   }, [isDrawerOpen]);
+
+  
 
   useEffect(() => {
     const fetchData = async () => {
