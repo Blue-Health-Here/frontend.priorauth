@@ -9,6 +9,8 @@ import { useParams } from "react-router-dom";
 import {
   getRequestDetails,
   getRequestStatuses,
+  postRequestUploadFiles,
+  deleteReqUploadedFile,
 } from "@/services/pharmacyService";
 import Loading from "@/components/common/Loading";
 import StatusTimeline from "./StatusTimeline";
@@ -19,6 +21,8 @@ import { loadPdfJs } from "@/services/pdfService";
 import FileUploadSection from "./FileUploadSection";
 import FileDropzone from "@/components/common/FileDropzone";
 import UploadFileList from "@/components/common/UploadFileList";
+import { setRequestComments } from "@/store/features/pharmacy/requests/requestsSlice";
+import toast from "react-hot-toast";
 
 const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -364,7 +368,6 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                           handleAddTag={handleAddTag}
                         />
                         <button className="flex items-center justify-center gap-2 mx-auto mt-2 px-3 py-1.5 border border-[#CBDAFF] rounded-lg text-primary-navy-blue hover:bg-[#F5F8FF] transition-colors text-sm font-medium">
-                          
                           <span>View All</span>
                           <img
                             src="/view-all.svg"
