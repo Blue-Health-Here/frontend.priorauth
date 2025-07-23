@@ -22,7 +22,7 @@ const SideDrawer: React.FC<any> = ({
     return (
         <>
             {isOpen && (
-                <div className='fixed inset-0 z-100 flex items-center justify-center bg-opacity-50 backdrop-blur-sm transition-opacity duration-300'>
+                <div className='fixed inset-0 z-100 flex items-center justify-center bg-opacity-50 backdrop-blur-sm transition-opacity duration-300 m-0'>
                     {/* Overlay */}
                     {showOverlay && isOpen && (
                         <div

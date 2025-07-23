@@ -13,8 +13,7 @@ const pharmacyRequestsSlice = createSlice({
             state.reqsData = action.payload?.data;
         },
         setRequestComments: (state, action) => {
-            const updatedData = [...state.reqComments];
-            state.reqComments = [...updatedData, ...action.payload];
+            state.reqComments = action.payload;
         }
     }
 });

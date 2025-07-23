@@ -179,8 +179,7 @@ export const getAllReqStatuses = async (dispatch: AppDispatch) => {
     })
 };
 
-// ============= Requests  =============
-
+// Requests
 export const getAllPharmacyReqs = async (dispatch: AppDispatch) => {
     return apiHandler(dispatch, 'post', '/pa_request/get_all', {
         data: {
@@ -190,7 +189,6 @@ export const getAllPharmacyReqs = async (dispatch: AppDispatch) => {
                 getAllRecords: true
             }
         },
-        // successMessage: "Requests have been fetched successfully!",
         onSuccess: (data) => {
             dispatch(setRequestsData(data))
         },
@@ -230,6 +228,7 @@ export const getRequestStatuses = async (dispatch: AppDispatch, id?: string) => 
     return apiHandler(dispatch, 'get', `/status-history/get_by_id/${id}/statuses`, {});
 };
 
+// Request Files
 export const postGenerateMedicalNecessity = async (dispatch: AppDispatch, id?: string) => {
     return apiHandler(dispatch, 'post', `/pa_request/add/${id}/generate-letter-of-medical-necessity`, {});
 };
@@ -261,11 +260,20 @@ export const deleteReqUploadedFile = async (dispatch: AppDispatch, reqId?: strin
     return apiHandler(dispatch, 'delete', `/pa_request/delete/${reqId}/file/${id}`, {});
 };
 
+// Request Notes
 export const updateRequestNotes = async (dispatch: AppDispatch, id?: string, data?: any) => {
     return apiHandler(dispatch, 'patch', `/status-history/update/${id}`, {
         data,
         successMessage: "Notes have been added."
     });
+};
+
+// Request Comments
+export const addNewReqComment = async (dispatch: AppDispatch, id?: string, data?: any) => {
+    return apiHandler(dispatch, 'post', `/pa_request/add/${id}/comments`, {
+        data,
+        successMessage: "Comments have been added."
+    })
 };
 
 // ============= Get All Prescribers  =============
