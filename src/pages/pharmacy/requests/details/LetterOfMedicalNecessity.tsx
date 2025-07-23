@@ -39,19 +39,6 @@ const LetterOfMedicalNecessity: React.FC<any> = ({ requestDetails }) => {
         }
     };
 
-    // const handleDownload = () => {
-    //     if (medicalNecessityFile) {
-    //         const file = medicalNecessityFile as { url: string; fileName: string };
-    //         const link = document.createElement("a");
-    //         link.href = file.url;
-    //         link.rel = "noopener noreferrer";
-    //         link.download = file.fileName;
-    //         document.body.appendChild(link);
-    //         link.click();
-    //         document.body.removeChild(link);
-    //     }
-    // };
-
     const handleDownload = async () => {
         // console.log(user, medicalNecessityFile, "dasdas");
         if (medicalNecessityFile && user) {

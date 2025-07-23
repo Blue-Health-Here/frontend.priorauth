@@ -3,7 +3,8 @@ import CardHeader from "@/components/common/CardHeader";
 import { UploadedFile } from "@/utils/types";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import { deleteReqUploadedFile, postRequestUploadFiles } from "@/services/pharmacyService";
+import { deleteReqUploadedFile, postChartNotesFiles } from "@/services/pharmacyService";
+import ThemeButton from "@/components/common/ThemeButton";
 
 interface FileUploadSectionProps {
   uploadedFiles: UploadedFile[];
@@ -18,7 +19,6 @@ interface FileUploadSectionProps {
   startAnalysis: () => void;
   restartAnalysis: () => void;
   handleOpenProgressNotesModal: () => void;
-  convertPdfToImage: (file: any) => Promise<any>;
 }
 
 const FileUploadSection: React.FC<FileUploadSectionProps> = ({
@@ -32,7 +32,6 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
   startAnalysis,
   restartAnalysis,
   handleOpenProgressNotesModal,
-  convertPdfToImage,
 }) => {
   const dispatch = useDispatch();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -40,69 +39,25 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
 
   const handleFileChange = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
-
     const fileArray = Array.from(files);
     try {
-      // First create local preview of files
-      const newFiles = await Promise.all(
-        fileArray.map(async (file) => {
-          if (file.type === "application/pdf") {
-            const response: any = await convertPdfToImage(file);
-            return response;
-          } else {
-            return {
-              id: Math.random().toString(36).substring(2, 9),
-              name: file.name,
-              size: file.size,
-              type: file.type,
-              lastModified: file.lastModified,
-              progress: 0,
-              status: "uploading" as const,
-              file: file,
-              url: URL.createObjectURL(file),
-              fileTags: [],
-            };
-          }
-        })
-      );
-
-      setUploadedFiles((prev) => [...prev, ...newFiles]);
-
-      // Then upload to server
       const formData = new FormData();
       fileArray.forEach((file: any) => {
-        formData.append("files", file);
+        formData.append("chartNotes", file);
       });
-
-      const response = await postRequestUploadFiles(dispatch, reqId, formData);
-
+      const response = await postChartNotesFiles(dispatch, reqId, formData)
       if (response) {
-        // Update the files with server response
-        setUploadedFiles((prev) =>
-          prev.map((localFile) => {
-            const serverFile = response.files.find(
-              (f: any) => f.fileName === localFile.name
-            );
-            if (serverFile) {
-              return {
-                ...serverFile,
-                name: serverFile.fileName,
-                type: serverFile.mimeType,
-                progress: 100,
-                status: "completed" as const,
-                url: localFile.url, 
-              };
-            }
-            return localFile;
-          })
-        );
+        setUploadedFiles((prev: any) => [...prev, ...response?.chartNotes?.map((item: any) => {
+          return {
+            ...item,
+            name: item.fileName,
+            type: item.mimeType,
+          }
+        })]);
       }
     } catch (error: any) {
-      toast.error(error?.message || "Failed to upload files");
-      // Remove files that failed to upload
-      setUploadedFiles((prev) =>
-        prev.filter((file) => !fileArray.some((f) => f.name === file.name))
-      );
+      console.log(error?.message);
+      setUploadedFiles([]);
     }
   };
 
@@ -110,7 +65,7 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
     e.preventDefault();
   };
 
-  const handleDragLeave = () => {};
+  const handleDragLeave = () => { };
 
   const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -140,46 +95,69 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleFileChange(e.target.files);
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""; 
+      fileInputRef.current.value = "";
     }
+  };
+
+  const handleDownload = async () => {
+    // const file: any = (uploadedFiles && uploadedFiles.length > 0) ? uploadedFiles[0] : null;
+    // if (file) {
+    //   try {
+    //     const response = await api.get(file.url, {
+    //       responseType: "blob"
+    //     });
+    //     const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+    //     const link = document.createElement("a");
+    //     link.href = blobUrl;
+    //     link.download = file.fileName || "medical_necessity.pdf";
+    //     document.body.appendChild(link);
+    //     link.click();
+    //     document.body.removeChild(link);
+    //     window.URL.revokeObjectURL(blobUrl); // Cleanup
+    //   } catch (error) {
+    //     console.error("Download failed:", error);
+    //   }
+    // }
   };
 
   return (
     <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
       <CardHeader title="Progress Notes" />
-      <div className="p-4">
-        <div
-          className="relative rounded-lg border border-dashed border-[#FF512B] overflow-hidden"
-          onClick={handleUploadClick}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-        >
-          <button
-            type="button"
-            className="flex flex-col w-full items-center justify-center cursor-pointer gap-1 py-4 px-3 bg-gradient-to-r from-[#F7F1FF] to-[#FFEFEF] rounded-xl"
+      {!isAnalysisComplete && !isAnalysisStarted && uploadedFiles.length === 0 && (
+        <div className="p-4">
+          <div
+            className="relative rounded-lg border border-dashed border-[#FF512B] overflow-hidden"
+            onClick={handleUploadClick}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
           >
-            <img src="/upload1.svg" alt="upload new img" className="mb-1 w-8 md:w-auto" />
-            <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
-              Click to upload or drag and drop
-            </p>
-          </button>
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileInputChange}
-            className="hidden"
-            multiple
-          />
+            <button
+              type="button"
+              className="flex flex-col w-full items-center justify-center cursor-pointer gap-1 py-4 px-3 bg-gradient-to-r from-[#F7F1FF] to-[#FFEFEF] rounded-xl"
+            >
+              <img src="/upload1.svg" alt="upload new img" className="mb-1 w-8 md:w-auto" />
+              <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
+                Click to upload or drag and drop
+              </p>
+            </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileInputChange}
+              className="hidden"
+              multiple
+            />
+          </div>
         </div>
-      </div>
+      )}
       {uploadedFiles.length > 0 && (
-        <div className="p-4 pt-0">
+        <div className="p-4">
           {isAnalysisStarted ? (
-            <div className="border border-quaternary-navy-blue rounded-lg p-4 sm:p-6 flex justify-center">
+            <div className="rounded-lg p-4 sm:p-6 flex justify-center">
               <div className="flex flex-col sm:flex-row items-center gap-4 max-w-md w-full">
                 {/* Icon container with overlay */}
-                <div className="sm:ml-6 relative">
+                <div className="relative">
                   {isAnalysisComplete ? (
                     <div className="relative">
                       <img
@@ -226,19 +204,18 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
                   )}
 
                   <h3
-                    className={`text-xl sm:text-2xl font-semibold ${
-                      isAnalysisComplete
-                        ? "text-[#19AD4B]"
-                        : isAnalysisFailed
+                    className={`text-xl sm:text-2xl font-semibold ${isAnalysisComplete
+                      ? "text-[#19AD4B]"
+                      : isAnalysisFailed
                         ? "text-[#FF2E37] sm:text-lg"
                         : "text-transparent bg-clip-text bg-gradient-to-r from-[#F66568] via-[#C0489D] via-50% to-[#A16CF9]"
-                    }`}
+                      }`}
                   >
                     {isAnalysisComplete
                       ? "Analysis Completed"
                       : isAnalysisFailed
-                      ? "Analysis Failed"
-                      : "Analysing..."}
+                        ? "Analysis Failed"
+                        : "Analysing..."}
                   </h3>
 
                   {isAnalysisFailed && (
@@ -252,36 +229,24 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
                   <div className="flex flex-wrap justify-center sm:justify-start gap-2 mt-2">
                     {isAnalysisComplete ? (
                       <>
-                        <button className="flex items-center gap-1 text-white bg-[#163066] hover:bg-[#1a3a8a] rounded-sm px-2 py-1 text-xs font-medium transition-colors min-w-[85px] h-7">
-                          Download
-                          <img
-                            src="/download.svg"
-                            alt="Download"
-                            className="w-3 h-3"
-                          />
-                        </button>
-                        <button
-                          onClick={handleOpenProgressNotesModal}
-                          className="flex items-center gap-1 text-[#163066] bg-[#EBF1FF] hover:bg-[#d9e4ff] rounded-sm px-2 py-1 text-xs font-medium transition-colors min-w-[70px] h-7"
-                        >
-                          View
-                          <img
-                            src="/view-analysis.svg"
-                            alt="View"
-                            className="w-3 h-3"
-                          />
-                        </button>
-                        <button
-                          onClick={restartAnalysis}
-                          className="flex items-center gap-1 text-primary-navy-blue border border-[#CBDAFF] hover:bg-[#f5f8ff] rounded-sm px-2 py-1 text-xs font-medium transition-colors min-w-[80px] h-7"
-                        >
-                          Restart
-                          <img
-                            src="/restart.svg"
-                            alt="Restart"
-                            className="w-3 h-3"
-                          />
-                        </button>
+                        <ThemeButton variant="primary" onClick={handleDownload}>
+                          <span className="flex items-center gap-2 text-xs">
+                            Download
+                            <img src="/download.svg" alt="Download" className="w-4 h-4" />
+                          </span>
+                        </ThemeButton>
+                        <ThemeButton onClick={handleOpenProgressNotesModal} variant="secondary">
+                          <span className="flex items-center gap-2 text-xs">
+                            View
+                            <img src="/view-analysis.svg" alt="View" className="w-3.5 h-3.5" />
+                          </span>
+                        </ThemeButton>
+                        <ThemeButton onClick={restartAnalysis} variant="tertiary">
+                          <span className="flex items-center gap-2 text-xs">
+                            Restart
+                            <img src="/restart.svg" alt="Restart" className="w-4 h-4" />
+                          </span>
+                        </ThemeButton>
                       </>
                     ) : isAnalysisFailed ? (
                       <button

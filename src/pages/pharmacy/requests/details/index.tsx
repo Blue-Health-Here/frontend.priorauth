@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CardHeader from "@/components/common/CardHeader";
 import { UploadedFile } from "@/utils/types";
 import ProgressNotesModal from "@/components/ProgressNotesModal";
@@ -11,13 +11,13 @@ import {
   getRequestStatuses,
   postRequestUploadFiles,
   deleteReqUploadedFile,
+  postStartAiAnalysis,
 } from "@/services/pharmacyService";
 import Loading from "@/components/common/Loading";
 import StatusTimeline from "./StatusTimeline";
 import SideDrawer from "@/components/SideDrawer";
 import RequestDetailsContent from "./SideDrawerReqDetailsContent";
 import LetterOfMedicalNecessity from "./LetterOfMedicalNecessity";
-import { loadPdfJs } from "@/services/pdfService";
 import FileUploadSection from "./FileUploadSection";
 import FileDropzone from "@/components/common/FileDropzone";
 import UploadFileList from "@/components/common/UploadFileList";
@@ -37,40 +37,21 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   const [isAnalysisStarted, setIsAnalysisStarted] = useState<boolean>(false);
   const [isAnalysisComplete, setIsAnalysisComplete] = useState(false);
   const [isAnalysisFailed, setIsAnalysisFailed] = useState(false);
-  const analysisTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
-  // Clean up timer on unmount
-  useEffect(() => {
-    return () => {
-      if (analysisTimerRef.current) {
-        clearTimeout(analysisTimerRef.current);
-      }
-    };
-  }, []);
-
-  const startAnalysis = () => {
+  const startAnalysis = async () => {
     setIsAnalysisStarted(true);
     setIsAnalysisComplete(false);
     setIsAnalysisFailed(false);
 
-    if (analysisTimerRef.current) {
-      clearTimeout(analysisTimerRef.current);
+    const response = await postStartAiAnalysis(dispatch, reqId);
+    if (response) {
+      setIsAnalysisComplete(true);
+      setIsAnalysisFailed(false);
+    } else {
+      setIsAnalysisComplete(false);
+      setIsAnalysisFailed(true);
     }
-
-    // Simulate analysis that randomly succeeds or fails
-    analysisTimerRef.current = setTimeout(() => {
-      const isSuccess = Math.random() > 0.5;
-      if (isSuccess) {
-        setIsAnalysisComplete(true);
-      } else {
-        setIsAnalysisFailed(true);
-      }
-    }, 5000);
-  };
-
-  const restartAnalysis = () => {
-    startAnalysis();
   };
 
   const handleOpenProgressNotesModal = () => {
@@ -122,28 +103,30 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
 
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       const fileArray = Array.from(e.dataTransfer.files);
-      const newFiles = await Promise.all(
-        fileArray.map(async (file) => {
-          if (file.type === "application/pdf") {
-            const response: any = await convertPdfToImage(file);
-            return response;
-          } else {
-            return {
-              id: Math.random().toString(36).substring(2, 9),
-              name: file.name,
-              size: file.size,
-              type: file.type,
-              lastModified: file.lastModified,
-              progress: 0,
-              status: "uploading" as const,
-              file: file,
-              url: URL.createObjectURL(file),
-              fileTags: [],
-            };
-          }
-        })
-      );
-      setUploadedFiles((prev: any) => [...prev, ...newFiles]);
+      try {
+        const formData = new FormData();
+        fileArray.forEach((file: any) => {
+          formData.append("files", file);
+        });
+        const response = await postRequestUploadFiles(
+          dispatch,
+          reqId,
+          formData
+        );
+        if (response) {
+          setUploadedFiles(
+            response?.files?.map((item: any) => {
+              return {
+                ...item,
+                name: item.fileName,
+                type: item.mimeType,
+              };
+            })
+          );
+        }
+      } catch (error: any) {
+        setUploadedFiles([]);
+      }
     }
   };
 
@@ -186,6 +169,10 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
         setRequestDetails(detailsRes);
         setUploadedFiles(detailsRes?.files.map((item: any) => ({ ...item, name: item.fileName, type: item.mimeType })))
         dispatch(setRequestComments(detailsRes.comments));
+        if (detailsRes?.chartNotes?.length > 0) {
+          setIsAnalysisComplete(true);
+          setIsAnalysisStarted(true);
+        }
       } else {
         setRequestDetails(null);
         setUploadedFiles([]);
@@ -200,44 +187,6 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
       isFetchedReqDetails.current = true;
     }
   }, [dispatch, reqId]);
-
-  const convertPdfToImage = useCallback(async (file: any) => {
-    try {
-      const pdfjsLib: any = await loadPdfJs();
-      const arrayBuffer = await file.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-      const page = await pdf.getPage(1);
-      const viewport = page.getViewport({ scale: 2.0 });
-
-      const canvas: any = canvasRef.current;
-      const context = canvas.getContext("2d");
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
-
-      const renderContext = {
-        canvasContext: context,
-        viewport: viewport,
-      };
-
-      await page.render(renderContext).promise;
-
-      const imageDataUrl = canvas.toDataURL("image/png", 0.9);
-      return {
-        id: Math.random().toString(36).substring(2, 9),
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        lastModified: file.lastModified,
-        progress: 0,
-        status: "uploading" as const,
-        file: file,
-        url: imageDataUrl,
-        fileTags: [],
-      };
-    } catch (err) {
-      console.error("Error converting PDF to image:", err);
-    }
-  }, []);
 
   const handleCheckNotes = () => {
     setIsDrawerOpen(true);
@@ -279,29 +228,6 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                     showCheckNotesBtn={true}
                   />
                 </div>
-                {/* <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
-                  <CardHeader title="Progress Notes" />
-                  <div className="p-4">
-                    <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] overflow-hidden">
-                      <button
-                        type="button"
-                        onClick={handleOpenProgressNotesModal}
-                        className="flex w-full items-center justify-center cursor-pointer gap-2 py-4 px-3 bg-white rounded-lg"
-                      >
-                        <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
-                          {requestDetails?.chartNotes?.length > 0
-                            ? "View Progress Notes"
-                            : "Upload Progress Notes"}
-                        </p>
-                        <img
-                          src="/upload-new.svg"
-                          alt="upload new img"
-                          className=""
-                        />
-                      </button>
-                    </div>
-                  </div>
-                </div> */}
                 <FileUploadSection
                   uploadedFiles={uploadedFiles}
                   setUploadedFiles={setUploadedFiles}
@@ -313,9 +239,8 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                   isAnalysisFailed={isAnalysisFailed}
                   setIsAnalysisFailed={setIsAnalysisFailed}
                   startAnalysis={startAnalysis}
-                  restartAnalysis={restartAnalysis}
+                  restartAnalysis={startAnalysis}
                   handleOpenProgressNotesModal={handleOpenProgressNotesModal}
-                  convertPdfToImage={convertPdfToImage}
                 />
                 <div className="bg-white rounded-xl border border-quaternary-navy-blue relative overflow-hidden">
                   <CardHeader title="Other Files" />
