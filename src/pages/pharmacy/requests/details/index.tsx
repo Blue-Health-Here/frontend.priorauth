@@ -6,7 +6,7 @@ import { UploadedFile } from "@/utils/types";
 import ProgressNotesModal from "@/components/ProgressNotesModal";
 import PageHeader from "./PageHeader";
 import InfoDetails from "./InfoDetails";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { deleteReqUploadedFile, getRequestDetails, getRequestStatuses, postRequestUploadFiles } from "@/services/pharmacyService";
 import Loading from "@/components/common/Loading";
@@ -15,8 +15,8 @@ import SideDrawer from "@/components/SideDrawer";
 import RequestDetailsContent from "./SideDrawerReqDetailsContent";
 import LetterOfMedicalNecessity from "./LetterOfMedicalNecessity";
 import { loadPdfJs } from "@/services/pdfService";
-import { RootState } from "@/store";
 import toast from "react-hot-toast";
+import { setRequestComments } from "@/store/features/pharmacy/requests/requestsSlice";
 
 const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -26,11 +26,9 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   const canvasRef = useRef(null);
   const [requestDetails, setRequestDetails] = useState<any>(null);
   const isFetchedReqDetails = useRef(false);
-  const { reqComments } = useSelector((state: RootState) => state.pharmacyReqs);
   const dispatch = useDispatch();
   const { id: reqId } = useParams();
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
-  const [comments, setComments] = useState<any[]>(reqComments);
 
   useEffect(() => {
     console.log(isDrawerOpen, "isDrawerOpen");
@@ -53,9 +51,11 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
       if (detailsRes) {
         setRequestDetails(detailsRes);
         setUploadedFiles(detailsRes?.files.map((item: any) => ({ ...item, name: item.fileName, type: item.mimeType })))
+        dispatch(setRequestComments(detailsRes.comments));
       } else {
         setRequestDetails(null);
         setUploadedFiles([]);
+        dispatch(setRequestComments([]));
       }
 
       setIsLoading(false);
@@ -239,13 +239,8 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
         width="w-[500px]"
         position="right"
       >
-        <RequestDetailsContent
-          comments={comments}
-          setComments={setComments}
-          initialTab="Status & Notes"
-          onClose={() => setIsDrawerOpen(false)}
-          isAdmin={isAdmin}
-        />
+        <RequestDetailsContent initialTab="Status & Notes"
+          onClose={() => setIsDrawerOpen(false)} isAdmin={isAdmin} />
       </SideDrawer>
       <div className="p-4 bg-white rounded-xl theme-shadow relative">
         {isLoading ? (

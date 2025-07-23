@@ -1,40 +1,20 @@
-import ThemeButton from "@/components/common/ThemeButton";
-import NameBadge from "@/components/NameBadge";
 import ThemeButtonTabs from "@/components/ThemeButtonTabs";
-import { timeAgo } from "@/utils/helper";
-import { useCallback, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import ActivityLogItem from "@/components/common/ActvityLogItem";
 import StatusTimeline from "./StatusTimeline";
+import CommentsWidget from "./CommentsWidget";
 
 interface RequestDetailsContentProps {
-  comments?: any[];
-  setComments?: (comments: any[]) => void;
   initialTab?: string;
   onClose?: () => void;
   isAdmin?: boolean;
 }
 
 const RequestDetailsContent: React.FC<RequestDetailsContentProps> = ({
-  comments = [],
-  setComments = () => { },
   initialTab = "Comments",
   isAdmin
 }) => {
   const [activeTab, setActiveTab] = useState(initialTab);
-  const [input, setInput] = useState("");
-
-  const handleAdd = useCallback(() => {
-    if (!input.trim()) return;
-    const newComment = {
-      id: Date.now(),
-      author: "You",
-      body: input.trim(),
-      createdAt: new Date(),
-    };
-    setComments([...comments, newComment]);
-    setInput("");
-  }, [input, comments, setComments]);
 
   return (
     <div className="flex flex-col gap-4 h-full p-4">
@@ -49,68 +29,7 @@ const RequestDetailsContent: React.FC<RequestDetailsContentProps> = ({
         {activeTab === "Status & Notes" && (
           <StatusTimeline className="!p-0" isAdmin={isAdmin} showCheckNotesBtn={false} height="" />
         )}
-
-        {activeTab === "Comments" && (
-          <div className="space-y-4">
-            {comments.length > 0 && (
-              <div className="space-y-6 p-3 border-b border-quaternary-navy-blue">
-                <AnimatePresence>
-                  {comments.map((c: any) => (
-                    <motion.div
-                      key={c.id}
-                      initial={{ opacity: 0, y: -4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      className="flex gap-4 items-start"
-                    >
-                      <NameBadge
-                        data={{ name: c.author, textColor: "#fff" }}
-                        showName={false}
-                      />
-                      <div className="flex-1 space-y-1">
-                        <p className="font-medium leading-none text-gray-900 dark:text-gray-100">
-                          {c.author}
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {timeAgo(c.createdAt)}
-                        </p>
-                        <p className="text-sm text-gray-700 dark:text-gray-300">
-                          {c.body}
-                        </p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            )}
-
-            <div className="p-3">
-              <div className="flex gap-3 items-start">
-                <NameBadge
-                  data={{ name: "P", bgColor: "#CBDAFF", textColor: "#3961B2" }}
-                  showName={false}
-                />
-                <textarea
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Write a comment"
-                  className="flex-1 resize-none rounded-lg border border-light-stroke bg-white p-3 text-sm focus:outline-none focus:border-dark-stroke"
-                  rows={3}
-                />
-              </div>
-              <div className="flex justify-end pt-3">
-                <ThemeButton
-                  onClick={handleAdd}
-                  disabled={!input.trim()}
-                  className="px-6"
-                >
-                  Post Comment
-                </ThemeButton>
-              </div>
-            </div>
-          </div>
-        )}
-
+        {activeTab === "Comments" && <CommentsWidget showTwo={false} />}
         {activeTab === "Revision History" && (
           <div className="p-4 space-y-4">
             <ActivityLogItem
