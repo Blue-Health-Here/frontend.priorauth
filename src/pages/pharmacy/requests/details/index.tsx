@@ -21,6 +21,8 @@ import { loadPdfJs } from "@/services/pdfService";
 import { RootState } from "@/store";
 import toast from "react-hot-toast";
 import FileUploadSection from "./FileUploadSection";
+import FileDropzone from "@/components/common/FileDropzone";
+import UploadFileList from "@/components/common/UploadFileList";
 
 const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -38,6 +40,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   const [isAnalysisComplete, setIsAnalysisComplete] = useState(false);
   const [isAnalysisFailed, setIsAnalysisFailed] = useState(false);
   const analysisTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
 
   // Clean up timer on unmount
   useEffect(() => {
@@ -59,13 +62,13 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
 
     // Simulate analysis that randomly succeeds or fails
     analysisTimerRef.current = setTimeout(() => {
-      const isSuccess = Math.random() > 0.5; 
+      const isSuccess = Math.random() > 0.5;
       if (isSuccess) {
         setIsAnalysisComplete(true);
       } else {
         setIsAnalysisFailed(true);
       }
-    }, 5000); 
+    }, 5000);
   };
 
   const restartAnalysis = () => {
@@ -74,6 +77,94 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
 
   const handleOpenProgressNotesModal = () => {
     setIsModalOpen(true);
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const fileArray = Array.from(e.target.files);
+      try {
+        const formData = new FormData();
+        fileArray.forEach((file: any) => {
+          formData.append("files", file);
+        });
+        const response = await postRequestUploadFiles(
+          dispatch,
+          reqId,
+          formData
+        );
+        if (response) {
+          setUploadedFiles(
+            response?.files?.map((item: any) => {
+              return {
+                ...item,
+                name: item.fileName,
+                type: item.mimeType,
+              };
+            })
+          );
+        }
+      } catch (error: any) {
+        setUploadedFiles([]);
+      }
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const fileArray = Array.from(e.dataTransfer.files);
+      const newFiles = await Promise.all(
+        fileArray.map(async (file) => {
+          if (file.type === "application/pdf") {
+            const response: any = await convertPdfToImage(file);
+            return response;
+          } else {
+            return {
+              id: Math.random().toString(36).substring(2, 9),
+              name: file.name,
+              size: file.size,
+              type: file.type,
+              lastModified: file.lastModified,
+              progress: 0,
+              status: "uploading" as const,
+              file: file,
+              url: URL.createObjectURL(file),
+              fileTags: [],
+            };
+          }
+        })
+      );
+      setUploadedFiles((prev: any) => [...prev, ...newFiles]);
+    }
+  };
+
+  const removeFile = async (id: string) => {
+    try {
+      const response = await deleteReqUploadedFile(dispatch, reqId, id);
+      if (response.success) {
+        setUploadedFiles((prev: any) =>
+          prev.filter((file: any) => file.id !== id)
+        );
+        toast.success(response.message);
+      }
+    } catch (error: any) {
+      toast.error(error?.message);
+    }
+  };
+
+  const handleAddTag = (updateFn: (prev: UploadedFile[]) => UploadedFile[]) => {
+    setUploadedFiles(updateFn);
   };
 
   useEffect(() => {
@@ -116,46 +207,43 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     }
   }, [dispatch, reqId]);
 
-  const convertPdfToImage = useCallback(
-    async (file: any) => {
-      try {
-        const pdfjsLib: any = await loadPdfJs();
-        const arrayBuffer = await file.arrayBuffer();
-        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-        const page = await pdf.getPage(1);
-        const viewport = page.getViewport({ scale: 2.0 });
+  const convertPdfToImage = useCallback(async (file: any) => {
+    try {
+      const pdfjsLib: any = await loadPdfJs();
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      const page = await pdf.getPage(1);
+      const viewport = page.getViewport({ scale: 2.0 });
 
-        const canvas: any = canvasRef.current;
-        const context = canvas.getContext("2d");
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
+      const canvas: any = canvasRef.current;
+      const context = canvas.getContext("2d");
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
 
-        const renderContext = {
-          canvasContext: context,
-          viewport: viewport,
-        };
+      const renderContext = {
+        canvasContext: context,
+        viewport: viewport,
+      };
 
-        await page.render(renderContext).promise;
+      await page.render(renderContext).promise;
 
-        const imageDataUrl = canvas.toDataURL("image/png", 0.9);
-        return {
-          id: Math.random().toString(36).substring(2, 9),
-          name: file.name,
-          size: file.size,
-          type: file.type,
-          lastModified: file.lastModified,
-          progress: 0,
-          status: "uploading" as const,
-          file: file,
-          url: imageDataUrl,
-          fileTags: [],
-        };
-      } catch (err) {
-        console.error("Error converting PDF to image:", err);
-      }
-    },
-    []
-  );
+      const imageDataUrl = canvas.toDataURL("image/png", 0.9);
+      return {
+        id: Math.random().toString(36).substring(2, 9),
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        lastModified: file.lastModified,
+        progress: 0,
+        status: "uploading" as const,
+        file: file,
+        url: imageDataUrl,
+        fileTags: [],
+      };
+    } catch (err) {
+      console.error("Error converting PDF to image:", err);
+    }
+  }, []);
 
   const handleCheckNotes = () => {
     setIsDrawerOpen(true);
@@ -251,6 +339,56 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                         requestDetails={requestDetails}
                       />
                     </div>
+                    <div className="inline-flex flex-col gap-2">
+                      <h3 className="text-base font-medium text-primary-black">
+                        Upload Files
+                      </h3>
+                      <FileDropzone
+                        isDragging={isDragging}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                        onFileChange={handleFileChange}
+                        className="!p-3"
+                        isPharmacyRequest={true}
+                      />
+                    </div>
+
+                    {uploadedFiles.length > 0 && (
+                      <div className="inline-flex flex-col gap-2">
+                        <h3 className="text-sm font-medium text-secondary-black">
+                          {uploadedFiles.some(
+                            (item: any) => item.status === "uploading"
+                          ) ? (
+                            <span>
+                              {
+                                uploadedFiles.filter(
+                                  (item: any) => item.status === "uploading"
+                                ).length
+                              }{" "}
+                              files uploading...
+                            </span>
+                          ) : (
+                            <span>Uploaded Files</span>
+                          )}
+                        </h3>
+                        <UploadFileList
+                          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                          files={uploadedFiles}
+                          removeFile={(id: any) => removeFile(id)}
+                          handleAddTag={handleAddTag}
+                        />
+                        <button className="flex items-center justify-center gap-2 mx-auto mt-2 px-3 py-1.5 border border-[#CBDAFF] rounded-lg text-primary-navy-blue hover:bg-[#F5F8FF] transition-colors text-sm font-medium">
+                          
+                          <span>View All</span>
+                          <img
+                            src="/view-all.svg"
+                            alt="View All"
+                            className="h-3.5 w-3.5"
+                          />
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

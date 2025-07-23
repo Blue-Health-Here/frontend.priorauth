@@ -95,7 +95,7 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <img
-            src="/uploading_state.svg"
+            src="/uploaded-files.svg"
             alt="uploading state"
             className="h-8 w-8"
           />
@@ -140,7 +140,7 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
             onClick={() => removeFile(file.id)}
             className={file.status === "uploading" ? "text-black cursor-pointer" : "text-red-500 hover:text-red-700 cursor-pointer"}
           >
-            <img src="/images/delete.svg" alt="delete icon" className="" />
+            <img src="/file-delete.svg" alt="delete icon" className="" />
           </button>
         </div>
       </div>
