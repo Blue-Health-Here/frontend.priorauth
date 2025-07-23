@@ -7,7 +7,6 @@ import InfoDetails from "./InfoDetails";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
-  deleteReqUploadedFile,
   getRequestDetails,
   getRequestStatuses,
 } from "@/services/pharmacyService";
