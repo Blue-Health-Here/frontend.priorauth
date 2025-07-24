@@ -22,6 +22,7 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
   const { isSidebarOpen, isSidebarCollapsed } = useSelector((state: RootState) => state.global);
   const [isNotifDropdownOpen, setIsNotifDropdownOpen] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserData>({
     userName: '',
     email: '',
@@ -134,6 +135,7 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
             </button>
             {isNotifDropdownOpen && <NavbarNotificationDropdown />}
           </div>
+
           <div
             className="pl-1.5 pr-0.5 hidden lg:block rounded-lg border border-quaternary-navy-blue bg-quaternary-navy-blue"
             ref={dropdownRef}
@@ -171,6 +173,19 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
               />
             )}
           </div>
+
+          {/* Theme toggle button - added after profile section */}
+          <button
+            type="button"
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            className="hidden lg:flex items-center justify-center cursor-pointer h-full rounded-lg border border-light-stroke p-2 w-10 py-1 px-2 sm:p-2.5"
+          >
+            <img
+              src="/theme-button.svg"
+              alt="Toggle theme"
+              className="w-4 h-4 sm:h-5 sm:w-5"
+            />
+          </button>
         </div>
       </nav>
     </div>
