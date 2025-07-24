@@ -6,13 +6,14 @@ interface PharmacyToolTipDropdownProps {
   isArchived?: boolean;
   onArchiveToggle?: (status: boolean) => void;
   onGenerateCPA?: () => void;
+  loadingGenerateCPA?: boolean;
 }
 
 const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({ 
   isArchived, 
   onArchiveToggle,
   onGenerateCPA,
-  onModify
+  onModify, loadingGenerateCPA
 }) => {
   return (
     <div className="absolute right-0 top-full border border-light-stroke w-40 md:w-44 bg-white rounded-lg shadow-lg z-50 overflow-hidden">
@@ -30,7 +31,7 @@ const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({
         className="group flex w-full items-center gap-x-1.5 px-3 py-2 cursor-pointer transition font-secondary text-secondary-black hover:bg-gray-50"
         onClick={() => onGenerateCPA && onGenerateCPA()}
       >
-        <BsFileEarmarkText /><span className="text-xs md:text-sm">Generate CPA</span>
+        <BsFileEarmarkText /><span className="text-xs md:text-sm">{loadingGenerateCPA ? "Generating..." : "Generate CPA"}</span>
       </button>
       
       {/* Archive/Unarchive Option */}
