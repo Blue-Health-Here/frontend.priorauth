@@ -11,8 +11,10 @@ import FilterField from "@/components/common/FilterField";
 import ThemeButton from "@/components/common/ThemeButton";
 import InviteLinkModal from "./InviteLinkModal";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
 import FormField from "./FormField";
+import { modifyPrescriberSchema } from "@/utils/validationSchema";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Prescribers: React.FC<any> = ({ isAdmin }) => {
   const [selectedPrescriber, setSelectedPrescriber] = useState<any>(null);
@@ -29,6 +31,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   const [activeTab, setActiveTab] = useState("Active List");
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const isArchiveTab = activeTab === "Archives";
+  const [loadingGenerateCPA, setLoadingGenerateCPA] = useState<boolean>(false);
 
   const filterOptions = [
     { field: "asc", filterable: true, header: "Name: A → Z" },
@@ -116,14 +119,46 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     setIsModifying(false);
   };
 
-  const modifyPrescriberSchema = Yup.object().shape({
-    prescriber: Yup.string().required("Name is required"),
-    prescriberPhone: Yup.string().required("Phone is required"),
-    prescriberCity: Yup.string().required("City is required"),
-    npi: Yup.string().required("NPI is required"),
-    fax: Yup.string(),
-    prescriberAddress: Yup.string().required("Address is required"),
-  });
+  const handleGenerateCPA = (item: any) => {
+    console.log(item, "item");
+    if (user) {
+      const pharmacy_name = user.firstName + " " + user.lastName;
+      const values: any = {
+        prescriber_name: item.prescriber,
+        practice_address: item.prescriberAddress,
+        prescriber_fax: item.prescriberFax,
+        prescriber_phone: item.prescriberPhone,
+        pharmacy_name,
+        prescriber_npi: item.npi,
+      };
+      const formData = new FormData();
+      Object.keys(values).forEach((item: any) => {
+        formData.append(item, values[item]);
+      });
+  
+      try {
+        setLoadingGenerateCPA(true);
+        axios.post("https://backend.bluehealthhere.com/service-agreement", formData, {
+          responseType: 'blob',
+        })
+          .then((response) => {
+            const file = new Blob([response.data], { type: 'application/pdf' });
+            const fileURL = URL.createObjectURL(file);
+            const a = document.createElement('a');
+            a.href = fileURL;
+            a.download = pharmacy_name + '.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+  
+            setLoadingGenerateCPA(false);
+          })
+          .catch((error: any) => toast.error(error));
+      } catch (error) {
+        toast.error("An error occurred while searching for criteria.");
+      }
+    }
+  };
 
   return (
     <div className="bg-white rounded-lg theme-shadow p-4 h-full">
@@ -334,12 +369,14 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
           ) : displayedPrescribers.length > 0 ? (
             displayedPrescribers.map((item) => (
               <PrescriberCard
-                key={item.id}
+                key={item.prescriber}
                 prescriber={item}
                 isAdmin={isAdmin}
                 onArchiveToggle={handleArchiveToggle}
                 showUnarchiveButton={activeTab === "Archives"}
                 onModify={() => handleModifyPrescriber(item)}
+                onGenerateCPA={() => handleGenerateCPA(item)}
+                loadingGenerateCPA={loadingGenerateCPA}
               />
             ))
           ) : (
