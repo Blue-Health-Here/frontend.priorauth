@@ -3,7 +3,7 @@ import React from "react";
 interface InfoColumnProps {
   icon: React.ReactNode;
   label: string;
-  data: string | number;
+  data?: string | number;
   className?: string;
   isArchived?: boolean;
 }
@@ -21,8 +21,8 @@ const InfoColumn: React.FC<InfoColumnProps> = ({
         {icon}
       </div>
       <div className="flex-1">
-        <p className="text-xs text-muted-foreground text-secondary-black">{label}</p>
-        <p className="text-sm font-semibold text-primary-black">{data}</p>
+        {label && <p className="text-xs text-muted-foreground text-secondary-black">{label}</p>}
+        {data && <p className="text-sm font-semibold text-primary-black">{data}</p>}
       </div>
     </div>
   );

@@ -14,6 +14,29 @@ export interface Pharmacy {
     approved: number;
     denied: number;
   };
+  firstName?: string;
+  middleName?: string;
+  lastName?: string;
+  userName?: string;
+  gender?: "other" | "male" | "female"; // You can adjust this based on other potential gender options
+  pictureUrl?: string;
+  dateOfBirth?: string; // Consider using Date type if you expect a valid date format
+  status?: number;
+  lastLogin?: string; // You can also change this to Date if it's a valid date
+  lastOnline?: string; // Same as lastLogin, Date type might be more appropriate
+  roleId?: string;
+  roleCode?: string;
+  companyId?: string;
+  npi?: string;
+  address?: string;
+  city?: string;
+  zipCode?: string;
+  faxNumber?: string;
+  location?: string;
+  active?: boolean;
+  createdAt?: string; // Change to Date if you expect it to be a valid date
+  createdBy?: string;
+  createdById?: string;
 }
 
 export interface PharmacyCardProps {

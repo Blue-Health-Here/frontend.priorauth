@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PharmacyCard from './PharmacyCard';
-import { pharmacies, tabs } from '../../../utils/constants';
+// import { pharmacies, tabs } from '../../../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { fetchAllPharmacies } from '../../../services/adminService';
@@ -19,13 +19,12 @@ const AdminPharmacies: React.FC = () => {
       isReqsFetched.current = true;
     }
   }, []);
-  console.log(pharmaciesData, "pharmaciesData");
+  // console.log(pharmaciesData, "pharmaciesData");
   return (
     <>
-      {/* <div className="bg-primary-background rounded-2xl shadow-xs min-h-[calc(100vh-15rem)]"> */}
-      <div className="bg-primary-white p-4 sm:p-5 rounded-2xl shadow-[0px 0px 12px 0px rgba(0, 0, 0, 0.04)]">
+      <div className="bg-primary-white p-4 sm:p-5 rounded-2xl theme-shadow flex flex-col gap-4 w-full">
         <TableHeader />
-        <div className="flex overflow-x-auto whitespace-nowrap py-4 scrollbar-hide">
+        {/* <div className="flex overflow-x-auto whitespace-nowrap py-4 scrollbar-hide">
           {tabs.map(tab => (
             <button
               key={tab.id}
@@ -39,19 +38,15 @@ const AdminPharmacies: React.FC = () => {
               {tab.label}
             </button>
           ))}
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 p-3 sm:p-6 bg-primary-background rounded-b-2xl">
-          {pharmacies.map((pharmacy: any) => {
+        </div> */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+          {pharmaciesData.map((pharmacy: any) => {
             return (
               <PharmacyCard key={pharmacy.id} pharmacy={pharmacy} />
             )
           })}
-          {/* {[...pharmaciesData].map(item => ({ ...item, lastRequests: { date: '10/03/2023', approved: 42, denied: 12 } })).map(pharmacy => (
-              <PharmacyCard key={pharmacy.id} pharmacy={pharmacy} />
-            ))} */}
         </div>
       </div>
-      {/* </div> */}
     </>
   );
 };
