@@ -11,8 +11,8 @@ import FilterField from "@/components/common/FilterField";
 import ThemeButton from "@/components/common/ThemeButton";
 import InviteLinkModal from "./InviteLinkModal";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
 import FormField from "./FormField";
+import { modifyPrescriberSchema } from "@/utils/validationSchema";
 
 const Prescribers: React.FC<any> = ({ isAdmin }) => {
   const [selectedPrescriber, setSelectedPrescriber] = useState<any>(null);
@@ -116,14 +116,9 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     setIsModifying(false);
   };
 
-  const modifyPrescriberSchema = Yup.object().shape({
-    prescriber: Yup.string().required("Name is required"),
-    prescriberPhone: Yup.string().required("Phone is required"),
-    prescriberCity: Yup.string().required("City is required"),
-    npi: Yup.string().required("NPI is required"),
-    fax: Yup.string(),
-    prescriberAddress: Yup.string().required("Address is required"),
-  });
+  const handleGenerateCPA = (item: any) => {
+    console.log(item, "item");
+  };
 
   return (
     <div className="bg-white rounded-lg theme-shadow p-4 h-full">
@@ -334,12 +329,13 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
           ) : displayedPrescribers.length > 0 ? (
             displayedPrescribers.map((item) => (
               <PrescriberCard
-                key={item.id}
+                key={item.prescriber}
                 prescriber={item}
                 isAdmin={isAdmin}
                 onArchiveToggle={handleArchiveToggle}
                 showUnarchiveButton={activeTab === "Archives"}
                 onModify={() => handleModifyPrescriber(item)}
+                onGenerateCPA={() => handleGenerateCPA(item)}
               />
             ))
           ) : (

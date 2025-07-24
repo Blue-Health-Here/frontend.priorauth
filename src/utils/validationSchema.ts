@@ -78,3 +78,12 @@ export const userValidationSchema = Yup.object().shape({
     .required('Address is required')
     .min(5, 'Address must be at least 5 characters'),
 });
+
+export const modifyPrescriberSchema = Yup.object().shape({
+  prescriber: Yup.string().required("Name is required"),
+  prescriberPhone: Yup.string().required("Phone is required"),
+  prescriberCity: Yup.string().required("City is required"),
+  npi: Yup.string().required("NPI is required"),
+  fax: Yup.string(),
+  prescriberAddress: Yup.string().required("Address is required"),
+});

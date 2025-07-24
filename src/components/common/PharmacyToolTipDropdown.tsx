@@ -1,14 +1,17 @@
 import React from "react";
+import { BsFileEarmarkText } from "react-icons/bs";
 
 interface PharmacyToolTipDropdownProps {
   onModify?: () => void;
   isArchived?: boolean;
   onArchiveToggle?: (status: boolean) => void;
+  onGenerateCPA?: () => void;
 }
 
 const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({ 
   isArchived, 
   onArchiveToggle,
+  onGenerateCPA,
   onModify
 }) => {
   return (
@@ -22,6 +25,14 @@ const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({
         <span className="text-xs md:text-sm">Modify</span>
       </button>
 
+      {/* Generate CPA */}
+      <button
+        className="group flex w-full items-center gap-x-1.5 px-3 py-2 cursor-pointer transition font-secondary text-secondary-black hover:bg-gray-50"
+        onClick={() => onGenerateCPA && onGenerateCPA()}
+      >
+        <BsFileEarmarkText /><span className="text-xs md:text-sm">Generate CPA</span>
+      </button>
+      
       {/* Archive/Unarchive Option */}
       <button
         className="group flex items-center w-full gap-x-1.5 px-3 py-2 text-sm cursor-pointer transition hover:bg-gray-50"
