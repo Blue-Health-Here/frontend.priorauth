@@ -5,7 +5,7 @@ import SecuritySettings from "./SecuritySettings";
 import { pharmacyValidationSchema } from "@/utils/validationSchema";
 import EditableFormSection from "@/components/common/settings/EditableFormSection";
 import SettingsCard from "@/components/common/settings/SettingsCard";
-import { fetchProfileData, updateProfileData } from "@/services/pharmacyService";
+import { fetchProfileData, updateProfileData, updateProfilePicture } from "@/services/pharmacyService";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 
@@ -15,6 +15,7 @@ interface ProfileFormValues {
   phoneNumber: string;
   location: string;
   fullAddress: string;
+  profileImage: File | string | null;
 }
 
 const PharmacySettings = () => {
@@ -39,66 +40,83 @@ const PharmacySettings = () => {
     deniedRequests: "0",
     prescribers: "0",
   });
+
   const isFetchedProfile = useRef(false);
+
   const loadProfileData = async () => {
     try {
-      await fetchProfileData(dispatch);
+      const data = await fetchProfileData(dispatch);
+      return data;
     } catch (error) {
       console.error("Failed to fetch profile data:", error);
+      throw error;
     }
   };
 
   useEffect(() => {
     if (!isFetchedProfile.current) {
-      loadProfileData();
+      loadProfileData()
+        .then(data => {
+          if (data) {
+            setInitialFormData({
+              profileImg: data.pictureUrl || "/Ellipse 431.png",
+              name: data.userName || "-",
+              joinedDate: data.joinedDate?.split("T")[0] || "-",
+              lastRequest: data.lastRequestDate?.split("T")[0] || "-",
+              phoneNumber: data.phoneNumber || "-",
+              email: data.email || "-",
+              location: data.location || "-",
+              fullAddress: data.fullAddress || "-",
+              approvedRequests: data.approvedRequestCount?.toString() || "0",
+              deniedRequests: data.deniedRequestCount?.toString() || "0",
+              prescribers: data.prescriberCount?.toString() || "0",
+            });
+          }
+        });
       isFetchedProfile.current = true;
     }
   }, []);
 
-  useEffect(() => {
-    if (profileData) {
-      setInitialFormData({
-        profileImg: profileData.pictureUrl || null,
-        name: profileData.userName || "-",
-        joinedDate: profileData.joinedDate?.split("T")[0] || "-",
-        lastRequest: profileData.lastRequestDate?.split("T")[0] || "-",
-        phoneNumber: profileData.phoneNumber || "-",
-        email: profileData.email || "-",
-        location: profileData.location || "-",
-        fullAddress: profileData.fullAddress || "-",
-        approvedRequests: profileData.approvedRequestCount?.toString() || "0",
-        deniedRequests: profileData.deniedRequestCount?.toString() || "0",
-        prescribers: profileData.prescriberCount?.toString() || "0",
-      });
-    }
-  }, [profileData]);
-
   const handleSubmit = async (values: ProfileFormValues) => {
-    console.log(values, "values");
-
     if (!profileData?.id) {
       console.error("User ID not available");
       return;
     }
 
-    // Prepare the data for the API
-    const updateData = {
-      userName: values.name, // Match your API expected field name
-      email: values.email,
-      phone: values.phoneNumber,
-      location: values.location,
-      address: values.fullAddress,
-    };
+    try {
+      // First update profile picture if changed
+      if (values.profileImage instanceof File) {
+        const imageFormData = new FormData();
+        imageFormData.append('profile-pic', values.profileImage);
+        const updatedData = await updateProfilePicture(dispatch, profileData.id, imageFormData);
+        
+        // Update local state with new image URL
+        if (updatedData?.pictureUrl) {
+          setInitialFormData(prev => ({
+            ...prev,
+            profileImg: updatedData.pictureUrl
+          }));
+        }
+      }
 
-    await updateProfileData(dispatch, profileData.id, updateData);
+      // Then update other profile data
+      const updateData = {
+        userName: values.name,
+        email: values.email,
+        phone: values.phoneNumber,
+        location: values.location,
+        address: values.fullAddress,
+      };
 
-    // Update local state
-    setInitialFormData(prev => ({
-      ...prev,
-      ...values
-    }));
-
-    setIsEditingProfile(false);
+      await updateProfileData(dispatch, profileData.id, updateData);
+      setIsEditingProfile(false);
+      
+      // Refresh profile data to ensure consistency
+      await loadProfileData();
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+      throw error;
+    }
   };
 
   if (isLoading && !profileData) {
@@ -141,6 +159,6 @@ const PharmacySettings = () => {
       </div>
     </div>
   );
-}
+};
 
 export default PharmacySettings;

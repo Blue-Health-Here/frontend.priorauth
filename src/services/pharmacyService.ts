@@ -303,3 +303,19 @@ export const updateProfilePassword = async (dispatch: AppDispatch, userId: strin
         }
     });
 }
+
+
+export const updateProfilePicture = async (
+  dispatch: AppDispatch, 
+  userId: string, 
+  formData: FormData
+) => {
+  return apiHandler(dispatch, 'patch', `/user/update/${userId}/profile-pic`, {
+    data: formData,
+    isFormData: true, 
+    successMessage: "Profile picture updated successfully!",
+    onSuccess: (updatedData) => {
+      dispatch(setProfileData(updatedData));
+    }
+  });
+};

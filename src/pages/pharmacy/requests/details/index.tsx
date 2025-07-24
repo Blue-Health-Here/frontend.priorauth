@@ -58,33 +58,37 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     setIsModalOpen(true);
   };
 
+  const handleUploadFiles = async (files: any) => {
+    try {
+      const formData = new FormData();
+      files.forEach((file: any) => {
+        formData.append("files", file);
+      });
+      const response = await postRequestUploadFiles(
+        dispatch,
+        reqId,
+        formData
+      );
+      if (response) {
+        setUploadedFiles(
+          response?.files?.map((item: any) => {
+            return {
+              ...item,
+              name: item.fileName,
+              type: item.mimeType,
+            };
+          })
+        );
+      }
+    } catch (error: any) {
+      setUploadedFiles([]);
+    }
+  };
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const fileArray = Array.from(e.target.files);
-      try {
-        const formData = new FormData();
-        fileArray.forEach((file: any) => {
-          formData.append("files", file);
-        });
-        const response = await postRequestUploadFiles(
-          dispatch,
-          reqId,
-          formData
-        );
-        if (response) {
-          setUploadedFiles(
-            response?.files?.map((item: any) => {
-              return {
-                ...item,
-                name: item.fileName,
-                type: item.mimeType,
-              };
-            })
-          );
-        }
-      } catch (error: any) {
-        setUploadedFiles([]);
-      }
+      handleUploadFiles(fileArray);
     }
   };
 
@@ -103,30 +107,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
 
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       const fileArray = Array.from(e.dataTransfer.files);
-      try {
-        const formData = new FormData();
-        fileArray.forEach((file: any) => {
-          formData.append("files", file);
-        });
-        const response = await postRequestUploadFiles(
-          dispatch,
-          reqId,
-          formData
-        );
-        if (response) {
-          setUploadedFiles(
-            response?.files?.map((item: any) => {
-              return {
-                ...item,
-                name: item.fileName,
-                type: item.mimeType,
-              };
-            })
-          );
-        }
-      } catch (error: any) {
-        setUploadedFiles([]);
-      }
+      handleUploadFiles(fileArray);
     }
   };
 
