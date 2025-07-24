@@ -32,7 +32,6 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const isArchiveTab = activeTab === "Archives";
   const [loadingGenerateCPA, setLoadingGenerateCPA] = useState<boolean>(false);
-  const [progress, setProgress] = useState<number>(0);
 
   const filterOptions = [
     { field: "asc", filterable: true, header: "Name: A → Z" },
@@ -137,10 +136,6 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
         formData.append(item, values[item]);
       });
   
-      const interval = setInterval(() => {
-        setProgress((prev) => (prev < 90 ? prev + 6 : prev));
-      }, 500);
-  
       try {
         setLoadingGenerateCPA(true);
         axios.post("https://backend.bluehealthhere.com/service-agreement", formData, {
@@ -157,7 +152,6 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
             a.remove();
   
             setLoadingGenerateCPA(false);
-            clearInterval(interval);
           })
           .catch((error: any) => toast.error(error));
       } catch (error) {
