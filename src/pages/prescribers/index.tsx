@@ -15,6 +15,7 @@ import FormField from "./FormField";
 import { modifyPrescriberSchema } from "@/utils/validationSchema";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { filterOptions } from "@/utils/constants";
 
 const Prescribers: React.FC<any> = ({ isAdmin }) => {
   const [selectedPrescriber, setSelectedPrescriber] = useState<any>(null);
@@ -32,11 +33,6 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const isArchiveTab = activeTab === "Archives";
   const [loadingGenerateCPA, setLoadingGenerateCPA] = useState<boolean>(false);
-
-  const filterOptions = [
-    { field: "asc", filterable: true, header: "Name: A → Z" },
-    { field: "desc", filterable: true, header: "Name: Z → A" },
-  ];
 
   const fetchAllPrescribers = async () => {
     setIsLoading(true);

@@ -142,16 +142,14 @@ export const fetchProfileData = async (dispatch: AppDispatch) => {
 // ============= Pharmacies =============
 
 export const fetchAllPharmacies = async (dispatch: AppDispatch) => {
-    return apiHandler(dispatch, 'post', '/pharmacy/get_all', {
+    return apiHandler(dispatch, 'get', '/user/pharmacies', {
         data: {},
-        successMessage: "Pharmacies have been fetched successfully!",
         onSuccess: (data) => dispatch(setPharmaciesData(data)),
         onError: (error) => {
             if (error.status === 404) {
                 dispatch(setPharmaciesData([]));
             }
         },
-        errorMessage: "Requests not found."
     })
 }
 
