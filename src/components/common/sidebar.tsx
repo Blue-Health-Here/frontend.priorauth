@@ -53,23 +53,28 @@ const Sidebar: React.FC = () => {
       {isSidebarOpen && (
         <div className="fixed inset-0 z-[98] bg-black bg-opacity-50 lg:hidden" />
       )}
-      <aside className={asideClass}>
+      <aside
+        className={asideClass}
+        style={{
+          background: "linear-gradient(to bottom, #0B1F4A, #214182)",
+        }}
+      >
         <div
-          className={`p-4 flex h-[71px] border-b bg-primary-white gap-4 sm:gap-6 lg:gap-8 items-center border-r border-gray-100 ${
+          className={`p-4 flex h-[71px] bg-transparent gap-4 sm:gap-6 lg:gap-8 items-center ${
             isSidebarCollapsed ? "px-2 justify-center" : "justify-between"
           }`}
         >
-          <Link to="/" className={isSidebarCollapsed ? "pl-0" : "pl-2"}>
-            <img
-              src={isSidebarCollapsed ? "/Group.svg" : "/images/logo.svg"}
-              alt="PriorAuth Logo"
-              className="h-6 sm:h-7 lg:h-8"
-            />
-          </Link>
+         <Link to="/" className={isSidebarCollapsed ? "pl-0" : "pl-2"}>
+  <img
+    src={isSidebarCollapsed ? "/Group.svg" : "/updated-logo (2).svg"}
+    alt="PriorAuth Logo"
+    className={`h-6 sm:h-7 lg:h-8 ${isSidebarCollapsed ? "brightness-0 invert" : ""}`}
+  />
+</Link>
           {isSidebarOpen ? (
             <span
               onClick={() => dispatch(setIsSidebarOpen(false))}
-              className="cursor-pointer"
+              className="cursor-pointer text-white"
             >
               <RxCross2 size={18} />
             </span>
@@ -79,14 +84,14 @@ const Sidebar: React.FC = () => {
                 onClick={handleSidebarCollapse}
                 src="/sidebar.svg"
                 alt="Collapse sidebar"
-                className="w-8 h-8 p-1.5 rounded-lg cursor-pointer"
+                className="w-8 h-8 p-1.5 rounded-lg cursor-pointer brightness-0 invert"
               />
             )
           )}
         </div>
 
-        {/* Main content with restored border and proper scrolling */}
-        <div className="flex flex-col h-[calc(100%-68px)] overflow-hidden border-r border-gray-100 bg-primary-white">
+        {/* Main content with proper scrolling */}
+        <div className="flex flex-col h-[calc(100%-68px)] overflow-hidden bg-transparent">
           {/* Scrollable content area */}
           <div className="overflow-y-auto flex-1 px-3 py-3">
             <ul className="flex flex-col gap-y-2 text-[14px]">
@@ -100,8 +105,8 @@ const Sidebar: React.FC = () => {
                     className={({ isActive }) =>
                       `group flex items-center gap-x-2 rounded cursor-pointer transition font-secondary ${
                         isActive
-                          ? "bg-primary-sky-blue text-primary-white"
-                          : "hover:bg-primary-sky-blue hover:text-primary-white"
+                          ? "bg-[#294C95] text-white"
+                          : "text-white hover:bg-[#294C95]"
                       } ${isSidebarCollapsed ? "p-2 px-3" : "p-2"}`
                     }
                   >
@@ -111,16 +116,16 @@ const Sidebar: React.FC = () => {
                           src={item.icon}
                           alt={`${item.name} Icon`}
                           title={item.name}
-                          className={`transition duration-200 w-4 h-4 ${
-                            isActive
-                              ? "brightness-0 invert"
-                              : "group-hover:brightness-0 group-hover:invert"
+                          className={`transition duration-200 w-4 h-4 brightness-0 invert ${
+                            isActive ? "opacity-100" : "opacity-80"
                           }`}
                         />
                         <span
                           className={`${
                             isSidebarCollapsed ? "hidden" : "inline"
-                          } text-sm transition-colors duration-200 group-hover:text-primary-white font-semibold`}
+                          } text-sm transition-colors duration-200 font-semibold ${
+                            isActive ? "opacity-100" : "opacity-80"
+                          }`}
                         >
                           {item.name}
                         </span>
@@ -131,18 +136,21 @@ const Sidebar: React.FC = () => {
               ))}
             </ul>
           </div>
+          <div className="border-t border-[#2864F6] border-opacity-20 w-full my-3"></div>
 
-          {/* Footer with full-width separator */}
-          <div className="border-t border-gray-200 w-full"></div>
           <div className="px-3 py-4">
             <div className={isSidebarCollapsed ? "flex justify-center" : ""}>
               <NavLink
-                to={pathName.startsWith("/pharmacy") ? "/pharmacy/settings" : "/admin/settings"}
+                to={
+                  pathName.startsWith("/pharmacy")
+                    ? "/pharmacy/settings"
+                    : "/admin/settings"
+                }
                 className={({ isActive }) =>
                   `group flex items-center gap-x-2 rounded cursor-pointer transition font-secondary ${
                     isActive
-                      ? "bg-primary-sky-blue text-primary-white"
-                      : "hover:bg-primary-sky-blue hover:text-primary-white"
+                      ? "bg-[#294C95] text-white"
+                      : "text-white hover:bg-[#294C95]"
                   } ${isSidebarCollapsed ? "p-1.5" : "p-2"}`
                 }
               >
@@ -151,16 +159,16 @@ const Sidebar: React.FC = () => {
                     <img
                       src={"/sidebar-Settings.svg"}
                       alt={`Settings Icon`}
-                      className={`transition duration-200 w-4 h-4 ${
-                        isActive
-                          ? "brightness-0 invert"
-                          : "group-hover:brightness-0 group-hover:invert"
+                      className={`transition duration-200 w-4 h-4 brightness-0 invert ${
+                        isActive ? "opacity-100" : "opacity-80"
                       }`}
                     />
                     <span
                       className={`${
                         isSidebarCollapsed ? "hidden" : "inline"
-                      } text-sm transition-colors duration-200 group-hover:text-primary-white font-semibold`}
+                      } text-sm transition-colors duration-200 font-semibold ${
+                        isActive ? "opacity-100" : "opacity-80"
+                      }`}
                     >
                       Settings
                     </span>
@@ -169,7 +177,7 @@ const Sidebar: React.FC = () => {
               </NavLink>
             </div>
 
-            {/* Copyright section - updated with more space and blue background when collapsed */}
+            {/* Copyright section */}
             <div
               className={`${
                 isSidebarCollapsed ? "flex justify-center mt-4" : "mt-6"
@@ -178,17 +186,19 @@ const Sidebar: React.FC = () => {
               <div
                 className={`flex items-center ${
                   isSidebarCollapsed
-                    ? "gap-0 bg-quaternary-navy-blue p-2 px-3 rounded-lg"
-                    : "gap-2 bg-quaternary-navy-blue p-3 py-1.5 rounded-lg"
+                    ? "gap-0 bg-[#294C95] p-2 px-3 rounded-lg"
+                    : "gap-2 bg-[#294C95] p-3 py-1.5 rounded-lg"
                 }`}
               >
                 <img
                   src="/copyright.svg"
                   alt="copyright"
-                  className={`${isSidebarCollapsed ? "w-5 h-5" : "w-5 h-5"}`}
+                  className={`${
+                    isSidebarCollapsed ? "w-5 h-5" : "w-5 h-5"
+                  } brightness-0 invert`}
                 />
                 {!isSidebarCollapsed && (
-                  <p className="text-tertiary-navy-blue text-xs scale-85 -ml-2">
+                  <p className="text-white text-xs scale-85 -ml-2">
                     Copyrights Futuro 2025 - All Rights Reserved.
                   </p>
                 )}
