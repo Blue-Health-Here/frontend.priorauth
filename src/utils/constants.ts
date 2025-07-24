@@ -530,6 +530,11 @@ export const reqStatusOptions = [
   { label: 'Chart notes analysis', value: 'chart-notes-analysis' }
 ];
 
+export const filterOptions = [
+  { field: "asc", filterable: true, header: "Name: A → Z" },
+  { field: "desc", filterable: true, header: "Name: Z → A" },
+];
+
 export const requestsDumyLargeData = [
   {
     id: "1",

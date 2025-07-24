@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PharmacyCardProps } from '../../../utils/types';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import InfoColumn from '@/components/common/InfoColumn';
 import { FiMail } from 'react-icons/fi';
@@ -32,19 +32,19 @@ const PharmacyCard: React.FC<PharmacyCardProps> = ({ pharmacy }) => {
       <div className="flex flex-col gap-3">
         <div className='flex justify-between gap-2 items-start'>
           <div className='flex gap-2 items-center'>
-            <Link to={`/admin/pharmacies/${pharmacy.id}/pharmacy-details`}>
+            {/* <Link to={`/admin/pharmacies/${pharmacy.id}/pharmacy-details`}> */}
               <img
                 src={pharmacy.pictureUrl || '/images/Abstergo Ltd..png'}
                 alt=""
                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl"
               />
-            </Link>
+            {/* </Link> */}
             <div>
-              <Link to={`/admin/pharmacies/${pharmacy.id}/pharmacy-details`}>
+              {/* <Link to={`/admin/pharmacies/${pharmacy.id}/pharmacy-details`}> */}
                 <h2 className='text-sm sm:text-base md:text-lg font-semibold text-primary-black leading-[110%]'>
                   {pharmacy.firstName + " " + pharmacy.lastName}
                 </h2>
-              </Link>
+              {/* </Link> */}
               <span className='text-secondary-black text-xs sm:text-sm'>{pharmacy.phone}</span>
             </div>
           </div>
