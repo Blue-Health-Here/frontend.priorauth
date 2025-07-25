@@ -151,7 +151,7 @@ const MedicationWiseChart = () => {
     };
 
     return (
-        <div className="bg-white rounded-2xl p-4 theme-shadow w-full">
+        <div className="bg-primary-white rounded-2xl p-4 theme-shadow w-full">
             <div className="flex justify-between items-center">
                 <h2 className="text-lg font-semibold">Medication wise Analysis</h2>
                 <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5">

@@ -139,7 +139,7 @@ const GlobalStatsCard: React.FC<any> = ({
     const currentData = statsData[activePeriod];
 
     return (
-        <div className="rounded-2xl p-5 theme-shadow bg-white transition-colors min-h-full w-full flex flex-col justify-between">
+        <div className="rounded-2xl p-5 theme-shadow bg-primary-white transition-colors min-h-full w-full flex flex-col justify-between">
             {/* Header with reduced bottom margin */}
             <div className="flex items-start flex-wrap justify-between mb-2"> {/* Changed mb-1 to mb-2 */}
                 <div>

@@ -166,7 +166,7 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
                     : "opacity-50"
                     }`}
                 >
-                  <div className="p-1 bg-white rounded-full ml-1">
+                  <div className="p-1 bg-primary-white rounded-full ml-1">
                     <div className="relative z-10 w-2.5 h-2.5 rounded-full">
                       <div className="absolute inset-0 rounded-full bg-blue-500"></div>
                     </div>

@@ -157,7 +157,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg theme-shadow p-4 h-full">
+    <div className="bg-primary-white rounded-lg theme-shadow p-4 h-full">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-medium tracking-tighter">
@@ -175,7 +175,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
           <ThemeButton
             variant="secondary"
             onClick={() => setIsModifying(false)}
-            className="min-w-[78px] bg-white"
+            className="min-w-[78px] bg-primary-white"
           >
             Cancel
           </ThemeButton>

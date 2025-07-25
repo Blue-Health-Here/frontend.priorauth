@@ -13,10 +13,10 @@ const RenderFilePreview: React.FC<any> = ({ file, isLarge, selectedItem, handleS
             <div key={file.id} onClick={() => handleSelectFile(file)}
                 className={selectedItem.name === file.name ? containerClass + ' relative border-primary-sky-blue' : containerClass + ' relative'}>
                 <img src={file.url} alt={file.name} className="max-h-full max-w-full object-cover h-full w-full" />
-                <p className="absolute bottom-0 left-0 right-0 p-2 text-center bg-white ">
+                <p className="absolute bottom-0 left-0 right-0 p-2 text-center bg-primary-white ">
                     <span className="font-medium text-xs line-clamp-1 text-secondary-black">{file.name}</span>
                 </p>
-                <a href={file.url} target="_blank" className="cursor-pointer bg-white z-10 p-1.5 border rounded-sm border-blue-navigation-link-button absolute top-4 right-4">
+                <a href={file.url} target="_blank" className="cursor-pointer bg-primary-white z-10 p-1.5 border rounded-sm border-blue-navigation-link-button absolute top-4 right-4">
                     <img src="/formkit_expand.svg" alt="expand button" className="w-4" />
                 </a>
             </div>
@@ -28,10 +28,10 @@ const RenderFilePreview: React.FC<any> = ({ file, isLarge, selectedItem, handleS
                 {file.file ? (
                     <img src={file.url} alt={file.name} className="max-h-full max-w-full object-cover h-full" />
                 ) : <img src={previewPdfUrl || ""} alt='preview url' className='max-h-full max-w-full object-cover h-full' />}
-                <p className="absolute bottom-0 left-0 right-0 p-2 text-center bg-white ">
+                <p className="absolute bottom-0 left-0 right-0 p-2 text-center bg-primary-white ">
                     <span className="font-medium text-xs line-clamp-1 text-secondary-black">{file.name}</span>
                 </p>
-                <a href={file.file ? URL.createObjectURL(file.file) : file.url} target="_blank" className="cursor-pointer bg-white z-10 p-1.5 border rounded-sm border-blue-navigation-link-button absolute top-4 right-4">
+                <a href={file.file ? URL.createObjectURL(file.file) : file.url} target="_blank" className="cursor-pointer bg-primary-white z-10 p-1.5 border rounded-sm border-blue-navigation-link-button absolute top-4 right-4">
                     <img src="/formkit_expand.svg" alt="expand button" className="w-4" />
                 </a>
             </div>
@@ -46,10 +46,10 @@ const RenderFilePreview: React.FC<any> = ({ file, isLarge, selectedItem, handleS
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                 </div>
-                <p className="absolute bottom-0 left-0 right-0 p-2 text-center bg-white ">
+                <p className="absolute bottom-0 left-0 right-0 p-2 text-center bg-primary-white ">
                     <span className="font-medium text-xs line-clamp-1 text-secondary-black">{file.name}</span>
                 </p>
-                <a href={file.url} target="_blank" className="cursor-pointer bg-white z-10 p-1.5 border rounded-sm border-blue-navigation-link-button absolute top-4 right-4">
+                <a href={file.url} target="_blank" className="cursor-pointer bg-primary-white z-10 p-1.5 border rounded-sm border-blue-navigation-link-button absolute top-4 right-4">
                     <img src="/formkit_expand.svg" alt="expand button" className="w-4" />
                 </a>
             </div>
@@ -63,10 +63,10 @@ const RenderFilePreview: React.FC<any> = ({ file, isLarge, selectedItem, handleS
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                 </div>
-                <p className="absolute bottom-0 left-0 right-0 p-2 text-center bg-white ">
+                <p className="absolute bottom-0 left-0 right-0 p-2 text-center bg-primary-white ">
                     <span className="font-medium text-xs line-clamp-1 text-secondary-black">{file.name}</span>
                 </p>
-                <a href={file.url} target="_blank" className="cursor-pointer bg-white z-10 p-1.5 border rounded-sm border-blue-navigation-link-button absolute top-4 right-4">
+                <a href={file.url} target="_blank" className="cursor-pointer bg-primary-white z-10 p-1.5 border rounded-sm border-blue-navigation-link-button absolute top-4 right-4">
                     <img src="/formkit_expand.svg" alt="expand button" className="w-4" />
                 </a>
             </div>

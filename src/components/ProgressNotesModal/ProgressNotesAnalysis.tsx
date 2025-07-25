@@ -74,7 +74,7 @@ const ProgressNotesAnalysis: React.FC<any> = ({ analysisDetails }) => {
                     </div>
 
                     <div className="magic-lines rounded-lg overflow-hidden">
-                        <div className="flex flex-col gap-5 bg-primary-white p-4 bg-white rounded-lg">
+                        <div className="flex flex-col gap-5 bg-primary-white p-4 bg-primary-white rounded-lg">
                             <div className="flex items-center justify-between gap-4">
                                 <h3 className="font-semibold magic-title">
                                     Magic Lines

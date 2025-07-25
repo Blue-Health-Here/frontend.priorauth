@@ -166,7 +166,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
             className="w-full h-full"
             title={file.name}
           />
-          <div className="absolute bottom-0 left-0 right-0 bg-white text-gray-800 text-xs p-1 truncate border-t border-gray-200">
+          <div className="absolute bottom-0 left-0 right-0 bg-primary-white text-gray-800 text-xs p-1 truncate border-t border-gray-200">
             {file.name}
           </div>
         </div>
@@ -180,7 +180,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
               <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z" clipRule="evenodd" />
             </svg>
           </div>
-          <div className="absolute bottom-0 left-0 right-0 bg-white text-gray-800 text-xs p-1 truncate border-t border-gray-200">
+          <div className="absolute bottom-0 left-0 right-0 bg-primary-white text-gray-800 text-xs p-1 truncate border-t border-gray-200">
             {file.name}
           </div>
         </div>
@@ -193,7 +193,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <div className="absolute bottom-0 left-0 right-0 bg-white text-gray-800 text-xs p-1 truncate border-t border-gray-200">
+          <div className="absolute bottom-0 left-0 right-0 bg-primary-white text-gray-800 text-xs p-1 truncate border-t border-gray-200">
             {file.name}
           </div>
         </div>
@@ -204,7 +204,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
       <div
-        className="relative bg-white rounded-lg shadow-xl border border-gray-300 w-full max-w-8xl h-[90vh] mx-4 overflow-hidden z-50"
+        className="relative bg-primary-white rounded-lg shadow-xl border border-gray-300 w-full max-w-8xl h-[90vh] mx-4 overflow-hidden z-50"
         style={{ maxHeight: "calc(100vh - 4rem)" }}
       >
         <div className="flex justify-between items-center border-b border-gray-200 px-6 py-4">
@@ -250,7 +250,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
             )}
             <div className="mt-auto mb-4 ml-5 mr-5">
               <div className="relative rounded-lg p-[1px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B]">
-                <div className="bg-white rounded-lg p-4 py-3">
+                <div className="bg-primary-white rounded-lg p-4 py-3">
                   <div className="flex items-center justify-center gap-2">
                     {!analysisStarted ? (
                       <button
@@ -287,7 +287,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
                 }}
               >
                 <div
-                  className="bg-white rounded-full w-full h-full flex items-center justify-center p-8 relative"
+                  className="bg-primary-white rounded-full w-full h-full flex items-center justify-center p-8 relative"
                   style={{
                     boxShadow: `
                     inset 0 4px 12px rgba(166, 108, 249, 0.5),
@@ -339,7 +339,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
 
           {/* {analysisStarted && (
             <div className="absolute top-0 left-[25%] w-[75%] h-full p-6">
-              <div className="bg-white rounded-lg border border-gray-200 h-full p-4">
+              <div className="bg-primary-white rounded-lg border border-gray-200 h-full p-4">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">
                   AI Analysis Results
                 </h3>
@@ -354,7 +354,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
 
           {!analysisStarted && (
             <div
-              className="bg-white rounded-xl border border-gray-200"
+              className="bg-primary-white rounded-xl border border-gray-200"
               style={{
                 width: "340px",
                 position: "absolute",

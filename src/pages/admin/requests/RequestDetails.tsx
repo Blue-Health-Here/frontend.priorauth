@@ -70,7 +70,7 @@ const RequestDetails: React.FC = () => {
   };
 
   return (
-    <div className="p-4 sm:p-6 bg-white rounded-xl shadow-lg relative">
+    <div className="p-4 sm:p-6 bg-primary-white rounded-xl shadow-lg relative">
       <ProgressNotesModal isOpen={isModalOpen} onClose={closeModal} />
 
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
@@ -117,7 +117,7 @@ const RequestDetails: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl overflow-hidden border border-gray-200">
+          <div className="bg-primary-white rounded-xl overflow-hidden border border-gray-200">
             <div className="bg-[#EBF1FF] px-3 py-2">
               <h3 className="text-sm sm:text-md font-semibold text-gray-800">Status</h3>
             </div>
@@ -157,7 +157,7 @@ const RequestDetails: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl overflow-hidden border border-gray-200">
+          <div className="bg-primary-white rounded-xl overflow-hidden border border-gray-200">
             <div className="bg-[#EBF1FF] px-3 py-2">
               <h3 className="text-sm sm:text-md font-semibold text-gray-800">Notes</h3>
             </div>
@@ -172,7 +172,7 @@ const RequestDetails: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl overflow-hidden border border-gray-200">
+          <div className="bg-primary-white rounded-xl overflow-hidden border border-gray-200">
             <div className="bg-[#EBF1FF] px-3 py-2">
               <h3 className="text-sm sm:text-md font-semibold text-gray-800">Files</h3>
             </div>
@@ -186,13 +186,13 @@ const RequestDetails: React.FC = () => {
               </div>
 
               <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B]">
-                <div className="bg-white rounded-lg p-2 sm:p-4">
+                <div className="bg-primary-white rounded-lg p-2 sm:p-4">
                   <div className="flex items-center justify-center gap-2">
                     <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
                       Upload Progress Notes
                     </p>
                     <div className="p-[1px] sm:p-[1.5px] rounded-md bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B]">
-                      <div className="bg-white p-1 rounded-md flex items-center justify-center">
+                      <div className="bg-primary-white p-1 rounded-md flex items-center justify-center">
                         <svg
                           className="w-3 h-3"
                           fill="none"

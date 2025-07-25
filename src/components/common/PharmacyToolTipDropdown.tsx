@@ -16,7 +16,7 @@ const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({
   onModify, loadingGenerateCPA
 }) => {
   return (
-    <div className="absolute right-0 top-full border border-light-stroke w-40 md:w-44 bg-white rounded-lg shadow-lg z-50 overflow-hidden">
+    <div className="absolute right-0 top-full border border-light-stroke w-40 md:w-44 bg-primary-white rounded-lg shadow-lg z-50 overflow-hidden">
       {/* Modify Option */}
       <button
         className="group flex w-full items-center gap-x-1.5 px-3 py-2 cursor-pointer transition font-secondary text-secondary-black hover:bg-gray-50"

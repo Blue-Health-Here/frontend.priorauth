@@ -34,7 +34,7 @@ const ThemeButton: React.FC<any> = ({
             disabled:bg-gray-50 disabled:text-gray-400 disabled:border-gray-200 disabled:cursor-not-allowed
         `,
         tertiary: `
-            bg-white text-[#163066] border border-[#CBDAFF] cursor-pointer
+            bg-primary-white text-[#163066] border border-[#CBDAFF] cursor-pointer
     disabled:bg-gray-50 disabled:text-gray-400 disabled:border-gray-200 disabled:cursor-not-allowed
         `,
         disabled: `

@@ -16,7 +16,7 @@ const PARequestsSection = () => {
     ];
 
     return (
-        <div className="p-4 rounded-2xl bg-white theme-shadow flex flex-col gap-4">
+        <div className="p-4 rounded-2xl bg-primary-white theme-shadow flex flex-col gap-4">
             <div className="flex justify-between items-center gap-4 flex-wrap">
                 <h3 className="font-semibold text-base text-primary-black">PA Requests</h3>
                 <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5">
