@@ -2,7 +2,7 @@ import { InputText } from "primereact/inputtext";
 import React, { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 
-const SearchField: React.FC<any> = ({ globalFilter, setGlobalFilter }) => {
+const SearchField: React.FC<any> = ({ globalFilter, setGlobalFilter, placeholder, className, parentClassName }) => {
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
@@ -16,12 +16,12 @@ const SearchField: React.FC<any> = ({ globalFilter, setGlobalFilter }) => {
     }, []);
 
     return (
-        <div className="relative h-full w-full">
+        <div className={`relative h-full w-full ${parentClassName}`}>
             <InputText
                 value={globalFilter}
                 onChange={(e: any) => setGlobalFilter(e.target.value)}
-                placeholder={isMobile ? "Search" : "Search for request here"}
-                className="!pl-10 !rounded-xl !border-light-stroke h-full !text-sm w-full h-full"
+                placeholder={isMobile ? "Search" : placeholder || "Search for request here"}
+                className={`!pl-10 !rounded-full !border-light-stroke h-full !text-sm w-full h-full ${className}`}
             />
             <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                 <FiSearch className="w-4 h-4" />
