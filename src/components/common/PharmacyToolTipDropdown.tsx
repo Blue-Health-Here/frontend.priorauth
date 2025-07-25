@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { BsFileEarmarkText } from "react-icons/bs";
 import InviteLinkModal from "@/pages/prescribers/InviteLinkModal";
 
 interface PharmacyToolTipDropdownProps {
