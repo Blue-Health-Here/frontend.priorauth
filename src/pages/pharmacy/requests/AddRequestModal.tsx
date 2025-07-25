@@ -30,6 +30,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
     const [icdCodes, setICDCodes] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isExtractingCodes, setIsExtractingCodes] = useState(false);
+    const [apiError, setApiError] = useState<string | null>(null);
     const { user } = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch();
 
@@ -40,6 +41,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
             setFieldValue("rejectionClaim", "");
         }
         setRejectionClaim(e.target.value);
+        setApiError(null); // Clear error when claim changes
     }
 
     useEffect(() => {
@@ -78,7 +80,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
         }
     }
     
-    const handleSubmit = async (values: FormikValues) => {
+ const handleSubmit = async (values: FormikValues) => {
         const medication = medications?.[0]?.medication;
     
         if (!medication || medication.trim() === "") {
@@ -88,6 +90,8 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
     
         try {
             setIsLoading(true);
+            setApiError(null); // Clear previous errors
+            
             const response = await handleAddNewRequest(dispatch, {
                 key: values.key,
                 rejectionclaim: values.rejectionClaim,
@@ -104,7 +108,9 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
                 setRejectionClaim("");
             }
         } catch (error: any) {
-            toast.error(error.message || "Failed to add request");
+            const errorMessage = error.response?.data?.message || error.message || "Failed to add request";
+            setApiError(errorMessage);
+            toast.error(errorMessage);
         } finally {
             setIsLoading(false);
         }
@@ -197,7 +203,12 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
                                         icdCodes={icdCodes} 
                                         disabled={isLoading || isExtractingCodes}
                                     />
-                                    {icdCodes.length === 0 && values.rejectionClaim && !isExtractingCodes && (
+                                    {apiError && (
+                                        <div className="text-error-clip text-xs font-secondary mt-3 border border-error-clip py-2 rounded-md px-2 bg-error-chip-bg-color ">
+                                            {apiError}
+                                        </div>
+                                    )}
+                                    {icdCodes.length === 0 && values.rejectionClaim && !isExtractingCodes && !apiError && (
                                         <div className="text-yellow-600 text-xs font-secondary">
                                             No ICD codes detected. Please select one manually.
                                         </div>
