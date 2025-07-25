@@ -12,9 +12,9 @@ interface PrescriberCardProps {
     prescriber: string;
     pharmacyLogo?: string;
     totalRequests?: number;
-    approvedPercentage?: number;
-    deniedPercentage?: number;
-    pendingPercentage?: number;
+    approvedPercent?: number;
+    deniedPercent?: number;
+    pendingPercent?: number;
     prescriberPhone: string;
     npi: string;
     prescriberAddress: string;
@@ -43,9 +43,9 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
 
   // Fallback values if not provided in API
   const totalRequests = prescriber.totalRequests ?? 528;
-  const approvedPercentage = prescriber.approvedPercentage ?? 56;
-  const deniedPercentage = prescriber.deniedPercentage ?? 10;
-  const pendingPercentage = prescriber.pendingPercentage ?? 34;
+  const approvedPercentage = prescriber.approvedPercent ?? 56;
+  const deniedPercentage = prescriber.deniedPercent ?? 10;
+  const pendingPercentage = prescriber.pendingPercent ?? 34;
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
