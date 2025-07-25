@@ -40,8 +40,8 @@ const GradientSidebarButton: React.FC<any> = ({ analysisStarted, disabled, start
         >
             <div
                 className={`rounded-lg w-full group flex items-center justify-center gap-2 p-4 py-3 ${disabled
-                        ? "bg-white text-gray-400"
-                        : "bg-white text-sm font-medium"
+                        ? "bg-primary-white text-gray-400"
+                        : "bg-primary-white text-sm font-medium"
                     }`}
             >
                 {isLoadingStartAnalysis ? "Analyzing..." : renderBtnContent()}

@@ -104,7 +104,7 @@ const SingleDateField: React.FC<SingleDateFieldProps> = ({
         </div>
         {openCalendar && (
           <div
-            className="absolute left-0 top-full mt-2 z-50 bg-white shadow-lg border rounded-md"
+            className="absolute left-0 top-full mt-2 z-50 bg-primary-white shadow-lg border rounded-md"
             style={{
               padding: 0,
               margin: 0,

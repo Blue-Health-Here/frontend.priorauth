@@ -166,31 +166,29 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg theme-shadow p-4 h-full">
+    <div className="bg-primary-white rounded-lg theme-shadow p-4 h-full">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-medium tracking-tighter">
           {isModifying ? "Modify Prescribers" : "Prescribers List"}
         </h1>
-        {isModifying && (
-          <div className="flex gap-2">
-            <ThemeButton
-              variant="primary"
-              type="submit"
-              form="modifyPrescriberForm"
-              className="min-w-[120px]"
-            >
-              Save Details
-            </ThemeButton>
-            <ThemeButton
-              variant="secondary"
-              onClick={() => setIsModifying(false)}
-              className="min-w-[78px] bg-white"
-            >
-              Cancel
-            </ThemeButton>
-          </div>
-        )}
+        {isModifying && <div className="flex gap-2">
+          <ThemeButton
+            variant="primary"
+            type="submit"
+            form="modifyPrescriberForm"
+            className="min-w-[120px]"
+          >
+            Save Details
+          </ThemeButton>
+          <ThemeButton
+            variant="secondary"
+            onClick={() => setIsModifying(false)}
+            className="min-w-[78px] bg-primary-white"
+          >
+            Cancel
+          </ThemeButton>
+        </div>}
       </div>
 
       {!isModifying && (

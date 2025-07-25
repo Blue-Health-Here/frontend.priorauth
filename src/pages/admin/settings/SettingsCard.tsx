@@ -11,7 +11,7 @@ interface SettingsCardProps {
 
 const SettingsCard: React.FC<SettingsCardProps> = ({ icon, title, description, path }) => {
     return (
-        <div className="bg-white rounded-lg p-4 border border-light-stroke h-full flex flex-col gap-4">
+        <div className="bg-primary-white rounded-lg p-4 border border-light-stroke h-full flex flex-col gap-4">
             <div className="bg-information-chip-bg-color rounded-lg w-20 h-20 flex items-center justify-center">
                 <img
                     src={icon}

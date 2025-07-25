@@ -20,7 +20,6 @@ const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({
   prescribers = [] // Default to empty array
 }) => {
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
-
   return (
     <>
       <div className="absolute right-0 top-full border border-light-stroke w-40 md:w-44 bg-white rounded-lg shadow-lg z-50 overflow-hidden">

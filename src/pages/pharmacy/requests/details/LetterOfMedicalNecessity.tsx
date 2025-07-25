@@ -97,7 +97,7 @@ const LetterOfMedicalNecessity: React.FC<any> = ({ requestDetails }) => {
                     <button
                         type="button"
                         onClick={generateMedicalNecessity}
-                        className="flex w-full items-center justify-center cursor-pointer gap-2 py-4 px-3 bg-white rounded-lg"
+                        className="flex w-full items-center justify-center cursor-pointer gap-2 py-4 px-3 bg-primary-white rounded-lg"
                     >
                         <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
                             {isLoadingMedicalNecessity ? "Generating..." : isReGenerateAgain ? "Generate Again" : "Generate"}
