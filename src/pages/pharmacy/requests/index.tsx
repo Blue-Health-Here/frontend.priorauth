@@ -25,6 +25,8 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
   const { reqStatusesData } = useSelector((state: RootState) => state.reqStatuses);
   const { reqsData } = useSelector((state: RootState) => state.pharmacyReqs);
   const [requestsData, setRequestsData] = useState<any>([]);
+  const navigate = useNavigate();
+  const location = useLocation();
   
   const columns = useMemo(() => [
     {
@@ -34,7 +36,22 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
       filterable: true,
       sortable: true,
       customTemplate: true,
-      render: (rowData: any, field: any) => <NameBadge data={rowData[field]} />
+      render: (rowData: any, field: any) => (
+        <div className="flex items-center justify-between group w-full">
+          <NameBadge data={rowData[field]} />
+          <button 
+            className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 
+                      text-secondary-navy-blue bg-quaternary-navy-blue 
+                      px-2 py-1 rounded text-xs ml-2 whitespace-nowrap"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`${location.pathname}/${rowData.id}/request-details`);
+            }}
+          >
+            Open
+          </button>
+        </div>
+      )
     },
     {
       field: 'medication',
@@ -98,14 +115,12 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
       filterable: true,
       sortable: true
     }
-  ], [requestsData]);
+  ], [requestsData, location.pathname, navigate]);
 
   const [visibleColumns, setVisibleColumns] = useState(columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: col.visible !== false }), {}));
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [globalFilter, setGlobalFilter] = useState('');
   const [activeRequestTab, setActiveRequestTab] = useState<string>('Active Requests');
-  const navigate = useNavigate();
-  const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
   const isFetchedStatuses = useRef(false);
