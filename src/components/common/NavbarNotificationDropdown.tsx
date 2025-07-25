@@ -4,7 +4,7 @@ import { getCurrentBadgeColors, getStatusTextColor } from "../../utils/helper";
 
 const NavbarNotificationDropdown: React.FC = () => {
     return (
-        <div className="absolute right-0 top-full w-[20rem] md:w-[24rem] xl:w-[27rem] bg-white rounded-2xl border border-gray-200 shadow-lg z-50">
+        <div className="absolute right-0 top-full w-[20rem] md:w-[24rem] xl:w-[27rem] bg-primary-white rounded-2xl border border-gray-200 shadow-lg z-50">
             <div className="py-4 px-6 flex gap-4 items-center justify-between flex-wrap border-b border-gray-200">
                 <h2 className="text-lg font-semibold">Notificatons</h2>
                 <button type="button" className="text-blue-navigation-link-button cursor-pointer font-medium bg-transparent p-0 border-0">

@@ -79,7 +79,7 @@ const RequestStatusDropdownField: React.FC<RequestStatusDropdownFieldProps> = ({
       <div className="hidden md:block">
         <button
           className={`flex items-center justify-between w-full text-sm font-medium text-secondary-black
-            border border-light-stroke rounded-xl px-3 py-3 bg-white`}
+            border border-light-stroke rounded-xl px-3 py-3 bg-primary-white`}
           onClick={() => setShowDropdown(!showDropdown)}
         >
           <div className="flex items-center gap-2">

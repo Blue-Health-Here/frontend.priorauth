@@ -121,7 +121,7 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
+    <div className="bg-primary-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
       <CardHeader title="Progress Notes" />
       {!isAnalysisComplete && !isAnalysisStarted && uploadedFiles.length === 0 && (
         <div className="p-4">
@@ -253,7 +253,7 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
                         onClick={restartAnalysis}
                         className="relative rounded-lg p-[1px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] hover:shadow-md transition-shadow max-w-[200px] w-full"
                       >
-                        <div className="rounded-lg bg-white group flex items-center justify-center gap-2 px-4 py-2 w-full">
+                        <div className="rounded-lg bg-primary-white group flex items-center justify-center gap-2 px-4 py-2 w-full">
                           <span className="bg-gradient-to-r from-[#F66568] to-[#A16CF9] bg-clip-text text-transparent text-sm font-medium">
                             Restart AI Analysis
                           </span>
@@ -352,7 +352,7 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
                   onClick={startAnalysis}
                   className="relative rounded-lg p-[1px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] hover:shadow-md transition-shadow w-full sm:w-auto"
                 >
-                  <div className="rounded-lg bg-white group flex items-center justify-center gap-2 px-4 py-2 w-full">
+                  <div className="rounded-lg bg-primary-white group flex items-center justify-center gap-2 px-4 py-2 w-full">
                     <span className="bg-gradient-to-r from-[#F66568] to-[#A16CF9] bg-clip-text text-transparent text-sm font-medium">
                       Start AI Analysis
                     </span>

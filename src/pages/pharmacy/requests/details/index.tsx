@@ -193,7 +193,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
         <RequestDetailsContent initialTab="Status & Notes"
           onClose={() => setIsDrawerOpen(false)} isAdmin={isAdmin} />
       </SideDrawer>
-      <div className="p-4 bg-white rounded-xl theme-shadow relative">
+      <div className="p-4 bg-primary-white rounded-xl theme-shadow relative">
         {isLoading ? (
           <Loading />
         ) : (
@@ -201,7 +201,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
             <PageHeader requestDetails={requestDetails} isAdmin={isAdmin} />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="col-span-1 lg:col-span-2 space-y-4">
-                <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
+                <div className="bg-primary-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
                   <CardHeader title="Status" />
                   <StatusTimeline
                     isAdmin={isAdmin}
@@ -223,7 +223,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                   restartAnalysis={startAnalysis}
                   handleOpenProgressNotesModal={handleOpenProgressNotesModal}
                 />
-                <div className="bg-white rounded-xl border border-quaternary-navy-blue relative overflow-hidden">
+                <div className="bg-primary-white rounded-xl border border-quaternary-navy-blue relative overflow-hidden">
                   <CardHeader title="Other Files" />
                   <div className="p-4 flex flex-col gap-4 relative">
                     <div className="inline-flex flex-col gap-2">
