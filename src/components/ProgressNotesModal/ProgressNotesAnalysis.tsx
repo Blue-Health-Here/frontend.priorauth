@@ -1,15 +1,36 @@
 import React, { useState } from "react";
 import ThemeButton from "../common/ThemeButton";
 import RenderNoteCard from "./RenderNoteCard";
+import api from "@/api/instance";
 
 const ProgressNotesAnalysis: React.FC<any> = ({ analysisDetails }) => {
     const [expanded, setExpanded] = useState<string | null>(null);
-
+    console.log(analysisDetails, "analysisDetails");
     const handleToggle = (key: string) => {
         setExpanded(prev => (prev === key ? null : key));
     };
 
-    const handleDownloadReport = () => { };
+    const handleDownloadReport = async () => {
+        if (analysisDetails.progressNotesReport && analysisDetails.progressNotesReport?.length > 0) {
+            const file = analysisDetails.progressNotesReport[0] as { url: string; fileName: string };
+            try {
+                const response = await api.get(file.url, {
+                    responseType: "blob"
+                });
+                const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement("a");
+                link.href = blobUrl;
+                link.download = file.fileName || "progress_notes_report.pdf";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(blobUrl); // Cleanup
+            } catch (error) {
+                console.error("Download failed:", error);
+            }
+        }
+    };
+
     return (
         <div className="w-full h-full overflow-y-auto p-8 pr-3">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
