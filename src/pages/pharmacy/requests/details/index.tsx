@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import CardHeader from "@/components/common/CardHeader";
 import { UploadedFile } from "@/utils/types";
 import ProgressNotesModal from "@/components/ProgressNotesModal";
@@ -23,6 +23,7 @@ import FileDropzone from "@/components/common/FileDropzone";
 import UploadFileList from "@/components/common/UploadFileList";
 import { setRequestComments } from "@/store/features/pharmacy/requests/requestsSlice";
 import toast from "react-hot-toast";
+import api from "@/api/instance";
 
 const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -48,6 +49,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     if (response) {
       setIsAnalysisComplete(true);
       setIsAnalysisFailed(false);
+      fetchData();
     } else {
       setIsAnalysisComplete(false);
       setIsAnalysisFailed(true);
@@ -141,28 +143,28 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     };
   }, [isDrawerOpen]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      const detailsRes = await getRequestDetails(dispatch, reqId);
+  const fetchData = async () => {
+    setIsLoading(true);
+    const detailsRes = await getRequestDetails(dispatch, reqId);
 
-      if (detailsRes) {
-        setRequestDetails(detailsRes);
-        setUploadedFiles(detailsRes?.files.map((item: any) => ({ ...item, name: item.fileName, type: item.mimeType })))
-        dispatch(setRequestComments(detailsRes.comments));
-        if (detailsRes?.chartNotes?.length > 0) {
-          setIsAnalysisComplete(true);
-          setIsAnalysisStarted(true);
-        }
-      } else {
-        setRequestDetails(null);
-        setUploadedFiles([]);
-        dispatch(setRequestComments([]));
+    if (detailsRes) {
+      setRequestDetails(detailsRes);
+      setUploadedFiles(detailsRes?.files.map((item: any) => ({ ...item, name: item.fileName, type: item.mimeType })))
+      dispatch(setRequestComments(detailsRes.comments));
+      if (detailsRes?.chartNotes?.length > 0) {
+        setIsAnalysisComplete(true);
+        setIsAnalysisStarted(true);
       }
+    } else {
+      setRequestDetails(null);
+      setUploadedFiles([]);
+      dispatch(setRequestComments([]));
+    }
 
-      setIsLoading(false);
-    };
+    setIsLoading(false);
+  };
 
+  useEffect(() => {
     if (!isFetchedReqDetails.current) {
       fetchData();
       isFetchedReqDetails.current = true;
@@ -172,6 +174,29 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   const handleCheckNotes = () => {
     setIsDrawerOpen(true);
   };
+  
+  const handleDownloadReport = async () => {
+    if (requestDetails.progressNotesReport && requestDetails.progressNotesReport?.length > 0) {
+      const file = requestDetails.progressNotesReport[0] as { url: string; fileName: string };
+      try {
+        const response = await api.get(file.url, {
+          responseType: "blob"
+        });
+        const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.download = file.fileName || "progress_notes_report.pdf";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(blobUrl); // Cleanup
+      } catch (error) {
+        console.error("Download failed:", error);
+      }
+    }
+  };
+
+  const memoizedChartNotes = useMemo(() => requestDetails?.chartNotes, [requestDetails?.chartNotes.length]);
 
   return (
     <>
@@ -181,7 +206,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
           setIsModalOpen(false);
           if (isAdded) getRequestStatuses(dispatch, reqId);
         }}
-        chartNotes={requestDetails?.chartNotes || []}
+        chartNotes={memoizedChartNotes || []}
       />
       <SideDrawer
         isOpen={isDrawerOpen}
@@ -222,6 +247,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                   startAnalysis={startAnalysis}
                   restartAnalysis={startAnalysis}
                   handleOpenProgressNotesModal={handleOpenProgressNotesModal}
+                  handleDownload={handleDownloadReport}
                 />
                 <div className="bg-primary-white rounded-xl border border-quaternary-navy-blue relative overflow-hidden">
                   <CardHeader title="Other Files" />

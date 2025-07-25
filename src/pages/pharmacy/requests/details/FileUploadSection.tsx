@@ -19,6 +19,7 @@ interface FileUploadSectionProps {
   startAnalysis: () => void;
   restartAnalysis: () => void;
   handleOpenProgressNotesModal: () => void;
+  handleDownload: () => void;
 }
 
 const FileUploadSection: React.FC<FileUploadSectionProps> = ({
@@ -32,6 +33,7 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
   startAnalysis,
   restartAnalysis,
   handleOpenProgressNotesModal,
+  handleDownload
 }) => {
   const dispatch = useDispatch();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -97,27 +99,6 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-  };
-
-  const handleDownload = async () => {
-    // const file: any = (uploadedFiles && uploadedFiles.length > 0) ? uploadedFiles[0] : null;
-    // if (file) {
-    //   try {
-    //     const response = await api.get(file.url, {
-    //       responseType: "blob"
-    //     });
-    //     const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
-    //     const link = document.createElement("a");
-    //     link.href = blobUrl;
-    //     link.download = file.fileName || "medical_necessity.pdf";
-    //     document.body.appendChild(link);
-    //     link.click();
-    //     document.body.removeChild(link);
-    //     window.URL.revokeObjectURL(blobUrl); // Cleanup
-    //   } catch (error) {
-    //     console.error("Download failed:", error);
-    //   }
-    // }
   };
 
   return (
