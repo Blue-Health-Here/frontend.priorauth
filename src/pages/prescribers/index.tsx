@@ -7,7 +7,7 @@ import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SearchField from "@/components/common/SearchField";
 import ThemeButtonTabs from "@/components/ThemeButtonTabs";
-import FilterField from "@/components/common/FilterField";
+// import FilterField from "@/components/common/FilterField";
 import ThemeButton from "@/components/common/ThemeButton";
 import InviteLinkModal from "./InviteLinkModal";
 import { Formik, Form } from "formik";
@@ -15,6 +15,7 @@ import FormField from "./FormField";
 import { modifyPrescriberSchema } from "@/utils/validationSchema";
 import axios from "axios";
 import toast from "react-hot-toast";
+// import { filterOptions } from "@/utils/constants";
 
 const Prescribers: React.FC<any> = ({ isAdmin }) => {
   const [selectedPrescriber, setSelectedPrescriber] = useState<any>(null);
@@ -27,16 +28,11 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [updatedPresData, setUpdatedPresData] = useState<any[]>([]);
   const [globalFilter, setGlobalFilter] = useState("");
-  const [sortDirection, setSortDirection] = useState<any>("asc");
+  // const [sortDirection, setSortDirection] = useState<any>("asc");
   const [activeTab, setActiveTab] = useState("Active List");
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const isArchiveTab = activeTab === "Archives";
   const [loadingGenerateCPA, setLoadingGenerateCPA] = useState<boolean>(false);
-
-  const filterOptions = [
-    { field: "asc", filterable: true, header: "Name: A → Z" },
-    { field: "desc", filterable: true, header: "Name: Z → A" },
-  ];
 
   const fetchAllPrescribers = async () => {
     setIsLoading(true);
@@ -67,18 +63,18 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   const sortedPresData = useMemo(() => {
     let data = [...updatedPresData];
 
-    if (sortDirection) {
-      data.sort((a, b) => {
-        const nameA = a.prescriber?.toLowerCase() || "";
-        const nameB = b.prescriber?.toLowerCase() || "";
+    // if (sortDirection) {
+    //   data.sort((a, b) => {
+    //     const nameA = a.prescriber?.toLowerCase() || "";
+    //     const nameB = b.prescriber?.toLowerCase() || "";
     
-        const result = nameA.localeCompare(nameB);
-        return sortDirection === "asc" ? result : -result;
-      });
-    }
+    //     const result = nameA.localeCompare(nameB);
+    //     return sortDirection === "asc" ? result : -result;
+    //   });
+    // }
   
     return data;
-  }, [updatedPresData, sortDirection]);
+  }, [updatedPresData]);
   
   const filteredPresData = useMemo(() => {
     const filterValue = globalFilter.toLowerCase();
@@ -103,7 +99,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     });
   };
 
-  const handleInviteClick = () => setIsInviteModalOpen(true);
+  // const handleInviteClick = () => setIsInviteModalOpen(true);
 
   const handleModifyPrescriber = (prescriber: any) => {
     setSelectedPrescriber(prescriber);
@@ -167,83 +163,58 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
         <h1 className="text-xl font-medium tracking-tighter">
           {isModifying ? "Modify Prescribers" : "Prescribers List"}
         </h1>
-        {isModifying ? (
-          <div className="flex gap-2">
-            <ThemeButton
-              variant="primary"
-              type="submit"
-              form="modifyPrescriberForm"
-              className="min-w-[120px]"
-            >
-              Save Details
-            </ThemeButton>
-            <ThemeButton
-              variant="secondary"
-              onClick={() => setIsModifying(false)}
-              className="min-w-[78px] bg-white"
-            >
-              Cancel
-            </ThemeButton>
-          </div>
-        ) : (
-          <ThemeButton variant="primary" onClick={handleInviteClick}>
-            Invite Link
+        {isModifying && <div className="flex gap-2">
+          <ThemeButton
+            variant="primary"
+            type="submit"
+            form="modifyPrescriberForm"
+            className="min-w-[120px]"
+          >
+            Save Details
           </ThemeButton>
-        )}
+          <ThemeButton
+            variant="secondary"
+            onClick={() => setIsModifying(false)}
+            className="min-w-[78px] bg-white"
+          >
+            Cancel
+          </ThemeButton>
+        </div>}
       </div>
 
       {!isModifying && (
         <div className="flex flex-col gap-3 mb-4">
           {/* Mobile */}
           <div className="md:hidden flex flex-col gap-3">
-            <div className="flex justify-between items-center gap-2">
-              <SearchField
-                globalFilter={globalFilter}
-                setGlobalFilter={setGlobalFilter}
-                placeholder="Search"
-                className="flex-1"
-              />
-              <FilterField
-                label="Sort By"
-                columns={filterOptions}
-                selectedValue={sortDirection}
-                onChange={setSortDirection}
-                className="w-[100px]"
-              />
-
-            </div>
+            <SearchField
+              globalFilter={globalFilter}
+              setGlobalFilter={setGlobalFilter}
+              placeholder="Search"
+              className="flex-1"
+            />
             <ThemeButtonTabs
               data={["Active List", "Archives"]}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
-              className="w-full"
+              className="w-full border-quaternary-navy-blue-dark"
             />
           </div>
 
           {/* Desktop */}
           <div className="hidden md:flex flex-col md:flex-row md:items-center justify-between gap-3 w-full">
-            <div className="flex items-center gap-4">
-              <ThemeButtonTabs
-                data={["Active List", "Archives"]}
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-                className="md:min-w-[200px]"
-              />
-            </div>
-            <div className="flex gap-2">
-              <SearchField
-                globalFilter={globalFilter}
-                setGlobalFilter={setGlobalFilter}
-                placeholder="Search prescribers here"
-                className="min-w-[200px]"
-              />
-              <FilterField
-                label="Sort By"
-                columns={filterOptions}
-                selectedValue={sortDirection}
-                onChange={setSortDirection}
-              />
-            </div>
+            <ThemeButtonTabs
+              data={["Active List", "Archives"]}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              className="md:min-w-[200px] border-quaternary-navy-blue-dark"
+            />
+            <SearchField
+              globalFilter={globalFilter}
+              setGlobalFilter={setGlobalFilter}
+              placeholder="Search Prescribers here"
+              className="min-w-[200px] max-w-[400px]"
+              parentClassName=""
+            />
           </div>
         </div>
       )}
