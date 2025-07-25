@@ -89,7 +89,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   }, [sortedPresData, globalFilter]);
 
   const displayedPrescribers = useMemo(() => {
-    return filteredPresData.filter((item) => item.isArchived === isArchiveTab);
+    return filteredPresData.filter((item) => isArchiveTab ? !item.isActive : item.isActive);
   }, [filteredPresData, isArchiveTab]);
 
   const handleArchiveToggle = (name: string, archiveStatus: boolean) => {
