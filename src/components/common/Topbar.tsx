@@ -77,7 +77,7 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
     <div
       className={`fixed top-0 left-0 ${
         isSidebarCollapsed ? "lg:left-[80px]" : "lg:left-[280px]"
-      } right-0 p-3 min-h-16 sm:p-3 z-60 bg-primary-white border-b border-gray-100 flex`}
+      } right-0 p-3 min-h-16 sm:p-3 z-60 bg-primary-white border-b border-light-stroke flex`}
     >
       <nav className={`flex justify-between w-full flex-1`}>
         <div className="flex items-center gap-2 flex-1">

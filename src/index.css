@@ -192,6 +192,14 @@
   --dark-700: #23252a;
   --dark-600: #24262b;
   --dark-500: #343740;
+
+  
+  /* Sidebar CSS Colors */
+  --sidebar-stroke: #2864F6;
+  --copyright-box: #294C95;
+  --sidebar-link-active: #294C95;
+
+
 }
 
 /* Dark Mode Colors */
@@ -255,9 +263,20 @@
   --status-warning-bg-color: #3a3a1a;
 
   --ai-animation: #f8a8aa;
+
+
+
+  /* Sidebar CSS Colors */
+  --sidebar-stroke: var(--dark-700);
+  --copyright-box: var(--dark-600);
+  --sidebar-link-active: #00216D;
+
 }
 
 @theme {
+  --color-sidebar-stroke: var(--sidebar-stroke);
+  --color-copyright-box: var(--copyright-box);
+  --color-sidebar-link-active: var(--sidebar-link-active);
   /* Brand Colors */
   --color-primary-navy-blue: var(--primary-navy-blue);
   --color-secondary-navy-blue: var(--secondary-navy-blue);
@@ -506,6 +525,15 @@ body {
 
 .slick-list, .slick-track {
   height: 100%;
+}
+
+.theme-sidebar {
+  background:linear-gradient(to bottom, #0B1F4A, #214182);
+}
+.dark {
+  .theme-sidebar {
+    background: linear-gradient(to bottom, #101011, #101011);
+  }
 }
 
 .slick-slide > div {
