@@ -198,7 +198,19 @@
   --sidebar-stroke: #2864F6;
   --copyright-box: #294C95;
   --sidebar-link-active: #294C95;
-
+  /* Navbar CSS Colors */
+  --navbar-bg: var(--white-900);
+  --navbar-stroke: var(--stroke-500);
+  /* Input CSS Colors */
+  --input-stroke: var(--stroke-500);
+  --input-bg: var(--white-900);
+  --input-label: var(--white-500);
+  --input-helper: var(--white-500);
+  --input-active-text: var(--black-900);
+  --input-disabled-bg: var(--bg-white-secondary);
+  --input-search-icon: var(--black-600);
+  --input-disabled-stroke: var(--stroke-500);
+  --input-disabled-text: var(--white-500);
 
 }
 
@@ -270,13 +282,44 @@
   --sidebar-stroke: var(--dark-700);
   --copyright-box: var(--dark-600);
   --sidebar-link-active: #00216D;
+  /* Navbar CSS Colors */
+  --navbar-bg: var(--dark-800);
+  --navbar-stroke: var(--dark-700);
+
+  /* Input CSS Colors */
+  --input-stroke: var(--dark-500);
+  --input-bg: var(--dark-700);
+  --input-label: var(--white-500);
+  --input-helper: var(--black-600);
+  --input-active-text: var(--white-900);
+  --input-disabled-bg: var(--dark-600);
+  --input-search-icon: var(--white-900);
+  --input-disabled-stroke: var(--dark-700);
+  --input-disabled-text: var(--white-500);
 
 }
 
 @theme {
+  /* Input Colors */
+  --color-input-stroke: var(--input-stroke);
+  --color-input-bg: var(--input-bg);
+  --color-input-label: var(--input-label);
+  --color-input-helper: var(--input-helper);
+  --color-input-active-text: var(--input-active-text);
+  --color-input-disabled-bg: var(--input-disabled-bg);
+  --color-input-search-icon: var(--input-search-icon);
+  --color-input-disabled-stroke: var(--input-disabled-stroke);
+  --color-input-disabled-text: var(--input-disabled-text);
+
+  /* Navbar Colors */
+  --color-navbar-stroke: var(--navbar-stroke);
+  --color-navbar-bg: var(--navbar-bg);
+
+  /* Sidebar Colors */
   --color-sidebar-stroke: var(--sidebar-stroke);
   --color-copyright-box: var(--copyright-box);
   --color-sidebar-link-active: var(--sidebar-link-active);
+
   /* Brand Colors */
   --color-primary-navy-blue: var(--primary-navy-blue);
   --color-secondary-navy-blue: var(--secondary-navy-blue);
@@ -531,8 +574,14 @@ body {
   background:linear-gradient(to bottom, #0B1F4A, #214182);
 }
 .dark {
+  .p-breadcrumb .p-breadcrumb-list li .p-menuitem-link {
+    background: transparent !important;
+  }
+  .p-breadcrumb .p-breadcrumb-list li .p-menuitem-link .p-menuitem-text {
+    color: #fff;
+  }
   .theme-sidebar {
-    background: linear-gradient(to bottom, #101011, #101011);
+    background: linear-gradient(to bottom, var(--dark-800), var(--dark-800));
   }
 }
 
