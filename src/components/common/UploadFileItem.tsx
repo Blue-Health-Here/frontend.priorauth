@@ -25,7 +25,7 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
   file,
   removeFile,
   handleAddTag,
-  isAddTags,
+  // isAddTags,
 }) => {
   const [customTag, setCustomTag] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -53,13 +53,13 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
     };
   }, [file.showTagDropdown, handleAddTag, file.id]);
 
-  const toggleDropdown = () => {
-    handleAddTag((prev) =>
-      prev.map((f) =>
-        f.id === file.id ? { ...f, showTagDropdown: !f.showTagDropdown } : f
-      )
-    );
-  };
+  // const toggleDropdown = () => {
+  //   handleAddTag((prev) =>
+  //     prev.map((f) =>
+  //       f.id === file.id ? { ...f, showTagDropdown: !f.showTagDropdown } : f
+  //     )
+  //   );
+  // };
 
   const toggleTag = (tag: string) => {
     handleAddTag((prev) =>
