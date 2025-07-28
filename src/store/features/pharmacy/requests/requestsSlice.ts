@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: any = {
     reqsData: [],
-    reqComments: []
+    reqComments: [],
+    reqStatuses: []
 };
 
 const pharmacyRequestsSlice = createSlice({
@@ -14,10 +15,13 @@ const pharmacyRequestsSlice = createSlice({
         },
         setRequestComments: (state, action) => {
             state.reqComments = action.payload;
+        },
+        setStatusItems: (state, action) => {
+            state.reqStatuses = action.payload;
         }
     }
 });
 
-export const { setRequestsData, setRequestComments } = pharmacyRequestsSlice.actions;
+export const { setRequestsData, setRequestComments, setStatusItems } = pharmacyRequestsSlice.actions;
 
 export default pharmacyRequestsSlice.reducer;

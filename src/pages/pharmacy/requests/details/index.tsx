@@ -21,9 +21,11 @@ import LetterOfMedicalNecessity from "./LetterOfMedicalNecessity";
 import FileUploadSection from "./FileUploadSection";
 import FileDropzone from "@/components/common/FileDropzone";
 import UploadFileList from "@/components/common/UploadFileList";
-import { setRequestComments } from "@/store/features/pharmacy/requests/requestsSlice";
+import { setRequestComments, setStatusItems } from "@/store/features/pharmacy/requests/requestsSlice";
 import toast from "react-hot-toast";
 import api from "@/api/instance";
+import ThemeButton from "@/components/common/ThemeButton";
+import { formatDateTime, getStatusClass } from "@/utils/helper";
 
 const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -142,6 +144,50 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
       document.body.style.overflow = "auto";
     };
   }, [isDrawerOpen]);
+
+  const isFetchedReqStatuses = useRef(false);
+
+  useEffect(() => {
+    if (!isFetchedReqStatuses.current) {
+      fetchData().then(() => fetchRequestStatuses());
+      isFetchedReqStatuses.current = true;
+    }
+  }, [dispatch, reqId]);
+
+  const fetchRequestStatuses = async () => {
+    const response = await getRequestStatuses(dispatch, reqId);
+    if (response?.currentStatus) {
+      const current = response.currentStatus;
+      const previous = [...response.previousStatuses].sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+
+      const allStatuses = [
+        {
+          ...current,
+          date: formatDateTime(current.date),
+          isActive: true,
+          note: current.notes,
+          statusClass: getStatusClass(current.name),
+          showNotesButton: !(current.notes && current.notes.trim() !== ""),
+          isEditing: false
+        },
+        ...previous.map((s: any) => ({
+          ...s,
+          date: formatDateTime(s.date),
+          isActive: false,
+          note: s.notes,
+          statusClass: getStatusClass(s.name),
+          showNotesButton: !(s.notes && s.notes.trim() !== ""),
+          isEditing: false
+        }))
+      ];
+
+      dispatch(setStatusItems(allStatuses));
+    } else {
+      dispatch(setStatusItems([]));
+    }
+  };
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -299,14 +345,12 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                           removeFile={(id: any) => removeFile(id)}
                           handleAddTag={handleAddTag}
                         />
-                        <button className="flex items-center justify-center gap-2 mx-auto mt-2 px-3 py-1.5 border border-[#CBDAFF] rounded-lg text-primary-navy-blue hover:bg-[#F5F8FF] transition-colors text-sm font-medium">
-                          <span>View All</span>
-                          <img
-                            src="/view-all.svg"
-                            alt="View All"
-                            className="h-3.5 w-3.5"
-                          />
-                        </button>
+                        <ThemeButton className="flex items-center justify-center gap-2 mx-auto mt-2" variant="tertiary">
+                          <span className="flex items-center gap-2 text-xs">
+                            View All
+                            <img src="/view-all.svg" alt="View All" className="w-4 h-4" />
+                          </span>
+                        </ThemeButton>
                       </div>
                     )}
                   </div>
