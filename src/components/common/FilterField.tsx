@@ -1,6 +1,5 @@
 import { Button } from "primereact/button";
 import React, { useEffect, useRef, useState } from "react";
-import { PiSlidersHorizontalBold } from "react-icons/pi";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { LiaAngleDownSolid, LiaAngleUpSolid } from "react-icons/lia";
 import { FaChevronDown } from "react-icons/fa6";
