@@ -113,7 +113,6 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
       return <p>-</p>;
     }
 
-    // Show input field if currently editing
     if (item.isEditing) {
       return (
         <Input
@@ -123,27 +122,33 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
           onKeyDown={(e) => handleKeyDown(e, item, index)}
           onBlur={() => handleBlur(item, index)}
           onChange={(e) => handleChange(e.target.value, index)}
+          /* MOBILE-ONLY: Smaller text below 640px */
+          className="max-[639px]:text-sm"
         />
       );
     }
 
-    // Show saved note if exists
     if (item.note && !item.isEditing) {
-      return <div className="inline-flex justify-between gap-4 items-center">
-        <p className="text-tertiary-black text-md italic line-clamp-2 max-w-screen-sm">
-          {item.note}
-        </p>
-        {isAdmin && <FiEdit className="cursor-pointer" onClick={() => handleAddNotes(index)} />}
-      </div>
+      return (
+        <div className="inline-flex justify-between gap-4 items-center">
+          <p className="text-tertiary-black text-md italic line-clamp-2 max-w-screen-sm
+                       /* MOBILE-ONLY: Smaller text below 640px */
+                       max-[639px]:text-sm">
+            {item.note}
+          </p>
+          {isAdmin && <FiEdit className="cursor-pointer" onClick={() => handleAddNotes(index)} />}
+        </div>
+      );
     }
 
-    // If no note, and showNotesButton is true, show Add Notes button
     if (item.showNotesButton) {
       return (
         <ThemeButton
           onClick={() => handleAddNotes(index)}
           variant="secondary"
-          className="!py-2 !px-3 !text-xs"
+          className="!py-2 !px-3 !text-xs
+                   /* MOBILE-ONLY: Full width below 640px */
+                   max-[639px]:w-full"
         >
           Add Notes <FaPlus />
         </ThemeButton>
@@ -176,14 +181,20 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
                   </div>
 
                   <div className="p-2 w-full flex flex-col gap-2 items-start">
-                    <div className="flex justify-between items-center gap-4 w-full">
+                    <div className="flex justify-between items-center gap-4 w-full
+                                  /* MOBILE-ONLY: Stacked layout below 640px */
+                                  max-[639px]:flex-col max-[639px]:items-start max-[639px]:gap-1">
                       <span
-                        className={`px-4 py-1 rounded-full line-clamp-1 text-xs sm:text-sm lg:text-base font-medium ${item.statusClass}`}
+                        className={`px-4 py-1 rounded-full line-clamp-1 text-xs sm:text-sm lg:text-base font-medium ${item.statusClass}
+                                  /* MOBILE-ONLY: Smaller padding below 640px */
+                                  max-[639px]:px-3`}
                       >
                         {item.name}
                       </span>
                       {item.date && (
-                        <span className="text-quaternary-white text-sm whitespace-nowrap">
+                        <span className="text-quaternary-white text-sm whitespace-nowrap
+                                        /* MOBILE-ONLY: Smaller text below 640px */
+                                        max-[639px]:text-xs">
                           {item.date}
                         </span>
                       )}
@@ -198,7 +209,9 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
 
           {showCheckNotesBtn && <ThemeButton
             variant="tertiary"
-            className="border border-quaternary-navy-blue rounded-lg text-primary-navy-blue hover:bg-gray-50 transition-colors"
+            className="border border-quaternary-navy-blue rounded-lg text-primary-navy-blue hover:bg-gray-50 transition-colors
+                      /* MOBILE-ONLY: Full width below 640px */
+                      max-[639px]:w-full"
             onClick={onCheckNotes}
           >
             <span className="flex gap-2 items-center">
