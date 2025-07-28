@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { PiSlidersHorizontalBold } from "react-icons/pi";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { LiaAngleDownSolid, LiaAngleUpSolid } from "react-icons/lia";
+import { FaChevronDown } from "react-icons/fa6";
 
 interface FilterFieldProps {
   columns: { field: string; header: string; filterable?: boolean }[];
@@ -79,7 +80,8 @@ const FilterField: React.FC<FilterFieldProps> = ({
           onClick={() => setShowFiltersDropdown(!showFiltersDropdown)}
         >
           <span className="flex items-center gap-2 whitespace-nowrap">
-            {label} <PiSlidersHorizontalBold className="w-4 h-4" />
+            {label} 
+            <FaChevronDown className="w-3 h-3 ml-1" />
           </span>
         </Button>
 
@@ -87,7 +89,7 @@ const FilterField: React.FC<FilterFieldProps> = ({
           <div className="absolute right-0 top-full mt-1 w-64 bg-primary-white border border-light-stroke rounded-xl theme-shadow z-10 p-4">
             <p className="text-sm text-primary-black mb-4">Group By options</p>
             <div className="space-y-4">
-              {/* “None” / clear‑selection option */}
+              {/* "None" / clear-selection option */}
               <RadioItem id="filter-none" value="" label="None (clear grouping)" />
 
               {/* Actual columns */}

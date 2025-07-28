@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FaChevronDown, FaX } from "react-icons/fa6";
+import { FaX } from "react-icons/fa6";
 import { FiSearch } from "react-icons/fi";
 import { InputText } from "primereact/inputtext";
 import CustomCheckbox from "@/components/common/form/CustomCheckbox";
@@ -59,11 +59,12 @@ const FiltersDropdown: React.FC<FiltersDropdownProps> = ({
       <div className="hidden md:block">
         <button
           className={`flex items-center justify-between w-full text-sm font-medium text-secondary-black
-            border border-light-stroke rounded-xl px-3 py-3 bg-white min-w-[120px]`}
+            border border-light-stroke rounded-xl px-3 py-3 bg-white min-w-[90px]`}
           onClick={() => setShowDropdown(!showDropdown)}
         >
           <span>Filters</span>
-          <FaChevronDown className="w-3 h-3 ml-2" />
+          {/* Replaced FaChevronDown with filters.svg */}
+          <img src="/filters.svg" alt="Filters" className="w-3 h-3 ml-1" />
         </button>
 
         {showDropdown && (
@@ -142,7 +143,8 @@ const FiltersDropdown: React.FC<FiltersDropdownProps> = ({
           <AccordionTab 
             header={
               <div className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded-sm bg-[#EBF1FF] flex items-center justify-center">
+                {/* Replaced the icon with filters.svg */}
+             <div className="w-5 h-5 rounded-sm bg-[#EBF1FF] flex items-center justify-center">
                   <img src="/Ellipse 441.svg" alt="" className="w-2.5 h-2.5" />
                 </div>
                 <span className="text-xs font-medium">Filters</span>
