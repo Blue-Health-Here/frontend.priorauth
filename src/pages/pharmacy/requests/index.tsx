@@ -169,7 +169,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
   // Get unique statuses for the filters dropdown
   const uniqueStatuses = useMemo(() => {
     const statuses = new Set<string>();
-    requestsData.forEach((req) => {
+    requestsData.forEach((req: any) => {
       if (req.statusName) statuses.add(req.statusName);
     });
     return Array.from(statuses).sort();
