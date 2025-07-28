@@ -59,7 +59,7 @@ const ICD10Selector: React.FC<any> = ({ name, icdCodes }) => {
                 <button
                     type="button"
                     onClick={() => setIsOpen(!isOpen)}
-                    className="w-full flex items-center justify-between h-11 bg-white border border-light-stroke rounded-lg px-3 py-2 text-left focus:outline-none"
+                    className="w-full flex items-center justify-between h-11 bg-primary-white border border-light-stroke rounded-lg px-3 py-2 text-left focus:outline-none"
                 >
                     {selectedCode ? <span className="text-primary-black text-sm">{selectedCode}</span> : <span className="text-primary-black text-sm">Select ICD-10 Codes</span>}
                     {isOpen ? <FiChevronUp size={20} /> : <FiChevronDown size={20} />}
@@ -67,7 +67,7 @@ const ICD10Selector: React.FC<any> = ({ name, icdCodes }) => {
 
                 {/* Dropdown content */}
                 {isOpen && (
-                    <div className="absolute z-10 w-full bottom-12 mt-1 bg-white border border-light-stroke rounded-lg theme-shadow p-2">
+                    <div className="absolute z-10 w-full bottom-12 mt-1 bg-primary-white border border-light-stroke rounded-lg theme-shadow p-2">
                         <div className="max-h-60 overflow-y-auto">
                             {/* Predefined codes */}
                             {icdCodes.map((code: any) => (

@@ -419,7 +419,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
           <div className="flex items-center">
             <button
               onClick={() => setMobileSidebarOpen(true)}
-              className="h-full px-3 py-2 border border-[#EBEBEB] rounded-xl text-[#525252] text-sm font-medium bg-white"
+              className="h-full px-3 py-2 border border-[#EBEBEB] rounded-xl text-[#525252] text-sm font-medium bg-primary-white"
             >
               Actions
             </button>
@@ -512,7 +512,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
           ></div>
 
           {/* Sidebar Content */}
-          <div className="absolute right-0 top-0 h-full w-[90%] max-w-sm bg-white shadow-lg p-4 overflow-y-auto flex flex-col">
+          <div className="absolute right-0 top-0 h-full w-[90%] max-w-sm bg-primary-white shadow-lg p-4 overflow-y-auto flex flex-col">
             <div className="flex-1">
               <div className="flex items-center px-4 pl-0 pt-1 gap-3">
                 <button
@@ -580,7 +580,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
               </div>
             </div>
 
-            <div className="flex gap-3 pt-4 bg-white">
+            <div className="flex gap-3 pt-4 bg-primary-white">
               <button
                 onClick={() => {
                   setSelectedFilterField("patient");

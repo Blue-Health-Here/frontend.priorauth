@@ -20,7 +20,9 @@ import toast from "react-hot-toast";
 const Prescribers: React.FC<any> = ({ isAdmin }) => {
   const [selectedPrescriber, setSelectedPrescriber] = useState<any>(null);
   const [isModifying, setIsModifying] = useState(false);
-  const { prescribersData } = useSelector((state: RootState) => state.prescribers);
+  const { prescribersData } = useSelector(
+    (state: RootState) => state.prescribers
+  );
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const isFetchedPrescribers = useRef(false);
@@ -36,7 +38,9 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
 
   const fetchAllPrescribers = async () => {
     setIsLoading(true);
-    const fetchFn = isAdmin ? getAllUserPrescribers : () => getAllPrescribers(dispatch, user?.id);
+    const fetchFn = isAdmin
+      ? getAllUserPrescribers
+      : () => getAllPrescribers(dispatch, user?.id);
     await fetchFn(dispatch);
     setIsLoading(false);
   };
@@ -67,31 +71,31 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     //   data.sort((a, b) => {
     //     const nameA = a.prescriber?.toLowerCase() || "";
     //     const nameB = b.prescriber?.toLowerCase() || "";
-    
+
     //     const result = nameA.localeCompare(nameB);
     //     return sortDirection === "asc" ? result : -result;
     //   });
     // }
-  
+
     return data;
   }, [updatedPresData]);
-  
+
   const filteredPresData = useMemo(() => {
     const filterValue = globalFilter.toLowerCase();
-  
+
     return sortedPresData.filter((item) =>
       item.prescriber?.toLowerCase().includes(filterValue)
     );
   }, [sortedPresData, globalFilter]);
 
   const displayedPrescribers = useMemo(() => {
-    return filteredPresData.filter(item => item.isArchived === isArchiveTab);
+    return filteredPresData.filter((item) => isArchiveTab ? !item.isActive : item.isActive);
   }, [filteredPresData, isArchiveTab]);
 
   const handleArchiveToggle = (name: string, archiveStatus: boolean) => {
-    setUpdatedPresData(prev => {
+    setUpdatedPresData((prev) => {
       const updated = [...prev];
-      const index = updated.findIndex(item => item.prescriber === name);
+      const index = updated.findIndex((item) => item.prescriber === name);
       if (index !== -1) {
         updated[index] = { ...updated[index], isArchived: archiveStatus };
       }
@@ -131,22 +135,27 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
       Object.keys(values).forEach((item: any) => {
         formData.append(item, values[item]);
       });
-  
+
       try {
         setLoadingGenerateCPA(true);
-        axios.post("https://backend.bluehealthhere.com/service-agreement", formData, {
-          responseType: 'blob',
-        })
+        axios
+          .post(
+            "https://backend.bluehealthhere.com/service-agreement",
+            formData,
+            {
+              responseType: "blob",
+            }
+          )
           .then((response) => {
-            const file = new Blob([response.data], { type: 'application/pdf' });
+            const file = new Blob([response.data], { type: "application/pdf" });
             const fileURL = URL.createObjectURL(file);
-            const a = document.createElement('a');
+            const a = document.createElement("a");
             a.href = fileURL;
-            a.download = pharmacy_name + '.pdf';
+            a.download = pharmacy_name + ".pdf";
             document.body.appendChild(a);
             a.click();
             a.remove();
-  
+
             setLoadingGenerateCPA(false);
           })
           .catch((error: any) => toast.error(error));
@@ -157,7 +166,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg theme-shadow p-4 h-full">
+    <div className="bg-primary-white rounded-lg theme-shadow p-4 h-full">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-medium tracking-tighter">
@@ -175,7 +184,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
           <ThemeButton
             variant="secondary"
             onClick={() => setIsModifying(false)}
-            className="min-w-[78px] bg-white"
+            className="min-w-[78px] bg-primary-white"
           >
             Cancel
           </ThemeButton>
@@ -201,20 +210,25 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
           </div>
 
           {/* Desktop */}
-          <div className="hidden md:flex flex-col md:flex-row md:items-center justify-between gap-3 w-full">
-            <ThemeButtonTabs
-              data={["Active List", "Archives"]}
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-              className="md:min-w-[200px] border-quaternary-navy-blue-dark"
-            />
-            <SearchField
-              globalFilter={globalFilter}
-              setGlobalFilter={setGlobalFilter}
-              placeholder="Search Prescribers here"
-              className="min-w-[200px] max-w-[400px]"
-              parentClassName=""
-            />
+          <div className="hidden md:flex flex-row items-center w-full gap-3">
+            {/* Left side - Tabs */}
+            <div>
+              <ThemeButtonTabs
+                data={["Active List", "Archives"]}
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                className="md:min-w-[200px] border-quaternary-navy-blue-dark"
+              />
+            </div>
+            <div className="ml-auto">
+              <SearchField
+                globalFilter={globalFilter}
+                setGlobalFilter={setGlobalFilter}
+                placeholder="Search for request here"
+                className="min-w-[200px] max-w-[400px]"
+                parentClassName=""
+              />
+            </div>
           </div>
         </div>
       )}

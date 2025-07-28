@@ -12,6 +12,9 @@ interface PrescriberCardProps {
     prescriber: string;
     pharmacyLogo?: string;
     totalRequests?: number;
+    approvedPercent?: number;
+    deniedPercent?: number;
+    pendingPercent?: number;
     prescriberPhone: string;
     npi: string;
     prescriberAddress: string;
@@ -31,10 +34,18 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
   isAdmin,
   onArchiveToggle,
   showUnarchiveButton,
-  onModify, onGenerateCPA, loadingGenerateCPA
+  onModify, 
+  onGenerateCPA, 
+  loadingGenerateCPA
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Fallback values if not provided in API
+  const totalRequests = prescriber.totalRequests ?? 528;
+  const approvedPercentage = prescriber.approvedPercent ?? 56;
+  const deniedPercentage = prescriber.deniedPercent ?? 10;
+  const pendingPercentage = prescriber.pendingPercent ?? 34;
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -65,7 +76,7 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
             <img
               src={prescriber?.pharmacyLogo || '/images/Abstergo Ltd..png'}
               alt="Pharmacy logo"
-              className="w-9 h-9 sm:w-14 sm:h-14 rounded-lg"
+              className="w-9 h-9 sm:w-14 sm:h-14 rounded-full"
             />
             <h2 className='text-sm sm:text-base md:text-lg font-semibold text-primary-black leading-[110%] uppercase mt-2'>
               {prescriber.prescriber}
@@ -96,23 +107,23 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
         <div className="md:hidden space-y-3">
           <div className="flex justify-between">
             <span className="text-sm text-gray-500">Total Requests</span>
-            <span className="text-sm font-medium">{prescriber.totalRequests || "N/A"}</span>
+            <span className="text-sm font-medium">{totalRequests}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-gray-500">Approved</span>
+            <span className="text-sm font-medium">{approvedPercentage}%</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-gray-500">Denied</span>
+            <span className="text-sm font-medium">{deniedPercentage}%</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-gray-500">Pending</span>
+            <span className="text-sm font-medium">{pendingPercentage}%</span>
           </div>
           <div className="flex justify-between">
             <span className="text-sm text-gray-500">Phone</span>
             <span className="text-sm font-medium">{prescriber.prescriberPhone}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm text-gray-500">NPI</span>
-            <span className="text-sm font-medium">{prescriber.npi}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm text-gray-500">Address</span>
-            <span className="text-sm font-medium">{prescriber.prescriberAddress}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm text-gray-500">City</span>
-            <span className="text-sm font-medium">{prescriber.prescriberCity}</span>
           </div>
         </div>
 
@@ -120,34 +131,28 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
           <InfoColumn
             icon={<img src={showUnarchiveButton ? "/archive-total-requests.svg" : "/requests.svg"} alt="Requests" />}
             label="Total Requests"
-            data={prescriber.totalRequests || "N/A"}
+            data={totalRequests}
             isArchived={showUnarchiveButton}
           />
           <InfoColumn
-            icon={<img src={showUnarchiveButton ? "/archive-npi.svg" : "/npi.svg"} alt="NPI" />}
-            label="NPI"
-            data={prescriber.npi}
+            icon={<img src={showUnarchiveButton ? "/archive-approved.svg" : "/approved.svg"} alt="Approved" />}
+            label="Approved"
+            data={`${approvedPercentage}%`}
             isArchived={showUnarchiveButton}
           />
           <InfoColumn
-            icon={<img src={showUnarchiveButton ? "/archive-phone.svg" : "/phone.svg"} alt="Phone" />}
-            label="Phone"
-            data={prescriber.prescriberPhone}
+            icon={<img src={showUnarchiveButton ? "/archive-denied.svg" : "/denied.svg"} alt="Denied" />}
+            label="Denied"
+            data={`${deniedPercentage}%`}
             isArchived={showUnarchiveButton}
           />
           <InfoColumn
-            icon={<img src={showUnarchiveButton ? "/archive-city.svg" : "/city.svg"} alt="City" />}
-            label="City"
-            data={prescriber.prescriberCity}
+            icon={<img src={showUnarchiveButton ? "/archive-pending.svg" : "/pending.svg"} alt="Pending" />}
+            label="Pending"
+            data={`${pendingPercentage}%`}
             isArchived={showUnarchiveButton}
           />
-          <InfoColumn
-            icon={<img src={showUnarchiveButton ? "/archive-address.svg" : "/address.svg"} alt="Address" />}
-            label="Address"
-            data={prescriber.prescriberAddress}
-            className="col-span-2"
-            isArchived={showUnarchiveButton}
-          />
+         
         </div>
       </div>
       <div className="flex justify-end gap-2 p-4 border-t border-quaternary-navy-blue">

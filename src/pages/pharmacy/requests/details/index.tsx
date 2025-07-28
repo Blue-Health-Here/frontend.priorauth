@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import CardHeader from "@/components/common/CardHeader";
 import { UploadedFile } from "@/utils/types";
 import ProgressNotesModal from "@/components/ProgressNotesModal";
@@ -21,8 +21,11 @@ import LetterOfMedicalNecessity from "./LetterOfMedicalNecessity";
 import FileUploadSection from "./FileUploadSection";
 import FileDropzone from "@/components/common/FileDropzone";
 import UploadFileList from "@/components/common/UploadFileList";
-import { setRequestComments } from "@/store/features/pharmacy/requests/requestsSlice";
+import { setRequestComments, setStatusItems } from "@/store/features/pharmacy/requests/requestsSlice";
 import toast from "react-hot-toast";
+import api from "@/api/instance";
+import ThemeButton from "@/components/common/ThemeButton";
+import { formatDateTime, getStatusClass } from "@/utils/helper";
 
 const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -48,6 +51,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     if (response) {
       setIsAnalysisComplete(true);
       setIsAnalysisFailed(false);
+      fetchData();
     } else {
       setIsAnalysisComplete(false);
       setIsAnalysisFailed(true);
@@ -141,28 +145,72 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
     };
   }, [isDrawerOpen]);
 
+  const isFetchedReqStatuses = useRef(false);
+
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      const detailsRes = await getRequestDetails(dispatch, reqId);
+    if (!isFetchedReqStatuses.current) {
+      fetchData().then(() => fetchRequestStatuses());
+      isFetchedReqStatuses.current = true;
+    }
+  }, [dispatch, reqId]);
 
-      if (detailsRes) {
-        setRequestDetails(detailsRes);
-        setUploadedFiles(detailsRes?.files.map((item: any) => ({ ...item, name: item.fileName, type: item.mimeType })))
-        dispatch(setRequestComments(detailsRes.comments));
-        if (detailsRes?.chartNotes?.length > 0) {
-          setIsAnalysisComplete(true);
-          setIsAnalysisStarted(true);
-        }
-      } else {
-        setRequestDetails(null);
-        setUploadedFiles([]);
-        dispatch(setRequestComments([]));
+  const fetchRequestStatuses = async () => {
+    const response = await getRequestStatuses(dispatch, reqId);
+    if (response?.currentStatus) {
+      const current = response.currentStatus;
+      const previous = [...response.previousStatuses].sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+
+      const allStatuses = [
+        {
+          ...current,
+          date: formatDateTime(current.date),
+          isActive: true,
+          note: current.notes,
+          statusClass: getStatusClass(current.name),
+          showNotesButton: !(current.notes && current.notes.trim() !== ""),
+          isEditing: false
+        },
+        ...previous.map((s: any) => ({
+          ...s,
+          date: formatDateTime(s.date),
+          isActive: false,
+          note: s.notes,
+          statusClass: getStatusClass(s.name),
+          showNotesButton: !(s.notes && s.notes.trim() !== ""),
+          isEditing: false
+        }))
+      ];
+
+      dispatch(setStatusItems(allStatuses));
+    } else {
+      dispatch(setStatusItems([]));
+    }
+  };
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    const detailsRes = await getRequestDetails(dispatch, reqId);
+
+    if (detailsRes) {
+      setRequestDetails(detailsRes);
+      setUploadedFiles(detailsRes?.files.map((item: any) => ({ ...item, name: item.fileName, type: item.mimeType })))
+      dispatch(setRequestComments(detailsRes.comments));
+      if (detailsRes?.chartNotes?.length > 0) {
+        setIsAnalysisComplete(true);
+        setIsAnalysisStarted(true);
       }
+    } else {
+      setRequestDetails(null);
+      setUploadedFiles([]);
+      dispatch(setRequestComments([]));
+    }
 
-      setIsLoading(false);
-    };
+    setIsLoading(false);
+  };
 
+  useEffect(() => {
     if (!isFetchedReqDetails.current) {
       fetchData();
       isFetchedReqDetails.current = true;
@@ -172,6 +220,29 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
   const handleCheckNotes = () => {
     setIsDrawerOpen(true);
   };
+  
+  const handleDownloadReport = async () => {
+    if (requestDetails.progressNotesReport && requestDetails.progressNotesReport?.length > 0) {
+      const file = requestDetails.progressNotesReport[0] as { url: string; fileName: string };
+      try {
+        const response = await api.get(file.url, {
+          responseType: "blob"
+        });
+        const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.download = file.fileName || "progress_notes_report.pdf";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(blobUrl); // Cleanup
+      } catch (error) {
+        console.error("Download failed:", error);
+      }
+    }
+  };
+
+  const memoizedChartNotes = useMemo(() => requestDetails?.chartNotes, [requestDetails?.chartNotes.length]);
 
   return (
     <>
@@ -181,7 +252,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
           setIsModalOpen(false);
           if (isAdded) getRequestStatuses(dispatch, reqId);
         }}
-        chartNotes={requestDetails?.chartNotes || []}
+        chartNotes={memoizedChartNotes || []}
       />
       <SideDrawer
         isOpen={isDrawerOpen}
@@ -193,7 +264,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
         <RequestDetailsContent initialTab="Status & Notes"
           onClose={() => setIsDrawerOpen(false)} isAdmin={isAdmin} />
       </SideDrawer>
-      <div className="p-4 bg-white rounded-xl theme-shadow relative">
+      <div className="p-4 bg-primary-white rounded-xl theme-shadow relative">
         {isLoading ? (
           <Loading />
         ) : (
@@ -201,7 +272,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
             <PageHeader requestDetails={requestDetails} isAdmin={isAdmin} />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="col-span-1 lg:col-span-2 space-y-4">
-                <div className="bg-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
+                <div className="bg-primary-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
                   <CardHeader title="Status" />
                   <StatusTimeline
                     isAdmin={isAdmin}
@@ -222,8 +293,9 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                   startAnalysis={startAnalysis}
                   restartAnalysis={startAnalysis}
                   handleOpenProgressNotesModal={handleOpenProgressNotesModal}
+                  handleDownload={handleDownloadReport}
                 />
-                <div className="bg-white rounded-xl border border-quaternary-navy-blue relative overflow-hidden">
+                <div className="bg-primary-white rounded-xl border border-quaternary-navy-blue relative overflow-hidden">
                   <CardHeader title="Other Files" />
                   <div className="p-4 flex flex-col gap-4 relative">
                     <div className="inline-flex flex-col gap-2">
@@ -273,14 +345,12 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                           removeFile={(id: any) => removeFile(id)}
                           handleAddTag={handleAddTag}
                         />
-                        <button className="flex items-center justify-center gap-2 mx-auto mt-2 px-3 py-1.5 border border-[#CBDAFF] rounded-lg text-primary-navy-blue hover:bg-[#F5F8FF] transition-colors text-sm font-medium">
-                          <span>View All</span>
-                          <img
-                            src="/view-all.svg"
-                            alt="View All"
-                            className="h-3.5 w-3.5"
-                          />
-                        </button>
+                        <ThemeButton className="flex items-center justify-center gap-2 mx-auto mt-2" variant="tertiary">
+                          <span className="flex items-center gap-2 text-xs">
+                            View All
+                            <img src="/view-all.svg" alt="View All" className="w-4 h-4" />
+                          </span>
+                        </ThemeButton>
                       </div>
                     )}
                   </div>

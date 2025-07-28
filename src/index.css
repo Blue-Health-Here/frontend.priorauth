@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 
+/* Light Mode Colors (Default) */
 :root {
   --primary-navy-blue: #163066;
   --secondary-navy-blue: #3961B2;
@@ -28,7 +29,7 @@
   --light-stroke: #EBEBEB;
   --medium-stroke: #CCCCCC;
   --dark-stroke: #A8A8A8;
-  --blue-navigation-link-button:#007AFF;
+  --blue-navigation-link-button: #007AFF;
   --error-clip: #FF2E37;
   --success-chip: #47D477;
   --information-chip: #41B1FC;
@@ -43,7 +44,6 @@
   --status-bg-lilac-sky: #E0DEFF;
   --status-bg-sky-blue: #E0F2FE;
   --status-text-sky-blue: #0369A1;
-
   --status-error-text-color: #C2410C;
   --status-error-bg-color: #FFE5E0;
   --status-success-text-color: #065F46;
@@ -57,7 +57,109 @@
   --AI-ButtonBorder: linear-gradient(42deg, #F8A8AA 7.93%, #FFA5E0 29.5%, #FFDFD7 38.64%, #FFB126 51.64%, #FF512B 77.37%);
 }
 
-@theme inline {
+/* Dark Mode Colors */
+:root.dark {
+  --primary-navy-blue: #85ACFF;
+  --secondary-navy-blue: #66D0FF;
+  --tertiary-navy-blue: #3961B2;
+  --quaternary-navy-blue: #1a2332;
+  --quaternary-navy-blue-dark: #2a3441;
+  --accent: #FFBD38;
+  --primary-sky-blue: #66D0FF;
+  --secondary-sky-blue: #1594CC;
+  --tertiary-sky-blue: #0d4f6b;
+  --quaternary-sky-blue: #0a3a50;
+  --neutral-white: #3a3a3a;
+  --primary-white: #121212;
+  --secondary-white: #2a2a2a;
+  --tertiary-white: #4a4a4a;
+  --quaternary-white: #6a6a6a;
+  --primary-black: #ffffff;
+  --secondary-black: #e0e0e0;
+  --tertiary-black: #c0c0c0;
+  --quaternary-black: #404040;
+  --primary-background: #0a0a0a;
+  --secondary-background: #1a1a1a;
+  --disable-color: #4a4a4a;
+  --light-stroke: #2a2a2a;
+  --medium-stroke: #404040;
+  --dark-stroke: #5a5a5a;
+  --blue-navigation-link-button: #66D0FF;
+  --error-clip: #FF6B74;
+  --success-chip: #66BB6A;
+  --information-chip: #64B5F6;
+  --ai-animation: #F8A8AA;
+  --warning-chip: #FFD54F;
+  --error-chip-bg-color: #3d1a1a;
+  --success-chip-bg-color: #1a3d1a;
+  --information-chip-bg-color: #1a2d3d;
+  --warning-chip-bg-color: #3d3d1a;
+  --gray-color: #9CA3AF;
+  --status-text-lilac-sky: #A5B4FC;
+  --status-bg-lilac-sky: #1e1b3a;
+  --status-bg-sky-blue: #1a2e3a;
+  --status-text-sky-blue: #7DD3FC;
+  --status-error-text-color: #FCA5A5;
+  --status-error-bg-color: #3a1a1a;
+  --status-success-text-color: #86EFAC;
+  --status-success-bg-color: #1a3a1a;
+  --status-warning-text-color: #FDE047;
+  --status-warning-bg-color: #3a3a1a;
+}
+
+/* Alternative: Media Query Based Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-navy-blue: #85ACFF;
+    --secondary-navy-blue: #66D0FF;
+    --tertiary-navy-blue: #3961B2;
+    --quaternary-navy-blue: #1a2332;
+    --quaternary-navy-blue-dark: #2a3441;
+    --accent: #FFBD38;
+    --primary-sky-blue: #66D0FF;
+    --secondary-sky-blue: #1594CC;
+    --tertiary-sky-blue: #0d4f6b;
+    --quaternary-sky-blue: #0a3a50;
+    --neutral-white: #3a3a3a;
+    --primary-white: #101011;
+    --secondary-white: #2a2a2a;
+    --tertiary-white: #4a4a4a;
+    --quaternary-white: #6a6a6a;
+    --primary-black: #ffffff;
+    --secondary-black: #e0e0e0;
+    --tertiary-black: #c0c0c0;
+    --quaternary-black: #404040;
+    --primary-background: #0a0a0a;
+    --secondary-background: #1a1a1a;
+    --disable-color: #4a4a4a;
+    --light-stroke: #2a2a2a;
+    --medium-stroke: #404040;
+    --dark-stroke: #5a5a5a;
+    --blue-navigation-link-button: #66D0FF;
+    --error-clip: #FF6B74;
+    --success-chip: #66BB6A;
+    --information-chip: #64B5F6;
+    --ai-animation: #F8A8AA;
+    --warning-chip: #FFD54F;
+    --error-chip-bg-color: #3d1a1a;
+    --success-chip-bg-color: #1a3d1a;
+    --information-chip-bg-color: #1a2d3d;
+    --warning-chip-bg-color: #3d3d1a;
+    --gray-color: #9CA3AF;
+    --status-text-lilac-sky: #A5B4FC;
+    --status-bg-lilac-sky: #1e1b3a;
+    --status-bg-sky-blue: #1a2e3a;
+    --status-text-sky-blue: #7DD3FC;
+    --status-error-text-color: #FCA5A5;
+    --status-error-bg-color: #3a1a1a;
+    --status-success-text-color: #86EFAC;
+    --status-success-bg-color: #1a3a1a;
+    --status-warning-text-color: #FDE047;
+    --status-warning-bg-color: #3a3a1a;
+  }
+}
+
+@theme {
   --color-primary-navy-blue: var(--primary-navy-blue);
   --color-secondary-navy-blue: var(--secondary-navy-blue);
   --color-tertiary-navy-blue: var(--tertiary-navy-blue);
@@ -112,9 +214,7 @@
   --font-secondary: var(--urbanist);
 }
 
-
 /* CUSTOM ANIMATIONS */
-
 @layer utilities {
   .animate-fadeIn {
     animation: fadeIn 0.3s ease-out forwards;
@@ -156,32 +256,31 @@
       animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
     }
     50% {
-      transform: translateY(-10px); /* Adjust for gentler bounce */
+      transform: translateY(-10px);
       animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
     }
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   font-family: var(--font-primary);
+  background-color: var(--primary-background);
+  color: var(--primary-black);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .theme-container {
   @apply max-w-[1520px] mx-auto;
 }
+
 .gradient-class {
-  @apply bg-gradient-to-br from-[#1594CC] to-[#163066] 
+  @apply bg-gradient-to-br from-[var(--primary-sky-blue)] to-[var(--primary-navy-blue)];
 }
+
 .ai-analysis-btn {
   box-shadow: -2px -2px 10px 0px rgba(255, 134, 41, 0.20), 2px 2px 10px 0px rgba(255, 139, 203, 0.20);
 }
+
 .slick-list, .slick-track {
   height: 100%;
 }
@@ -193,43 +292,44 @@ body {
 a:focus {
   outline: none;
 }
+
 .rounded-theme-r {
   @apply rounded-xl;
 }
+
 .theme-shadow {
   @apply shadow-[0px_0px_12px_0px_rgba(0,0,0,0.04)];
 }
 
-/* primetable css */
-
+/* Rest of your existing styles remain the same... */
 .p-datatable .p-datatable-thead > tr > th {
   background: transparent;
-  color: var(--tertiary-black, #667085);
+  color: var(--tertiary-black);
   font-weight: normal;
   font-size: 14px;
-  border-bottom: 1px solid var(--light-stroke, #F0F1F3);
+  border-bottom: 1px solid var(--light-stroke);
   text-align: left;
   padding: 1rem;
   white-space: nowrap;
 }
 
 .p-datatable .p-datatable-tbody > tr {
-  border-bottom: 1px solid var(--light-stroke, #F0F1F3);
+  border-bottom: 1px solid var(--light-stroke);
 }
 
 .p-datatable .p-datatable-tbody > tr > td {
   padding: 1rem;
   text-align: left;
-  color: var(--secondary-black, #344054);
+  color: var(--secondary-black);
   font-size: 14px;
 }
 
 .placeholder-primary-black::placeholder {
-  color: #000000 !important;
+  color: var(--primary-black) !important;
 }
 
 .placeholder-primary-white::placeholder {
-  color: #ffffff !important;
+  color: var(--primary-white) !important;
 }
 
 .requests-table .p-inputtext {

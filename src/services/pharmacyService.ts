@@ -280,7 +280,7 @@ export const addNewReqComment = async (dispatch: AppDispatch, id?: string, data?
 // ============= Get All Prescribers  =============
 
 export const getAllPrescribers = async (dispatch: AppDispatch, id?: string) => {
-    return apiHandler(dispatch, 'get', '/pa_request/prescribers/by-user/' + id, {
+    return apiHandler(dispatch, 'get', '/pa-request-prescriber/get_by_id/user/' + id, {
         data: {},
         onSuccess: (data) => {
             dispatch(setPrescribersData(data))

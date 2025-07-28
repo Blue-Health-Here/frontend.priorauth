@@ -96,7 +96,7 @@ const MultiDateField: React.FC<MultiDateFieldProps> = ({
         </div>
         {openCalendar && (
           <div
-            className="absolute left-0 bottom-full z-50 bg-white shadow-lg border rounded-md"
+            className="absolute left-0 bottom-full z-50 bg-primary-white shadow-lg border rounded-md"
             style={{
               padding: 0,
               margin: 0,

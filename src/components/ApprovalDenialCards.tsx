@@ -97,7 +97,7 @@ const ApprovalDenialCards = () => {
     }, []);
 
     return (
-        <div className="bg-white p-6 rounded-2xl theme-shadow w-full mx-auto">
+        <div className="bg-primary-white p-6 rounded-2xl theme-shadow w-full mx-auto">
             <h2 className="text-xl font-semibold text-gray-800 mb-6">Approved vs Denied</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

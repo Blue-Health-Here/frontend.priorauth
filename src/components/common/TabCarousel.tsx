@@ -34,7 +34,7 @@ export default function TabCarousel() {
             {showLeftArrow && (
                 <button
                     onClick={() => scroll("left")}
-                    className="absolute left-0 z-10 bg-white border border-light-stroke shadow h-max w-6 md:w-8 flex items-center justify-center p-2 rounded-lg cursor-pointer text-center"
+                    className="absolute left-0 z-10 bg-primary-white border border-light-stroke shadow h-max w-6 md:w-8 flex items-center justify-center p-2 rounded-lg cursor-pointer text-center"
                 >
                     <img src='/next-arrow-carousel.svg' alt='header left logo arrow' className='scale-[-1]' />
                 </button>
@@ -75,7 +75,7 @@ export default function TabCarousel() {
             {showRightArrow && (
                 <button
                     onClick={() => scroll("right")}
-                    className="absolute right-0 z-10 bg-white border border-light-stroke shadow h-max w-6 md:w-8  flex items-center justify-center p-2 rounded-lg cursor-pointer text-center"
+                    className="absolute right-0 z-10 bg-primary-white border border-light-stroke shadow h-max w-6 md:w-8  flex items-center justify-center p-2 rounded-lg cursor-pointer text-center"
                 >
                     <img src='/next-arrow-carousel.svg' alt='header left logo arrow' className='' />
                 </button>

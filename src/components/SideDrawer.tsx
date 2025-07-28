@@ -34,7 +34,7 @@ const SideDrawer: React.FC<any> = ({
                     {/* Drawer */}
                     <div className={`
                         fixed top-0 ${positionClasses[position]} h-full ${width} 
-                        bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out
+                        bg-primary-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out
                         ${className}
                     `}>
                         {/* Header */}

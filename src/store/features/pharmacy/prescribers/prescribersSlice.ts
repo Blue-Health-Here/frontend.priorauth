@@ -9,7 +9,7 @@ const prescribersSlice = createSlice({
     initialState, 
     reducers: {
         setPrescribersData: (state, action) => {
-            state.prescribersData = action.payload?.prescribers || action.payload?.data || [];
+            state.prescribersData = action.payload || action.payload?.data || [];
         }
     }
 });

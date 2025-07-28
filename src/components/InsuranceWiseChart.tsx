@@ -150,7 +150,7 @@ const InsuranceWiseChart = () => {
     };
 
     return (
-        <div className="bg-white rounded-2xl p-4 theme-shadow w-full">
+        <div className="bg-primary-white rounded-2xl p-4 theme-shadow w-full">
             <div className={`flex ${isMobile ? 'flex-col gap-1' : 'justify-between items-center'} mb-2`}>
                 <h2 className={`${isMobile ? 'text-sm' : 'text-lg'} font-semibold`}>Insurance Analysis</h2>
                 <div className={`flex ${isMobile ? 'flex-wrap gap-1' : 'space-x-2'} text-xs border border-quaternary-navy-blue rounded-lg p-0.5`}>

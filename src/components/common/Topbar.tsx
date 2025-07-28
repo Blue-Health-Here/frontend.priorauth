@@ -9,6 +9,7 @@ import NavbarNotificationDropdown from './NavbarNotificationDropdown';
 import { BreadCrumb } from 'primereact/breadcrumb';
 import { generateBreadcrumbItems } from '@/utils/helper';
 import { HiOutlineSlash } from "react-icons/hi2";
+import { useTheme } from "@/hooks/useTheme";
 
 interface UserData {
   userName: string;
@@ -22,7 +23,6 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
   const { isSidebarOpen, isSidebarCollapsed } = useSelector((state: RootState) => state.global);
   const [isNotifDropdownOpen, setIsNotifDropdownOpen] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserData>({
     userName: '',
     email: '',
@@ -35,6 +35,7 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const { isDark, toggleTheme } = useTheme();
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -76,7 +77,7 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
     <div
       className={`fixed top-0 left-0 ${
         isSidebarCollapsed ? "lg:left-[80px]" : "lg:left-[280px]"
-      } right-0 p-3 min-h-16 sm:p-3 z-60 bg-white border-b border-gray-100 flex`}
+      } right-0 p-3 min-h-16 sm:p-3 z-60 bg-primary-white border-b border-gray-100 flex`}
     >
       <nav className={`flex justify-between w-full flex-1`}>
         <div className="flex items-center gap-2 flex-1">
@@ -177,14 +178,11 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
           {/* Theme toggle button - added after profile section */}
           <button
             type="button"
-            onClick={() => setIsDarkMode(!isDarkMode)}
+            onClick={toggleTheme}
             className="hidden lg:flex items-center justify-center cursor-pointer h-full rounded-lg border border-light-stroke p-2 w-10 py-1 px-2 sm:p-2.5"
           >
-            <img
-              src="/theme-button.svg"
-              alt="Toggle theme"
-              className="w-4 h-4 sm:h-5 sm:w-5"
-            />
+            {isDark ? <img src="/sun.svg" alt="sun icon" className="w-4 h-4 sm:h-5 sm:w-5" /> : 
+              <img src="/theme-button.svg" alt="moon icon" className="w-4 h-4 sm:h-5 sm:w-5" />}
           </button>
         </div>
       </nav>

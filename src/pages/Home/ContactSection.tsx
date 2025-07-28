@@ -36,7 +36,7 @@ const ContactSection: React.FC = () => {
                 <InputField className={inputStyles.contactInput} errorColor="text-red-700" type="email" placeholder="Email" name="email" />
                 <InputField className={inputStyles.contactInput} errorColor="text-red-700" type="text" placeholder="Message" name="message" />
                 <div className="pt-4">
-                  <Button title="Submit" noHover textColor="text-black" className="bg-white text-primary-black font-medium sm:w-24" />
+                  <Button title="Submit" noHover textColor="text-black" className="bg-primary-white text-primary-black font-medium sm:w-24" />
                 </div>
               </Form>
             )}

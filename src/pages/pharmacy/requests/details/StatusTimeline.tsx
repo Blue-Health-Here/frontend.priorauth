@@ -1,14 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { FiEdit, FiFileText } from "react-icons/fi";
 import { FaPlus } from "react-icons/fa6";
 
 import ThemeButton from "@/components/common/ThemeButton";
 import { Input } from "@/components/ui/input";
-import { formatDateTime, getStatusClass } from "@/utils/helper";
-import { getRequestStatuses, updateRequestNotes } from "@/services/pharmacyService";
+// import { formatDateTime, getStatusClass } from "@/utils/helper";
+import { updateRequestNotes } from "@/services/pharmacyService";
+import { RootState } from "@/store";
+import { setStatusItems } from "@/store/features/pharmacy/requests/requestsSlice";
 
 interface StatusTimelineProps {
   isAdmin?: boolean;
@@ -21,64 +23,65 @@ interface StatusTimelineProps {
 const StatusTimeline: React.FC<StatusTimelineProps> = ({
   isAdmin, onCheckNotes, height = 'max-h-[260px]', showCheckNotesBtn, className
 }) => {
-  const [statusItems, setStatusItems] = useState<any[]>([]);
+  // const [statusItems, setStatusItems] = useState<any[]>([]);
+  const { reqStatuses: statusItems } = useSelector((state: RootState) => state.pharmacyReqs);
   const dispatch = useDispatch();
   const { id: reqId } = useParams();
-  const isFetchedReqStatuses = useRef(false);
+  // const isFetchedReqStatuses = useRef(false);
 
-  useEffect(() => {
-    if (!isFetchedReqStatuses.current) {
-      fetchData();
-      isFetchedReqStatuses.current = true;
-    }
-  }, [dispatch, reqId]);
+  // useEffect(() => {
+  //   if (!isFetchedReqStatuses.current) {
+  //     fetchData();
+  //     isFetchedReqStatuses.current = true;
+  //   }
+  // }, [dispatch, reqId]);
 
-  const fetchData = async () => {
-    const response = await getRequestStatuses(dispatch, reqId);
-    if (response?.currentStatus) {
-      const current = response.currentStatus;
-      const previous = [...response.previousStatuses].sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-      );
+  // const fetchData = async () => {
+  //   const response = await getRequestStatuses(dispatch, reqId);
+  //   if (response?.currentStatus) {
+  //     const current = response.currentStatus;
+  //     const previous = [...response.previousStatuses].sort(
+  //       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  //     );
 
-      const allStatuses = [
-        {
-          ...current,
-          date: formatDateTime(current.date),
-          isActive: true,
-          note: current.notes,
-          statusClass: getStatusClass(current.name),
-          showNotesButton: !(current.notes && current.notes.trim() !== ""),
-          isEditing: false
-        },
-        ...previous.map((s: any) => ({
-          ...s,
-          date: formatDateTime(s.date),
-          isActive: false,
-          note: s.notes,
-          statusClass: getStatusClass(s.name),
-          showNotesButton: !(s.notes && s.notes.trim() !== ""),
-          isEditing: false
-        }))
-      ];
+  //     const allStatuses = [
+  //       {
+  //         ...current,
+  //         date: formatDateTime(current.date),
+  //         isActive: true,
+  //         note: current.notes,
+  //         statusClass: getStatusClass(current.name),
+  //         showNotesButton: !(current.notes && current.notes.trim() !== ""),
+  //         isEditing: false
+  //       },
+  //       ...previous.map((s: any) => ({
+  //         ...s,
+  //         date: formatDateTime(s.date),
+  //         isActive: false,
+  //         note: s.notes,
+  //         statusClass: getStatusClass(s.name),
+  //         showNotesButton: !(s.notes && s.notes.trim() !== ""),
+  //         isEditing: false
+  //       }))
+  //     ];
 
-      setStatusItems(allStatuses);
-    } else {
-      setStatusItems([]);
-    }
-  };
+  //     setStatusItems(allStatuses);
+  //   } else {
+  //     setStatusItems([]);
+  //   }
+  // };
 
   const handleAddNotes = (index: number) => {
     const updated = [...statusItems];
     updated[index].isEditing = true;
     updated[index].showNotesButton = false;
-    setStatusItems(updated);
+    dispatch(setStatusItems(updated));
   };
 
   const handleChange = (value: string, index: number) => {
     const updated = [...statusItems];
     updated[index].note = value;
-    setStatusItems(updated);
+    dispatch(setStatusItems(updated));
   };
 
   const handleSubmitNote = async (item: any, index: number) => {
@@ -88,7 +91,7 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
       const updated = [...statusItems];
       updated[index].isEditing = false;
       updated[index].showNotesButton = false;
-      setStatusItems(updated);
+      dispatch(setStatusItems(updated));
     } catch (error: any) {
       toast.error(error?.message);
     }
@@ -158,7 +161,7 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
             <div className="relative flex flex-col gap-4 w-full">
               <div className="absolute left-2.5 top-0 bottom-0 w-1.5 bg-gray-200"></div>
 
-              {statusItems.map((item, index) => (
+              {statusItems.map((item: any, index: number) => (
                 <div
                   key={index}
                   className={`relative flex items-center gap-4 ${item.isActive
@@ -166,7 +169,7 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
                     : "opacity-50"
                     }`}
                 >
-                  <div className="p-1 bg-white rounded-full ml-1">
+                  <div className="p-1 bg-primary-white rounded-full ml-1">
                     <div className="relative z-10 w-2.5 h-2.5 rounded-full">
                       <div className="absolute inset-0 rounded-full bg-blue-500"></div>
                     </div>

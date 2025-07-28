@@ -42,7 +42,7 @@ const SecuritySettings = ({ userId }: { userId: string }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-[#CBDAFF] p-3">
+    <div className="bg-primary-white rounded-lg border border-[#CBDAFF] p-3">
       <h3 className="text-base font-semibold text-foreground mb-4">
         Security Settings
       </h3>

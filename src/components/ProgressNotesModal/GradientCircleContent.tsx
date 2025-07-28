@@ -13,7 +13,7 @@ const GradientCircleContent: React.FC = () => {
                 }}
             >
                 <div
-                    className="bg-white rounded-full w-full h-full flex items-center justify-center p-8 relative"
+                    className="bg-primary-white rounded-full w-full h-full flex items-center justify-center p-8 relative"
                     style={{
                         boxShadow: `
                         inset 0 4px 12px rgba(166, 108, 249, 0.5),

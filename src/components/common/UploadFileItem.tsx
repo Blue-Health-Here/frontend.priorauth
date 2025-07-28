@@ -25,7 +25,7 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
   file,
   removeFile,
   handleAddTag,
-  isAddTags,
+  // isAddTags,
 }) => {
   const [customTag, setCustomTag] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -53,13 +53,13 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
     };
   }, [file.showTagDropdown, handleAddTag, file.id]);
 
-  const toggleDropdown = () => {
-    handleAddTag((prev) =>
-      prev.map((f) =>
-        f.id === file.id ? { ...f, showTagDropdown: !f.showTagDropdown } : f
-      )
-    );
-  };
+  // const toggleDropdown = () => {
+  //   handleAddTag((prev) =>
+  //     prev.map((f) =>
+  //       f.id === file.id ? { ...f, showTagDropdown: !f.showTagDropdown } : f
+  //     )
+  //   );
+  // };
 
   const toggleTag = (tag: string) => {
     handleAddTag((prev) =>
@@ -116,18 +116,23 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
                 <div className="px-2 py-1 rounded-lg text-xs font-medium bg-quaternary-navy-blue text-secondary-navy-blue truncate">
                   {file.fileTags[0]}
                 </div>
-                {file.fileTags.length > 1 && (
+                {/* {file.fileTags.length > 1 && (
                   <div className="px-2 py-1 rounded-lg text-xs font-medium bg-quaternary-navy-blue text-secondary-navy-blue">
                     +{file.fileTags.length - 1}
                   </div>
-                )}
+                )} */}
+              </div>
+            )}
+            {file.tag && (
+              <div className="px-2 py-1 mt-1 w-max rounded-lg text-xs font-medium bg-quaternary-navy-blue text-secondary-navy-blue truncate">
+                {file.tag}
               </div>
             )}
           </div>
         </div>
 
         <div className="flex items-end gap-2 flex-col-reverse">
-          {isAddTags && (
+          {/* {isAddTags && (
             <button
               type="button"
               onClick={toggleDropdown}
@@ -135,7 +140,7 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
             >
               {file.showTagDropdown ? "Hide Tags" : "Add Tags"}
             </button>
-          )}
+          )} */}
           <button
             onClick={() => removeFile(file.id)}
             className={file.status === "uploading" ? "text-black cursor-pointer" : "text-red-500 hover:text-red-700 cursor-pointer"}

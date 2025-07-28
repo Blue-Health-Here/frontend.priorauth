@@ -82,7 +82,7 @@ const ActivityLogItem: React.FC<ActivityLogItemProps> = ({
                         {file && (
                             <>
                                 <div className="text-xs text-[#525252] mb-1">File</div>
-                                <div className="flex items-center gap-2 bg-white rounded-lg p-2 border border-[#EBF1FF]">
+                                <div className="flex items-center gap-2 bg-primary-white rounded-lg p-2 border border-[#EBF1FF]">
                                     <img
                                         src={file.icon || "/file.svg"}
                                         alt="File"
