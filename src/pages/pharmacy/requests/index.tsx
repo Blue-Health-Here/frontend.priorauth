@@ -5,10 +5,21 @@ import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import ThemeButton from "@/components/common/ThemeButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import AddRequestModal from "./AddRequestModal";
-import { getAllPharmacyReqs, getAllReqStatuses, updateRequestNotes, updateRequestStatus } from "@/services/pharmacyService";
+import {
+  getAllPharmacyReqs,
+  getAllReqStatuses,
+  updateRequestNotes,
+  updateRequestStatus,
+} from "@/services/pharmacyService";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { filterRequestsByStatus, formatPrescriberToUsername, getStatusClass, groupByField, transformPharmacyRequest } from "@/utils/helper";
+import {
+  filterRequestsByStatus,
+  formatPrescriberToUsername,
+  getStatusClass,
+  groupByField,
+  transformPharmacyRequest,
+} from "@/utils/helper";
 import RequestStatusDropdownField from "./RequestStatusDropdownField";
 import SearchField from "@/components/common/SearchField";
 import Loading from "@/components/common/Loading";
@@ -20,92 +31,132 @@ import { FaPlus } from "react-icons/fa6";
 import RequestTitle from "./RequestTitle";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
+import FiltersDropdown from "./FiltersDropdown";
 
 const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
-  const { reqStatusesData } = useSelector((state: RootState) => state.reqStatuses);
+  const { reqStatusesData } = useSelector(
+    (state: RootState) => state.reqStatuses
+  );
   const { reqsData } = useSelector((state: RootState) => state.pharmacyReqs);
   const [requestsData, setRequestsData] = useState<any>([]);
-  
-  const columns = useMemo(() => [
-    {
-      field: 'patient',
-      header: 'Name',
-      visible: true,
-      filterable: true,
-      sortable: true,
-      customTemplate: true,
-      render: (rowData: any, field: any) => <NameBadge data={rowData[field]} />
-    },
-    {
-      field: 'medication',
-      header: 'Medication',
-      visible: true,
-      filterable: true,
-      sortable: true
-    },
-    {
-      field: 'prescriber',
-      header: 'Prescriber',
-      visible: true,
-      filterable: true,
-      sortable: true,
-      customTemplate: true,
-      render: (rowData: any, field: any) => <NameBadge data={rowData[field]} />
-    },
-    {
-      field: 'submittedOn',
-      header: 'Submitted On',
-      visible: true,
-      filterable: true,
-      sortable: true,
-      className: "!min-w-12 !max-w-12"
-    },
-    {
-      field: 'statusName',
-      header: 'Status',
-      visible: true,
-      filterable: true,
-      sortable: true,
-      customTemplate: true,
-      render: (rowData: any, field: any) => requestStatusTemplate(rowData, field)
-    },
-    {
-      field: 'notes',
-      header: 'Notes',
-      visible: true,
-      filterable: true,
-      sortable: true,
-      customTemplate: true,
-      render: (rowData: any, field: any) => {
-        if (rowData.isEditing) {
-          return (
-            <Input
-              type="text"
-              className="w-full"
-              value={rowData[field] || ""}
-              onKeyDown={(e) => handleKeyDown(e, rowData)}
-              onChange={(e) => handleChangeNotes(e.target.value, rowData)}
-            />
-          );
-        }
-        return <NotesCell note={rowData[field] || "-"} handleEditNote={(e: any) => handleEditNote(e, rowData)} />;
-      }
-    },
-    {
-      field: 'lastModified',
-      header: 'Last Modified',
-      visible: true,
-      filterable: true,
-      sortable: true
-    }
-  ], [requestsData]);
-
-  const [visibleColumns, setVisibleColumns] = useState(columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: col.visible !== false }), {}));
-  const [isChecked, setIsChecked] = useState<boolean>(false);
-  const [globalFilter, setGlobalFilter] = useState('');
-  const [activeRequestTab, setActiveRequestTab] = useState<string>('Active Requests');
   const navigate = useNavigate();
   const location = useLocation();
+
+  // New state for status filter
+  const [selectedStatusFilter, setSelectedStatusFilter] = useState<
+    string | null
+  >(null);
+
+  const columns = useMemo(
+    () => [
+      {
+        field: "patient",
+        header: "Name",
+        visible: true,
+        filterable: true,
+        sortable: true,
+        customTemplate: true,
+        render: (rowData: any, field: any) => (
+          <div className="flex items-center justify-between group w-full">
+            <NameBadge data={rowData[field]} />
+            <button
+              className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 
+                      text-secondary-navy-blue bg-quaternary-navy-blue 
+                      px-2 py-1 rounded text-xs ml-2 whitespace-nowrap"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`${location.pathname}/${rowData.id}/request-details`);
+              }}
+            >
+              Open
+            </button>
+          </div>
+        ),
+      },
+      {
+        field: "medication",
+        header: "Medication",
+        visible: true,
+        filterable: true,
+        sortable: true,
+      },
+      {
+        field: "prescriber",
+        header: "Prescriber",
+        visible: true,
+        filterable: true,
+        sortable: true,
+        customTemplate: true,
+        render: (rowData: any, field: any) => (
+          <NameBadge data={rowData[field]} />
+        ),
+      },
+      {
+        field: "submittedOn",
+        header: "Submitted On",
+        visible: true,
+        filterable: true,
+        sortable: true,
+        className: "!min-w-12 !max-w-12",
+      },
+      {
+        field: "statusName",
+        header: "Status",
+        visible: true,
+        filterable: true,
+        sortable: true,
+        customTemplate: true,
+        render: (rowData: any, field: any) =>
+          requestStatusTemplate(rowData, field),
+      },
+      {
+        field: "notes",
+        header: "Notes",
+        visible: true,
+        filterable: true,
+        sortable: true,
+        customTemplate: true,
+        render: (rowData: any, field: any) => {
+          if (rowData.isEditing) {
+            return (
+              <Input
+                type="text"
+                className="w-full"
+                value={rowData[field] || ""}
+                onKeyDown={(e) => handleKeyDown(e, rowData)}
+                onChange={(e) => handleChangeNotes(e.target.value, rowData)}
+              />
+            );
+          }
+          return (
+            <NotesCell
+              note={rowData[field] || "-"}
+              handleEditNote={(e: any) => handleEditNote(e, rowData)}
+            />
+          );
+        },
+      },
+      {
+        field: "lastModified",
+        header: "Last Modified",
+        visible: true,
+        filterable: true,
+        sortable: true,
+      },
+    ],
+    [requestsData, location.pathname, navigate]
+  );
+
+  const [visibleColumns, setVisibleColumns] = useState(
+    columns.reduce(
+      (acc: any, col: any) => ({ ...acc, [col.field]: col.visible !== false }),
+      {}
+    )
+  );
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [activeRequestTab, setActiveRequestTab] =
+    useState<string>("Active Requests");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
   const isFetchedStatuses = useRef(false);
@@ -114,6 +165,16 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
   const [selectedFilterField, setSelectedFilterField] = useState("");
   const [filteredRequests, setFilteredRequests] = useState<any[]>([]);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
+  // Get unique statuses for the filters dropdown
+  const uniqueStatuses = useMemo(() => {
+    const statuses = new Set<string>();
+    requestsData.forEach((req: any) => {
+      if (req.statusName) statuses.add(req.statusName);
+    });
+    return Array.from(statuses).sort();
+  }, [requestsData]);
+  console.log(requestsData);
 
   const fetchInitialData = async () => {
     setIsLoading(true);
@@ -124,9 +185,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
           getAllPharmacyReqs(dispatch),
         ]);
       } else {
-        await Promise.all([
-          getAllPharmacyReqs(dispatch),
-        ]);
+        await Promise.all([getAllPharmacyReqs(dispatch)]);
       }
     } finally {
       setIsLoading(false);
@@ -142,17 +201,60 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
 
   useEffect(() => {
     if (reqsData.length > 0) {
-      const filteredData = prescriber ? reqsData.filter((item: any) => {
-        const prescriberUsername = formatPrescriberToUsername(item.prescriber || "");
-        return prescriberUsername === prescriber;
-      }) : reqsData;
-      const updatedArr = filteredData.map((item: any) => transformPharmacyRequest(item, isAdmin));
+      const filteredData = prescriber
+        ? reqsData.filter((item: any) => {
+            const prescriberUsername = formatPrescriberToUsername(
+              item.prescriber || ""
+            );
+            return prescriberUsername === prescriber;
+          })
+        : reqsData;
+      const updatedArr = filteredData.map((item: any) =>
+        transformPharmacyRequest(item, isAdmin)
+      );
       setRequestsData(updatedArr);
-      setFilteredStatuses(filteredData.map((item: any) => ({
-        id: item.request_status, name: item.paStatus, statusClass: getStatusClass(item.paStatus)
-      })))
+      setFilteredStatuses(
+        filteredData.map((item: any) => ({
+          id: item.request_status,
+          name: item.paStatus,
+          statusClass: getStatusClass(item.paStatus),
+        }))
+      );
     }
   }, [reqsData]);
+
+  useEffect(() => {
+    let filtered = [...requestsData];
+
+    if (selectedStatusFilter) {
+      filtered = filtered.filter(
+        (req) => req.statusName === selectedStatusFilter
+      );
+    }
+    if (globalFilter && selectedFilterField) {
+      filtered = filtered.filter((item) => {
+        if (selectedFilterField === "patient") {
+          return item.patient?.name
+            ?.toLowerCase()
+            .includes(globalFilter.toLowerCase());
+        } else if (selectedFilterField === "prescriber") {
+          return item.prescriber?.name
+            ?.toLowerCase()
+            .includes(globalFilter.toLowerCase());
+        } else if (typeof item[selectedFilterField] === "string") {
+          return item[selectedFilterField]
+            ?.toLowerCase()
+            .includes(globalFilter.toLowerCase());
+        }
+        return true;
+      });
+    }
+    if (!selectedFilterField) {
+      setFilteredRequests(filtered);
+    } else {
+      setFilteredRequests(groupByField(filtered, selectedFilterField));
+    }
+  }, [requestsData, selectedStatusFilter, globalFilter, selectedFilterField]);
 
   const handleSubmitStatusChange = async (value: any, rowData: any) => {
     try {
@@ -177,13 +279,13 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
       }
       return item;
     });
-  
+
     setRequestsData(updatedRequests);
   };
 
   const handleEditNote = (e: any, rowData: any) => {
     e?.preventDefault();
-  
+
     const updatedRequests = requestsData.map((item: any) => {
       if (item.id === rowData.id) {
         return {
@@ -193,17 +295,17 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
       }
       return item;
     });
-  
+
     setRequestsData(updatedRequests);
   };
 
   const handleSubmitNote = async (data: any) => {
     if (!data.notes || !data.notes.trim()) return;
-  
+
     try {
       await updateRequestNotes(dispatch, data.id, { notes: data.notes });
       await getAllPharmacyReqs(dispatch);
-  
+
       setRequestsData((prevData: any[]) =>
         prevData.map((item: any) =>
           item.id === data.id ? { ...item, isEditing: false } : item
@@ -213,8 +315,11 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
       toast.error(error?.message);
     }
   };
-  
-  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>, item: any) => {
+
+  const handleKeyDown = async (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    item: any
+  ) => {
     if (e.key === "Enter") {
       e.preventDefault();
       await handleSubmitNote(item);
@@ -223,16 +328,25 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
 
   const requestStatusTemplate = (rowData: any, field: any) => {
     if (isAdmin) {
-      return <RequestStatusDropdown
-        className={`!border-0 max-w-48 !text-sm status-dropdown`}
-        selectedValue={rowData[field]}
-        handleChange={(value: any) => handleSubmitStatusChange(value, rowData)}
-        data={reqStatusesData.map((item: any) => ({ name: item.name, code: item.id }))}
-      />
+      return (
+        <RequestStatusDropdown
+          className={`!border-0 max-w-48 !text-sm status-dropdown`}
+          selectedValue={rowData[field]}
+          handleChange={(value: any) =>
+            handleSubmitStatusChange(value, rowData)
+          }
+          data={reqStatusesData.map((item: any) => ({
+            name: item.name,
+            code: item.id,
+          }))}
+        />
+      );
     } else {
       const statusClass = getStatusClass(rowData[field]);
       return (
-        <div className={`text-sm font-medium truncate px-4 py-2 rounded-full max-w-58 ${statusClass}`}>
+        <div
+          className={`text-sm font-medium truncate px-4 py-2 rounded-full max-w-58 ${statusClass}`}
+        >
           {rowData[field]}
         </div>
       );
@@ -242,26 +356,35 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
   const toggleColumn = (columnField: any) => {
     setVisibleColumns((prev: any) => ({
       ...prev,
-      [columnField]: !prev[columnField]
+      [columnField]: !prev[columnField],
     }));
   };
 
   const clearSelection = () => {
     setVisibleColumns(
-      columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: false }), {})
+      columns.reduce(
+        (acc: any, col: any) => ({ ...acc, [col.field]: false }),
+        {}
+      )
     );
     setIsChecked(false);
   };
 
   const selectAll = (value: any) => {
     setVisibleColumns(
-      columns.reduce((acc: any, col: any) => ({ ...acc, [col.field]: value }), {})
+      columns.reduce(
+        (acc: any, col: any) => ({ ...acc, [col.field]: value }),
+        {}
+      )
     );
   };
 
   const handleStatusChange = (status: any) => {
     if (status?.length > 0) {
-      const filteredData = filterRequestsByStatus(groupByField(requestsData, selectedFilterField), status);
+      const filteredData = filterRequestsByStatus(
+        groupByField(requestsData, selectedFilterField),
+        status
+      );
       setFilteredRequests(filteredData);
     } else {
       setFilteredRequests(groupByField(requestsData, selectedFilterField));
@@ -314,16 +437,34 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
       <div className="hidden md:block">
         <div className="inline-flex gap-2 items-center h-12 flex-wrap w-full">
           <ThemeButtonTabs
-            data={['Active Requests', 'All Requests']} className="min-w-[300px] max-w-[300px]"
-            activeTab={activeRequestTab} setActiveTab={setActiveRequestTab} />
+            data={["Active Requests", "All Requests"]}
+            className="min-w-[300px] max-w-[300px]"
+            activeTab={activeRequestTab}
+            setActiveTab={setActiveRequestTab}
+          />
           <div className="inline-flex h-full items-center gap-2 ml-auto">
-            <SearchField globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
+            <SearchField
+              globalFilter={globalFilter}
+              setGlobalFilter={setGlobalFilter}
+            />
+
+            <FiltersDropdown
+              options={uniqueStatuses}
+              selectedOption={selectedStatusFilter}
+              onChange={setSelectedStatusFilter}
+              getStatusClass={getStatusClass} 
+            />
+
             <FilterField
               columns={columns.filter((item: any) => item.field !== "notes")}
               selectedValue={selectedFilterField}
               onChange={handleFilterChange}
             />
-            <RequestStatusDropdownField data={filteredStatuses} onChange={(selected) => handleStatusChange(selected)} />
+           
+            <RequestStatusDropdownField
+              data={filteredStatuses}
+              onChange={(selected) => handleStatusChange(selected)}
+            />
             <ToggleColumnsField
               clearSelection={clearSelection}
               selectAll={selectAll}
@@ -340,44 +481,27 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
   );
 
   useEffect(() => {
-    if (Object.keys(visibleColumns).filter((item) => visibleColumns[item]).length === columns.length) {
+    if (
+      Object.keys(visibleColumns).filter((item) => visibleColumns[item])
+        .length === columns.length
+    ) {
       setIsChecked(true);
     } else {
       setIsChecked(false);
     }
   }, [visibleColumns]);
 
-  useEffect(() => {
-    const normalizedData = [...requestsData];
-    const filterValue = globalFilter.toLowerCase();
-    const filtered = normalizedData.filter((item) => {
-      if (selectedFilterField === 'patient') {
-        return item[selectedFilterField].name.toLowerCase().includes(filterValue);
-      } else if (selectedFilterField === 'prescriber') {
-        return item[selectedFilterField].name.toLowerCase().includes(filterValue);
-      } else if (selectedFilterField === 'request_status') {
-        return item['statusName'].toLowerCase().includes(filterValue);
-      } else if (typeof item[selectedFilterField] === 'string') {
-        return item[selectedFilterField].toLowerCase().includes(filterValue);
-      }
-      return false;
-    });
-
-    if (selectedFilterField === 'request_status') {
-      setFilteredRequests(groupByField(filtered, 'statusName'));
-    } else if (selectedFilterField === "notes") {
-      setFilteredRequests(groupByField(filtered, 'patient'));
-    } else {
-      setFilteredRequests(groupByField(filtered, selectedFilterField))
-    }
-  }, [globalFilter, selectedFilterField, requestsData]);
-
   return (
-    <div className='bg-primary-white rounded-lg theme-datatable theme-shadow px-4 py-4'>
-      {isModalOpen && <AddRequestModal isOpen={isModalOpen} onClose={(isAdded?: boolean) => {
-        setIsModalOpen(false);
-        if (isAdded) fetchInitialData();
-      }} />}
+    <div className="bg-primary-white rounded-lg theme-datatable theme-shadow px-4 py-4">
+      {isModalOpen && (
+        <AddRequestModal
+          isOpen={isModalOpen}
+          onClose={(isAdded?: boolean) => {
+            setIsModalOpen(false);
+            if (isAdded) fetchInitialData();
+          }}
+        />
+      )}
 
       {mobileSidebarOpen && (
         <div className="fixed inset-0 z-100 md:hidden">
@@ -420,6 +544,13 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
                 </div>
 
                 <div className="h-[1px] w-full bg-gray-200 mb-4"></div>
+                 <FiltersDropdown
+              options={uniqueStatuses}
+              selectedOption={selectedStatusFilter}
+              onChange={setSelectedStatusFilter}
+              getStatusClass={getStatusClass} 
+            />
+            <div className="h-[1px] w-full bg-gray-200 mb-4"></div>
 
                 <div>
                   <FilterField
@@ -455,6 +586,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
                   setSelectedFilterField("patient");
                   setGlobalFilter("");
                   clearSelection();
+                  setSelectedStatusFilter(null);
                 }}
                 className="flex-1 py-3  rounded-lg bg-[#EBF1FF] text-[#163066] text-sm font-medium"
               >
@@ -475,10 +607,19 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
         <RequestTitle isAdmin={isAdmin} prescriber={prescriber} />
         {!prescriber && (
           <div className="inline-flex h-full gap-2 sm:ml-auto">
-            <ThemeButton type="button" className="!h-full min-w-max rounded-lg" variant="secondary">
+            <ThemeButton
+              type="button"
+              className="!h-full min-w-max rounded-lg"
+              variant="secondary"
+            >
               Open Portal
             </ThemeButton>
-            <ThemeButton className="w-full !h-full rounded-lg" variant="primary" type="button" onClick={() => setIsModalOpen(true)}>
+            <ThemeButton
+              className="w-full !h-full rounded-lg"
+              variant="primary"
+              type="button"
+              onClick={() => setIsModalOpen(true)}
+            >
               Add Request
             </ThemeButton>
           </div>
@@ -493,12 +634,13 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
         <ThemeDataTable
           header={tableHeader}
           data={
-            selectedFilterField !== ""
+            selectedStatusFilter || selectedFilterField
               ? filteredRequests
               : requestsData.sort(
-                (a: any, b: any) =>
-                  new Date(b.submittedOn).getTime() - new Date(a.submittedOn).getTime()
-              )
+                  (a: any, b: any) =>
+                    new Date(b.submittedOn).getTime() -
+                    new Date(a.submittedOn).getTime()
+                )
           }
           columns={columns}
           pageSize={10}
@@ -507,7 +649,15 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
           globalFilter={globalFilter}
           setGlobalFilter={setGlobalFilter}
           themeDataTableClass={"theme-table"}
-          globalFilterFields={['patient.name', 'medication', 'prescriber.name', 'submittedOn', 'statusName', 'notes', 'lastModified']}
+          globalFilterFields={[
+            "patient.name",
+            "medication",
+            "prescriber.name",
+            "submittedOn",
+            "statusName",
+            "notes",
+            "lastModified",
+          ]}
           onRowClick={(row: any) =>
             navigate(location.pathname + "/" + row.data.id + "/request-details")
           }
