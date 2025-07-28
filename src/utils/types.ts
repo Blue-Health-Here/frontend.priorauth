@@ -71,7 +71,8 @@ export interface UploadedFile {
   url: string;
   status: "uploading" | "completed" | "error";
   fileTags: any[];
-  showTagDropdown?: boolean
+  showTagDropdown?: boolean;
+  tag?: string;
 }
 
 export interface PasswordRequirement {
