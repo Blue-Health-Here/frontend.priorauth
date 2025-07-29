@@ -81,7 +81,7 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
       } right-0 z-60 bg-navbar-bg border-b border-navbar-stroke flex`}
     >
       {/* Mobile View (lg:hidden) - Completely separate from desktop */}
-      <div className="lg:hidden flex items-center justify-between w-full p-2 h-[70px]">
+      <div className="lg:hidden flex items-center justify-between w-full p-2 h-[100px]">
         <div className="flex items-center gap-1 flex-1 min-w-0">
           <button
             onClick={() => dispatch(setIsSidebarOpen(!isSidebarOpen))}
