@@ -554,6 +554,16 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.dark {
+  .p-breadcrumb .p-breadcrumb-list li .p-menuitem-link .p-menuitem-text {
+    color: #fff;
+    background: var(--dark-800);
+  }
+  .theme-sidebar {
+    background: linear-gradient(to bottom, var(--dark-800), var(--dark-800));
+  }
+}
+
 .theme-container {
   @apply max-w-[1520px] mx-auto;
 }
@@ -572,17 +582,6 @@ body {
 
 .theme-sidebar {
   background:linear-gradient(to bottom, #0B1F4A, #214182);
-}
-.dark {
-  .p-breadcrumb .p-breadcrumb-list li .p-menuitem-link {
-    background: transparent !important;
-  }
-  .p-breadcrumb .p-breadcrumb-list li .p-menuitem-link .p-menuitem-text {
-    color: #fff;
-  }
-  .theme-sidebar {
-    background: linear-gradient(to bottom, var(--dark-800), var(--dark-800));
-  }
 }
 
 .slick-slide > div {
