@@ -3,7 +3,6 @@ import PharmacyToolTipDropdown from "./common/PharmacyToolTipDropdown";
 import React, { useEffect, useRef, useState } from "react";
 import InfoColumn from "./common/InfoColumn";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { formatPrescriberToUsername } from "@/utils/helper";
 import ThemeButton from "./common/ThemeButton";
 import { useTheme } from "@/hooks/useTheme";
 import RequestsIcon from "./icons/RequestsIcon";
@@ -70,8 +69,8 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
   }, []);
 
   const pageLink = isAdmin
-    ? `/admin/prescribers/${formatPrescriberToUsername(prescriber.prescriber)}/prescriber-details`
-    : `/pharmacy/prescribers/${formatPrescriberToUsername(prescriber.prescriber)}/prescriber-details`;
+    ? `/admin/prescribers/${prescriber.id}/prescriber-details`
+    : `/pharmacy/prescribers/${prescriber.id}/prescriber-details`;
 
   return (
     <div className="bg-primary-white rounded-lg relative border border-quaternary-navy-blue w-full">

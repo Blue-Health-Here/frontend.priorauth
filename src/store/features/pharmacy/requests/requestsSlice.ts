@@ -11,7 +11,7 @@ const pharmacyRequestsSlice = createSlice({
     initialState, 
     reducers: {
         setRequestsData: (state, action) => {
-            state.reqsData = action.payload?.data;
+            state.reqsData = action.payload?.data || action.payload;
         },
         setRequestComments: (state, action) => {
             state.reqComments = action.payload;
