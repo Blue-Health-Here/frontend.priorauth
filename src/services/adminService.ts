@@ -192,7 +192,7 @@ export const getAllUserPrescribers = async (dispatch: AppDispatch) => {
     return apiHandler(dispatch, 'get', '/user/prescribers', {
         data: {},
         onSuccess: (data) => {
-            dispatch(setPrescribersData(data))
+            dispatch(setPrescribersData(data?.data))
         },
         onError: (error) => {
             if (error.status === 404) {

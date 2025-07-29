@@ -64,8 +64,8 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     setUpdatedPresData(transformed);
   }, [prescribersData]);
 
-  const sortedPresData = useMemo(() => {
-    let data = [...updatedPresData];
+  // const sortedPresData = useMemo(() => {
+  //   let data = [...updatedPresData];
 
     // if (sortDirection) {
     //   data.sort((a, b) => {
@@ -77,19 +77,19 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     //   });
     // }
 
-    return data;
-  }, [updatedPresData]);
+  //   return data;
+  // }, [updatedPresData]);
 
   const filteredPresData = useMemo(() => {
     const filterValue = globalFilter.toLowerCase();
 
-    return sortedPresData.filter((item) =>
+    return updatedPresData.filter((item) =>
       item.prescriber?.toLowerCase().includes(filterValue)
     );
-  }, [sortedPresData, globalFilter]);
+  }, [updatedPresData, globalFilter]);
 
   const displayedPrescribers = useMemo(() => {
-    return filteredPresData.filter((item) => isArchiveTab ? !item.isActive : item.isActive);
+    return filteredPresData.filter((item) => isArchiveTab ? item.isArchived : item.active);
   }, [filteredPresData, isArchiveTab]);
 
   const handleArchiveToggle = (name: string, archiveStatus: boolean) => {
