@@ -43,8 +43,8 @@ const Sidebar: React.FC = () => {
   };
 
   const asideClass = isSidebarOpen
-    ? "max-w-full min-w-full transition-all duration-500 shadow-[0px 0px 12px 0px rgba(0, 0, 0, 0.04)] xl:min-w-[280px] xl:max-w-[280px] block text-secondary-black fixed top-0 bottom-0 z-[99]"
-    : `max-w-[280px] min-w-[280px] transition-all duration-500 shadow-[0px 0px 12px 0px rgba(0, 0, 0, 0.04)] hidden lg:flex text-secondary-black flex-col fixed top-0 bottom-0 z-[99] ${
+    ? "max-w-full min-w-full transition-all duration-500 border-r border-light-stroke theme-shadow xl:min-w-[280px] xl:max-w-[280px] block text-secondary-black fixed top-0 bottom-0 z-[99]"
+    : `max-w-[280px] min-w-[280px] transition-all duration-500 border-r border-light-stroke theme-shadow hidden lg:flex text-secondary-black flex-col fixed top-0 bottom-0 z-[99] ${
         isSidebarCollapsed ? "!min-w-[80px] !max-w-[80px]" : ""
       }`;
 
@@ -54,9 +54,9 @@ const Sidebar: React.FC = () => {
         <div className="fixed inset-0 z-[98] bg-black bg-opacity-50 lg:hidden" />
       )}
       <aside
-        className={asideClass}
+        className={asideClass + 'theme-sidebar'}
         style={{
-          background: "linear-gradient(to bottom, #0B1F4A, #214182)",
+          // background: "linear-gradient(to bottom, #0B1F4A, #214182)",
         }}
       >
         <div
@@ -105,8 +105,8 @@ const Sidebar: React.FC = () => {
                     className={({ isActive }) =>
                       `group flex items-center gap-x-2 rounded cursor-pointer transition font-secondary ${
                         isActive
-                          ? "bg-[#294C95] text-white"
-                          : "text-white hover:bg-[#294C95]"
+                          ? "bg-sidebar-link-active text-white"
+                          : "text-white hover:bg-sidebar-link-active"
                       } ${isSidebarCollapsed ? "p-2 px-3" : "p-2"}`
                     }
                   >
@@ -136,9 +136,8 @@ const Sidebar: React.FC = () => {
               ))}
             </ul>
           </div>
-          <div className="border-t border-[#2864F6] border-opacity-20 w-full my-3"></div>
 
-          <div className="px-3 py-4">
+          <div className="px-3 py-4 mt-2 border-t border-sidebar-stroke">
             <div className={isSidebarCollapsed ? "flex justify-center" : ""}>
               <NavLink
                 to={
@@ -184,9 +183,9 @@ const Sidebar: React.FC = () => {
               }`}
             >
               <div
-                className={`flex items-center ${
+                className={`flex items-center bg-copyright-box ${
                   isSidebarCollapsed
-                    ? "gap-0 bg-[#294C95] p-2 px-3 rounded-lg"
+                    ? "gap-0  p-2 px-3 rounded-lg"
                     : "gap-2 bg-[#294C95] p-3 py-1.5 rounded-lg"
                 }`}
               >

@@ -10,6 +10,7 @@ import { BreadCrumb } from 'primereact/breadcrumb';
 import { generateBreadcrumbItems } from '@/utils/helper';
 import { HiOutlineSlash } from "react-icons/hi2";
 import { useTheme } from "@/hooks/useTheme";
+import { InputText } from "primereact/inputtext";
 
 interface UserData {
   userName: string;
@@ -77,7 +78,7 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
     <div
       className={`fixed top-0 left-0 ${
         isSidebarCollapsed ? "lg:left-[80px]" : "lg:left-[280px]"
-      } right-0 p-3 min-h-16 sm:p-3 z-60 bg-primary-white border-b border-gray-100 flex`}
+      } right-0 p-3 min-h-16 sm:p-3 z-60 bg-navbar-bg border-b border-navbar-stroke flex`}
     >
       <nav className={`flex justify-between w-full flex-1`}>
         <div className="flex items-center gap-2 flex-1">
@@ -108,7 +109,7 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
             model={breadcrumbItems} separatorIcon={<HiOutlineSlash />} />
         </div>
         <div className="hidden lg:flex items-center justify-center flex-1">
-          <div className="relative mx-2 w-[324px]">
+          {/* <div className="relative mx-2 w-[324px]">
             <input
               type="text"
               placeholder="Search here"
@@ -118,6 +119,15 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
             <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">
               <img src="/search-icon.svg" alt="search icon" className="w-4 h-4" />
             </span>
+          </div> */}
+          <div className={`relative mx-2 w-[324px]`}>
+            <InputText
+              placeholder={"Search here"}
+              className={`!pl-10 !rounded-full !bg-input-bg !border-input-stroke h-full !text-sm w-full h-full`}
+            />
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+              <img src="/search-icon.svg" alt="search icon" className="w-4 h-4" />
+            </div>
           </div>
         </div>
         <div className="flex justify-end items-center gap-3.5 flex-1">
