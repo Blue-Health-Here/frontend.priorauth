@@ -54,7 +54,7 @@ const Sidebar: React.FC = () => {
         <div className="fixed inset-0 z-[98] bg-black bg-opacity-50 lg:hidden" />
       )}
       <aside
-        className={asideClass + 'theme-sidebar'}
+        className={asideClass + ' theme-sidebar'}
         style={{
           // background: "linear-gradient(to bottom, #0B1F4A, #214182)",
         }}
