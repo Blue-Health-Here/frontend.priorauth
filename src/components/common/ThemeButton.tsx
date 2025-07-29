@@ -26,19 +26,19 @@ const ThemeButton: React.FC<any> = ({
     // Variant styles with hover states
     const variantStyles: any = {
         primary: `
-            bg-primary-navy-blue text-white border border-primary-navy-blue cursor-pointer
+            bg-btn-primary-bg text-btn-primary-text cursor-pointer
             disabled:bg-blue-300 disabled:border-blue-300 disabled:cursor-not-allowed
         `,
         secondary: `
-            bg-quaternary-navy-blue text-primary-navy-blue border border-quaternary-navy-blue cursor-pointer
+            bg-btn-secondary-bg text-btn-secondary-text cursor-pointer
             disabled:bg-gray-50 disabled:text-gray-400 disabled:border-gray-200 disabled:cursor-not-allowed
         `,
         tertiary: `
-            bg-primary-white text-[#163066] border border-[#CBDAFF] cursor-pointer
-    disabled:bg-gray-50 disabled:text-gray-400 disabled:border-gray-200 disabled:cursor-not-allowed
+            bg-btn-tertiary-bg text-btn-tertiary-text border border-btn-tertiary-stroke cursor-pointer
+    disabled:bg-btn-disabled-bg disabled:text-btn-disabled-text disabled:border-btn-disabled-stroke disabled:cursor-not-allowed
         `,
         disabled: `
-            bg-light-stroke text-quaternary-white border border-light-stroke cursor-not-allowed
+            bg-btn-disabled-bg text-btn-disabled-text border border-btn-disabled-stroke cursor-not-allowed
         `,
         warning: `
             bg-error-chip-bg-color text-error-clip border border-error-clip cursor-pointer
