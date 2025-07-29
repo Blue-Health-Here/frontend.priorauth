@@ -89,7 +89,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   }, [updatedPresData, globalFilter]);
 
   const displayedPrescribers = useMemo(() => {
-    return filteredPresData.filter((item) => isArchiveTab ? item.isArchived : item.active);
+    return filteredPresData.filter((item) => isArchiveTab ? item.isArchived || !item.isActive : item.active || item.isActive);
   }, [filteredPresData, isArchiveTab]);
 
   const handleArchiveToggle = (name: string, archiveStatus: boolean) => {
@@ -352,9 +352,9 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
               <Loading />
             </div>
           ) : displayedPrescribers.length > 0 ? (
-            displayedPrescribers.map((item) => (
+            displayedPrescribers.map((item, index) => (
               <PrescriberCard
-                key={item.prescriber}
+                key={index}
                 prescriber={item}
                 isAdmin={isAdmin}
                 onArchiveToggle={handleArchiveToggle}
