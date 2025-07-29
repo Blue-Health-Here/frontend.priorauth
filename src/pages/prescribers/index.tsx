@@ -118,6 +118,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     );
     setIsModifying(false);
   };
+  
 
   const handleGenerateCPA = (item: any) => {
     console.log(item, "item");
