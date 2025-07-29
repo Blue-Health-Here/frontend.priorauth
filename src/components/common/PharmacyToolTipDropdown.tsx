@@ -4,7 +4,7 @@ import InviteLinkModal from "@/pages/prescribers/InviteLinkModal";
 interface PharmacyToolTipDropdownProps {
   onModify?: () => void;
   isArchived?: boolean;
-  onArchiveToggle?: (status: boolean) => void;
+  onArchiveToggle?: () => void;
   onGenerateCPA?: () => void;
   loadingGenerateCPA?: boolean;
   prescribers?: Array<{ id: string; name: string }>; // Add prescribers prop
@@ -54,7 +54,7 @@ const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({
         {/* Archive/Unarchive Option */}
         <button
           className="group flex items-center w-full gap-x-1.5 px-3 py-2 text-sm cursor-pointer transition hover:bg-gray-50"
-          onClick={() => onArchiveToggle && onArchiveToggle(!isArchived)}
+          onClick={() => onArchiveToggle && onArchiveToggle()}
         >
           <img 
             src={isArchived ? "/archive.svg" : "/archive.svg"} 

@@ -311,7 +311,7 @@ export const fetchPrescriberDetails = async (dispatch: AppDispatch, id?: string)
     return apiHandler(dispatch, 'get', `/pa-request-prescriber/get_by_id/${id}`, {});
 };
 
-export const updatePrescriberById = async (dispatch: AppDispatch, data?: any) => {
+export const updatePrescriberDetails = async (dispatch: AppDispatch, data?: any) => {
     return apiHandler(dispatch, 'put', `/pa-request-prescriber/update/${data.id}`, {
         data,
         successMessage: "Prescriber updated successfully!"
