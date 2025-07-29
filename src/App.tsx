@@ -62,7 +62,7 @@ function App() {
               <Route path="requests" element={<PharmacyRequests isAdmin={true} />} />
               <Route path="requests/:id/request-details" element={<PharmacyRequestDetails isAdmin={true} />} />
               <Route path="prescribers" element={<Prescribers isAdmin={true} />} />
-              <Route path="prescribers/:username/prescriber-details" element={<PrescriberDetails isAdmin={true} />} />
+              <Route path="prescribers/:id/prescriber-details" element={<PrescriberDetails isAdmin={true} />} />
               <Route path="settings" element={<AdminSettings />} />
               <Route path="settings/change-password" element={<ChangePasswordPage />} />
               <Route path="settings/user-settings" element={<UserSettingPage />} />
@@ -79,7 +79,7 @@ function App() {
               <Route path="requests" element={<PharmacyRequests isAdmin={false} />} />
               <Route path="requests/:id/request-details" element={<PharmacyRequestDetails isAdmin={false} />} />
               <Route path="prescribers" element={<Prescribers isAdmin={false} />} />
-              <Route path="prescribers/:username/prescriber-details" element={<PrescriberDetails isAdmin={false} />} />
+              <Route path="prescribers/:id/prescriber-details" element={<PrescriberDetails isAdmin={false} />} />
               <Route path="cmm-account-database" element={<CMMAccountDatabase />} />
               <Route path="settings" element={<PharmacySettings />} />
             </Route>

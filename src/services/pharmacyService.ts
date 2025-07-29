@@ -181,7 +181,20 @@ export const getAllReqStatuses = async (dispatch: AppDispatch) => {
 };
 
 // Requests
-export const getAllPharmacyReqs = async (dispatch: AppDispatch) => {
+export const getAllPharmacyReqs = async (dispatch: AppDispatch, prescriberId?: string) => {
+    if (prescriberId) {
+        return apiHandler(dispatch, 'get', `/pa_request/get_by_id/requests/prescriber/${prescriberId}`, {
+            onSuccess: (data) => {
+                dispatch(setRequestsData(data))
+            },
+            onError: (error) => {
+                if (error.status === 404) {
+                    dispatch(setRequestsData([]));
+                }
+            },
+            errorMessage: "Requests not found."
+        })
+    }
     return apiHandler(dispatch, 'post', '/pa_request/get_all', {
         data: {
             pagedListRequest: {
@@ -292,6 +305,25 @@ export const getAllPrescribers = async (dispatch: AppDispatch, id?: string) => {
         },
         errorMessage: "Prescribers not found."
     })
+};
+
+export const fetchPrescriberDetails = async (dispatch: AppDispatch, id?: string) => {
+    return apiHandler(dispatch, 'get', `/pa-request-prescriber/get_by_id/${id}`, {});
+};
+
+export const updatePrescriberById = async (dispatch: AppDispatch, data?: any) => {
+    return apiHandler(dispatch, 'put', `/pa-request-prescriber/update/${data.id}`, {
+        data,
+        successMessage: "Prescriber updated successfully!"
+    });
+};
+
+export const uploadPrescriberImage = async (dispatch: AppDispatch, id?: string, formData?: any) => {
+    return apiHandler(dispatch, 'patch', `/pa-request-prescriber/${id}/profile-pic`, {
+        isFormData: true,
+        data: formData,
+        successMessage: "Picture have been updated."
+    });
 };
 
 // ============= Update settings Password  =============
