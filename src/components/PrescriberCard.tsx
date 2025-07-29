@@ -5,6 +5,10 @@ import InfoColumn from "./common/InfoColumn";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { formatPrescriberToUsername } from "@/utils/helper";
 import ThemeButton from "./common/ThemeButton";
+import { useTheme } from "@/hooks/useTheme";
+import RequestsIcon from "./icons/RequestsIcon";
+import { IoCloseOutline } from "react-icons/io5";
+import { LuLoader } from "react-icons/lu";
 
 interface PrescriberCardProps {
   prescriber: {
@@ -40,6 +44,7 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { isDark } = useTheme();
 
   // Fallback values if not provided in API
   const totalRequests = prescriber.totalRequests ?? 528;
@@ -87,10 +92,10 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
           <div ref={dropdownRef} className='relative'>
             <button
               type='button'
-              className="rounded-lg p-2 text-black cursor-pointer bg-quaternary-navy-blue hover:bg-[#EBEBEB]"
+              className="rounded-lg p-2 text-black cursor-pointer bg-tabs-active-body hover:bg-tabs-active-body"
               onClick={toggleDropdown}
             >
-              <BsThreeDotsVertical className="text-sm" />
+              <BsThreeDotsVertical className="text-sm text-tabs-text" />
             </button>
             {isDropdownOpen && (
               <PharmacyToolTipDropdown
@@ -129,30 +134,33 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
 
         <div className="hidden md:grid grid-cols-2 gap-4">
           <InfoColumn
-            icon={<img src={showUnarchiveButton ? "/archive-total-requests.svg" : "/requests.svg"} alt="Requests" />}
+            icon={<RequestsIcon color={isDark ? "#fff" : showUnarchiveButton ? "#525252" : "#3961B2"} />}
             label="Total Requests"
             data={totalRequests}
             isArchived={showUnarchiveButton}
           />
           <InfoColumn
-            icon={<img src={showUnarchiveButton ? "/archive-approved.svg" : "/approved.svg"} alt="Approved" />}
+            icon={<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.6666 4.33398L5.66659 11.6673L3.33325 9.33398" 
+                stroke={isDark ? "#fff" : showUnarchiveButton ? "#525252" : "#3961B2"} 
+                strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>}
             label="Approved"
             data={`${approvedPercentage}%`}
             isArchived={showUnarchiveButton}
           />
           <InfoColumn
-            icon={<img src={showUnarchiveButton ? "/archive-denied.svg" : "/denied.svg"} alt="Denied" />}
+            icon={<IoCloseOutline size={18} className={`${isDark ? "text-icon-group-icon" : showUnarchiveButton ? "#525252" : "text-icon-group-icon"}`} />}
             label="Denied"
             data={`${deniedPercentage}%`}
             isArchived={showUnarchiveButton}
           />
           <InfoColumn
-            icon={<img src={showUnarchiveButton ? "/archive-pending.svg" : "/pending.svg"} alt="Pending" />}
+            icon={<LuLoader size={16} className={`${isDark ? "text-icon-group-icon" : showUnarchiveButton ? "#525252" : "text-icon-group-icon"}`} />}
             label="Pending"
             data={`${pendingPercentage}%`}
             isArchived={showUnarchiveButton}
           />
-         
         </div>
       </div>
       <div className="flex justify-end gap-2 p-4 border-t border-quaternary-navy-blue">

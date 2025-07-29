@@ -183,6 +183,8 @@
   /* Misc */
   --gray-color: #666c7c;
   --ai-animation: #f8a8aa;
+  --link-active: #00216D;
+  --navy-dark-blue-600: #25374D;
 
   /* Dark Shades */
   --dark-900: #090909;
@@ -193,14 +195,15 @@
   --dark-600: #24262b;
   --dark-500: #343740;
 
-  
   /* Sidebar CSS Colors */
   --sidebar-stroke: #2864F6;
   --copyright-box: #294C95;
   --sidebar-link-active: #294C95;
+
   /* Navbar CSS Colors */
   --navbar-bg: var(--white-900);
   --navbar-stroke: var(--stroke-500);
+
   /* Input CSS Colors */
   --input-stroke: var(--stroke-500);
   --input-bg: var(--white-900);
@@ -211,6 +214,27 @@
   --input-search-icon: var(--black-600);
   --input-disabled-stroke: var(--stroke-500);
   --input-disabled-text: var(--white-500);
+
+  /* Tabs Colors */
+  --tabs-text: var(--navy-blue-900);
+  --tabs-active-body: var(--navy-blue-500);
+  --tabs-border: var(--navy-blue-600);
+
+  /* Buttons Colors */
+  --btn-primary-bg: var(--navy-blue-900);
+  --btn-primary-text: var(--white-900);
+  --btn-secondary-bg: var(--navy-blue-500);
+  --btn-secondary-text: var(--navy-blue-900);
+  --btn-tertiary-bg: var(--white-900);
+  --btn-tertiary-text: var(--navy-blue-900);
+  --btn-tertiary-stroke: var(--navy-blue-600);
+  --btn-disabled-bg: var(--bg-white-secondary);
+  --btn-disabled-text: var(--white-500);
+  --btn-disabled-stroke: var(--stroke-500);
+
+  /* Icon Group Colors */
+  --icon-group-bg: var(--navy-blue-500);
+  --icon-group-icon: var(--navy-blue-800);
 
 }
 
@@ -297,9 +321,51 @@
   --input-disabled-stroke: var(--dark-700);
   --input-disabled-text: var(--white-500);
 
+  /* Tabs Colors */
+  --tabs-text: var(--white-900);
+  --tabs-active-body: var(--dark-500);
+  --tabs-border: var(--dark-700);
+
+  /* Buttons Colors */
+  --btn-primary-bg: var(--link-active);
+  --btn-primary-text: var(--white-900);
+  --btn-secondary-bg: #3E5168;
+  --btn-secondary-text: var(--white-900);
+  --btn-tertiary-bg: var(--dark-850);
+  --btn-tertiary-text: var(--white-900);
+  --btn-tertiary-stroke: var(--dark-700);
+  --btn-disabled-bg: var(--dark-500);
+  --btn-disabled-text: var(--white-500);
+  --btn-disabled-stroke: var(--dark-500);
+
+  /* Icon Group Colors */
+  --icon-group-bg: var(--navy-dark-blue-600);
+  --icon-group-icon: var(--white-800);
+
 }
 
 @theme {
+  /* Icon Group Colors */
+  --color-icon-group-bg: var(--icon-group-bg);
+  --color-icon-group-icon: var(--icon-group-icon);
+
+  /* Buttons Colors */
+  --color-btn-primary-bg: var(--btn-primary-bg);
+  --color-btn-primary-text: var(--btn-primary-text);
+  --color-btn-secondary-bg: var(--btn-secondary-bg);
+  --color-btn-secondary-text: var(--btn-secondary-text);
+  --color-btn-tertiary-bg: var(--btn-tertiary-bg);
+  --color-btn-tertiary-text: var(--btn-tertiary-text);
+  --color-btn-tertiary-stroke: var(--btn-tertiary-stroke);
+  --color-btn-disabled-bg: var(--btn-disabled-bg);
+  --color-btn-disabled-text: var(--btn-disabled-text);
+  --color-btn-disabled-stroke: var(--btn-disabled-stroke);
+
+  /* Tabs Colors */
+  --color-tabs-text: var(--tabs-text);
+  --color-tabs-active-body: var(--tabs-active-body);
+  --color-tabs-border: var(--tabs-border);
+
   /* Input Colors */
   --color-input-stroke: var(--input-stroke);
   --color-input-bg: var(--input-bg);
@@ -334,6 +400,7 @@
   --color-navy-blue-500: var(--navy-blue-500);
   --color-navy-blue-400: var(--navy-blue-400);
   --color-navy-blue-300: var(--navy-blue-300);
+  --color-navy-dark-blue-600: var(--navy-dark-blue-600);
 
   --color-navy-blue-dark-900: var(--navy-blue-dark-900);
   --color-navy-blue-dark-800: var(--navy-blue-dark-800);
@@ -552,6 +619,27 @@ body {
   background-color: var(--primary-background);
   color: var(--primary-black);
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+.p-breadcrumb .p-breadcrumb-list li .p-menuitem-link .p-menuitem-text {
+  background: var(--white-900);
+  color: var(--black-900);
+}
+
+.notification-btn svg {
+  fill: var(--black-700);
+}
+
+.dark {
+  .p-breadcrumb .p-breadcrumb-list li .p-menuitem-link .p-menuitem-text {
+    color: #fff;
+    background: var(--dark-800);
+  }
+  .theme-sidebar {
+    background: linear-gradient(to bottom, var(--dark-800), var(--dark-800));
+  }
+  .notification-btn svg {
+    fill: var(--white-800);
+  }
 }
 
 .dark {
