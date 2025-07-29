@@ -553,6 +553,27 @@ body {
   color: var(--primary-black);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+.p-breadcrumb .p-breadcrumb-list li .p-menuitem-link .p-menuitem-text {
+  background: var(--white-900);
+  color: var(--black-900);
+}
+
+.notification-btn svg {
+  fill: var(--black-700);
+}
+
+.dark {
+  .p-breadcrumb .p-breadcrumb-list li .p-menuitem-link .p-menuitem-text {
+    color: #fff;
+    background: var(--dark-800);
+  }
+  .theme-sidebar {
+    background: linear-gradient(to bottom, var(--dark-800), var(--dark-800));
+  }
+  .notification-btn svg {
+    fill: var(--white-800);
+  }
+}
 
 .theme-container {
   @apply max-w-[1520px] mx-auto;
@@ -572,17 +593,6 @@ body {
 
 .theme-sidebar {
   background:linear-gradient(to bottom, #0B1F4A, #214182);
-}
-.dark {
-  .p-breadcrumb .p-breadcrumb-list li .p-menuitem-link {
-    background: transparent !important;
-  }
-  .p-breadcrumb .p-breadcrumb-list li .p-menuitem-link .p-menuitem-text {
-    color: #fff;
-  }
-  .theme-sidebar {
-    background: linear-gradient(to bottom, var(--dark-800), var(--dark-800));
-  }
 }
 
 .slick-slide > div {
