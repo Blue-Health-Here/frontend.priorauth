@@ -84,6 +84,6 @@ export const modifyPrescriberSchema = Yup.object().shape({
   prescriberPhone: Yup.string().required("Phone is required"),
   prescriberCity: Yup.string().required("City is required"),
   npi: Yup.string().required("NPI is required"),
-  fax: Yup.string(),
+  prescriberFax: Yup.string(),
   prescriberAddress: Yup.string().required("Address is required"),
 });

@@ -307,6 +307,25 @@ export const getAllPrescribers = async (dispatch: AppDispatch, id?: string) => {
     })
 };
 
+export const fetchPrescriberDetails = async (dispatch: AppDispatch, id?: string) => {
+    return apiHandler(dispatch, 'get', `/pa-request-prescriber/get_by_id/${id}`, {});
+};
+
+export const updatePrescriberById = async (dispatch: AppDispatch, data?: any) => {
+    return apiHandler(dispatch, 'put', `/pa-request-prescriber/update/${data.id}`, {
+        data,
+        successMessage: "Prescriber updated successfully!"
+    });
+};
+
+export const uploadPrescriberImage = async (dispatch: AppDispatch, id?: string, formData?: any) => {
+    return apiHandler(dispatch, 'patch', `/pa-request-prescriber/${id}/profile-pic`, {
+        isFormData: true,
+        data: formData,
+        successMessage: "Picture have been updated."
+    });
+};
+
 // ============= Update settings Password  =============
 export const updateProfilePassword = async (dispatch: AppDispatch, userId: string, data: any) => {
     return apiHandler(dispatch, 'post', `/user/change-password/${userId}`, {
