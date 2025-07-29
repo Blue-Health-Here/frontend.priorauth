@@ -1,7 +1,7 @@
 import Loading from "@/components/common/Loading";
 import PrescriberCard from "@/components/PrescriberCard";
 import { getAllUserPrescribers } from "@/services/adminService";
-import { fetchPrescriberDetails, getAllPrescribers, updatePrescriberById } from "@/services/pharmacyService";
+import { fetchPrescriberDetails, getAllPrescribers, updatePrescriberDetails } from "@/services/pharmacyService";
 import { RootState } from "@/store";
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -91,15 +91,11 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     return filteredPresData.filter((item) => isArchiveTab ? item.isArchived || !item.isActive : item.active || item.isActive);
   }, [filteredPresData, isArchiveTab]);
 
-  const handleArchiveToggle = (name: string, archiveStatus: boolean) => {
-    setUpdatedPresData((prev) => {
-      const updated = [...prev];
-      const index = updated.findIndex((item) => item.prescriber === name);
-      if (index !== -1) {
-        updated[index] = { ...updated[index], isArchived: archiveStatus };
-      }
-      return updated;
-    });
+  const handleArchiveToggle = async (prescriber: any, status: boolean) => {
+    const response = await updatePrescriberDetails(dispatch, { id: prescriber.id, isActive: status });
+    if (response) {
+      await fetchAllPrescribers();
+    }
   };
 
   // const handleInviteClick = () => setIsInviteModalOpen(true);
@@ -175,10 +171,10 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   };
 
   const handleSavePrescriber = async (values: any) => {
-    const response = await updatePrescriberById(dispatch, values);
+    const response = await updatePrescriberDetails(dispatch, values);
     if (response) {
       setIsModifying(false);
-      fetchAllPrescribers();
+      await fetchAllPrescribers();
     }
   };
 
@@ -272,7 +268,6 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
                 prescriber={item}
                 isAdmin={isAdmin}
                 onArchiveToggle={handleArchiveToggle}
-                showUnarchiveButton={activeTab === "Archives"}
                 onModify={() => handleModifyPrescriber(item)}
                 onGenerateCPA={() => handleGenerateCPA(item)}
                 loadingGenerateCPA={loadingGenerateCPA}
