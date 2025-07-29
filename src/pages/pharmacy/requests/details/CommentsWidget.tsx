@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import { addNewReqComment } from "@/services/pharmacyService";
 import { useParams } from "react-router-dom";
 
-const CommentsWidget: React.FC<any> = ({ showTwo = false }) => {
+const CommentsWidget: React.FC<any> = ({ showTwo = false, isAdmin }) => {
     const { reqComments } = useSelector((state: RootState) => state.pharmacyReqs);
     const [input, setInput] = useState("");
     const dispatch = useDispatch();
@@ -73,7 +73,12 @@ const CommentsWidget: React.FC<any> = ({ showTwo = false }) => {
                     />
                 </div>
                 <div className="flex justify-end pt-3">
-                    <ThemeButton onClick={handleAdd} disabled={!input.trim()} className="px-6">
+                    <ThemeButton 
+                        onClick={handleAdd} 
+                        disabled={!input.trim()} 
+                        className="w-full sm:w-[initial] px-6 bg-primary-navy-blue text-white sm:[background:initial] sm:[color:initial]"
+                        variant={isAdmin ? "primary" : "secondary"}
+                    >
                         Post Comment
                     </ThemeButton>
                 </div>

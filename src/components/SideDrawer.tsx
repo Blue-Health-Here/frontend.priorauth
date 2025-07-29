@@ -19,6 +19,9 @@ const SideDrawer: React.FC<any> = ({
         left: `left-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`,
     };
 
+    // Responsive width - full width on mobile, specified width on desktop
+    const responsiveWidth = `w-full md:${width}`;
+
     return (
         <>
             {isOpen && (
@@ -33,7 +36,7 @@ const SideDrawer: React.FC<any> = ({
 
                     {/* Drawer */}
                     <div className={`
-                        fixed top-0 ${positionClasses[position]} h-full ${width} 
+                        fixed top-0 ${positionClasses[position]} h-full ${responsiveWidth} 
                         bg-primary-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out
                         ${className}
                     `}>

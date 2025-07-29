@@ -40,7 +40,6 @@ const LetterOfMedicalNecessity: React.FC<any> = ({ requestDetails }) => {
     };
 
     const handleDownload = async () => {
-        // console.log(user, medicalNecessityFile, "dasdas");
         if (medicalNecessityFile && user) {
             const file = medicalNecessityFile as { url: string; fileName: string };
             try {
@@ -63,16 +62,16 @@ const LetterOfMedicalNecessity: React.FC<any> = ({ requestDetails }) => {
 
     return (
         <div className="inline-flex flex-col gap-4 p-4 max-w-[400px] border border-quaternary-navy-blue rounded-lg">
-            <img src="/AI_PDF_large.svg" alt="pdf icon" className="w-12 h-12" />
+            <img src="/AI_PDF_large.svg" alt="pdf icon" className="w-10 h-10 sm:w-12 sm:h-12" />
             <div className="">
-                <h3 className="text-base font-medium text-primary-black">
+                <h3 className="text-sm sm:text-base font-medium text-primary-black whitespace-nowrap sm:whitespace-normal">
                     {medicalNecessityFile && !isReGenerateAgain ? (
                         "Successfully Generated"
                     ) : (
                         "Letter of Medical Necessity"
                     )}
                 </h3>
-                <p className="text-quaternary-white text-sm">
+                <p className="text-xs sm:text-sm text-quaternary-white">
                     {medicalNecessityFile && !isReGenerateAgain ? (
                         "Your Letter of Medical Necessity has been generated successfully."
                     ) : (
@@ -81,15 +80,15 @@ const LetterOfMedicalNecessity: React.FC<any> = ({ requestDetails }) => {
                 </p>
             </div>
             {medicalNecessityFile && !isReGenerateAgain ? (
-                <div className="flex gap-2 items-center h-12">
+                <div className="flex gap-2 items-center h-10 sm:h-12">
                     <ThemeButton variant="primary" className="flex-1" onClick={handleDownload}>
-                        <span className="flex gap-2 items-center text-sm">
+                        <span className="flex gap-2 items-center text-xs sm:text-sm">
                             Download
-                            <FiDownload className="w-5 h-4" />
+                            <FiDownload className="w-4 h-3 sm:w-5 sm:h-4" />
                         </span>
                     </ThemeButton>
                     <TfiReload 
-                        className="cursor-pointer w-12 h-12 p-4 border rounded-lg border-quaternary-navy-blue" 
+                        className="cursor-pointer w-10 h-10 sm:w-12 sm:h-12 p-3 sm:p-4 border rounded-lg border-quaternary-navy-blue" 
                         onClick={() => setIsReGenerateAgain(true)} />
                 </div>
             ) : (
@@ -97,12 +96,12 @@ const LetterOfMedicalNecessity: React.FC<any> = ({ requestDetails }) => {
                     <button
                         type="button"
                         onClick={generateMedicalNecessity}
-                        className="flex w-full items-center justify-center cursor-pointer gap-2 py-4 px-3 bg-primary-white rounded-lg"
+                        className="flex w-full items-center justify-center cursor-pointer gap-2 py-2 sm:py-4 px-3 bg-primary-white rounded-lg"
                     >
-                        <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
+                        <p className="text-xs sm:text-sm bg-clip-text text-transparent bg-gradient-to-r from-[#F66568] to-[#A16CF9]">
                             {isLoadingMedicalNecessity ? "Generating..." : isReGenerateAgain ? "Generate Again" : "Generate"}
                         </p>
-                        <img src={"/Group (2).svg"} alt="AI Icon" className="w-4.5 h-4.5" />
+                        <img src={"/Group (2).svg"} alt="AI Icon" className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
                     </button>
                 </div>
             )}

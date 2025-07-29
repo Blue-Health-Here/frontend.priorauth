@@ -24,7 +24,7 @@ const FileDropzone: React.FC<FileDropzoneProps> = ({
   isPharmacyRequest = false,
 }) => (
   <div
-    className={`relative px-4 py-4 border-2 border-dashed rounded-xl overflow-hidden ${className} ${
+    className={`relative px-3 sm:px-4 py-3 sm:py-4 border-2 border-dashed rounded-xl overflow-hidden ${className} ${
       isDragging ? "border-blue-500" : "border-[#a8ddf3]"
     } ${isPharmacyRequest ? "bg-transparent" : "bg-[#F2FBFF]"}`}
     onDragOver={onDragOver}
@@ -32,18 +32,18 @@ const FileDropzone: React.FC<FileDropzoneProps> = ({
     onDrop={onDrop}
   >
     {isPharmacyRequest ? (
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col gap-0.5 w-full">
+        <div className="flex items-center gap-2">
           <img 
             src="/upload_file.svg" 
             alt="upload file icon" 
-            className="h-10 w-10 "
+            className="h-6 w-6 sm:h-10 sm:w-10 flex-shrink-0"
           />
           <label
             htmlFor="file-upload"
-            className="relative cursor-pointer font-medium text-[#1594CC] hover:text-blue-500 underline"
+            className="relative cursor-pointer font-medium text-[#1594CC] hover:text-blue-500 underline text-xs sm:text-base whitespace-nowrap"
           >
-            Upload More Files
+            Upload Files
             <input
               id="file-upload"
               type="file"
@@ -53,13 +53,13 @@ const FileDropzone: React.FC<FileDropzoneProps> = ({
             />
           </label>
         </div>
-        <p className="text-xs text-tertiary-black ml-[52px] -mt-2"> 
-          Denial Letter, Appeal Form, Blank Fax Form, Letter of Medical Necessity
+        <p className="text-[9px] sm:text-xs text-tertiary-black ml-8 sm:ml-[52px] -mt-0.5 sm:-mt-2 leading-tight">
+          Denial Letter, Appeal, Fax Form, LMN
         </p>
       </div>
     ) : (
       <div className="space-y-1 text-center">
-        <img src="/upload_file.svg" alt="upload file icon" className="mx-auto" />
+        <img src="/upload_file.svg" alt="upload file icon" className="mx-auto h-8 w-8 sm:h-10 sm:w-10" />
         <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center items-center text-xs sm:text-sm text-gray-600 gap-1">
           <label
             htmlFor="file-upload"

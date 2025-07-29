@@ -323,7 +323,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
 
                     {uploadedFiles.length > 0 && (
                       <div className="inline-flex flex-col gap-2">
-                        <h3 className="text-sm font-medium text-secondary-black">
+                        <h3 className="text-sm font-medium text-secondary-black ">
                           {uploadedFiles.some(
                             (item: any) => item.status === "uploading"
                           ) ? (
@@ -345,7 +345,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
                           removeFile={(id: any) => removeFile(id)}
                           handleAddTag={handleAddTag}
                         />
-                        <ThemeButton className="flex items-center justify-center gap-2 mx-auto mt-2" variant="tertiary">
+                        <ThemeButton className="flex items-center justify-center gap-2 sm:mx-auto mt-2" variant="tertiary">
                           <span className="flex items-center gap-2 text-xs">
                             View All
                             <img src="/view-all.svg" alt="View All" className="w-4 h-4" />
