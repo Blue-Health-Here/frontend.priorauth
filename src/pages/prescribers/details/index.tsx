@@ -3,9 +3,9 @@ import React from "react";
 import { useParams } from "react-router-dom";
 
 const PrescriberDetails: React.FC<any> = ({ isAdmin }) => {
-    const { username } = useParams();
+    const { id } = useParams();
     return (
-        <PharmacyRequests idAdmin={isAdmin} prescriber={username} />
+        <PharmacyRequests idAdmin={isAdmin} prescriberId={id} />
     )
 };
 

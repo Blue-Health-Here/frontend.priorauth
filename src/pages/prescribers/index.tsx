@@ -1,7 +1,7 @@
 import Loading from "@/components/common/Loading";
 import PrescriberCard from "@/components/PrescriberCard";
 import { getAllUserPrescribers } from "@/services/adminService";
-import { getAllPrescribers } from "@/services/pharmacyService";
+import { fetchPrescriberDetails, getAllPrescribers, updatePrescriberById } from "@/services/pharmacyService";
 import { RootState } from "@/store";
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,15 +10,15 @@ import ThemeButtonTabs from "@/components/ThemeButtonTabs";
 // import FilterField from "@/components/common/FilterField";
 import ThemeButton from "@/components/common/ThemeButton";
 import InviteLinkModal from "./InviteLinkModal";
-import { Formik, Form } from "formik";
-import FormField from "./FormField";
-import { modifyPrescriberSchema } from "@/utils/validationSchema";
 import axios from "axios";
 import toast from "react-hot-toast";
+import EditPrescriberForm from "./EditPrescriberForm";
+import { updatePrescriberInitialVals } from "@/utils/initialVals";
+import { FormikValues } from "formik";
 // import { filterOptions } from "@/utils/constants";
 
 const Prescribers: React.FC<any> = ({ isAdmin }) => {
-  const [selectedPrescriber, setSelectedPrescriber] = useState<any>(null);
+  const [selectedPrescriber, setSelectedPrescriber] = useState<any>(updatePrescriberInitialVals);
   const [isModifying, setIsModifying] = useState(false);
   const { prescribersData } = useSelector(
     (state: RootState) => state.prescribers
@@ -37,17 +37,16 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   const [loadingGenerateCPA, setLoadingGenerateCPA] = useState<boolean>(false);
 
   const fetchAllPrescribers = async () => {
-    setIsLoading(true);
     const fetchFn = isAdmin
       ? getAllUserPrescribers
       : () => getAllPrescribers(dispatch, user?.id);
     await fetchFn(dispatch);
-    setIsLoading(false);
   };
-
+  
   useEffect(() => {
     if (!isFetchedPrescribers.current) {
-      fetchAllPrescribers();
+      setIsLoading(true);
+      fetchAllPrescribers().then(() => setIsLoading(false));
       isFetchedPrescribers.current = true;
     }
   }, []);
@@ -89,7 +88,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   }, [updatedPresData, globalFilter]);
 
   const displayedPrescribers = useMemo(() => {
-    return filteredPresData.filter((item) => isArchiveTab ? item.isArchived : item.active);
+    return filteredPresData.filter((item) => isArchiveTab ? item.isArchived || !item.isActive : item.active || item.isActive);
   }, [filteredPresData, isArchiveTab]);
 
   const handleArchiveToggle = (name: string, archiveStatus: boolean) => {
@@ -105,18 +104,28 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
 
   // const handleInviteClick = () => setIsInviteModalOpen(true);
 
-  const handleModifyPrescriber = (prescriber: any) => {
-    setSelectedPrescriber(prescriber);
-    setIsModifying(true);
-  };
+  const handleModifyPrescriber = async (prescriber: any) => {
+    const response = await fetchPrescriberDetails(dispatch, prescriber?.id);
 
-  const handleSavePrescriber = (values: any) => {
-    setUpdatedPresData((prev) =>
-      prev.map((item) =>
-        item.id === selectedPrescriber.id ? { ...item, ...values } : item
-      )
-    );
-    setIsModifying(false);
+    if (response) {
+      const formValues = {
+        id: response.id,
+        prescriber: response.prescriber || "",
+        prescriberPhone: response.prescriberPhone || "",
+        prescriberAddress: response.prescriberAddress || "",
+        prescriberCity: response.prescriberCity || "",
+        prescriberZipCode: response.prescriberZipCode || "",
+        prescriberFax: response.prescriberFax || "",
+        npi: response.npi || "",
+        dea: response.dea || "",
+        isActive: response.isActive || false,
+        pictureUrl: response.pictureUrl
+      };
+      setSelectedPrescriber(formValues);
+      setIsModifying(true);
+    } else {
+      setSelectedPrescriber(updatePrescriberInitialVals);
+    }
   };
 
   const handleGenerateCPA = (item: any) => {
@@ -165,6 +174,14 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     }
   };
 
+  const handleSavePrescriber = async (values: any) => {
+    const response = await updatePrescriberById(dispatch, values);
+    if (response) {
+      setIsModifying(false);
+      fetchAllPrescribers();
+    }
+  };
+
   return (
     <div className="bg-primary-white rounded-lg theme-shadow p-4 h-full">
       {/* Header Section */}
@@ -178,6 +195,10 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
             type="submit"
             form="modifyPrescriberForm"
             className="min-w-[120px]"
+            onClick={() => {
+              // @ts-ignore
+              document.querySelector('#prescriber-form button[type="submit"]')?.click();
+            }}
           >
             Save Details
           </ThemeButton>
@@ -235,116 +256,9 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
 
       {/* Main Content */}
       {isModifying ? (
-        <div className="flex flex-col lg:flex-row">
-          {/* Left Side - Form (2/3 width) */}
-          <div className="w-full lg:w-2/3 space-y-2 pr-0 lg:pr-4">
-            <h2 className="text-md font-medium">Basic Information</h2>
-            <Formik
-              initialValues={{
-                prescriber: selectedPrescriber?.prescriber || "",
-                prescriberPhone: selectedPrescriber?.prescriberPhone || "",
-                prescriberCity: selectedPrescriber?.prescriberCity || "",
-                npi: selectedPrescriber?.npi || "",
-                fax: selectedPrescriber?.fax || "",
-                prescriberAddress: selectedPrescriber?.prescriberAddress || "",
-              }}
-              validationSchema={modifyPrescriberSchema}
-              onSubmit={handleSavePrescriber}
-            >
-              {({ values }) => (
-                <Form id="modifyPrescriberForm" className="space-y-2 mt-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <FormField
-                      iconSrc="/prescriber (2).svg"
-                      iconAlt="Name"
-                      label="Prescriber Name"
-                      name="prescriber"
-                      value={values.prescriber}
-                    />
-
-                    <FormField
-                      iconSrc="/npi.svg"
-                      iconAlt="NPI"
-                      label="NPI"
-                      name="npi"
-                      value={values.npi}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <FormField
-                      iconSrc="/phone.svg"
-                      iconAlt="Phone"
-                      label="Phone"
-                      name="prescriberPhone"
-                      value={values.prescriberPhone}
-                    />
-
-                    <FormField
-                      iconSrc="/phone.svg"
-                      iconAlt="Fax"
-                      label="Fax"
-                      name="fax"
-                      value={values.fax}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <FormField
-                      iconSrc="/city.svg"
-                      iconAlt="City"
-                      label="City"
-                      name="prescriberCity"
-                      value={values.prescriberCity}
-                    />
-
-                    <FormField
-                      iconSrc="/address.svg"
-                      iconAlt="Address"
-                      label="Address"
-                      name="prescriberAddress"
-                      value={values.prescriberAddress}
-                    />
-                  </div>
-                </Form>
-              )}
-            </Formik>
-          </div>
-
-          {/* Vertical Separator - Tight against the form */}
-          <div className="hidden lg:block w-px bg-[#EBEBEB] flex-shrink-0"></div>
-
-          {/* Right Side - Picture (1/3 width) */}
-          <div className="w-full lg:w-1/3 space-y-6 pl-6">
-            <h2 className="text-md font-medium">Display Picture</h2>
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-32 h-32 rounded-full bg-gray-100 overflow-hidden border-2 border-gray-200">
-                <img
-                  src={
-                    selectedPrescriber?.pharmacyLogo ||
-                    "/images/Abstergo Ltd..png"
-                  }
-                  alt="Prescriber Logo"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex gap-2 w-full max-w-[280px]">
-                <ThemeButton
-                  variant="secondary"
-                  className="flex-1 border border-[#CBDAFF] bg-transparent hover:bg-[#CBDAFF]/10 text-primary-navy-blue"
-                >
-                  Change Picture
-                </ThemeButton>
-                <ThemeButton
-                  variant="danger"
-                  className="flex-1 border border-[#FF2E37] bg-[#FFE0E2] text-[#FF2E37] hover:bg-[#FFE0E2]/90"
-                >
-                  Delete Picture
-                </ThemeButton>
-              </div>
-            </div>
-          </div>
-        </div>
+        <EditPrescriberForm 
+          selectedPrescriber={selectedPrescriber} 
+          handleSavePrescriber={(values: FormikValues) => handleSavePrescriber(values)} />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {isLoading ? (
@@ -352,9 +266,9 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
               <Loading />
             </div>
           ) : displayedPrescribers.length > 0 ? (
-            displayedPrescribers.map((item) => (
+            displayedPrescribers.map((item, index) => (
               <PrescriberCard
-                key={item.prescriber}
+                key={index}
                 prescriber={item}
                 isAdmin={isAdmin}
                 onArchiveToggle={handleArchiveToggle}
