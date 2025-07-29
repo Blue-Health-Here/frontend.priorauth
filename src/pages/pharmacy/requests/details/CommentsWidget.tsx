@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import { addNewReqComment } from "@/services/pharmacyService";
 import { useParams } from "react-router-dom";
 
-const CommentsWidget: React.FC<any> = ({ showTwo = false, isAdmin }) => {
+const CommentsWidget: React.FC<any> = ({ showTwo = false }) => {
   const { reqComments } = useSelector((state: RootState) => state.pharmacyReqs);
   const [input, setInput] = useState("");
   const dispatch = useDispatch();
