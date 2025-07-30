@@ -42,7 +42,7 @@ const SecuritySettings = ({ userId }: { userId: string }) => {
   };
 
   return (
-    <div className="bg-primary-white rounded-lg border border-[#CBDAFF] p-3">
+    <div className="bg-primary-white rounded-lg border border-[#CBDAFF] p-3 sm:p-4">
       <h3 className="text-base font-semibold text-foreground mb-4">
         Security Settings
       </h3>
@@ -98,12 +98,12 @@ const SecuritySettings = ({ userId }: { userId: string }) => {
                   <button
                     type="button"
                     onClick={() => setIsEditing(true)}
-                    className="flex items-center cursor-pointer justify-center gap-2 bg-[#EBF1FF] text-[#163066] text-sm font-semibold rounded-lg px-4 py-2 transition-colors hover:bg-[#EBF1FF]/90"
+                    className="flex items-center justify-center bg-[#EBF1FF] text-[#163066] text-sm font-semibold rounded-lg px-2.5 py-2 min-w-[120px] sm:min-w-0 sm:px-4 whitespace-nowrap transition-colors hover:bg-[#EBF1FF]/90"
                   >
                     Change Password
                   </button>
                 ) : (
-                  <div className="flex gap-2">
+                  <div className="hidden sm:flex gap-2">
                     <ThemeButton
                       type="submit"
                       className="flex items-center gap-2 py-3"
@@ -154,11 +154,11 @@ const SecuritySettings = ({ userId }: { userId: string }) => {
               </div>
 
               {isEditing && (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
                   {/* Left Side - Password Form */}
-                  <div className="space-y-6">
+                  <div className="space-y-4 sm:space-y-6">
                     {/* Current Password */}
-                    <div className="relative w-[450px] [&_button_svg]:w-4 [&_button_svg]:h-4">
+                    <div className="relative w-full sm:w-[450px] [&_button_svg]:w-4 [&_button_svg]:h-4">
                       <InputField
                         name="currentPassword"
                         label="Current Password"
@@ -170,7 +170,7 @@ const SecuritySettings = ({ userId }: { userId: string }) => {
                     </div>
 
                     {/* New Password */}
-                    <div className="relative w-[450px] [&_button_svg]:w-4 [&_button_svg]:h-4">
+                    <div className="relative w-full sm:w-[450px] [&_button_svg]:w-4 [&_button_svg]:h-4">
                       <div className="space-y-2">
                         <InputField
                           name="newPassword"
@@ -195,7 +195,7 @@ const SecuritySettings = ({ userId }: { userId: string }) => {
                     </div>
 
                     {/* Confirm Password */}
-                    <div className="relative w-[450px] [&_button_svg]:w-4 [&_button_svg]:h-4">
+                    <div className="relative w-full sm:w-[450px] [&_button_svg]:w-4 [&_button_svg]:h-4">
                       <div className="space-y-2">
                         <InputField
                           name="confirmPassword"
@@ -235,6 +235,59 @@ const SecuritySettings = ({ userId }: { userId: string }) => {
                         )}
                       </div>
                     </div>
+
+                   {/* Mobile Buttons - shown below fields */}
+<div className="sm:hidden flex gap-3 w-full pt-2">
+  <ThemeButton
+    type="submit"
+    className="flex-1 min-w-[140px] h-10 px-4"
+    disabled={isSubmitting}
+  >
+    <div className="flex items-center justify-center gap-1 whitespace-nowrap text-sm">
+      {isSubmitting ? (
+        <>
+          <svg
+            className="animate-spin h-3.5 w-3.5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+          Updating...
+        </>
+      ) : (
+        "Update Password"
+      )}
+    </div>
+  </ThemeButton>
+  <ThemeButton
+    type="button"
+    variant="tertiary"
+    className="flex-1 min-w-[100px] max-[375px]:min-w-[70px] h-10 px-4 max-[375px]:px-2"
+    onClick={() => {
+      setIsEditing(false);
+      resetForm();
+    }}
+    disabled={isSubmitting}
+  >
+    <div className="flex items-center justify-center whitespace-nowrap text-sm max-[375px]:text-xs">
+      Cancel
+    </div>
+  </ThemeButton>
+</div>
 
                     {/* Error Messages */}
                     {Object.values(errors).length > 0 &&
