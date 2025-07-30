@@ -821,6 +821,14 @@ a:focus {
   color: var(--gray-color);
   font-weight: 300;
 }
+.dark {
+  .custom-paginator .p-datatable-tbody tr {
+    background: transparent;
+  }
+  .custom-paginator .p-datatable-table tr:hover {
+    background: transparent !important;
+  }
+}
 
 .custom-paginator > .p-datatable-wrapper > .p-datatable-table > .p-datatable-thead {
   border-radius: 8px;
