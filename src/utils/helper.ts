@@ -163,7 +163,7 @@ export function generateDatasetForCaseAnalysis(
   return dataset;
 }
 
-export const generateBreadcrumbItems = (pathname: string) => {
+export const generateBreadcrumbItems = (pathname: string, state?: any) => {
   const pathSegments = pathname
     .replace(/^\//, "")
     .split("/")
@@ -181,31 +181,51 @@ export const generateBreadcrumbItems = (pathname: string) => {
     "prescribers"
   ];
 
-  const customLabels: Record<string, string> = {
-    analytics: "Analytics",
-    requests: "Requests",
-    "request-details": "Request Details",
-    "cmm-account-database": "CMM Account Database",
-    pharmacies: "Pharmacies",
-    "pharmacy-details": "Pharmacy Details",
-    permissions: "Permissions",
-    settings: "Settings",
-    prescribers: "Prescribers",
-    "prescriber-details": "Prescriber Details"
-  };
+  const breadcrumbs = [];
+  let accumulatedPath = "";
 
-  const items = pathSegments
-    .filter((segment) => allowedSegments.includes(segment))
-    .map((segment) => ({
-      label:
-        customLabels[segment] ||
-        segment
+  for (let i = 0; i < pathSegments.length; i++) {
+    const segment = pathSegments[i];
+    
+    // Skip numeric segments (like IDs)
+    if (!isNaN(Number(segment))) {
+      continue;
+    }
+
+    if (allowedSegments.includes(segment)) {
+      accumulatedPath += `/${segment}`;
+
+      // Special case for prescribers with details
+      if (segment === "prescribers" && pathSegments[i + 1] && state?.prescriberName) {
+        breadcrumbs.push({
+          label: "Prescribers",
+          url: accumulatedPath
+        });
+        // Add the prescriber name with possessive form
+        const prescriberLabel = state.prescriberName.endsWith('s') 
+          ? `${state.prescriberName}' Requests`
+          : `${state.prescriberName}'s Requests`;
+        
+        breadcrumbs.push({
+          label: prescriberLabel,
+          url: `${accumulatedPath}/${pathSegments[i + 1]}`
+        });
+        // Skip the next segment (the ID) since we've handled it
+        i++;
+        continue;
+      }
+
+      breadcrumbs.push({
+        label: segment
           .split("-")
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
           .join(" "),
-    }));
+        url: accumulatedPath
+      });
+    }
+  }
 
-  return items;
+  return breadcrumbs;
 };
 
 const STATUS_CLASS_MAP = [

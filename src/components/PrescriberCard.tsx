@@ -30,6 +30,7 @@ interface PrescriberCardProps {
   onModify: () => void;
   onGenerateCPA?: () => void;
   loadingGenerateCPA?: boolean;
+  onInviteClick?: () => void;
 }
 
 const PrescriberCard: React.FC<PrescriberCardProps> = ({
@@ -38,7 +39,8 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
   onArchiveToggle,
   onModify, 
   onGenerateCPA, 
-  loadingGenerateCPA
+  loadingGenerateCPA,
+  onInviteClick
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -63,7 +65,7 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -105,6 +107,7 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
                 }}
                 onGenerateCPA={onGenerateCPA}
                 loadingGenerateCPA={loadingGenerateCPA}
+                onInviteClick={onInviteClick}
               />
             )}
           </div>
@@ -165,9 +168,13 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
         </div>
       </div>
       <div className="flex justify-end gap-2 p-4 border-t border-quaternary-navy-blue">
-        <Link to={pageLink}>
-          <ThemeButton variant="tertiary">View</ThemeButton>
-        </Link>
+        
+<Link 
+  to={pageLink} 
+  state={{ prescriberName: prescriber.prescriber }} // Add this line
+>
+  <ThemeButton variant="tertiary">View</ThemeButton>
+</Link>
         {!prescriber.isActive && (
           <ThemeButton
             variant="primary"
