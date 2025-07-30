@@ -3,7 +3,6 @@ import PharmacyToolTipDropdown from "./common/PharmacyToolTipDropdown";
 import React, { useEffect, useRef, useState } from "react";
 import InfoColumn from "./common/InfoColumn";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { formatPrescriberToUsername } from "@/utils/helper";
 import ThemeButton from "./common/ThemeButton";
 import { useTheme } from "@/hooks/useTheme";
 import RequestsIcon from "./icons/RequestsIcon";
@@ -14,7 +13,8 @@ interface PrescriberCardProps {
   prescriber: {
     id: string;
     prescriber: string;
-    pharmacyLogo?: string;
+    pictureUrl?: string;
+    isActive?: boolean;
     totalRequests?: number;
     approvedPercent?: number;
     deniedPercent?: number;
@@ -26,8 +26,7 @@ interface PrescriberCardProps {
     isArchived: boolean;
   };
   isAdmin: boolean;
-  onArchiveToggle: (id: string, status: boolean) => void;
-  showUnarchiveButton: boolean;
+  onArchiveToggle: (id: any, status: boolean) => void;
   onModify: () => void;
   onGenerateCPA?: () => void;
   loadingGenerateCPA?: boolean;
@@ -38,7 +37,6 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
   prescriber,
   isAdmin,
   onArchiveToggle,
-  showUnarchiveButton,
   onModify, 
   onGenerateCPA, 
   loadingGenerateCPA,
@@ -72,8 +70,8 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
   }, []);
 
   const pageLink = isAdmin
-    ? `/admin/prescribers/${formatPrescriberToUsername(prescriber.prescriber)}/prescriber-details`
-    : `/pharmacy/prescribers/${formatPrescriberToUsername(prescriber.prescriber)}/prescriber-details`;
+    ? `/admin/prescribers/${prescriber.id}/prescriber-details`
+    : `/pharmacy/prescribers/${prescriber.id}/prescriber-details`;
 
   return (
     <div className="bg-primary-white rounded-lg relative border border-quaternary-navy-blue w-full">
@@ -81,7 +79,7 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
         <div className='inline-flex justify-between gap-2 items-start mb-4 w-full'>
           <div className='inline-flex gap-1 flex-col items-start'>
             <img
-              src={prescriber?.pharmacyLogo || '/images/Abstergo Ltd..png'}
+              src={prescriber?.pictureUrl || '/images/Abstergo Ltd..png'}
               alt="Pharmacy logo"
               className="w-9 h-9 sm:w-14 sm:h-14 rounded-full"
             />
@@ -103,7 +101,10 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
               <PharmacyToolTipDropdown
                 isArchived={prescriber.isArchived}
                 onModify={onModify}
-                onArchiveToggle={(status) => onArchiveToggle(prescriber.prescriber, status)}
+                onArchiveToggle={() => {
+                  onArchiveToggle(prescriber, false)
+                  setIsDropdownOpen(false)
+                }}
                 onGenerateCPA={onGenerateCPA}
                 loadingGenerateCPA={loadingGenerateCPA}
                 onInviteClick={onInviteClick}
@@ -137,32 +138,32 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
 
         <div className="hidden md:grid grid-cols-2 gap-4">
           <InfoColumn
-            icon={<RequestsIcon color={isDark ? "#fff" : showUnarchiveButton ? "#525252" : "#3961B2"} />}
+            icon={<RequestsIcon color={isDark ? "#fff" : prescriber.isActive ? "#3961B2" : "#525252"} />}
             label="Total Requests"
             data={totalRequests}
-            isArchived={showUnarchiveButton}
+            isArchived={!prescriber.isActive}
           />
           <InfoColumn
             icon={<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12.6666 4.33398L5.66659 11.6673L3.33325 9.33398" 
-                stroke={isDark ? "#fff" : showUnarchiveButton ? "#525252" : "#3961B2"} 
+                stroke={isDark ? "#fff" : !prescriber.isActive ? "#525252" : "#3961B2"} 
                 strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>}
             label="Approved"
             data={`${approvedPercentage}%`}
-            isArchived={showUnarchiveButton}
+            isArchived={!prescriber.isActive}
           />
           <InfoColumn
-            icon={<IoCloseOutline size={18} className={`${isDark ? "text-icon-group-icon" : showUnarchiveButton ? "#525252" : "text-icon-group-icon"}`} />}
+            icon={<IoCloseOutline size={18} className={`${isDark ? "text-icon-group-icon" : !prescriber.isActive ? "#525252" : "text-icon-group-icon"}`} />}
             label="Denied"
             data={`${deniedPercentage}%`}
-            isArchived={showUnarchiveButton}
+            isArchived={!prescriber.isActive}
           />
           <InfoColumn
-            icon={<LuLoader size={16} className={`${isDark ? "text-icon-group-icon" : showUnarchiveButton ? "#525252" : "text-icon-group-icon"}`} />}
+            icon={<LuLoader size={16} className={`${isDark ? "text-icon-group-icon" : !prescriber.isActive ? "#525252" : "text-icon-group-icon"}`} />}
             label="Pending"
             data={`${pendingPercentage}%`}
-            isArchived={showUnarchiveButton}
+            isArchived={!prescriber.isActive}
           />
         </div>
       </div>
@@ -170,11 +171,11 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
         <Link to={pageLink}>
           <ThemeButton variant="tertiary">View</ThemeButton>
         </Link>
-        {showUnarchiveButton && (
+        {!prescriber.isActive && (
           <ThemeButton
             variant="primary"
             className="bg-primary-navy-blue text-primary-white"
-            onClick={() => onArchiveToggle(prescriber.prescriber, false)}
+            onClick={() => onArchiveToggle(prescriber, true)}
           >
             Unarchive
           </ThemeButton>

@@ -15,7 +15,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import {
   filterRequestsByStatus,
-  formatPrescriberToUsername,
   getStatusClass,
   groupByField,
   transformPharmacyRequest,
@@ -33,7 +32,7 @@ import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
 import FiltersDropdown from "./FiltersDropdown";
 
-const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
+const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
   const { reqStatusesData } = useSelector(
     (state: RootState) => state.reqStatuses
   );
@@ -182,10 +181,10 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
       if (isAdmin) {
         await Promise.all([
           getAllReqStatuses(dispatch),
-          getAllPharmacyReqs(dispatch),
+          getAllPharmacyReqs(dispatch, prescriberId),
         ]);
       } else {
-        await Promise.all([getAllPharmacyReqs(dispatch)]);
+        await getAllPharmacyReqs(dispatch, prescriberId);
       }
     } finally {
       setIsLoading(false);
@@ -201,20 +200,13 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
 
   useEffect(() => {
     if (reqsData.length > 0) {
-      const filteredData = prescriber
-        ? reqsData.filter((item: any) => {
-            const prescriberUsername = formatPrescriberToUsername(
-              item.prescriber || ""
-            );
-            return prescriberUsername === prescriber;
-          })
-        : reqsData;
-      const updatedArr = filteredData.map((item: any) =>
+      // const filteredData = reqsData;
+      const updatedArr = reqsData.map((item: any) =>
         transformPharmacyRequest(item, isAdmin)
       );
       setRequestsData(updatedArr);
       setFilteredStatuses(
-        filteredData.map((item: any) => ({
+        reqsData.map((item: any) => ({
           id: item.request_status,
           name: item.paStatus,
           statusClass: getStatusClass(item.paStatus),
@@ -263,7 +255,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
         paStatus: value.name,
         notes: null,
       });
-      await getAllPharmacyReqs(dispatch);
+      await getAllPharmacyReqs(dispatch, prescriberId);
     } catch (error: any) {
       toast.error(error?.message);
     }
@@ -304,7 +296,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
 
     try {
       await updateRequestNotes(dispatch, data.id, { notes: data.notes });
-      await getAllPharmacyReqs(dispatch);
+      await getAllPharmacyReqs(dispatch, prescriberId);
 
       setRequestsData((prevData: any[]) =>
         prevData.map((item: any) =>
@@ -400,7 +392,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
       {/* Mobile Header */}
       <div className="md:hidden flex flex-col gap-3 w-full">
         <div className="flex justify-between items-center">
-          <RequestTitle isAdmin={isAdmin} prescriber={prescriber} />
+          <RequestTitle isAdmin={isAdmin} prescriber={prescriberId ? "Prescriber Requests" : null} />
           <button
             onClick={() => setIsModalOpen(true)}
             className="w-7 h-7 flex items-center justify-center bg-[#EBF1FF] rounded-md"
@@ -604,8 +596,8 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriber }) => {
       )}
 
       <div className="hidden md:flex justify-between gap-4 items-center pb-2 h-14 flex-wrap">
-        <RequestTitle isAdmin={isAdmin} prescriber={prescriber} />
-        {!prescriber && (
+        <RequestTitle isAdmin={isAdmin} prescriber={prescriberId ? "Prescriber Requests" : null} />
+        {!prescriberId && (
           <div className="inline-flex h-full gap-2 sm:ml-auto">
             <ThemeButton
               type="button"

@@ -17,3 +17,14 @@ export const addNewPharmacyInitialVals = {
     location: "" 
 };
 
+export const updatePrescriberInitialVals = {
+    prescriber: "",
+    prescriberPhone: "",
+    prescriberAddress: "",
+    prescriberCity: "",
+    prescriberZipCode: "",
+    prescriberFax: "",
+    npi: "",
+    dea: "",
+    isActive: false
+};
