@@ -14,9 +14,9 @@ const RequestTitle: React.FC<RequestTitleProps> = ({ isAdmin, prescriber }) => {
   const formatPrescriberName = (name: string) => {
     // Handle names ending with 's' (e.g., "James" becomes "James'")
     if (name.endsWith('s')) {
-      return `${formatUsernameToPrescriber(name)}' Requests`;
+      return `${formatUsernameToPrescriber(name)}' Request`;
     }
-    return `${formatUsernameToPrescriber(name)}'s Requests`;
+    return `${formatUsernameToPrescriber(name)}'s Request`;
   };
   
   return (
