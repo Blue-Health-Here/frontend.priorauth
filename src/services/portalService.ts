@@ -2,7 +2,6 @@ import toast from "react-hot-toast";
 import { axiosPortal } from "../api/instance";
 import { AppDispatch } from "../store";
 import { setIsLoading } from "../store/features/global/globalSlice";
-import { setProfileData } from "../store/features/global/globalSlice";
 
 // Types
 type ApiMethod = 'get' | 'post' | 'put' | 'delete' | 'patch';
