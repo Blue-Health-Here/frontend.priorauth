@@ -33,6 +33,7 @@ import toast from "react-hot-toast";
 import FiltersDropdown from "./FiltersDropdown";
 
 const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
+
   const { reqStatusesData } = useSelector(
     (state: RootState) => state.reqStatuses
   );
@@ -41,6 +42,8 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const prescriberName = location.state?.prescriberName || null;
+  console.log(prescriberName)
   // New state for status filter
   const [selectedStatusFilter, setSelectedStatusFilter] = useState<
     string | null
@@ -392,7 +395,10 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
       {/* Mobile Header */}
       <div className="md:hidden flex flex-col gap-3 w-full">
         <div className="flex justify-between items-center">
-          <RequestTitle isAdmin={isAdmin} prescriber={prescriberId ? "Prescriber Requests" : null} />
+          <RequestTitle 
+    isAdmin={isAdmin} 
+    prescriber={prescriberName || (prescriberId ? "Prescriber Requests" : null)} 
+  />
           <button
             onClick={() => setIsModalOpen(true)}
             className="w-7 h-7 flex items-center justify-center bg-[#EBF1FF] rounded-md"
@@ -596,7 +602,10 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
       )}
 
       <div className="hidden md:flex justify-between gap-4 items-center pb-2 h-14 flex-wrap">
-        <RequestTitle isAdmin={isAdmin} prescriber={prescriberId ? "Prescriber Requests" : null} />
+         <RequestTitle 
+    isAdmin={isAdmin} 
+    prescriber={prescriberName || (prescriberId ? "Prescriber Requests" : null)} 
+  />
         {!prescriberId && (
           <div className="inline-flex h-full gap-2 sm:ml-auto">
             <ThemeButton
