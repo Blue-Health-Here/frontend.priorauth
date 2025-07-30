@@ -17,6 +17,14 @@ export const axiosAdmin: AxiosInstance = axios.create({
   },
 });
 
+export const axiosPortal: AxiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_PORTAL_URL,
+  headers: {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Credentials": "true"
+  },
+});
+
 // Attach token
 axiosAdmin.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {

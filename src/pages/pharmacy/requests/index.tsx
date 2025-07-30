@@ -31,6 +31,9 @@ import RequestTitle from "./RequestTitle";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
 import FiltersDropdown from "./FiltersDropdown";
+import { VncSession } from "@/utils/types";
+import PortalSession from "./PortalSession";
+import { handleFetchPortalStatus, handleSessionCleanup, handleStartPortal } from "@/services/portalService";
 
 const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
 
@@ -38,6 +41,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
     (state: RootState) => state.reqStatuses
   );
   const { reqsData } = useSelector((state: RootState) => state.pharmacyReqs);
+  const { user } = useSelector((state: RootState) => state.auth);
   const [requestsData, setRequestsData] = useState<any>([]);
   const navigate = useNavigate();
   const location = useLocation();
@@ -168,6 +172,13 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
   const [filteredRequests, setFilteredRequests] = useState<any[]>([]);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
+  // Portal States
+  const [isStartingRequest, setIsStartingRequest] = useState(false);
+  const [vncSession, setVncSession] = useState<VncSession | null>(null);
+  const [isClosingSession, setIsClosingSession] = useState(false);
+  const [isVncLoading, setIsVncLoading] = useState(false);
+  const [firefoxStatusMsg, setFirefoxStatusMsg] = useState('');
+
   // Get unique statuses for the filters dropdown
   const uniqueStatuses = useMemo(() => {
     const statuses = new Set<string>();
@@ -176,7 +187,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
     });
     return Array.from(statuses).sort();
   }, [requestsData]);
-  console.log(requestsData);
+  // console.log(requestsData);
 
   const fetchInitialData = async () => {
     setIsLoading(true);
@@ -450,7 +461,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
               options={uniqueStatuses}
               selectedOption={selectedStatusFilter}
               onChange={setSelectedStatusFilter}
-              getStatusClass={getStatusClass} 
+              getStatusClass={getStatusClass}
             />
 
             <FilterField
@@ -458,7 +469,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
               selectedValue={selectedFilterField}
               onChange={handleFilterChange}
             />
-           
+
             <RequestStatusDropdownField
               data={filteredStatuses}
               onChange={(selected) => handleStatusChange(selected)}
@@ -489,8 +500,130 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
     }
   }, [visibleColumns]);
 
+  const handleOpenPortal = async () => {
+    if (!user) {
+      alert('Authentication error. Please login again.');
+      return;
+    }
+
+    setIsStartingRequest(true);
+    try {
+      const response = await handleStartPortal(dispatch, { id: user.id, roleCode: user.roleCode });
+      if (response) {
+        // const data = await response.json();
+        setVncSession({
+          sessionId: response.session_id,
+          vncUrl: response.vnc_url,
+          entityName: response.entity_name
+        });
+        setIsVncLoading(true);
+        setFirefoxStatusMsg('Initializing Firefox driver...');
+      } else {
+        alert(`Error starting request: ${'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error('Error starting VNC session:', error);
+      alert('Failed to start request. Please try again.');
+    } finally {
+      setIsStartingRequest(false);
+    }
+  };
+
+  const handleCloseSession = async () => {
+    if (!vncSession) return;
+
+    setIsClosingSession(true);
+    try {
+      const response = await handleSessionCleanup(dispatch, vncSession.sessionId);
+      if (response) {
+        setVncSession(null);
+      } else {
+        console.error('Error closing session');
+      }
+    } catch (error) {
+      console.error('Error closing VNC session:', error);
+    } finally {
+      setIsClosingSession(false);
+    }
+  };
+
+  // Poll session status when VNC session starts
+  useEffect(() => {
+    let pollInterval: number | any;
+    const pollSessionStatus = async () => {
+      if (!vncSession || !user) return;
+
+      try {
+        // Check VNC session status by account type and ID
+        // const res = await fetch(`/api/vnc/status/pharmacy/${user.id}`);
+        // const data = await res.json();
+        const data = await handleFetchPortalStatus(dispatch, user.id);
+
+        if (data.status === 'active') {
+          // VNC session is active
+          if (data.browser_status === 'ready') {
+            setFirefoxStatusMsg('Firefox driver ready!');
+            setIsVncLoading(false);
+            return; // Stop polling
+          } else if (data.browser_status === 'failed') {
+            setFirefoxStatusMsg('Failed to initialize Firefox driver.');
+            setIsVncLoading(false);
+            return; // Stop polling
+          } else {
+            setFirefoxStatusMsg(data.browser_message || 'Firefox driver initializing...');
+          }
+        } else if (data.status === 'processing') {
+          setFirefoxStatusMsg(data.message || 'Setting up VNC session...');
+        } else if (data.status === 'queued') {
+          // Session is in queue
+          const queueInfo = data.queue_info;
+          if (queueInfo && queueInfo.position > 0) {
+            setFirefoxStatusMsg(`Waiting in queue (Position ${queueInfo.position})`);
+          } else {
+            setFirefoxStatusMsg('Waiting in queue...');
+          }
+        } else if (data.status === 'not_found') {
+          // Check if session is in queue
+          const concurrency = data.concurrency_status;
+          if (concurrency && concurrency.pending_queue > 0) {
+            setFirefoxStatusMsg(`Waiting in queue... (Position: ${concurrency.pending_queue}, Active: ${concurrency.active_sessions}/${concurrency.max_concurrent})`);
+          } else {
+            setFirefoxStatusMsg('Session not found. Please try starting again.');
+            setIsVncLoading(false);
+            return;
+          }
+        } else {
+          setFirefoxStatusMsg('Session status unknown. Please try starting again.');
+          setIsVncLoading(false);
+          return;
+        }
+
+        // Continue polling
+        pollInterval = setTimeout(pollSessionStatus, 2000);
+      } catch (error) {
+        console.error('Error polling session status:', error);
+        pollInterval = setTimeout(pollSessionStatus, 2000);
+      }
+    };
+
+    if (isVncLoading && vncSession) {
+      pollSessionStatus();
+    }
+    return () => { if (pollInterval) clearTimeout(pollInterval); };
+  }, [isVncLoading, vncSession, user]);
+
   return (
     <div className="bg-primary-white rounded-lg theme-datatable theme-shadow px-4 py-4">
+      {vncSession && (
+        <PortalSession
+          vncSession={vncSession}
+          handleCloseSession={handleCloseSession}
+          isClosingSession={isClosingSession}
+          isVncLoading={isVncLoading}
+          firefoxStatusMsg={firefoxStatusMsg}
+        />
+      )}
+
       {isModalOpen && (
         <AddRequestModal
           isOpen={isModalOpen}
@@ -542,13 +675,13 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
                 </div>
 
                 <div className="h-[1px] w-full bg-gray-200 mb-4"></div>
-                 <FiltersDropdown
-              options={uniqueStatuses}
-              selectedOption={selectedStatusFilter}
-              onChange={setSelectedStatusFilter}
-              getStatusClass={getStatusClass} 
-            />
-            <div className="h-[1px] w-full bg-gray-200 mb-4"></div>
+                <FiltersDropdown
+                  options={uniqueStatuses}
+                  selectedOption={selectedStatusFilter}
+                  onChange={setSelectedStatusFilter}
+                  getStatusClass={getStatusClass}
+                />
+                <div className="h-[1px] w-full bg-gray-200 mb-4"></div>
 
                 <div>
                   <FilterField
@@ -612,8 +745,15 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
               type="button"
               className="!h-full min-w-max rounded-lg"
               variant="secondary"
+              onClick={handleOpenPortal}
+              disabled={isStartingRequest}
             >
-              Open Portal
+              {isStartingRequest ? (
+                <>
+                  <Loading />
+                  Starting...
+                </>
+              ) : 'Open Portal'}
             </ThemeButton>
             <ThemeButton
               className="w-full !h-full rounded-lg"
@@ -638,10 +778,10 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
             selectedStatusFilter || selectedFilterField
               ? filteredRequests
               : requestsData.sort(
-                  (a: any, b: any) =>
-                    new Date(b.submittedOn).getTime() -
-                    new Date(a.submittedOn).getTime()
-                )
+                (a: any, b: any) =>
+                  new Date(b.submittedOn).getTime() -
+                  new Date(a.submittedOn).getTime()
+              )
           }
           columns={columns}
           pageSize={10}

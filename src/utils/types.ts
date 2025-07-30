@@ -83,3 +83,9 @@ export interface PasswordRequirement {
 export type User = {
   roleCode: string;
 };
+
+export interface VncSession {
+  sessionId: string;
+  vncUrl: string;
+  entityName: string;
+};
