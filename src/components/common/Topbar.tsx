@@ -21,6 +21,7 @@ interface UserData {
 }
 
 const Topbar: React.FC<any> = ({ isAdmin }) => {
+ 
   const { isSidebarOpen, isSidebarCollapsed } = useSelector((state: RootState) => state.global);
   const [isNotifDropdownOpen, setIsNotifDropdownOpen] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -72,7 +73,7 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
     };
   }, []);
 
-  const breadcrumbItems = generateBreadcrumbItems(location.pathname);
+  const breadcrumbItems = generateBreadcrumbItems(location.pathname, location.state);
 
   return (
     <div
