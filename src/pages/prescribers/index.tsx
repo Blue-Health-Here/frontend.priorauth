@@ -7,7 +7,6 @@ import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SearchField from "@/components/common/SearchField";
 import ThemeButtonTabs from "@/components/ThemeButtonTabs";
-// import FilterField from "@/components/common/FilterField";
 import ThemeButton from "@/components/common/ThemeButton";
 import InviteLinkModal from "./InviteLinkModal";
 import axios from "axios";
@@ -18,7 +17,8 @@ import { FormikValues } from "formik";
 // import { filterOptions } from "@/utils/constants";
 
 const Prescribers: React.FC<any> = ({ isAdmin }) => {
-  const [selectedPrescriber, setSelectedPrescriber] = useState<any>(updatePrescriberInitialVals);
+  const [selectedPrescriber, setSelectedPrescriber] = useState<any>(null);
+  const [selectedPrescriberForInvite, setSelectedPrescriberForInvite] = useState<any>(null);
   const [isModifying, setIsModifying] = useState(false);
   const { prescribersData } = useSelector(
     (state: RootState) => state.prescribers
@@ -30,7 +30,6 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [updatedPresData, setUpdatedPresData] = useState<any[]>([]);
   const [globalFilter, setGlobalFilter] = useState("");
-  // const [sortDirection, setSortDirection] = useState<any>("asc");
   const [activeTab, setActiveTab] = useState("Active List");
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const isArchiveTab = activeTab === "Archives";
@@ -63,32 +62,17 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     setUpdatedPresData(transformed);
   }, [prescribersData]);
 
-  // const sortedPresData = useMemo(() => {
-  //   let data = [...updatedPresData];
-
-    // if (sortDirection) {
-    //   data.sort((a, b) => {
-    //     const nameA = a.prescriber?.toLowerCase() || "";
-    //     const nameB = b.prescriber?.toLowerCase() || "";
-
-    //     const result = nameA.localeCompare(nameB);
-    //     return sortDirection === "asc" ? result : -result;
-    //   });
-    // }
-
-  //   return data;
-  // }, [updatedPresData]);
-
   const filteredPresData = useMemo(() => {
     const filterValue = globalFilter.toLowerCase();
-
     return updatedPresData.filter((item) =>
       item.prescriber?.toLowerCase().includes(filterValue)
     );
   }, [updatedPresData, globalFilter]);
 
   const displayedPrescribers = useMemo(() => {
-    return filteredPresData.filter((item) => isArchiveTab ? item.isArchived || !item.isActive : item.active || item.isActive);
+    return filteredPresData.filter((item) => 
+      isArchiveTab ? item.isArchived || !item.isActive : item.active || item.isActive
+    );
   }, [filteredPresData, isArchiveTab]);
 
   const handleArchiveToggle = async (prescriber: any, status: boolean) => {
@@ -98,7 +82,10 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     }
   };
 
-  // const handleInviteClick = () => setIsInviteModalOpen(true);
+  const handleInviteClick = (prescriber: any) => {
+    setSelectedPrescriberForInvite(prescriber);
+    setIsInviteModalOpen(true);
+  };
 
   const handleModifyPrescriber = async (prescriber: any) => {
     const response = await fetchPrescriberDetails(dispatch, prescriber?.id);
@@ -125,7 +112,6 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   };
 
   const handleGenerateCPA = (item: any) => {
-    console.log(item, "item");
     if (user) {
       const pharmacy_name = user.firstName + " " + user.lastName;
       const values: any = {
@@ -271,6 +257,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
                 onModify={() => handleModifyPrescriber(item)}
                 onGenerateCPA={() => handleGenerateCPA(item)}
                 loadingGenerateCPA={loadingGenerateCPA}
+                onInviteClick={() => handleInviteClick(item)}
               />
             ))
           ) : (
@@ -284,10 +271,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
       {isInviteModalOpen && (
         <InviteLinkModal
           onClose={() => setIsInviteModalOpen(false)}
-          prescribers={updatedPresData.map((p) => ({
-            id: p.id,
-            name: p.prescriber,
-          }))}
+          prescriber={selectedPrescriberForInvite}
         />
       )}
     </div>

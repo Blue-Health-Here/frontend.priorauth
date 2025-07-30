@@ -7,7 +7,11 @@ interface PharmacyToolTipDropdownProps {
   onArchiveToggle?: () => void;
   onGenerateCPA?: () => void;
   loadingGenerateCPA?: boolean;
-  prescribers?: Array<{ id: string; name: string }>; // Add prescribers prop
+  prescriber?: { 
+    id: string;
+    name: string; 
+  };
+  onInviteClick?: () => void; 
 }
 
 const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({ 
@@ -16,9 +20,19 @@ const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({
   onGenerateCPA,
   onModify, 
   loadingGenerateCPA,
-  prescribers = [] // Default to empty array
+  prescriber,
+  onInviteClick
 }) => {
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+
+  const handleInviteClick = () => {
+    // Maintain existing functionality
+    if (onInviteClick) {
+      onInviteClick();
+    }
+    setIsInviteModalOpen(true);
+  };
+
   return (
     <>
       <div className="absolute right-0 top-full border border-light-stroke w-40 md:w-44 bg-white rounded-lg shadow-lg z-50 overflow-hidden">
@@ -35,6 +49,7 @@ const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({
         <button
           className="group flex w-full items-center gap-x-1.5 px-3 py-2 cursor-pointer transition font-secondary text-secondary-black hover:bg-gray-50"
           onClick={() => onGenerateCPA && onGenerateCPA()}
+          disabled={loadingGenerateCPA}
         >
           <img src="/generate-cpa.svg" alt="cpa icon" className="w-3 h-3" />
           <span className="text-xs md:text-sm">
@@ -42,14 +57,16 @@ const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({
           </span>
         </button>
         
+        {/* Invite Link Option */}
         <button
           className="group flex w-full items-center gap-x-1.5 px-3 py-2 cursor-pointer transition font-secondary text-secondary-black hover:bg-gray-50"
-          onClick={() => setIsInviteModalOpen(true)}
+          onClick={handleInviteClick}
         >
           <img src="/link (1).svg" alt="invite icon" className="w-4 h-4" />
           <span className="text-xs md:text-sm">Invite Link</span>
         </button>
-        <div className="border-t border-light-stroke "></div>
+        
+        <div className="border-t border-light-stroke"></div>
         
         {/* Archive/Unarchive Option */}
         <button
@@ -57,7 +74,7 @@ const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({
           onClick={() => onArchiveToggle && onArchiveToggle()}
         >
           <img 
-            src={isArchived ? "/archive.svg" : "/archive.svg"} 
+            src="/archive.svg" 
             alt={isArchived ? "unarchive icon" : "archive icon"} 
             className="w-4 h-4" 
           />
@@ -67,11 +84,13 @@ const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({
         </button>
       </div>
 
-      {/* Invite Link Modal */}
-      {isInviteModalOpen && (
+      {isInviteModalOpen && prescriber && (
         <InviteLinkModal 
           onClose={() => setIsInviteModalOpen(false)} 
-          prescribers={prescribers}
+          prescriber={{ 
+            id: prescriber.id,
+            prescriber: prescriber.name 
+          }}
         />
       )}
     </>
