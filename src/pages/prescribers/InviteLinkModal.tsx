@@ -3,7 +3,7 @@ import { Label } from "@/components/common/Label";
 import ModalHeader from "@/components/common/ModalHeader";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import ThemeButton from "@/components/common/ThemeButton";
-import { Formik, Form, useFormikContext } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import InputField from "@/components/common/form/InputField";
 import SelectField from "@/components/common/form/SelectField";
@@ -11,7 +11,13 @@ import ThemeButtonTabs from "@/components/ThemeButtonTabs";
 
 interface InviteLinkModalProps {
   onClose: () => void;
-  prescribers: Array<{ id: string; name: string }>;
+  prescriber: {
+    id: string;
+    prescriber: string;
+    npi?: string;
+    prescriberPhone?: string;
+    prescriberAddress?: string;
+  };
 }
 
 const PasswordFieldWithToggle = ({ name }: { name: string }) => {
@@ -38,12 +44,12 @@ const PasswordFieldWithToggle = ({ name }: { name: string }) => {
   );
 };
 
-const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescribers }) => {
+const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescriber }) => {
   const [activeTab, setActiveTab] = useState("By Link");
   const [isSent, setIsSent] = useState(false);
 
   const initialValues = {
-    prescriber: "",
+    prescriber: prescriber?.prescriber || "",
     password: "",
     link: "https://example.com/invite",
     email: "",
@@ -93,7 +99,7 @@ const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescribers 
                 data={["By Email", "By Link"]}
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
-                className="w-full border-quaternary-navy-blue-dark"
+                className="w-full border-quaternary-navy-blue-dark "
               />
             </div>
 
@@ -104,9 +110,7 @@ const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescribers 
             >
               {({ values }) => (
                 <Form className="flex flex-col h-full">
-                  {/* Scrollable content area */}
                   <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                    {/* Common Content */}
                     <div className="flex items-start gap-3 bg-quaternary-navy-blue rounded-lg p-3">
                       <img src="/pass-required.svg" alt="Password required" className="w-5 h-5 mt-0.5"/>
                       <div>
@@ -123,21 +127,16 @@ const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescribers 
                       <Label className="text-quaternary-white text-sm font-secondary">
                         Prescriber
                       </Label>
-                      <div className="relative">
-                        <div className="absolute left-0 top-0 h-full flex items-center pl-2 z-10">
-                          <img src="/prescriber.svg" alt="Prescriber" className="w-5 h-5"/>
-                        </div>
-                        <SelectField
+                      <div className="">
+                        <InputField
                           name="prescriber"
-                          options={prescribers.map(p => ({ value: p.id, label: p.name }))}
-                          placeholder="Select prescriber"
-                          className="!pl-12"
-                          parentClassName="w-full"
+                          value={initialValues.prescriber}
+                          readOnly
+                          className="!pl-4 bg-[#F5F5F5]"
                         />
                       </div>
                     </div>
 
-                    {/* Tab Specific Content */}
                     {activeTab === "By Link" && (
                       <div className="space-y-2">
                         <Label className="text-quaternary-white text-sm font-secondary">
@@ -195,7 +194,6 @@ const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescribers 
                     </div>
                   </div>
 
-                  {/* Fixed footer with buttons */}
                   <div className="flex justify-end gap-4 border-t border-light-stroke p-4 bg-primary-white">
                     <ThemeButton
                       onClick={onClose}

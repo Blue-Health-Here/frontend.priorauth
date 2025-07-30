@@ -31,6 +31,7 @@ interface PrescriberCardProps {
   onModify: () => void;
   onGenerateCPA?: () => void;
   loadingGenerateCPA?: boolean;
+  onInviteClick?: () => void;
 }
 
 const PrescriberCard: React.FC<PrescriberCardProps> = ({
@@ -40,7 +41,8 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
   showUnarchiveButton,
   onModify, 
   onGenerateCPA, 
-  loadingGenerateCPA
+  loadingGenerateCPA,
+  onInviteClick
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -65,7 +67,7 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -104,6 +106,7 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
                 onArchiveToggle={(status) => onArchiveToggle(prescriber.prescriber, status)}
                 onGenerateCPA={onGenerateCPA}
                 loadingGenerateCPA={loadingGenerateCPA}
+                onInviteClick={onInviteClick}
               />
             )}
           </div>
