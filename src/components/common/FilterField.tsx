@@ -75,11 +75,11 @@ const FilterField: React.FC<FilterFieldProps> = ({
         <Button
           severity="secondary"
           outlined
-          className="!text-sm !rounded-xl !border-light-stroke !text-secondary-black !font-medium !px-3"
+          className={"!text-sm !rounded-xl !border-light-stroke !text-secondary-black !font-medium !px-3" + (selectedValue ? " !py-2" : "")}
           onClick={() => setShowFiltersDropdown(!showFiltersDropdown)}
         >
           <span className="flex items-center gap-2 whitespace-nowrap">
-            {label} 
+            {label} {selectedValue && <span className="px-2.5 py-1.5 text-xs rounded-md bg-blue-navigation-link-button text-white">1</span>}
             <FaChevronDown className="w-3 h-3 ml-1" />
           </span>
         </Button>
