@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom";
 interface RequestTitleProps {
   isAdmin: boolean;
   prescriber?: string | null;
+  inviteCode?: any
 }
 
-const RequestTitle: React.FC<RequestTitleProps> = ({ isAdmin, prescriber }) => {
+const RequestTitle: React.FC<RequestTitleProps> = ({ isAdmin, prescriber, inviteCode }) => {
   const navigate = useNavigate();
   
   // Function to format the prescriber name with possessive form
@@ -20,8 +21,8 @@ const RequestTitle: React.FC<RequestTitleProps> = ({ isAdmin, prescriber }) => {
   };
   
   return (
-    <h2 className="text-lg font-bold text-gray-800 inline-flex gap-2 items-center">
-      {prescriber && (
+    <h2 className="text-lg font-bold inline-flex gap-2 items-center">
+      {prescriber && !inviteCode && (
         <img 
           onClick={() => navigate(isAdmin ? "/admin/prescribers" : "/pharmacy/prescribers")} 
           src='/header-left-logo-arrow.svg'
