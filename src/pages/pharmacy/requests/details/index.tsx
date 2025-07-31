@@ -27,7 +27,7 @@ import api from "@/api/instance";
 import ThemeButton from "@/components/common/ThemeButton";
 import { formatDateTime, getStatusClass } from "@/utils/helper";
 
-const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
+const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -269,7 +269,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin }) => {
           <Loading />
         ) : (
           <>
-            <PageHeader requestDetails={requestDetails} isAdmin={isAdmin} />
+            <PageHeader requestDetails={requestDetails} isAdmin={isAdmin} prescriberId={prescriberId} inviteCode={inviteCode} />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="col-span-1 lg:col-span-2 space-y-4">
                 <div className="bg-primary-white rounded-xl overflow-hidden border border-quaternary-navy-blue">

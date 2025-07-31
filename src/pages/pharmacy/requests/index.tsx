@@ -35,7 +35,7 @@ import { VncSession } from "@/utils/types";
 import PortalSession from "./PortalSession";
 import { handleFetchPortalStatus, handleSessionCleanup, handleStartPortal } from "@/services/portalService";
 
-const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
+const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) => {
 
   const { reqStatusesData } = useSelector(
     (state: RootState) => state.reqStatuses
@@ -47,7 +47,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
   const location = useLocation();
 
   const prescriberName = location.state?.prescriberName || null;
-  console.log(prescriberName)
+  console.log(inviteCode, "inviteCode");
   // New state for status filter
   const [selectedStatusFilter, setSelectedStatusFilter] = useState<
     string | null
@@ -736,7 +736,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId }) => {
 
       <div className="hidden md:flex justify-between gap-4 items-center pb-2 h-14 flex-wrap">
          <RequestTitle 
-    isAdmin={isAdmin} 
+    isAdmin={isAdmin} inviteCode={inviteCode}
     prescriber={prescriberName || (prescriberId ? "Prescriber Requests" : null)} 
   />
         {!prescriberId && (
