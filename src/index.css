@@ -821,6 +821,14 @@ a:focus {
   color: var(--gray-color);
   font-weight: 300;
 }
+.dark {
+  .custom-paginator .p-datatable-tbody tr {
+    background: transparent;
+  }
+  .custom-paginator .p-datatable-table tr:hover {
+    background: transparent !important;
+  }
+}
 
 .custom-paginator > .p-datatable-wrapper > .p-datatable-table > .p-datatable-thead {
   border-radius: 8px;
@@ -871,8 +879,27 @@ a:focus {
 
 .theme-datatable-accordion .p-accordion-content {
   border: none;
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.theme-datatable-accordion .p-toggleable-content {
+  margin-left: 16px;
+  padding-left: 34px;
+  position: relative;
+}
+
+.theme-datatable-accordion .p-toggleable-content::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  height: 100%;
+  background: var(--quaternary-navy-blue);
 }
 
 .theme-datatable-accordion .p-datatable-wrapper {

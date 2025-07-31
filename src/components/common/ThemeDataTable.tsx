@@ -131,7 +131,7 @@ const ThemeDataTable: React.FC<any> = ({
               selectedFilterField === "statusName"
                 ? getStatusClass(group.status)
                 : "";
-            const groupHasData = group.data && group.data.length > 0;
+            // const groupHasData = group.data && group.data.length > 0;
             
             return (
               <AccordionTab
@@ -176,7 +176,7 @@ const ThemeDataTable: React.FC<any> = ({
                 <DataTable
                   ref={dt}
                   value={group.data}
-                  paginator={isPaginator && groupHasData}
+                  paginator={false}
                   rows={pageSize}
                   scrollable
                   rowsPerPageOptions={[5, 10, 25, 50]}

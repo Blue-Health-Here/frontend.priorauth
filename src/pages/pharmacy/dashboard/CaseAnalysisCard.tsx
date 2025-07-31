@@ -160,11 +160,7 @@ const CaseAnalysisCard = () => {
                 </div>
             </div>
             <div className={`h-[${screenSize === 'mobile' ? '320px' : screenSize === 'tablet' ? '380px' : '400px'}] w-full`}>
-                <Bar 
-                    data={data} 
-                    options={options} 
-                    className="w-full" 
-                />
+                <Bar data={data} options={options} className="w-full max-h-[400px]" />
             </div>
         </div>
     );
