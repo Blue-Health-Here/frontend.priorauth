@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ThemeButton from "@/components/common/ThemeButton";
 import { RxArrowTopRight } from "react-icons/rx";
 import SideDrawer from "@/components/SideDrawer";
@@ -11,18 +11,6 @@ interface CommentsSectionProps {
 
 const CommentsSection: React.FC<CommentsSectionProps> = ({ isAdmin }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-  useEffect(() => {
-    if (isDrawerOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isDrawerOpen]);
 
   return (
     <>

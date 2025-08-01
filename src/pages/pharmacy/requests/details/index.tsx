@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import CardHeader from "@/components/common/CardHeader";
 import { UploadedFile } from "@/utils/types";
 import ProgressNotesModal from "@/components/ProgressNotesModal";
@@ -7,11 +7,9 @@ import InfoDetails from "./InfoDetails";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
-  getRequestDetails,
   getRequestStatuses,
   postRequestUploadFiles,
   deleteReqUploadedFile,
-  postStartAiAnalysis,
 } from "@/services/pharmacyService";
 import Loading from "@/components/common/Loading";
 import StatusTimeline from "./StatusTimeline";
@@ -21,11 +19,10 @@ import LetterOfMedicalNecessity from "./LetterOfMedicalNecessity";
 import FileUploadSection from "./FileUploadSection";
 import FileDropzone from "@/components/common/FileDropzone";
 import UploadFileList from "@/components/common/UploadFileList";
-import { setRequestComments, setStatusItems } from "@/store/features/pharmacy/requests/requestsSlice";
 import toast from "react-hot-toast";
-import api from "@/api/instance";
 import ThemeButton from "@/components/common/ThemeButton";
-import { formatDateTime, getStatusClass } from "@/utils/helper";
+import { useRequestData } from "@/hooks/useRequestData";
+import { useFileUploadProgressNotes } from "@/hooks/useFileUploadProgressNotes";
 
 const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -33,30 +30,21 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const canvasRef = useRef(null);
   const [requestDetails, setRequestDetails] = useState<any>(null);
-  const isFetchedReqDetails = useRef(false);
   const dispatch = useDispatch();
   const { id: reqId } = useParams();
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
-  const [isAnalysisStarted, setIsAnalysisStarted] = useState<boolean>(false);
-  const [isAnalysisComplete, setIsAnalysisComplete] = useState(false);
-  const [isAnalysisFailed, setIsAnalysisFailed] = useState(false);
   const [isDragging, setIsDragging] = useState<boolean>(false);
+  const fileUploadsObj = useFileUploadProgressNotes(reqId || "", requestDetails);
+  const { setIsAnalysisStarted, setIsAnalysisComplete } = fileUploadsObj;
 
-  const startAnalysis = async () => {
-    setIsAnalysisStarted(true);
-    setIsAnalysisComplete(false);
-    setIsAnalysisFailed(false);
-
-    const response = await postStartAiAnalysis(dispatch, reqId);
-    if (response) {
-      setIsAnalysisComplete(true);
-      setIsAnalysisFailed(false);
-      fetchData();
-    } else {
-      setIsAnalysisComplete(false);
-      setIsAnalysisFailed(true);
-    }
-  };
+  useRequestData({
+    reqId,
+    setRequestDetails,
+    setUploadedFiles,
+    setIsLoading,
+    setIsAnalysisStarted,
+    setIsAnalysisComplete,
+  });
 
   const handleOpenProgressNotesModal = () => {
     setIsModalOpen(true);
@@ -133,117 +121,20 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
     setUploadedFiles(updateFn);
   };
 
-  useEffect(() => {
-    if (isDrawerOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isDrawerOpen]);
-
-  const isFetchedReqStatuses = useRef(false);
-
-  useEffect(() => {
-    if (!isFetchedReqStatuses.current) {
-      fetchData().then(() => fetchRequestStatuses());
-      isFetchedReqStatuses.current = true;
-    }
-  }, [dispatch, reqId]);
-
-  const fetchRequestStatuses = async () => {
-    const response = await getRequestStatuses(dispatch, reqId);
-    if (response?.currentStatus) {
-      const current = response.currentStatus;
-      const previous = [...response.previousStatuses].sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-      );
-
-      const allStatuses = [
-        {
-          ...current,
-          date: formatDateTime(current.date),
-          isActive: true,
-          note: current.notes,
-          statusClass: getStatusClass(current.name),
-          showNotesButton: !(current.notes && current.notes.trim() !== ""),
-          isEditing: false
-        },
-        ...previous.map((s: any) => ({
-          ...s,
-          date: formatDateTime(s.date),
-          isActive: false,
-          note: s.notes,
-          statusClass: getStatusClass(s.name),
-          showNotesButton: !(s.notes && s.notes.trim() !== ""),
-          isEditing: false
-        }))
-      ];
-
-      dispatch(setStatusItems(allStatuses));
-    } else {
-      dispatch(setStatusItems([]));
-    }
-  };
-
-  const fetchData = async () => {
-    setIsLoading(true);
-    const detailsRes = await getRequestDetails(dispatch, reqId);
-
-    if (detailsRes) {
-      setRequestDetails(detailsRes);
-      setUploadedFiles(detailsRes?.files.map((item: any) => ({ ...item, name: item.fileName, type: item.mimeType })))
-      dispatch(setRequestComments(detailsRes.comments));
-      if (detailsRes?.chartNotes?.length > 0) {
-        setIsAnalysisComplete(true);
-        setIsAnalysisStarted(true);
-      }
-    } else {
-      setRequestDetails(null);
-      setUploadedFiles([]);
-      dispatch(setRequestComments([]));
-    }
-
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    if (!isFetchedReqDetails.current) {
-      fetchData();
-      isFetchedReqDetails.current = true;
-    }
-  }, [dispatch, reqId]);
-
+  useRequestData({
+    reqId,
+    setRequestDetails,
+    setUploadedFiles,
+    setIsLoading,
+    setIsAnalysisStarted,
+    setIsAnalysisComplete,
+  });
+  
   const handleCheckNotes = () => {
     setIsDrawerOpen(true);
   };
   
-  const handleDownloadReport = async () => {
-    if (requestDetails.progressNotesReport && requestDetails.progressNotesReport?.length > 0) {
-      const file = requestDetails.progressNotesReport[0] as { url: string; fileName: string };
-      try {
-        const response = await api.get(file.url, {
-          responseType: "blob"
-        });
-        const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-        link.href = blobUrl;
-        link.download = file.fileName || "progress_notes_report.pdf";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(blobUrl); // Cleanup
-      } catch (error) {
-        console.error("Download failed:", error);
-      }
-    }
-  };
-
   const memoizedChartNotes = useMemo(() => requestDetails?.chartNotes, [requestDetails?.chartNotes.length]);
-
   return (
     <>
       <ProgressNotesModal
@@ -269,7 +160,8 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
           <Loading />
         ) : (
           <>
-            <PageHeader requestDetails={requestDetails} isAdmin={isAdmin} prescriberId={prescriberId} inviteCode={inviteCode} />
+            <PageHeader requestDetails={requestDetails} isAdmin={isAdmin} 
+              prescriberId={prescriberId} inviteCode={inviteCode} />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="col-span-1 lg:col-span-2 space-y-4">
                 <div className="bg-primary-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
@@ -280,7 +172,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
                     showCheckNotesBtn={true}
                   />
                 </div>
-                <FileUploadSection
+                {/* <FileUploadSection
                   uploadedFiles={uploadedFiles}
                   setUploadedFiles={setUploadedFiles}
                   reqId={reqId || ""}
@@ -294,6 +186,14 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
                   restartAnalysis={startAnalysis}
                   handleOpenProgressNotesModal={handleOpenProgressNotesModal}
                   handleDownload={handleDownloadReport}
+                /> */}
+                <FileUploadSection
+                  uploadedFiles={uploadedFiles}
+                  setUploadedFiles={setUploadedFiles}
+                  reqId={reqId || ""}
+                  {...fileUploadsObj}
+                  title="Progress Notes"
+                  handleOpenProgressNotesModal={handleOpenProgressNotesModal}
                 />
                 <div className="bg-primary-white rounded-xl border border-quaternary-navy-blue relative overflow-hidden">
                   <CardHeader title="Other Files" />

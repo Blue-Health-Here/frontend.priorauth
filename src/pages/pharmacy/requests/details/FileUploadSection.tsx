@@ -20,6 +20,8 @@ interface FileUploadSectionProps {
   restartAnalysis: () => void;
   handleOpenProgressNotesModal: () => void;
   handleDownload: () => void;
+  title?: string;
+  inviteCode?: any;
 }
 
 const FileUploadSection: React.FC<FileUploadSectionProps> = ({
@@ -33,7 +35,7 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
   startAnalysis,
   restartAnalysis,
   handleOpenProgressNotesModal,
-  handleDownload
+  handleDownload, title
 }) => {
   const dispatch = useDispatch();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -103,7 +105,7 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
 
   return (
     <div className="bg-primary-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
-      <CardHeader title="Progress Notes" />
+      {title && <CardHeader title={title} />}
       {!isAnalysisComplete && !isAnalysisStarted && uploadedFiles.length === 0 && (
   <div className="p-4">
     <div

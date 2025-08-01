@@ -31,7 +31,7 @@ const PrescriberViewOnlyLayout: React.FC<PrescriberViewOnlyLayoutProps> = ({ chi
                     </button>
                 </div>
             </header>
-            <div className="p-4">
+            <div className="p-4 md:p-6">
                 {children}
             </div>
         </div>
