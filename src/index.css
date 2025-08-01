@@ -236,8 +236,8 @@
   --icon-group-bg: var(--navy-blue-500);
   --icon-group-icon: var(--navy-blue-800);
   /* Table Colors */
-  --table-body-text: var(--black-700)
-  --table-head-text: var(--stroke-900)
+  --table-body-text: var(--black-700);
+  --table-head-text: var(--stroke-900);
  
 
 }
@@ -350,8 +350,8 @@
   --icon-group-icon: var(--white-800);
 
    /* Table Colors */
-   --table-body-text: var(--white-800)
-   --table-head-text: var(--navy-blue-300)
+   --table-body-text: var(--white-800);
+   --table-head-text: var(--navy-blue-300);
 
 }
 
