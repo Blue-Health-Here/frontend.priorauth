@@ -21,7 +21,7 @@ const ThemeDataTable: React.FC<any> = ({
   themeDataTableClass,
   globalFilterFields,
   selectedFilterField = "",
-  setGlobalFilter
+  setGlobalFilter,
 }) => {
   const dt = useRef(null);
 
@@ -58,30 +58,30 @@ const ThemeDataTable: React.FC<any> = ({
   };
 
   const isGrouped = Array.isArray(data) && data.length > 0 && data[0]?.data;
-  
+
   // Check if we have matching data for the current search
   const hasMatchingData = () => {
     if (!globalFilter) return data.length > 0;
-    
+
     if (isGrouped) {
-      return data.some(group => 
-       group.data?.some((item: Record<string, any>) => 
-          Object.values(item).some(val => 
+      return data.some((group) =>
+        group.data?.some((item: Record<string, any>) =>
+          Object.values(item).some((val) =>
             String(val).toLowerCase().includes(globalFilter.toLowerCase())
           )
         )
       );
     }
-    
-    return data.some((item: Record<string, any>) => 
-      Object.values(item).some(val => 
+
+    return data.some((item: Record<string, any>) =>
+      Object.values(item).some((val) =>
         String(val).toLowerCase().includes(globalFilter.toLowerCase())
       )
     );
   };
 
   const handleSearchAgain = () => {
-    setGlobalFilter?.('');
+    setGlobalFilter?.("");
   };
 
   const renderEmptyState = () => {
@@ -132,7 +132,7 @@ const ThemeDataTable: React.FC<any> = ({
                 ? getStatusClass(group.status)
                 : "";
             // const groupHasData = group.data && group.data.length > 0;
-            
+
             return (
               <AccordionTab
                 className="mb-4"
@@ -213,18 +213,16 @@ const ThemeDataTable: React.FC<any> = ({
           header={null}
           emptyMessage={renderEmptyState()}
           loading={loading}
-          className={`custom-paginator ${themeDataTableClass} min-w-[600px] md:min-w-0`}
+          className={`custom-paginator ${themeDataTableClass} min-w-[600px] md:min-w-0 text-`}
           onRowClick={onRowClick}
           rowClassName={() =>
-            "cursor-pointer hover:!bg-gray-50 active:bg-gray-100 transition duration-200"
+            "cursor-pointer hover:!bg-[rgba(249,250,251,0.5)] dark:hover:!bg-[rgba(20,34,51,0.3)] active:!bg-[rgba(243,244,246,0.6)] dark:active:!bg-[rgba(20,34,51,0.4)] transition duration-200"
           }
         >
           {renderColumns()}
         </DataTable>
       )}
-      
     </div>
-    
   );
 };
 

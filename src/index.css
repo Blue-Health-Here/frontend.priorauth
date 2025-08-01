@@ -235,6 +235,10 @@
   /* Icon Group Colors */
   --icon-group-bg: var(--navy-blue-500);
   --icon-group-icon: var(--navy-blue-800);
+  /* Table Colors */
+  --table-body-text: var(--black-700)
+  --table-head-text: var(--stroke-900)
+ 
 
 }
 
@@ -299,6 +303,9 @@
   --status-warning-bg-color: #3a3a1a;
 
   --ai-animation: #f8a8aa;
+  --navy-blue-dark-800: #142233;
+
+
 
 
 
@@ -342,9 +349,17 @@
   --icon-group-bg: var(--navy-dark-blue-600);
   --icon-group-icon: var(--white-800);
 
+   /* Table Colors */
+   --table-body-text: var(--white-800)
+   --table-head-text: var(--navy-blue-300)
+
 }
 
 @theme {
+   /* Table Colors */
+   --color-table-body-text: var(--table-body-text);
+   --color-table-head-text: var(--table-head-text)
+
   /* Icon Group Colors */
   --color-icon-group-bg: var(--icon-group-bg);
   --color-icon-group-icon: var(--icon-group-icon);
@@ -640,6 +655,37 @@ body {
   .notification-btn svg {
     fill: var(--white-800);
   }
+ 
+.custom-paginator .p-column-title {
+  color: var(--navy-blue-300);
+ 
+}
+.p-datatable-tbody > tr > td {
+  border-bottom: 1px solid var(--navy-blue-dark-800) !important;
+}
+.p-paginator  {
+  background:var(--dark-800) 
+}
+.p-paginator-page {
+  background:var(--navy-blue-dark-800);
+}
+.p-dropdown-label {
+  background:var(--navy-blue-dark-800);
+}
+.p-dropdown-trigger {
+  background:var(--navy-blue-dark-800);
+}
+.p-datatable-table {
+  border: 1px solid var(--navy-blue-dark-800);
+}
+
+.p-datatable-scrollable .p-datatable-wrapper {
+  scrollbar-width: thin;
+  scrollbar-color: var(--navy-blue-dark-800) var(--dark-800);
+}
+
+
+
 }
 
 .dark {
@@ -709,6 +755,10 @@ a:focus {
   text-align: left;
   color: var(--secondary-black);
   font-size: 14px;
+}
+
+.p-datatable-tbody > tr > td {
+  border-bottom: 1px solid var(--navy-blue-500) !important;
 }
 
 .placeholder-primary-black::placeholder {
@@ -914,3 +964,4 @@ a:focus {
   overflow-x: auto !important;
   overflow-y: visible !important;
 }
+

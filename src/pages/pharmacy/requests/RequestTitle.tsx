@@ -20,7 +20,7 @@ const RequestTitle: React.FC<RequestTitleProps> = ({ isAdmin, prescriber }) => {
   };
   
   return (
-    <h2 className="text-lg font-bold text-gray-800 inline-flex gap-2 items-center">
+    <h2 className="text-lg font-bold text-table-body-text inline-flex gap-2 items-center">
       {prescriber && (
         <img 
           onClick={() => navigate(isAdmin ? "/admin/prescribers" : "/pharmacy/prescribers")} 
