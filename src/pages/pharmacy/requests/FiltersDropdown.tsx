@@ -59,17 +59,17 @@ const FiltersDropdown: React.FC<FiltersDropdownProps> = ({
       <div className="hidden md:block">
         <button
           className={`flex items-center justify-between w-full text-sm font-medium text-secondary-black
-            border border-light-stroke rounded-xl px-3 py-3 bg-white min-w-[90px]`}
+            border border-light-stroke rounded-xl px-3 py-3  min-w-[90px] bg-primary-white`}
           onClick={() => setShowDropdown(!showDropdown)}
         >
           <span>Filters</span>
           {/* Replaced FaChevronDown with filters.svg */}
-          <img src="/filters.svg" alt="Filters" className="w-3 h-3 ml-1" />
+          <img src="/filters.svg" alt="Filters" className="w-3 h-3 ml-1 " />
         </button>
 
         {showDropdown && (
-          <div className="absolute right-0 top-full mt-1 w-60 bg-primary-white border border-light-stroke rounded-xl theme-shadow z-10 p-4">
-            <div className="relative mb-4">
+          <div className="absolute right-0 top-full mt-1 w-60 bg-primary-white  border border-light-stroke rounded-xl theme-shadow z-10 p-4 ">
+            <div className="relative mb-4 ">
               <InputText
                 value={searchTerm}
                 onChange={(e: any) => setSearchTerm(e.target.value)}
