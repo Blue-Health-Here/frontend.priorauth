@@ -34,6 +34,7 @@ import FiltersDropdown from "./FiltersDropdown";
 import { VncSession } from "@/utils/types";
 import PortalSession from "./PortalSession";
 import { handleFetchPortalStatus, handleSessionCleanup, handleStartPortal } from "@/services/portalService";
+import RequestDetailsSideDrawer from "./RequestDetailsSideDrawer";
 
 const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) => {
 
@@ -176,8 +177,10 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
   const [isStartingRequest, setIsStartingRequest] = useState(false);
   const [vncSession, setVncSession] = useState<VncSession | null>(null);
   const [isClosingSession, setIsClosingSession] = useState(false);
+  const [openSideDrawer, setOpenSideDrawer] = useState(false);
   const [isVncLoading, setIsVncLoading] = useState(false);
   const [firefoxStatusMsg, setFirefoxStatusMsg] = useState('');
+  const [reqId, setReqId] = useState<string | null>(null);
 
   // Get unique statuses for the filters dropdown
   const uniqueStatuses = useMemo(() => {
@@ -406,10 +409,10 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
       {/* Mobile Header */}
       <div className="md:hidden flex flex-col gap-3 w-full">
         <div className="flex justify-between items-center">
-          <RequestTitle 
-    isAdmin={isAdmin} 
-    prescriber={prescriberName || (prescriberId ? "Prescriber Requests" : null)} 
-  />
+          <RequestTitle
+            isAdmin={isAdmin}
+            prescriber={prescriberName || (prescriberId ? "Prescriber Requests" : null)}
+          />
           <button
             onClick={() => setIsModalOpen(true)}
             className="w-7 h-7 flex items-center justify-center bg-[#EBF1FF] rounded-md"
@@ -612,6 +615,15 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
     return () => { if (pollInterval) clearTimeout(pollInterval); };
   }, [isVncLoading, vncSession, user]);
 
+  const handleOpenReqDetails = (row: any) => {
+    // if (inviteCode) {
+      setOpenSideDrawer(true);
+      setReqId(row.data.id);
+    // } else {
+    //   navigate(location.pathname + "/" + row.data.id + "/request-details")
+    // }
+  };
+
   return (
     <div className="bg-primary-white rounded-lg theme-datatable theme-shadow px-4 py-4">
       {vncSession && (
@@ -633,6 +645,17 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
           }}
         />
       )}
+
+      <RequestDetailsSideDrawer 
+        openSideDrawer={openSideDrawer}
+        setOpenSideDrawer={setOpenSideDrawer}
+        reqId={reqId}
+        isAdmin={isAdmin}
+        inviteCode={inviteCode}
+        handleOpenReqDetails={(id: any) => {
+          navigate(location.pathname + "/" + id + "/request-details")
+        }}
+      />
 
       {mobileSidebarOpen && (
         <div className="fixed inset-0 z-100 md:hidden">
@@ -735,10 +758,10 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
       )}
 
       <div className="hidden md:flex justify-between gap-4 items-center pb-2 h-14 flex-wrap">
-         <RequestTitle 
-    isAdmin={isAdmin} inviteCode={inviteCode}
-    prescriber={prescriberName || (prescriberId ? "Prescriber Requests" : null)} 
-  />
+        <RequestTitle
+          isAdmin={isAdmin} inviteCode={inviteCode}
+          prescriber={prescriberName || (prescriberId ? "Prescriber Requests" : null)}
+        />
         {!prescriberId && (
           <div className="inline-flex h-full gap-2 sm:ml-auto">
             <ThemeButton
@@ -799,9 +822,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
             "notes",
             "lastModified",
           ]}
-          onRowClick={(row: any) =>
-            navigate(location.pathname + "/" + row.data.id + "/request-details")
-          }
+          onRowClick={(row: any) => handleOpenReqDetails(row)}
         />
       )}
     </div>
