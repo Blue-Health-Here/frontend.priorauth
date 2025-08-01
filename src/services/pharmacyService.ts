@@ -326,6 +326,11 @@ export const uploadPrescriberImage = async (dispatch: AppDispatch, id?: string, 
     });
 };
 
+export const generatePrescriberLink = async (dispatch: AppDispatch, data: any) => {
+    return apiHandler(dispatch, 'post', `/prescriber-invite/add/generate-link`, {
+        data
+    });
+}
 // ============= Update settings Password  =============
 export const updateProfilePassword = async (dispatch: AppDispatch, userId: string, data: any) => {
     return apiHandler(dispatch, 'post', `/user/change-password/${userId}`, {
