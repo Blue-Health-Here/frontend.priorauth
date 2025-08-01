@@ -9,6 +9,8 @@ import GuestRoute from "./routes/GuestRoute";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Loading from "./components/common/Loading";
 import PrescriberDetails from "./pages/prescribers/details";
+import PrescribersViewOnly from "./pages/prescribers/view-only";
+import PrescribersRequestDetailsPage from "./pages/prescribers/view-only/request-details";
 
 // Public
 const Home = lazy(() => import("./pages/Home"));
@@ -50,6 +52,10 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/otp-verification" element={<OTPVerification />} />
           </Route>
+          <Route path="/pharmacy/prescriber-invite/:prescriberId/:inviteCode" 
+            element={<ThemeProvider><PrescribersViewOnly /></ThemeProvider>} />
+          <Route path="/pharmacy/prescriber-invite/:prescriberId/:inviteCode/:id/request-details" 
+            element={<ThemeProvider><PrescribersRequestDetailsPage /></ThemeProvider>} />
 
           {/* Admin Routes */}
           <Route element={<ThemeProvider><ProtectedRoute allowedRoles={["companyAdmin"]} /></ThemeProvider>}>

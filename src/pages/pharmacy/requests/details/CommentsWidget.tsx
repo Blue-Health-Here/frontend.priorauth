@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import { addNewReqComment } from "@/services/pharmacyService";
 import { useParams } from "react-router-dom";
 
-const CommentsWidget: React.FC<any> = ({ showTwo = false }) => {
+const CommentsWidget: React.FC<any> = ({ showTwo = false, showActions = true }) => {
   const { reqComments } = useSelector((state: RootState) => state.pharmacyReqs);
   const [input, setInput] = useState("");
   const dispatch = useDispatch();
@@ -77,7 +77,7 @@ const CommentsWidget: React.FC<any> = ({ showTwo = false }) => {
         </div>
       )}
 
-      <div className="p-3">
+      {showActions && <div className="p-3">
         <div className="flex gap-3 items-start">
           <NameBadge
             data={{ name: "P", bgColor: "#CBDAFF", textColor: "#3961B2" }}
@@ -101,7 +101,7 @@ const CommentsWidget: React.FC<any> = ({ showTwo = false }) => {
             Post Comment
           </ThemeButton>
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

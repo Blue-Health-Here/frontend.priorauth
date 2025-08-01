@@ -212,7 +212,7 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
             className="border border-quaternary-navy-blue rounded-lg text-primary-navy-blue hover:bg-gray-50 transition-colors
                       /* MOBILE-ONLY: Full width below 640px */
                       max-[639px]:w-full"
-            onClick={onCheckNotes}
+            onClick={onCheckNotes && onCheckNotes}
           >
             <span className="flex gap-2 items-center">
               Check Notes <FiFileText />

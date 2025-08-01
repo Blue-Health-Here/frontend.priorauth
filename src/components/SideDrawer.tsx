@@ -1,3 +1,4 @@
+import { useLockBodyScroll } from '@/hooks/useLockBodyScroll';
 import React from 'react';
 import { FiX } from 'react-icons/fi';
 
@@ -12,7 +13,8 @@ const SideDrawer: React.FC<any> = ({
     showOverlay = true,
     closeOnOverlayClick = true,
     className = '',
-    isClose = false
+    isClose = false,
+    arrowClass = 'rotate-180', handleOpenReqDetails
 }) => {
     const positionClasses: any = {
         right: `right-0 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`,
@@ -21,6 +23,8 @@ const SideDrawer: React.FC<any> = ({
 
     // Responsive width - full width on mobile, specified width on desktop
     const responsiveWidth = `w-full md:${width}`;
+
+    useLockBodyScroll(isOpen);
 
     return (
         <>
@@ -41,14 +45,14 @@ const SideDrawer: React.FC<any> = ({
                         ${className}
                     `}>
                         {/* Header */}
-                        <div className="flex items-center justify-between p-4 border-b border-light-stroke">
+                        <div className="flex items-center justify-between p-4 border-b border-light-stroke w-full">
                             <div className="flex items-center space-x-2">
                                 <button
                                     onClick={onClose}
                                     className="p-1 transition-colors"
                                 >
                                     <img alt="header left logo arrow" 
-                                        className="w-8 h-8 bg-gray-100 p-2 rounded-lg cursor-pointer rotate-180" 
+                                        className={`w-8 h-8 bg-gray-100 p-2 rounded-lg cursor-pointer ${arrowClass}`} 
                                         src="/header-left-logo-arrow.svg" />
                                 </button>
                                 {title && <h2 className="text-lg font-semibold text-gray-800">{title}</h2>}
@@ -59,6 +63,15 @@ const SideDrawer: React.FC<any> = ({
                             >
                                 <FiX className="h-5 w-5 text-gray-600" />
                             </button>}
+                            {handleOpenReqDetails && (
+                                <button
+                                    onClick={handleOpenReqDetails}
+                                    className="p-1 transition-colors"
+                                >
+                                    <img src='/next-arrow-up.svg' alt="next arrow up" 
+                                        className="w-8 h-8 bg-gray-100 p-2.5 rounded-lg cursor-pointer" />
+                                </button>
+                            )}
                         </div>
 
                         {/* Content */}

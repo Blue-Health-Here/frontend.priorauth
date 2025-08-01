@@ -35,11 +35,13 @@ export default function DataPoint({
                 {label && <p className="text-sm text-muted-foreground text-[#525252]">{label}</p>}
                 {isEditing ? (
                     <>
-                        <Input
-                            type={type}
-                            {...field}
-                            className="mt-1 h-8 font-medium"
-                        />
+                        <div className="max-w-full sm:w-[456px]">
+                            <Input
+                                type={type}
+                                {...field}
+                                className="mt-1 h-8 font-medium w-full"
+                            />
+                        </div>
                         {meta.touched && meta.error ? (
                             <p className="text-xs text-red-500 mt-1">{meta.error}</p>
                         ) : null}

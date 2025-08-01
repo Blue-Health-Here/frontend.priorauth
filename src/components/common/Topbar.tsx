@@ -123,7 +123,11 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
             onClick={toggleTheme}
             className="w-9 h-9 p-1.5 rounded-lg cursor-pointer"
           >
-            <img src="/moon.svg" alt="moon icon" className="w-4.5 h-4.5" />
+            {isDark ? (
+              <img src="/sun.svg" alt="sun icon" className="w-5 h-5" />
+            ) : (
+              <img src="/theme-button.svg" alt="moon icon" className="w-5 h-5" />
+            )}
           </button>
         </div>
       </div>
