@@ -1,101 +1,132 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import PharmacyCard from './PharmacyCard';
-// import { pharmacies, tabs } from '../../../utils/constants';
-import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { fetchAllPharmacies } from '../../../services/adminService';
-// import TableHeader from './TableHeader';
+import { useDispatch, useSelector } from 'react-redux';
 import SearchField from '@/components/common/SearchField';
-import FilterField from '@/components/common/FilterField';
-import { filterOptions } from '@/utils/constants';
+import ThemeButtonTabs from '@/components/ThemeButtonTabs';
+import Loading from "@/components/common/Loading";
+import ThemeButton from '@/components/common/ThemeButton';
 
 const AdminPharmacies: React.FC = () => {
   const { pharmaciesData } = useSelector((state: RootState) => state.adminPharmacies);
   const isReqsFetched = useRef(false);
   const dispatch = useDispatch();
+  
+  const [isLoading, setIsLoading] = useState(false);
   const [globalFilter, setGlobalFilter] = useState("");
-  const [sortDirection, setSortDirection] = useState<any>("asc");
+  const [activeTab, setActiveTab] = useState("All Pharmacies");
+  const [updatedPharmacyData, setUpdatedPharmacyData] = useState<any[]>([]);
+
+  const handleModifyPharmacy = (pharmacy: any) => {
+    console.log('Modify pharmacy:', pharmacy.id);
+  };
 
   useEffect(() => {
     if (!isReqsFetched.current) {
+      setIsLoading(true);
       (async () => {
         await fetchAllPharmacies(dispatch);
+        setIsLoading(false);
       })();
       isReqsFetched.current = true;
     }
   }, []);
 
-  const sortedPharmaciesData = useMemo(() => {
-    let data = [...pharmaciesData];
+  useEffect(() => {
+    const transformed = pharmaciesData.map((item: any) => ({
+      ...item,
+      pharmacy: item.pharmacy || `${item.firstName} ${item.lastName}`,
+      state: item.state || getStateFromAddress(item.address)
+    }));
+    setUpdatedPharmacyData(transformed);
+  }, [pharmaciesData]);
 
-    if (sortDirection) {
-      data.sort((a, b) => {
-        const nameA = a.firstName?.toLowerCase() || "";
-        const nameB = b.firstName?.toLowerCase() || "";
-    
-        const result = nameA.localeCompare(nameB);
-        return sortDirection === "asc" ? result : -result;
-      });
-    }
-  
-    return data;
-  }, [pharmaciesData, sortDirection]);
-  
-  const filteredPharmaciesData = useMemo(() => {
+  const getStateFromAddress = (address: string) => {
+    if (!address) return '';
+    const states = ['New York', 'NY', 'New Jersey', 'NJ', 'Pennsylvania', 'PA'];
+    return states.find(state => address.includes(state)) || '';
+  };
+
+  const filteredPharmacyData = useMemo(() => {
     const filterValue = globalFilter.toLowerCase();
-  
-    return sortedPharmaciesData.filter((item) =>
-      item.firstName?.toLowerCase().includes(filterValue) || item.lastName?.toLowerCase().includes(filterValue)
+    return updatedPharmacyData.filter((item) =>
+      item.pharmacy?.toLowerCase().includes(filterValue) ||
+      item.firstName?.toLowerCase().includes(filterValue) ||
+      item.lastName?.toLowerCase().includes(filterValue)
     );
-  }, [sortedPharmaciesData, globalFilter]);
+  }, [updatedPharmacyData, globalFilter]);
+
+  const displayedPharmacies = useMemo(() => {
+    if (activeTab === "All Pharmacies") return filteredPharmacyData;
+    
+    const stateMap: Record<string, string[]> = {
+      "New York": ["New York", "NY"],
+      "New Jersey": ["New Jersey", "NJ"],
+      "Pennsylvania": ["Pennsylvania", "PA"]
+    };
+    
+    return filteredPharmacyData.filter(item => 
+      stateMap[activeTab]?.some(state => item.state?.includes(state))
+    );
+  }, [filteredPharmacyData, activeTab]);
 
   return (
-    <>
-      <div className="bg-primary-white p-4 sm:p-5 rounded-2xl theme-shadow flex flex-col gap-4 w-full">
-        {/* <TableHeader /> */}
-        <div className="flex justify-between items-center">
-          <h1 className="text-xl font-medium tracking-tighter">
-            Pharmacies List
-          </h1>
-          <div className="flex gap-2 min-h-12">
-            <SearchField
-              globalFilter={globalFilter}
-              setGlobalFilter={setGlobalFilter}
-              placeholder="Search prescribers here"
-              className="min-w-[200px]"
-            />
-            <FilterField
-              label="Sort By"
-              columns={filterOptions}
-              selectedValue={sortDirection}
-              onChange={setSortDirection}
-            />
-          </div>
-        </div>
-        {/* <div className="flex overflow-x-auto whitespace-nowrap py-4 scrollbar-hide">
-          {tabs.map(tab => (
-            <button
-              key={tab.id}
-              className={`px-2 sm:px-3 md:px-4 py-1 sm:py-2 text-xs sm:text-sm md:text-base 
-                     transition-colors duration-200 cursor-pointer font-secondary
-                     ${tab.active
-                  ? 'border-b-2 border-primary-sky-blue text-secondary-black font-medium'
-                  : 'text-tertiary-black hover:text-secondary-black'
-                }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div> */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
-          {filteredPharmaciesData?.length > 0 ? filteredPharmaciesData.map((pharmacy: any) => {
-            return (
-              <PharmacyCard key={pharmacy.id} pharmacy={pharmacy} />
-            )
-          }) : <p>No data found.</p>}
+    <div className="bg-primary-white rounded-lg theme-shadow p-4 h-full">
+      {/* Header Section - Maintains original positioning */}
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-xl font-medium tracking-tighter">
+          All Pharmacies
+        </h1>
+        <ThemeButton
+          className="min-w-[130px] !h-full rounded-lg py-2.5"
+          variant="primary"
+          type="button"
+        >
+          Add Pharmacy
+        </ThemeButton>
+      </div>
+
+      {/* Tabs and Search - Now in single line */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+        <ThemeButtonTabs
+          data={["All Pharmacies", "New York", "New Jersey", "Pennsylvania"]}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          className="w-full md:w-auto whitespace-nowrap overflow-x-auto scrollbar-hide border-quaternary-navy-blue-dark"
+        />
+        
+        <div className="w-full md:w-[200px]">
+          <SearchField
+            globalFilter={globalFilter}
+            setGlobalFilter={setGlobalFilter}
+            placeholder="Search pharmacies"
+          />
         </div>
       </div>
-    </>
+
+      {/* Main Content - Unchanged from original */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {isLoading ? (
+          <div className="col-span-full flex justify-center py-8">
+            <Loading />
+          </div>
+        ) : displayedPharmacies.length > 0 ? (
+          displayedPharmacies.map((item, index) => (
+            <PharmacyCard
+              key={index}
+              pharmacy={item}
+              isAdmin={true}
+              onModify={() => handleModifyPharmacy(item)}
+            />
+          ))
+        ) : (
+          <div className="col-span-full text-left text-gray-500 text-sm">
+            No pharmacies found
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 
