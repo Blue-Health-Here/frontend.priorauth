@@ -143,3 +143,15 @@ export const submitLogin = async (dispatch: AppDispatch, values?: FormikValues) 
 export const handleLogout = async () => {
     localStorage.clear();
 }
+
+export const handleInviteValidate = async (dispatch: AppDispatch, data: any, inviteCode?: string) => {
+    return apiHandler(dispatch, 'post', `/prescriber-invite/get_one_by_query/validate-invite/${inviteCode}`, {
+        data
+    });
+};
+
+export const handleAccessInvite = async (dispatch: AppDispatch, data: any, inviteCode?: string) => {
+    return apiHandler(dispatch, 'post', `/prescriber-invite/get_one_by_query/access-invite/${inviteCode}`, {
+        data
+    });
+};

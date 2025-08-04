@@ -615,15 +615,6 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
     return () => { if (pollInterval) clearTimeout(pollInterval); };
   }, [isVncLoading, vncSession, user]);
 
-  const handleOpenReqDetails = (row: any) => {
-    // if (inviteCode) {
-      setOpenSideDrawer(true);
-      setReqId(row.data.id);
-    // } else {
-    //   navigate(location.pathname + "/" + row.data.id + "/request-details")
-    // }
-  };
-
   return (
     <div className="bg-primary-white rounded-lg theme-datatable theme-shadow px-4 py-4">
       {vncSession && (
@@ -652,9 +643,6 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
         reqId={reqId}
         isAdmin={isAdmin}
         inviteCode={inviteCode}
-        handleOpenReqDetails={(id: any) => {
-          navigate(location.pathname + "/" + id + "/request-details")
-        }}
       />
 
       {mobileSidebarOpen && (
@@ -822,7 +810,10 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
             "notes",
             "lastModified",
           ]}
-          onRowClick={(row: any) => handleOpenReqDetails(row)}
+          onRowClick={(e: any) => {
+            setOpenSideDrawer(true);
+            setReqId(e.data.id);
+          }}
         />
       )}
     </div>
