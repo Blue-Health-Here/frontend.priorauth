@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Label } from "@/components/common/Label";
 import ModalHeader from "@/components/common/ModalHeader";
 import ModalWrapper from "@/components/common/ModalWrapper";
@@ -8,6 +8,9 @@ import * as Yup from "yup";
 import InputField from "@/components/common/form/InputField";
 import SelectField from "@/components/common/form/SelectField";
 import ThemeButtonTabs from "@/components/ThemeButtonTabs";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { generatePrescriberLink } from "@/services/pharmacyService";
 
 interface InviteLinkModalProps {
   onClose: () => void;
@@ -47,14 +50,35 @@ const PasswordFieldWithToggle = ({ name }: { name: string }) => {
 const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescriber }) => {
   const [activeTab, setActiveTab] = useState("By Link");
   const [isSent, setIsSent] = useState(false);
-
-  const initialValues = {
+  const isPrescriberGeneratedLink = useRef(false);
+  const [initialValues, setInitialValues] = useState({
     prescriber: prescriber?.prescriber || "",
     password: "",
     link: "https://example.com/invite",
     email: "",
     role: "Viewer",
+  });
+  const dispatch = useDispatch();
+
+  const generatePrescriberInviteLink = async () => {
+    try {
+      const response = await generatePrescriberLink(dispatch, { prescriberId: prescriber.id });
+      if (response) {
+        console.log(response, "res");
+        setInitialValues((prev) => ({ ...prev, link: response.inviteLink }));
+        // setInitialValues();
+      }
+    } catch (error: any) {
+      toast.error(error?.message);
+    }
   };
+
+  useEffect(() => {
+    if (!isPrescriberGeneratedLink.current) {
+      generatePrescriberInviteLink();
+      isPrescriberGeneratedLink.current = true;
+    }
+  }, []);
 
   const validationSchema = Yup.object({
     password: Yup.string()
