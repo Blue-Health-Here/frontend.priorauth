@@ -330,7 +330,18 @@ export const generatePrescriberLink = async (dispatch: AppDispatch, data: any) =
     return apiHandler(dispatch, 'post', `/prescriber-invite/add/generate-link`, {
         data
     });
-}
+};
+
+export const handleGeneratePass = async (dispatch: AppDispatch) => {
+    return apiHandler(dispatch, 'get', `/prescriber-invite/get_one_by_query/generate-password?count=5&length=12&includeUppercase=true&includeLowercase=true&includeNumbers=true&includeSymbols=true&excludeSimilar=true`, {});
+};
+
+export const handleSendInvite = async (dispatch: AppDispatch, data: any) => {
+    return apiHandler(dispatch, 'post', `/prescriber-invite/add/invite-by-link`, {
+        data
+    });
+};
+
 // ============= Update settings Password  =============
 export const updateProfilePassword = async (dispatch: AppDispatch, userId: string, data: any) => {
     return apiHandler(dispatch, 'post', `/user/change-password/${userId}`, {
