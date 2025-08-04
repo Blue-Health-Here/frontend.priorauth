@@ -3,14 +3,17 @@ import { Label } from "@/components/common/Label";
 import ModalHeader from "@/components/common/ModalHeader";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import ThemeButton from "@/components/common/ThemeButton";
-import { Formik, Form } from "formik";
+import { Formik, Form, FormikValues } from "formik";
 import * as Yup from "yup";
 import InputField from "@/components/common/form/InputField";
-import SelectField from "@/components/common/form/SelectField";
+// import SelectField from "@/components/common/form/SelectField";
 import ThemeButtonTabs from "@/components/ThemeButtonTabs";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { generatePrescriberLink } from "@/services/pharmacyService";
+import { generatePrescriberLink, handleGeneratePass, handleSendInvite } from "@/services/pharmacyService";
+import ByLinkCard from "./ByLinkCard";
+import ByLinkEmail from "./ByLinkEmail";
+import { inviteByLinkInitialVals } from "@/utils/initialVals";
 
 interface InviteLinkModalProps {
   onClose: () => void;
@@ -23,74 +26,85 @@ interface InviteLinkModalProps {
   };
 }
 
-const PasswordFieldWithToggle = ({ name }: { name: string }) => {
-  const [showPassword, setShowPassword] = useState(false);
+const PasswordFieldWithToggle: React.FC<{ 
+  name: string; 
+  handleGeneratePass: any 
+}> = ({ name, handleGeneratePass }) => {
   return (
     <div className="space-y-1">
-      <div className="relative">
-        <InputField
-          name={name}
-          type={showPassword ? "text" : "password"}
-          placeholder="Enter password"
-          className="!px-4 !py-2 !pr-10"
-        />
-        <button
-          type="button"
-          className="absolute right-3 top-1/2 transform -translate-y-1/2"
-          onClick={() => setShowPassword(!showPassword)}
-        >
-          <img src="/eye.svg" alt="Toggle password" className="w-4 h-4"/>
-        </button>
-      </div>
-      <p className="text-bars-blue-med text-xs">Generate strong password</p>
+      <InputField
+        name={name}
+        isPassword={true}
+        placeholder="Enter password"
+        className="!px-4 !py-2 !pr-10"
+      />
+      <button type="button" onClick={handleGeneratePass} className="text-bars-blue-med text-sm cursor-pointer">Generate strong password</button>
     </div>
   );
 };
 
 const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescriber }) => {
   const [activeTab, setActiveTab] = useState("By Link");
+  const [inviteLinkDetails, setInviteLinkDetails] = useState<any>(null);
   const [isSent, setIsSent] = useState(false);
   const isPrescriberGeneratedLink = useRef(false);
-  const [initialValues, setInitialValues] = useState({
-    prescriber: prescriber?.prescriber || "",
-    password: "",
-    link: "https://example.com/invite",
-    email: "",
-    role: "Viewer",
-  });
+  const [initialValues, setInitialValues] = useState(inviteByLinkInitialVals);
   const dispatch = useDispatch();
+  const modalWidth = activeTab === "By Email" ? "md:w-[600px]" : "md:w-[500px]";
 
   const generatePrescriberInviteLink = async () => {
     try {
       const response = await generatePrescriberLink(dispatch, { prescriberId: prescriber.id });
       if (response) {
-        console.log(response, "res");
-        setInitialValues((prev) => ({ ...prev, link: response.inviteLink }));
-        // setInitialValues();
+        setInviteLinkDetails(response);
+        setInitialValues((prev) => ({ ...prev, prescriber: prescriber?.prescriber || "", link: response.inviteLink }));
       }
     } catch (error: any) {
       toast.error(error?.message);
     }
   };
 
+  const handleGeneratePassword = async (setFieldValue: any) => {
+    if (!inviteLinkDetails) return;
+    try {
+      const response = await handleGeneratePass(dispatch);
+      setFieldValue("password", response?.suggestions[0]);
+    } catch (error: any) {
+      toast.error(error?.message);
+    }
+  }
+
+  const handleSetActiveTab = (val: string) => {
+    setActiveTab(val);
+    setInitialValues({ ...inviteByLinkInitialVals, 
+      prescriber: prescriber?.prescriber });
+  }
+
   useEffect(() => {
     if (!isPrescriberGeneratedLink.current) {
       generatePrescriberInviteLink();
       isPrescriberGeneratedLink.current = true;
     }
-  }, []);
+  }, [activeTab]);
 
-  const validationSchema = Yup.object({
-    password: Yup.string()
-      .required("Password is required")
-      .min(6, "Password must be at least 6 characters"),
-  });
-
-  const handleSubmit = () => {
-    setIsSent(true);
+  const handleSubmit = async (values: FormikValues) => {
+    try {
+      delete inviteLinkDetails?.message;
+      const data = {
+        ...inviteLinkDetails,
+        prescriberName: values.prescriber,
+        password: values.password
+      };
+      const response = await handleSendInvite(dispatch, data);
+      if (response) {
+        toast.success(response.message);
+        setIsSent(true);
+      }
+    } catch (error: any) {
+      toast.error(error?.message);
+      setIsSent(false);
+    }
   };
-
-  const modalWidth = activeTab === "By Email" ? "md:w-[687px]" : "md:w-[500px]";
 
   return (
     <ModalWrapper>
@@ -122,17 +136,22 @@ const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescriber }
               <ThemeButtonTabs
                 data={["By Email", "By Link"]}
                 activeTab={activeTab}
-                setActiveTab={setActiveTab}
+                setActiveTab={handleSetActiveTab}
                 className="w-full border-quaternary-navy-blue-dark "
               />
             </div>
 
             <Formik
               initialValues={initialValues}
-              validationSchema={validationSchema}
+              validationSchema={Yup.object({
+                password: Yup.string()
+                  .required("Password is required")
+                  .min(6, "Password must be at least 6 characters"),
+              })}
+              enableReinitialize={true}
               onSubmit={handleSubmit}
             >
-              {({ values }) => (
+              {({ values, setFieldValue }) => (
                 <Form className="flex flex-col h-full">
                   <div className="flex-1 overflow-y-auto p-4 space-y-4">
                     <div className="flex items-start gap-3 bg-quaternary-navy-blue rounded-lg p-3">
@@ -161,60 +180,14 @@ const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescriber }
                       </div>
                     </div>
 
-                    {activeTab === "By Link" && (
-                      <div className="space-y-2">
-                        <Label className="text-quaternary-white text-sm font-secondary">
-                          Link
-                        </Label>
-                        <div className="relative flex items-center gap-2 w-full">
-                          <div className="relative flex-1">
-                            <input
-                              name="link"
-                              value={initialValues.link}
-                              readOnly
-                              className="w-full h-10 bg-quaternary-navy-blue rounded-lg px-4 pr-12 text-sm"
-                            />
-                            <img src="/link.svg" alt="Link" className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5"/>
-                          </div>
-                          <button
-                            type="button"
-                            className="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100"
-                            onClick={() => navigator.clipboard.writeText(initialValues.link)}
-                          >
-                            <img src="/Vector (24).svg" alt="Copy" className="w-5.5 h-5.5"/>
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
-                    {activeTab === "By Email" && (
-                      <div className="space-y-2">
-                        <Label className="text-quaternary-white text-sm font-secondary">
-                          Invite by Email
-                        </Label>
-                        <div className="flex flex-col md:flex-row gap-4">
-                          <div className="w-full md:w-[390px]">
-                            <InputField name="email" placeholder="Enter Email"/>
-                          </div>
-                          <div className="w-full md:w-[249px]">
-                            <SelectField
-                              name="role"
-                              options={[
-                                { value: "Viewer", label: "Viewer" },
-                                { value: "Editor", label: "Editor" }
-                              ]}
-                              placeholder="Select role"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                    {activeTab === "By Link" && <ByLinkCard value={initialValues.link} />}
+                    {activeTab === "By Email" && <ByLinkEmail />}
 
                     <div className="space-y-2">
                       <Label className="text-quaternary-white text-sm font-secondary">
                         Set Password
                       </Label>
-                      <PasswordFieldWithToggle name="password"/>
+                      <PasswordFieldWithToggle name="password" handleGeneratePass={() => handleGeneratePassword(setFieldValue)} />
                     </div>
                   </div>
 
@@ -238,7 +211,7 @@ const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescriber }
                         backgroundColor: !values.password ? "var(--secondary-background)" : ""
                       }}
                     >
-                      {activeTab === "By Link" ? "Copy Link" : "Send Invite"}
+                      {activeTab === "By Link" ? "Send Invite" : "Send Invite"}
                     </ThemeButton>
                   </div>
                 </Form>

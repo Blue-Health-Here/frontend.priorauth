@@ -10,11 +10,11 @@ export const contactUsInitialVals = {
     message: "",
 };
 
-export const addNewPharmacyInitialVals = { 
-    name: "", 
-    email: "", 
-    phoneNumber: "", 
-    location: "" 
+export const addNewPharmacyInitialVals = {
+    name: "",
+    email: "",
+    phoneNumber: "",
+    location: ""
 };
 
 export const updatePrescriberInitialVals = {
@@ -27,4 +27,12 @@ export const updatePrescriberInitialVals = {
     npi: "",
     dea: "",
     isActive: false
+};
+
+export const inviteByLinkInitialVals = {
+    prescriber: "",
+    password: "",
+    link: "https://example.com/invite",
+    email: "",
+    role: "Viewer",
 };

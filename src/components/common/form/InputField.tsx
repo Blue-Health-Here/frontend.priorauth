@@ -45,7 +45,7 @@ const InputField: React.FC<InputFieldProps> = ({
   // defualt & password field
   if (variant === "default") {
     return (
-      <div className="space-y-2">
+      <div className="space-y-1">
         {label && (
           <Label className="text-quaternary-white text-sm font-secondary">
             {label}
@@ -75,12 +75,12 @@ const InputField: React.FC<InputFieldProps> = ({
               )}
             </button>
           )}
-          {meta.touched && meta.error && (
-            <p className="text-red-500 text-xs font-secondary">
-              {meta.error}
-            </p>
-          )}
         </div>
+        {meta.touched && meta.error && (
+          <p className="text-red-500 text-xs font-secondary">
+            {meta.error}
+          </p>
+        )}
         
       </div>
     );
