@@ -3,7 +3,7 @@ import React from "react";
 import InfoColumn from "@/components/common/InfoColumn";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import ThemeButton from "@/components/common/ThemeButton";
-import { useTheme } from "@/hooks/useTheme";
+// import { useTheme } from "@/hooks/useTheme";
 
 interface PharmacyCardProps {
   pharmacy: {
@@ -30,7 +30,7 @@ const PharmacyCard: React.FC<PharmacyCardProps> = ({
   isAdmin,
   onModify,
 }) => {
-  const { isDark } = useTheme();
+  // const { isDark } = useTheme();
 
   // Fallback values if not provided in API
   const totalRequests = pharmacy.totalRequests ?? 0;
