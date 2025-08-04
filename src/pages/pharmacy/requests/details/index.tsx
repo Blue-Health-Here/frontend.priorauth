@@ -192,6 +192,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
                   setUploadedFiles={setUploadedFiles}
                   reqId={reqId || ""}
                   {...fileUploadsObj}
+                  inviteCode={inviteCode}
                   title="Progress Notes"
                   handleOpenProgressNotesModal={handleOpenProgressNotesModal}
                 />

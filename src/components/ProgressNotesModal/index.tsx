@@ -35,7 +35,7 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   const [analysisDetails, setAnalysisDetails] = useState<any>(null);
 
   useEffect(() => {
-    if (chartNotes?.length > 0) {
+    if (chartNotes?.length > 0 && isOpen) {
       setUploadedFiles(
         chartNotes.map((item: any) => {
           return {

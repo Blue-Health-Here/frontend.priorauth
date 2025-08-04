@@ -12,6 +12,7 @@ import ProgressNotesModal from "@/components/ProgressNotesModal";
 import { getRequestStatuses } from "@/services/pharmacyService";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { formatDateTime } from "@/utils/helper";
 
 const RequestDetailsSideDrawer: React.FC<any> = ({ 
     openSideDrawer, setOpenSideDrawer, reqId, 
@@ -76,13 +77,13 @@ const RequestDetailsSideDrawer: React.FC<any> = ({
                         chartNotes={memoizedChartNotes || []}
                     />
                     {isLoading ? <Loading /> : (
-                        <div className="p-4 flex gap-4 w-full flex-col">
+                        <div className="p-4 mb-[71px] flex gap-4 w-full flex-col overflow-y-auto" style={{ maxHeight: `calc(100% - 144px)` }}>
                             <div className="p-4 rounded-xl border border-navy-blue-500 grid grid-cols-2 gap-4">
                                 {[
-                                    { label: "Last Modified", value: "5/5/2025" },
-                                    { label: "Submitted on", value: 5 / 5 / 2025 },
-                                    { label: "Prescriber", value: "VIERA, RUBIA" },
-                                    { label: "FORM", value: "_" },
+                                    { label: "Last Modified", value: requestDetails?.modifiedAt ? formatDateTime(requestDetails?.createdAt) : "5/5/2025" },
+                                    { label: "Submitted on", value: formatDateTime(requestDetails?.createdAt) },
+                                    { label: "Prescriber", value: requestDetails?.prescriber },
+                                    { label: "FORM", value: requestDetails?.form || "_" },
                                 ].map((item: any, index: number) => {
                                     if (typeof item === 'object') {
                                         return (
