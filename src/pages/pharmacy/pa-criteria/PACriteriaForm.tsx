@@ -4,6 +4,7 @@ import ThemeButton from "@/components/common/ThemeButton";
 import InsuranceIcon from "@/components/icons/InsuranceIcon";
 import MedicationIcon from "@/components/icons/MedicationIcon";
 import { useTheme } from "@/hooks/useTheme";
+import { insuranceOptions, medicationOptions } from "@/utils/helper";
 import { Form, Formik } from "formik";
 import React from "react";
 import * as Yup from "yup";
@@ -33,12 +34,7 @@ const PACriteriaForm: React.FC<any> = ({ handleSubmit }) => {
                             </Label>
                             <AutocompleteField
                                 name="medication"
-                                options={[
-                                    { label: 'Benecard', value: 'Benecard' },
-                                    { label: 'Caremark', value: 'Caremark' },
-                                    { label: 'Fidelis Care Commercial', value: 'Fidelis Care Commercial' },
-                                    { label: 'United Health Care', value: 'United Health Care' },
-                                ]}
+                                options={medicationOptions}
                                 placeholder="Medication Name"
                             />
                         </div>
@@ -53,12 +49,7 @@ const PACriteriaForm: React.FC<any> = ({ handleSubmit }) => {
                             </Label>
                             <AutocompleteField
                                 name="insurance"
-                                options={[
-                                    { label: 'Benecard', value: 'Benecard' },
-                                    { label: 'Caremark', value: 'Caremark' },
-                                    { label: 'Fidelis Care Commercial', value: 'Fidelis Care Commercial' },
-                                    { label: 'United Health Care', value: 'United Health Care' },
-                                ]}
+                                options={insuranceOptions}
                                 placeholder="Insurance Name"
                             />
                         </div>
