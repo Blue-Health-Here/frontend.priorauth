@@ -27,8 +27,8 @@ const InfoDetails: React.FC<any> = ({ requestDetails, isAdmin }) => {
                                 className={` ${rowIndex < tab.data.length - 1 ? 'mb-2' : ''}`}
                             >
                                 <div className="flex flex-col space-y-2">
-                                    <span className="text-[10px] sm:text-xs font-medium text-gray-500">{row.label}</span>
-                                    <span className="text-[10px] sm:text-sm font-semibold text-gray-800">{row.value || '-'}</span>
+                                    <span className="text-[10px] sm:text-xs font-medium text-secondary-black">{row.label}</span>
+                                    <span className="text-[10px] sm:text-sm font-semibold text-primary-black">{row.value || '-'}</span>
                                 </div>
                             </div>
                         ))}

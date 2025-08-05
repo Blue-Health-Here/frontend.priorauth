@@ -16,7 +16,7 @@ import { formatDateTime } from "@/utils/helper";
 
 const RequestDetailsSideDrawer: React.FC<any> = ({ 
     openSideDrawer, setOpenSideDrawer, reqId, 
-    inviteCode 
+    inviteCode, isAdmin
 }) => {
     const [requestDetails, setRequestDetails] = useState<any>(null);
     const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
@@ -55,14 +55,14 @@ const RequestDetailsSideDrawer: React.FC<any> = ({
         <>
             {openSideDrawer && (
                 <SideDrawer
-                    className="max-w-[700px] min-w-[700px]"
+                    className="md:max-w-[700px] md:min-w-[700px] max-w-full min-w-full"
                     position="right"
                     arrowClass="rotate-0"
                     isOpen={openSideDrawer}
                     title={isLoading ? "Loading..." : (
-                        <div className="inline-flex items-center gap-2">
-                            <h2 className="text-lg font-medium text-primary-black">{requestDetails?.patientName}</h2>
-                            <p className="text-xs py-2 px-4 text-secondary-navy-blue bg-quaternary-navy-blue rounded-full">{requestDetails?.medication}</p>
+                        <div className="inline-flex items-center gap-2 justify-between">
+                            <h2 className="md:text-lg font-medium text-primary-black">{requestDetails?.patientName}</h2>
+                            <p className="text-xs py-1 px-2.5 md:py-2 md:px-4 text-secondary-navy-blue bg-quaternary-navy-blue rounded-full">{requestDetails?.medication}</p>
                         </div>
                     )}
                     handleOpenReqDetails={handleOpenReqDetails}
@@ -102,7 +102,7 @@ const RequestDetailsSideDrawer: React.FC<any> = ({
                             <div className="inline-flex gap-2 flex-col">
                                 <div className="inline-flex gap-2 justify-between items-center">
                                     <h2 className="text-base font-medium text-primary-black">Status</h2>
-                                    {!inviteCode && (
+                                    {!inviteCode && isAdmin && (
                                         <ThemeButton
                                             onClick={handleAddStatus}
                                             variant="secondary"

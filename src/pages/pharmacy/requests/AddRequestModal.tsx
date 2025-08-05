@@ -119,7 +119,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
     return (
         <ModalWrapper>
             <ModalHeader title="Add Request" onClose={() => !isLoading && onClose(false)} />
-            <div className="flex flex-col gap-4 min-w-lg">
+            <div className="flex flex-col gap-4 md:min-w-lg">
                 <Formik
                     initialValues={formData}
                     validationSchema={Yup.object({
@@ -227,7 +227,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
                                 </ThemeButton>
                                 <ThemeButton 
                                     type="submit" 
-                                    className="w-full sm:w-24 rounded-lg min-w-max flex justify-center items-center" 
+                                    className="w-full sm:w-24 max-w-[130px] md:max-w-full md:min-w-max rounded-lg flex justify-center items-center" 
                                     variant="primary"
                                     disabled={isLoading || isExtractingCodes}
                                 >

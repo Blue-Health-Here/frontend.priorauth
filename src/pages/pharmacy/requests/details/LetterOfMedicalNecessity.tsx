@@ -13,7 +13,7 @@ const LetterOfMedicalNecessity: React.FC<any> = ({ requestDetails }) => {
     const [isReGenerateAgain, setIsReGenerateAgain] = useState<boolean>(false);
     const [medicalNecessityFile, setMedicalNecessityFile] = useState<null>(null);
     const dispatch = useDispatch();
-    const { id: reqId } = useParams();
+    const { id: reqId, inviteCode } = useParams();
     const { user } = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
@@ -91,7 +91,7 @@ const LetterOfMedicalNecessity: React.FC<any> = ({ requestDetails }) => {
                         className="cursor-pointer w-10 h-10 sm:w-12 sm:h-12 p-3 sm:p-4 border rounded-lg border-quaternary-navy-blue" 
                         onClick={() => setIsReGenerateAgain(true)} />
                 </div>
-            ) : (
+            ) : !inviteCode && (
                 <div className="relative rounded-lg p-[2px] bg-gradient-to-r from-[#F8A8AA] via-[#FFA5E0] via-[#FFDFD7] via-[#FFB126] to-[#FF512B] overflow-hidden">
                     <button
                         type="button"

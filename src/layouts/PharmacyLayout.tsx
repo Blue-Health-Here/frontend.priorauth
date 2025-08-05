@@ -30,7 +30,7 @@ const PharmacyLayout: React.FC = () => {
             <Sidebar />
             <div className="w-full">
                 <Topbar isAdmin={false} />
-                <div className={`${mainContentClass} pt-[110px] transition-all duration-500 md:pt-[95px] px-4 pb-4 md:px-6 md:pb-6 min-h-screen overflow-hidden`}>
+                <div className={`${mainContentClass} pt-[75px] transition-all duration-500 md:pt-[95px] px-4 pb-4 md:px-6 md:pb-6 min-h-screen overflow-hidden`}>
                     <Outlet />
                 </div>
             </div>
