@@ -5,6 +5,7 @@ import { rquestDetailpageData } from '../../../utils/constants'
 import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { fetchPharmacyDetails } from '../../../services/adminService'
+import PharmacyRequests from '@/pages/pharmacy/requests'
 
 const PharmacyDetailScreen: React.FC = () => {
   const [pharmacyDetails, setPharmacyDetails] = useState(null);
@@ -27,8 +28,11 @@ const PharmacyDetailScreen: React.FC = () => {
 
   return (
     <div>
-      <PharmacyDetailsCrad details={pharmacyDetails} />
-      <DataTable
+      {/* <PharmacyDetailsCrad details={pharmacyDetails} /> */}
+      <div>
+      <PharmacyRequests  pharmacyId={pharmacyId} />
+    </div>
+      {/* <DataTable
         className="rounded-2xl shadow-lg"
         title="Requests"
         columns={[
@@ -44,7 +48,7 @@ const PharmacyDetailScreen: React.FC = () => {
         isShadow={false}
         customHeaderButtonText="View All Requests"
         isPagination={true}
-      />
+      /> */}
     </div>
   )
 }

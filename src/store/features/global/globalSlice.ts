@@ -5,7 +5,8 @@ const initialState = {
     profileData: null,
     profilePassword:null,
     isSidebarCollapsed: false,
-    isSidebarOpen: false
+    isSidebarOpen: false,
+    userRequestsData: null
 };
 
 const globalSlice = createSlice({
@@ -26,12 +27,15 @@ const globalSlice = createSlice({
         },
         setIsSidebarOpen: (state, action) => {
             state.isSidebarOpen = action.payload;
+        },
+        setUserRequestsData:(state, action) =>{
+            state.userRequestsData = action.payload;
         }
     }
 });
 
 export const {
-    setIsLoading, setProfileData, setIsSidebarCollapsed, setIsSidebarOpen, setProfilePassword
+    setIsLoading, setProfileData, setIsSidebarCollapsed, setIsSidebarOpen, setProfilePassword, setUserRequestsData
 } = globalSlice.actions;
 
 export default globalSlice.reducer;

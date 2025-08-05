@@ -382,7 +382,7 @@ export function getStatusClass(statusName = "") {
   return "bg-default text-default";
 }
 
-export function transformPharmacyRequest(data: any, isAdmin: boolean) {
+export function transformPharmacyRequest(data: any, isAdmin?: boolean) {
   return {
     id: data.id,
     patient: {
@@ -403,6 +403,8 @@ export function transformPharmacyRequest(data: any, isAdmin: boolean) {
     isEditing: data?.notes ? false : isAdmin ? true : false
   };
 }
+
+
 
 // Optional: Function to format ISO date into readable string
 export function formatDateTime(isoString: string) {

@@ -4,6 +4,10 @@ import InfoColumn from "@/components/common/InfoColumn";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import ThemeButton from "@/components/common/ThemeButton";
 import { useTheme } from "@/hooks/useTheme";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store";
+import { getUserRequests } from "@/services/adminService";
+import { useNavigate } from "react-router-dom";
 
 interface PharmacyCardProps {
   pharmacy: {
@@ -31,6 +35,8 @@ const PharmacyCard: React.FC<PharmacyCardProps> = ({
   onModify,
 }) => {
   const { isDark } = useTheme();
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   // Fallback values if not provided in API
   const totalRequests = pharmacy.totalRequests ?? 0;
@@ -42,33 +48,46 @@ const PharmacyCard: React.FC<PharmacyCardProps> = ({
     ? `/admin/pharmacies/${pharmacy.id}/pharmacy-details`
     : `/pharmacy/pharmacies/${pharmacy.id}/pharmacy-details`;
 
-    console.log(pharmacy)
+  const handleViewClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    try {
+      await getUserRequests(dispatch, pharmacy.id);
+      navigate(pageLink, {
+        state: { pharmacyName: `${pharmacy.firstName} ${pharmacy.lastName}` }
+      });
+    } catch (error) {
+      console.error("Failed to fetch user requests:", error);
+      // Still navigate even if API fails
+      navigate(pageLink);
+    }
+  };
+
   return (
     <div className="bg-primary-white rounded-lg relative border border-quaternary-navy-blue w-full">
       <div className="p-4">
         <div className='inline-flex justify-between gap-2 items-start mb-4 w-full'>
-  <div className='inline-flex gap-1 flex-col items-start flex-1 min-w-0'> {/* Added flex-1 and min-w-0 */}
-    <img
-      src={pharmacy?.pictureUrl || '/images/Abstergo Ltd..png'}
-      alt="Pharmacy logo"
-      className="w-9 h-9 sm:w-14 sm:h-14 rounded-full"
-    />
-    <div className="w-full min-w-0"> {/* Added container div */}
-      <h2 className='text-sm sm:text-base md:text-lg font-semibold text-primary-black leading-[110%] uppercase mt-2 whitespace-nowrap overflow-hidden text-ellipsis w-full'>
-        {pharmacy.firstName} {pharmacy.lastName}
-      </h2>
-    </div>
-    <p className="text-secondary-black text-sm font-medium">{pharmacy.npi}</p>
-  </div>
+          <div className='inline-flex gap-1 flex-col items-start flex-1 min-w-0'>
+            <img
+              src={pharmacy?.pictureUrl || '/images/Abstergo Ltd..png'}
+              alt="Pharmacy logo"
+              className="w-9 h-9 sm:w-14 sm:h-14 rounded-full"
+            />
+            <div className="w-full min-w-0">
+              <h2 className='text-sm sm:text-base md:text-lg font-semibold text-primary-black leading-[110%] uppercase mt-2 whitespace-nowrap overflow-hidden text-ellipsis w-full'>
+                {pharmacy.firstName} {pharmacy.lastName}
+              </h2>
+            </div>
+            <p className="text-secondary-black text-sm font-medium">{pharmacy.npi}</p>
+          </div>
 
-  <button
-    type='button'
-    className="rounded-lg p-2 text-black cursor-pointer bg-tabs-active-body hover:bg-tabs-active-body flex-shrink-0" 
-    onClick={onModify}
-  >
-    <BsThreeDotsVertical className="text-sm text-tabs-text" />
-  </button>
-</div>
+          <button
+            type='button'
+            className="rounded-lg p-2 text-black cursor-pointer bg-tabs-active-body hover:bg-tabs-active-body flex-shrink-0" 
+            onClick={onModify}
+          >
+            <BsThreeDotsVertical className="text-sm text-tabs-text" />
+          </button>
+        </div>
 
         {/* Mobile View */}
         <div className="md:hidden space-y-3">
@@ -127,9 +146,12 @@ const PharmacyCard: React.FC<PharmacyCardProps> = ({
         </div>
       </div>
       <div className="flex justify-end gap-2 p-4 border-t border-quaternary-navy-blue">
-        <Link to={pageLink}>
-          <ThemeButton variant="tertiary">View</ThemeButton>
-        </Link>
+        <ThemeButton 
+          variant="tertiary"
+          onClick={handleViewClick}
+        >
+          View
+        </ThemeButton>
       </div>
     </div>
   );
