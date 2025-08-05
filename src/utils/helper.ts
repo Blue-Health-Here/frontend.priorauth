@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { reqStatusOptions } from "./constants";
+import { insurances, medications } from "./suggestions";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -174,6 +175,7 @@ export const generateBreadcrumbItems = (pathname: string, state?: any) => {
     "requests",
     "request-details",
     "cmm-account-database",
+    "pa-criteria",
     "pharmacies",
     "pharmacy-details",
     "permissions",
@@ -186,7 +188,7 @@ export const generateBreadcrumbItems = (pathname: string, state?: any) => {
 
   for (let i = 0; i < pathSegments.length; i++) {
     const segment = pathSegments[i];
-    
+
     // Skip numeric segments (like IDs)
     if (!isNaN(Number(segment))) {
       continue;
@@ -202,10 +204,10 @@ export const generateBreadcrumbItems = (pathname: string, state?: any) => {
           url: accumulatedPath
         });
         // Add the prescriber name with possessive form
-        const prescriberLabel = state.prescriberName.endsWith('s') 
+        const prescriberLabel = state.prescriberName.endsWith('s')
           ? `${state.prescriberName}' Requests`
           : `${state.prescriberName}'s Requests`;
-        
+
         breadcrumbs.push({
           label: prescriberLabel,
           url: `${accumulatedPath}/${pathSegments[i + 1]}`
@@ -566,3 +568,48 @@ export function formatUsernameToPrescriber(username: string): string {
     .map(part => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
 }
+
+export const medicationOptions = medications.map((med) => ({
+  label: med,
+  value: med,
+}));
+
+export const insuranceOptions = insurances.map((ins) => ({
+  label: ins,
+  value: ins,
+}));
+
+export const formatPACriteria = (paCriteria: string): any => {
+  if (!paCriteria) return [];
+
+  // Split the text based on double newlines first, then process each section
+  const sections = paCriteria.split('\n\n').map((section: string) => section.split('\n').map(line => line.trim()).filter(line => line !== ''));
+
+  return formatCriteriaArray(sections);
+};
+
+export const formatCriteriaArray = (arr: string[][]): { title: string; items: string[] }[] => {
+  const result: { title: string; items: string[] }[] = [];
+  let currentObj: { title: string; items: string[] } | null = null;
+
+  arr.forEach((subArray) => {
+    // Handle the case where the first line might be a title ending with a colon followed by a newline
+    if (subArray.length > 0) {
+      const firstLine = subArray[0];
+      // Check if the first line contains a title (text followed by ":")
+      if (firstLine.endsWith(':')) {
+        // Treat the first line as a title and rest as items
+        if (currentObj) result.push(currentObj);
+        currentObj = { title: firstLine, items: subArray.slice(1) }; // First line is title, the rest are items
+      } else if (currentObj) {
+        // Otherwise, continue adding to the current section's items
+        currentObj.items.push(...subArray);
+      }
+    }
+  });
+
+  // Ensure to push the last section if exists
+  if (currentObj) result.push(currentObj);
+
+  return result;
+};

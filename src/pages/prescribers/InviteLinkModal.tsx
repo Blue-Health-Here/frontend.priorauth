@@ -175,7 +175,7 @@ const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescriber }
                           name="prescriber"
                           value={initialValues.prescriber}
                           readOnly
-                          className="!pl-4 bg-[#F5F5F5]"
+                          className="!pl-4 bg-secondary-background"
                         />
                       </div>
                     </div>
@@ -195,7 +195,7 @@ const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescriber }
                     <ThemeButton
                       onClick={onClose}
                       type="button"
-                      className="w-24 border border-[#CBDAFF] text-primary-navy-blue"
+                      className="w-24 border border-quaternary-navy-blue text-primary-navy-blue"
                       variant="outline"
                     >
                       Cancel

@@ -123,7 +123,7 @@ const RequestDetails: React.FC = () => {
             </div>
             <div className="space-y-6 px-4 pb-4 pt-6">
               <div className="border-l-2 border-gray-300 pl-3">
-                <span className="inline-block bg-[#F5F5F5] text-sm font-medium text-[#7A7A7A] px-3 py-1 rounded-md">
+                <span className="inline-block bg-secondary-background text-sm font-medium text-[#7A7A7A] px-3 py-1 rounded-md">
                   Process Appeal
                 </span>
               </div>
