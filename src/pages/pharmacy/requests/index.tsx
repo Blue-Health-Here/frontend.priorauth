@@ -659,7 +659,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
               <div className="flex items-center px-4 pl-0 pt-1 gap-3">
                 <button
                   onClick={() => setMobileSidebarOpen(false)}
-                  className="bg-[#F5F5F5] p-2 rounded-md"
+                  className="bg-secondary-background p-2 rounded-md"
                 >
                   <img
                     src="/Vector (15).svg"
