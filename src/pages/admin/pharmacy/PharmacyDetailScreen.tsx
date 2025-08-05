@@ -1,56 +1,55 @@
-import React, { useEffect, useRef, useState } from 'react'
-import DataTable from '../../../components/common/DataTable'
-import PharmacyDetailsCrad from './PharmacyDetailsCrad'
-import { rquestDetailpageData } from '../../../utils/constants'
-import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { fetchPharmacyDetails } from '../../../services/adminService'
-import PharmacyRequests from '@/pages/pharmacy/requests'
+import React from 'react';
+import { useLocation, useParams } from 'react-router-dom'; 
+import PharmacyRequests from '@/pages/pharmacy/requests';
+import PharmacyProfileCard from './pharmacyProfileCard';
+import SummaryCard from './summaryCard';
+
+import TopPrescribersCard from './topPrescribersCard';
 
 const PharmacyDetailScreen: React.FC = () => {
-  const [pharmacyDetails, setPharmacyDetails] = useState(null);
+  const { state } = useLocation();
+  const pharmacyData = state?.pharmacyData;
   const { pharmacyId } = useParams();
-  const isPharmacyDetailFetched = useRef(false);
-  const dispatch = useDispatch();
-  // console.log(pharmacyId, "params");
 
-  const fetchData = async () => {
-    const response = await fetchPharmacyDetails(dispatch, pharmacyId); 
-    setPharmacyDetails(response);
+  if (!pharmacyData) {
+    return <div>No pharmacy data available</div>;
   }
 
-  useEffect(() => {
-    if (!isPharmacyDetailFetched.current) {
-      fetchData();
-      isPharmacyDetailFetched.current = true;
-    }
-  }, []);
+  const summaryData = {
+    totalRequests: pharmacyData.totalRequests || 0,
+    approvedRequests: pharmacyData.approvedRequests || 0,
+    deniedRequests: pharmacyData.deniedRequests || 0,
+    pendingRequests: pharmacyData.pendingRequests || 0,
+    approvalRate: pharmacyData.approvalRate
+  };
+
+  // Mock data for top prescribers - replace with your actual data
+  const topPrescribers = [
+    { id: '1', name: 'Dr. John Smith', totalRequests: 42 },
+    { id: '2', name: 'Dr. Sarah Johnson', totalRequests: 38 },
+    { id: '3', name: 'Dr. Michael Brown', totalRequests: 35 },
+    { id: '4', name: 'Dr. Emily Davis', totalRequests: 28 },
+    { id: '5', name: 'Dr. Robert Wilson', totalRequests: 25 },
+  ];
 
   return (
-    <div>
-      {/* <PharmacyDetailsCrad details={pharmacyDetails} /> */}
-      <div>
-      <PharmacyRequests  pharmacyId={pharmacyId} />
+    <div className="space-y-6">
+      {/* Cards row */}
+      <div className="flex flex-col md:flex-row gap-6">
+        <div className="flex-1 min-w-0">
+          <PharmacyProfileCard pharmacy={pharmacyData} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <SummaryCard pharmacy={summaryData} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <TopPrescribersCard prescribers={topPrescribers} />
+        </div>
+      </div>
+      
+      <PharmacyRequests pharmacyId={pharmacyId!} />
     </div>
-      {/* <DataTable
-        className="rounded-2xl shadow-lg"
-        title="Requests"
-        columns={[
-          { header: 'Medication', key: 'medication', width: '20%' },
-          { header: 'Patient', key: 'patient', width: '20%' },
-          { header: 'Prescriber', key: 'prescriber', width: '20%' },
-          { header: 'Submitted On', key: 'submittedOn', width: '20%' },
-          { header: 'Pharmacy', key: 'pharmacy', width: '20%' },
-          { header: 'Status', key: 'status', width: '20%' },
-        ]}
-        data={rquestDetailpageData}
-        customHeader
-        isShadow={false}
-        customHeaderButtonText="View All Requests"
-        isPagination={true}
-      /> */}
-    </div>
-  )
-}
+  );
+};
 
-export default PharmacyDetailScreen
+export default PharmacyDetailScreen;

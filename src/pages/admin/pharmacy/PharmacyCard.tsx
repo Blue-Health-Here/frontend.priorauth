@@ -49,19 +49,21 @@ const PharmacyCard: React.FC<PharmacyCardProps> = ({
     : `/pharmacy/pharmacies/${pharmacy.id}/pharmacy-details`;
 
   const handleViewClick = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    try {
-      await getUserRequests(dispatch, pharmacy.id);
-      navigate(pageLink, {
-        state: { pharmacyName: `${pharmacy.firstName} ${pharmacy.lastName}` }
-      });
-    } catch (error) {
-      console.error("Failed to fetch user requests:", error);
-      // Still navigate even if API fails
-      navigate(pageLink);
-    }
-  };
-
+  e.preventDefault();
+  try {
+    await getUserRequests(dispatch, pharmacy.id);
+    navigate(pageLink, {
+      state: { 
+        pharmacyData: pharmacy // Pass the entire pharmacy object
+      }
+    });
+  } catch (error) {
+    console.error("Failed to fetch user requests:", error);
+    navigate(pageLink, {
+      state: { pharmacyData: pharmacy } // Still pass data even if API fails
+    });
+  }
+};
   return (
     <div className="bg-primary-white rounded-lg relative border border-quaternary-navy-blue w-full">
       <div className="p-4">
