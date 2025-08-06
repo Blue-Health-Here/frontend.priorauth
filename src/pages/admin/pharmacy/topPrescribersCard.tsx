@@ -1,5 +1,5 @@
 import React from 'react';
-import PrescriberRow from './prescriberRow';
+import PrescriberRow from './PrescriberRow';
 
 interface PrescriberData {
   id: string;

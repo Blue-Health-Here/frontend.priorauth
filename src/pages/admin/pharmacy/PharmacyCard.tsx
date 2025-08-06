@@ -1,9 +1,7 @@
-import { Link } from "react-router-dom";
 import React from "react";
 import InfoColumn from "@/components/common/InfoColumn";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import ThemeButton from "@/components/common/ThemeButton";
-import { useTheme } from "@/hooks/useTheme";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store";
 import { getUserRequests } from "@/services/adminService";
@@ -34,7 +32,6 @@ const PharmacyCard: React.FC<PharmacyCardProps> = ({
   isAdmin,
   onModify,
 }) => {
-  const { isDark } = useTheme();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
