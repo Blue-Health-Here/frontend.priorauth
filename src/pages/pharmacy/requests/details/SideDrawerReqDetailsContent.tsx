@@ -3,6 +3,7 @@ import { useState } from "react";
 import ActivityLogItem from "@/components/common/ActvityLogItem";
 import StatusTimeline from "./StatusTimeline";
 import CommentsWidget from "./CommentsWidget";
+import { useParams } from "react-router-dom";
 
 interface RequestDetailsContentProps {
   initialTab?: string;
@@ -15,11 +16,11 @@ const RequestDetailsContent: React.FC<RequestDetailsContentProps> = ({
   isAdmin
 }) => {
   const [activeTab, setActiveTab] = useState(initialTab);
-
+  const { inviteCode } = useParams();
   return (
     <div className="flex flex-col gap-4 h-full p-4">
       <ThemeButtonTabs
-        data={["Status & Notes", "Revision History", "Comments"]}
+        data={inviteCode ? ["Status & Notes", "Comments"] : ["Status & Notes", "Revision History", "Comments"]}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         className="w-full !h-12"
@@ -29,7 +30,7 @@ const RequestDetailsContent: React.FC<RequestDetailsContentProps> = ({
         {activeTab === "Status & Notes" && (
           <StatusTimeline className="!p-0" isAdmin={isAdmin} showCheckNotesBtn={false} height="" />
         )}
-        {activeTab === "Comments" && <CommentsWidget showTwo={false} />}
+        {activeTab === "Comments" && <CommentsWidget showTwo={false} showActions={!inviteCode} />}
         {activeTab === "Revision History" && (
           <div className="p-4 space-y-4">
             <ActivityLogItem

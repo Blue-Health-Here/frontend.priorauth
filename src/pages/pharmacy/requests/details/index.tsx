@@ -192,6 +192,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
                   setUploadedFiles={setUploadedFiles}
                   reqId={reqId || ""}
                   {...fileUploadsObj}
+                  inviteCode={inviteCode}
                   title="Progress Notes"
                   handleOpenProgressNotesModal={handleOpenProgressNotesModal}
                 />
@@ -210,18 +211,20 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
                       <h3 className="text-base font-medium text-primary-black">
                         Upload Files
                       </h3>
-                      <FileDropzone
-                        isDragging={isDragging}
-                        onDragOver={handleDragOver}
-                        onDragLeave={handleDragLeave}
-                        onDrop={handleDrop}
-                        onFileChange={handleFileChange}
-                        className="!p-3"
-                        isPharmacyRequest={true}
-                      />
+                      {!inviteCode && (
+                        <FileDropzone
+                          isDragging={isDragging}
+                          onDragOver={handleDragOver}
+                          onDragLeave={handleDragLeave}
+                          onDrop={handleDrop}
+                          onFileChange={handleFileChange}
+                          className="!p-3"
+                          isPharmacyRequest={true}
+                        />
+                      )}
                     </div>
 
-                    {uploadedFiles.length > 0 && (
+                    {uploadedFiles.length > 0 ? (
                       <div className="inline-flex flex-col gap-2">
                         <h3 className="text-sm font-medium text-secondary-black ">
                           {uploadedFiles.some(
@@ -252,6 +255,8 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
                           </span>
                         </ThemeButton>
                       </div>
+                    ) : (
+                      <p className="text-sm text-secondary-black">No Files Uploaded.</p>
                     )}
                   </div>
                 </div>

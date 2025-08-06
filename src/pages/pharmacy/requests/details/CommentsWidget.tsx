@@ -40,7 +40,7 @@ const CommentsWidget: React.FC<any> = ({ showTwo = false, showActions = true }) 
 
   return (
     <div className="space-y-4">
-      {(showTwo ? lastTwo.length > 0 : reqComments.length > 0) && (
+      {(showTwo ? lastTwo.length > 0 : reqComments.length > 0) ? (
         <div className="space-y-6 p-3 border-b border-quaternary-navy-blue">
           <AnimatePresence>
             {(showTwo ? lastTwo : reqComments).map((c: any) => (
@@ -75,6 +75,8 @@ const CommentsWidget: React.FC<any> = ({ showTwo = false, showActions = true }) 
             ))}
           </AnimatePresence>
         </div>
+      ) : (
+        <p className="text-sm text-secondary-black p-3">No data found.</p>
       )}
 
       {showActions && <div className="p-3">

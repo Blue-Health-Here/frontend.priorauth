@@ -46,7 +46,7 @@ const SideDrawer: React.FC<any> = ({
                     `}>
                         {/* Header */}
                         <div className="flex items-center justify-between p-4 border-b border-light-stroke w-full">
-                            <div className="flex items-center space-x-2">
+                            <div className="inline-flex gap-2 items-center w-full">
                                 <button
                                     onClick={onClose}
                                     className="p-1 transition-colors"
@@ -55,7 +55,7 @@ const SideDrawer: React.FC<any> = ({
                                         className={`w-8 h-8 bg-gray-100 p-2 rounded-lg cursor-pointer ${arrowClass}`} 
                                         src="/header-left-logo-arrow.svg" />
                                 </button>
-                                {title && <h2 className="text-lg font-semibold text-gray-800">{title}</h2>}
+                                {title && <h2 className="md:text-lg font-semibold text-primary-black">{title}</h2>}
                             </div>
                             {isClose && <button
                                 onClick={onClose}
@@ -66,7 +66,7 @@ const SideDrawer: React.FC<any> = ({
                             {handleOpenReqDetails && (
                                 <button
                                     onClick={handleOpenReqDetails}
-                                    className="p-1 transition-colors"
+                                    className="p-1 transition-colors hidden md:block"
                                 >
                                     <img src='/next-arrow-up.svg' alt="next arrow up" 
                                         className="w-8 h-8 bg-gray-100 p-2.5 rounded-lg cursor-pointer" />

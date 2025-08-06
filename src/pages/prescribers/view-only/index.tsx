@@ -3,31 +3,49 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ShowPasswordModal from "./ShowPasswordModal";
 import PrescriberViewOnlyLayout from "@/layouts/PrescriberViewOnlyLayout";
+import { useDispatch } from "react-redux";
+import { handleAccessInvite, handleInviteValidate } from "@/services/authService";
+import toast from "react-hot-toast";
 
 const PrescribersViewOnly: React.FC<any> = () => {
     const { prescriberId, inviteCode } = useParams();
     const [isLoading, setIsLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        setShowModal(true);
+        // @ts-ignore
+        const user: any | null = JSON.parse(localStorage?.getItem("user"));
+        if (!user?.token && !user.inviteCode) {
+            // Do nothing or handle unauthorized state if needed
+            return;
+        } else {
+            setShowModal(true);
+        }
     }, []);
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault();
+    const handleSubmit = async (values: any) => {
         setIsLoading(true);
         try {
+            const response = await handleInviteValidate(dispatch, values, inviteCode);
+            if (response.isValid) {
+                const result = await handleAccessInvite(dispatch, values, inviteCode);
+                if (result.isValid) {
+                    localStorage.setItem("user", JSON.stringify({
+                        token: result?.token,
+                        inviteCode
+                    }));
+                    setShowModal(false);
+                }
+            } else {
+                toast.error(response.message);
+            }
             setIsLoading(false);
-            setShowModal(false);
-            localStorage.setItem("user", JSON.stringify({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImViYjljMGJlLWZkMDMtNGFiZC1hYTU0LTU2NmY3YmNlZjY3ZiIsIm5hbWUiOiJKb2huMSBXaWNrMSIsImNvbXBhbnlJZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMSIsInByaXZpbGVnZXMiOltdLCJyb2xlQ29kZSI6InBoYXJtYWN5VXNlciIsImlhdCI6MTc1Mzk4NTk5MywiZXhwIjoxNzU0ODQ5OTkzfQ.rjnWZ4w6NOfGihi8tPw4wtsD9tkbXYMAuzjQVggSSvY" }));
         } catch (error) {
             setIsLoading(false);
-        } finally {
-            setShowModal(false);
         }
     };
 
-    console.log(prescriberId, inviteCode, showModal, "inviteCode");
     return (
         <PrescriberViewOnlyLayout>
             {showModal ? (

@@ -86,9 +86,10 @@ export const useRequestData = ({
     }, [dispatch, reqId]);
 
     useEffect(() => {
+        hasFetched.current = false;
         if (reqId && !hasFetched.current) {
             fetchRequestDetailsData().then(fetchRequestStatuses);
             hasFetched.current = true;
         }
-    }, [fetchRequestDetailsData, fetchRequestStatuses, reqId]);
+    }, [reqId]);
 };

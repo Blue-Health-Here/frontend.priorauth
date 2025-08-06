@@ -11,6 +11,7 @@ import Loading from "./components/common/Loading";
 import PrescriberDetails from "./pages/prescribers/details";
 import PrescribersViewOnly from "./pages/prescribers/view-only";
 import PrescribersRequestDetailsPage from "./pages/prescribers/view-only/request-details";
+import PharmacyPACriteria from "./pages/pharmacy/pa-criteria";
 
 // Public
 const Home = lazy(() => import("./pages/Home"));
@@ -82,6 +83,7 @@ function App() {
             <Route path="/pharmacy" element={<PharmacyLayout />}>
               <Route index element={<Navigate to="requests" replace />} />
               <Route path="analytics" element={<PharmacyDashboard />} />
+              <Route path="pa-criteria" element={<PharmacyPACriteria />} />
               <Route path="requests" element={<PharmacyRequests isAdmin={false} />} />
               <Route path="requests/:id/request-details" element={<PharmacyRequestDetails isAdmin={false} />} />
               <Route path="prescribers" element={<Prescribers isAdmin={false} />} />
