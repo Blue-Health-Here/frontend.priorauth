@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
 import { axiosAdmin } from "../api/instance";
 import { AppDispatch } from "../store";
-import { setIsLoading, setProfileData } from "../store/features/global/globalSlice";
+import { setIsLoading, setProfileData, setUserRequestsData } from "../store/features/global/globalSlice";
 import { setRequestsData } from "../store/features/admin/requests/requestsSlice";
 import { setPharmaciesData } from "../store/features/admin/pharmacies/pharmaciesSlice";
 import { setPrescribersData } from "@/store/features/pharmacy/prescribers/prescribersSlice";
@@ -203,4 +203,18 @@ export const getAllUserPrescribers = async (dispatch: AppDispatch) => {
     })
 };
 
-
+// ============= Get User Requests   =============
+export const getUserRequests = async (dispatch: AppDispatch, id?: string) => {
+    return apiHandler(dispatch, 'get', '/pa_request/get_by_id/requests/user/' + id, {
+        data: {},
+        onSuccess: (data) => {
+            dispatch(setUserRequestsData(data)); // Changed to use the new action
+        },
+        onError: (error) => {
+            if (error.status === 404) {
+                dispatch(setUserRequestsData([])); // Changed to use the new action
+            }
+        },
+        errorMessage: "User requests not found."
+    })
+};
