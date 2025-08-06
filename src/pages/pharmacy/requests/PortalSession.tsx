@@ -4,8 +4,8 @@ const PortalSession: React.FC<any> = ({
     vncSession, handleCloseSession, isClosingSession, isVncLoading, firefoxStatusMsg
 }) => {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-gray-900 to-gray-800 flex flex-col items-center py-16 px-4">
-            <div className="w-full h-full fixed inset-0 bg-black z-50 flex flex-col">
+        <div className="min-h-screen bg-gradient-to-br z-[9999] from-zinc-900 via-gray-900 to-gray-800 flex flex-col items-center fixed inset-0 left-0 right-0 bottom-0 top-0">
+            <div className="w-full h-full bg-black flex flex-col">
                 <div className="bg-zinc-900 p-4 flex justify-between items-center border-b border-zinc-700">
                     <div className="flex items-center gap-4">
                         <h2 className="text-xl font-bold text-white">CMM Session - {vncSession.entityName}</h2>

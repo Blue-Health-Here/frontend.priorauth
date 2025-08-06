@@ -3,7 +3,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 interface RequestTitleProps {
-  isAdmin: boolean;
+  isAdmin?: boolean;
   prescriber?: string | null;
   inviteCode?: any
 }

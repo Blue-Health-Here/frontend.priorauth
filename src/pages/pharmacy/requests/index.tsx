@@ -198,10 +198,10 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
       if (isAdmin) {
         await Promise.all([
           getAllReqStatuses(dispatch),
-          getAllPharmacyReqs(dispatch, prescriberId),
+          getAllPharmacyReqs(dispatch, prescriberId, user?.id),
         ]);
       } else {
-        await getAllPharmacyReqs(dispatch, prescriberId);
+        await getAllPharmacyReqs(dispatch, prescriberId, user?.id);
       }
     } finally {
       setIsLoading(false);
@@ -272,7 +272,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
         paStatus: value.name,
         notes: null,
       });
-      await getAllPharmacyReqs(dispatch, prescriberId);
+      await getAllPharmacyReqs(dispatch, prescriberId, user?.id);
     } catch (error: any) {
       toast.error(error?.message);
     }
@@ -616,7 +616,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
   }, [isVncLoading, vncSession, user]);
 
   return (
-    <div className="bg-primary-white rounded-lg theme-datatable theme-shadow px-4 py-4">
+    <>
       {vncSession && (
         <PortalSession
           vncSession={vncSession}
@@ -627,196 +627,199 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
         />
       )}
 
-      {isModalOpen && (
-        <AddRequestModal
-          isOpen={isModalOpen}
-          onClose={(isAdded?: boolean) => {
-            setIsModalOpen(false);
-            if (isAdded) fetchInitialData();
-          }}
+      <div className="bg-primary-white rounded-lg theme-datatable theme-shadow px-4 py-4">
+
+        {isModalOpen && (
+          <AddRequestModal
+            isOpen={isModalOpen}
+            onClose={(isAdded?: boolean) => {
+              setIsModalOpen(false);
+              if (isAdded) fetchInitialData();
+            }}
+          />
+        )}
+
+        <RequestDetailsSideDrawer
+          openSideDrawer={openSideDrawer}
+          setOpenSideDrawer={setOpenSideDrawer}
+          reqId={reqId}
+          isAdmin={isAdmin}
+          inviteCode={inviteCode}
         />
-      )}
 
-      <RequestDetailsSideDrawer 
-        openSideDrawer={openSideDrawer}
-        setOpenSideDrawer={setOpenSideDrawer}
-        reqId={reqId}
-        isAdmin={isAdmin}
-        inviteCode={inviteCode}
-      />
+        {mobileSidebarOpen && (
+          <div className="fixed inset-0 z-100 md:hidden">
+            {/* Overlay */}
+            <div
+              className="absolute inset-0 bg-gray-50 bg-opacity-50"
+              onClick={() => setMobileSidebarOpen(false)}
+            ></div>
 
-      {mobileSidebarOpen && (
-        <div className="fixed inset-0 z-100 md:hidden">
-          {/* Overlay */}
-          <div
-            className="absolute inset-0 bg-gray-50 bg-opacity-50"
-            onClick={() => setMobileSidebarOpen(false)}
-          ></div>
+            {/* Sidebar Content */}
+            <div className="absolute right-0 top-0 h-full w-[90%] max-w-sm bg-primary-white shadow-lg p-4 overflow-y-auto flex flex-col">
+              <div className="flex-1">
+                <div className="flex items-center px-4 pl-0 pt-1 gap-3">
+                  <button
+                    onClick={() => setMobileSidebarOpen(false)}
+                    className="bg-secondary-background p-2 rounded-md"
+                  >
+                    <img
+                      src="/Vector (15).svg"
+                      alt="Close sidebar"
+                      className="w-4 h-4"
+                    />
+                  </button>
+                  <h3 className="text-lg font-semibold text-[#1E1E1E]">
+                    Filters
+                  </h3>
+                </div>
 
-          {/* Sidebar Content */}
-          <div className="absolute right-0 top-0 h-full w-[90%] max-w-sm bg-primary-white shadow-lg p-4 overflow-y-auto flex flex-col">
-            <div className="flex-1">
-              <div className="flex items-center px-4 pl-0 pt-1 gap-3">
+                <div className="h-px bg-gray-200 -mx-4 w-[calc(100%+2rem)] my-4"></div>
+
+                <div className="space-y-2">
+                  <div>
+                    <RequestStatusDropdownField
+                      data={filteredStatuses}
+                      onChange={(selected) => {
+                        handleStatusChange(selected);
+                      }}
+                      className="w-full"
+                    />
+                  </div>
+
+                  <div className="h-[1px] w-full bg-gray-200 mb-4"></div>
+                  <FiltersDropdown
+                    options={uniqueStatuses}
+                    selectedOption={selectedStatusFilter}
+                    onChange={setSelectedStatusFilter}
+                    getStatusClass={getStatusClass}
+                  />
+                  <div className="h-[1px] w-full bg-gray-200 mb-4"></div>
+
+                  <div>
+                    <FilterField
+                      columns={columns}
+                      selectedValue={selectedFilterField}
+                      onChange={(field) => {
+                        handleFilterChange(field);
+                      }}
+                      className="w-full"
+                    />
+                  </div>
+
+                  <div className="h-[1px] w-full bg-gray-200 mb-4"></div>
+
+                  <div>
+                    <ToggleColumnsField
+                      clearSelection={clearSelection}
+                      selectAll={selectAll}
+                      setIsChecked={setIsChecked}
+                      isChecked={isChecked}
+                      columns={columns}
+                      visibleColumns={visibleColumns}
+                      toggleColumn={toggleColumn}
+                      className="w-full"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-4 bg-primary-white">
+                <button
+                  onClick={() => {
+                    setSelectedFilterField("patient");
+                    setGlobalFilter("");
+                    clearSelection();
+                    setSelectedStatusFilter(null);
+                  }}
+                  className="flex-1 py-3  rounded-lg bg-[#EBF1FF] text-[#163066] text-sm font-medium"
+                >
+                  Reset All
+                </button>
                 <button
                   onClick={() => setMobileSidebarOpen(false)}
-                  className="bg-secondary-background p-2 rounded-md"
+                  className="flex-1 py-2 rounded-lg bg-[#163066] text-white text-sm "
                 >
-                  <img
-                    src="/Vector (15).svg"
-                    alt="Close sidebar"
-                    className="w-4 h-4"
-                  />
+                  Apply Filters
                 </button>
-                <h3 className="text-lg font-semibold text-[#1E1E1E]">
-                  Filters
-                </h3>
-              </div>
-
-              <div className="h-px bg-gray-200 -mx-4 w-[calc(100%+2rem)] my-4"></div>
-
-              <div className="space-y-2">
-                <div>
-                  <RequestStatusDropdownField
-                    data={filteredStatuses}
-                    onChange={(selected) => {
-                      handleStatusChange(selected);
-                    }}
-                    className="w-full"
-                  />
-                </div>
-
-                <div className="h-[1px] w-full bg-gray-200 mb-4"></div>
-                <FiltersDropdown
-                  options={uniqueStatuses}
-                  selectedOption={selectedStatusFilter}
-                  onChange={setSelectedStatusFilter}
-                  getStatusClass={getStatusClass}
-                />
-                <div className="h-[1px] w-full bg-gray-200 mb-4"></div>
-
-                <div>
-                  <FilterField
-                    columns={columns}
-                    selectedValue={selectedFilterField}
-                    onChange={(field) => {
-                      handleFilterChange(field);
-                    }}
-                    className="w-full"
-                  />
-                </div>
-
-                <div className="h-[1px] w-full bg-gray-200 mb-4"></div>
-
-                <div>
-                  <ToggleColumnsField
-                    clearSelection={clearSelection}
-                    selectAll={selectAll}
-                    setIsChecked={setIsChecked}
-                    isChecked={isChecked}
-                    columns={columns}
-                    visibleColumns={visibleColumns}
-                    toggleColumn={toggleColumn}
-                    className="w-full"
-                  />
-                </div>
               </div>
             </div>
-
-            <div className="flex gap-3 pt-4 bg-primary-white">
-              <button
-                onClick={() => {
-                  setSelectedFilterField("patient");
-                  setGlobalFilter("");
-                  clearSelection();
-                  setSelectedStatusFilter(null);
-                }}
-                className="flex-1 py-3  rounded-lg bg-[#EBF1FF] text-[#163066] text-sm font-medium"
-              >
-                Reset All
-              </button>
-              <button
-                onClick={() => setMobileSidebarOpen(false)}
-                className="flex-1 py-2 rounded-lg bg-[#163066] text-white text-sm "
-              >
-                Apply Filters
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div className="hidden md:flex justify-between gap-4 items-center pb-2 h-14 flex-wrap">
-        <RequestTitle
-          isAdmin={isAdmin} inviteCode={inviteCode}
-          prescriber={prescriberName || (prescriberId ? "Prescriber Requests" : null)}
-        />
-        {!prescriberId && (
-          <div className="inline-flex h-full gap-2 sm:ml-auto">
-            <ThemeButton
-              type="button"
-              className="!h-full min-w-max rounded-lg"
-              variant="secondary"
-              onClick={handleOpenPortal}
-              disabled={isStartingRequest}
-            >
-              {isStartingRequest ? (
-                <>
-                  <Loading />
-                  Starting...
-                </>
-              ) : 'Open Portal'}
-            </ThemeButton>
-            <ThemeButton
-              className="w-full !h-full rounded-lg"
-              variant="primary"
-              type="button"
-              onClick={() => setIsModalOpen(true)}
-            >
-              Add Request
-            </ThemeButton>
           </div>
         )}
-      </div>
 
-      {isLoading ? (
-        <div className="text-center py-4 w-10 text-gray-500">
-          <Loading />
+        <div className="hidden md:flex justify-between gap-4 items-center pb-2 h-14 flex-wrap">
+          <RequestTitle
+            isAdmin={isAdmin} inviteCode={inviteCode}
+            prescriber={prescriberName || (prescriberId ? "Prescriber Requests" : null)}
+          />
+          {!prescriberId && (
+            <div className="inline-flex h-full gap-2 sm:ml-auto">
+              <ThemeButton
+                type="button"
+                className="!h-full min-w-max rounded-lg"
+                variant="secondary"
+                onClick={handleOpenPortal}
+                disabled={isStartingRequest}
+              >
+                {isStartingRequest ? (
+                  <>
+                    <Loading />
+                    Starting...
+                  </>
+                ) : 'Open Portal'}
+              </ThemeButton>
+              <ThemeButton
+                className="w-full !h-full rounded-lg"
+                variant="primary"
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Add Request
+              </ThemeButton>
+            </div>
+          )}
         </div>
-      ) : (
-        <ThemeDataTable
-          header={tableHeader}
-          data={
-            selectedStatusFilter || selectedFilterField
-              ? filteredRequests
-              : requestsData.sort(
-                (a: any, b: any) =>
-                  new Date(b.submittedOn).getTime() -
-                  new Date(a.submittedOn).getTime()
-              )
-          }
-          columns={columns}
-          pageSize={10}
-          selectedFilterField={selectedFilterField}
-          visibleColumns={visibleColumns}
-          globalFilter={globalFilter}
-          setGlobalFilter={setGlobalFilter}
-          themeDataTableClass={"theme-table"}
-          globalFilterFields={[
-            "patient.name",
-            "medication",
-            "prescriber.name",
-            "submittedOn",
-            "statusName",
-            "notes",
-            "lastModified",
-          ]}
-          onRowClick={(e: any) => {
-            setOpenSideDrawer(true);
-            setReqId(e.data.id);
-          }}
-        />
-      )}
-    </div>
+
+        {isLoading ? (
+          <div className="text-center py-4 w-10 text-gray-500">
+            <Loading />
+          </div>
+        ) : (
+          <ThemeDataTable
+            header={tableHeader}
+            data={
+              selectedStatusFilter || selectedFilterField
+                ? filteredRequests
+                : requestsData.sort(
+                  (a: any, b: any) =>
+                    new Date(b.submittedOn).getTime() -
+                    new Date(a.submittedOn).getTime()
+                )
+            }
+            columns={columns}
+            pageSize={10}
+            selectedFilterField={selectedFilterField}
+            visibleColumns={visibleColumns}
+            globalFilter={globalFilter}
+            setGlobalFilter={setGlobalFilter}
+            themeDataTableClass={"theme-table"}
+            globalFilterFields={[
+              "patient.name",
+              "medication",
+              "prescriber.name",
+              "submittedOn",
+              "statusName",
+              "notes",
+              "lastModified",
+            ]}
+            onRowClick={(e: any) => {
+              setOpenSideDrawer(true);
+              setReqId(e.data.id);
+            }}
+          />
+        )}
+      </div>
+    </>
   );
 };
 

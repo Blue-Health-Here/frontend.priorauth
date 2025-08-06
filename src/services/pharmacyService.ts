@@ -181,7 +181,7 @@ export const getAllReqStatuses = async (dispatch: AppDispatch) => {
 };
 
 // Requests
-export const getAllPharmacyReqs = async (dispatch: AppDispatch, prescriberId?: string) => {
+export const getAllPharmacyReqs = async (dispatch: AppDispatch, prescriberId?: string, userId?: string) => {
     if (prescriberId) {
         return apiHandler(dispatch, 'get', `/pa_request/get_by_id/requests/prescriber/${prescriberId}`, {
             onSuccess: (data) => {
@@ -195,14 +195,7 @@ export const getAllPharmacyReqs = async (dispatch: AppDispatch, prescriberId?: s
             errorMessage: "Requests not found."
         })
     }
-    return apiHandler(dispatch, 'post', '/pa_request/get_all', {
-        data: {
-            pagedListRequest: {
-                pageNo: 1,
-                pageSize: 10000,
-                getAllRecords: true
-            }
-        },
+    return apiHandler(dispatch, 'get', `/pa_request/get_by_id/requests/user/${userId}`, {
         onSuccess: (data) => {
             dispatch(setRequestsData(data))
         },

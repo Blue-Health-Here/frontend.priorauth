@@ -141,7 +141,7 @@ const RequestDetailsSideDrawer: React.FC<any> = ({
                                 <div className="inline-flex gap-2 justify-between items-center">
                                     <h2 className="text-base font-medium text-primary-black">Comments ({requestDetails?.comments?.length})</h2>
                                 </div>
-                                <CommentsWidget showTwo={true} showActions={false} />
+                                <CommentsWidget showTwo={true} showActions={!inviteCode} />
                             </div>
                         </div>
                     )}

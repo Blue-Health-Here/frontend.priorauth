@@ -8,6 +8,8 @@ import SearchField from '@/components/common/SearchField';
 import ThemeButtonTabs from '@/components/ThemeButtonTabs';
 import Loading from "@/components/common/Loading";
 import ThemeButton from '@/components/common/ThemeButton';
+import FilterField from '@/components/common/FilterField';
+import { filterOptions } from '@/utils/constants';
 
 const AdminPharmacies: React.FC = () => {
   const { pharmaciesData } = useSelector((state: RootState) => state.adminPharmacies);
@@ -19,6 +21,7 @@ const AdminPharmacies: React.FC = () => {
   const [globalFilter, setGlobalFilter] = useState("");
   const [activeTab, setActiveTab] = useState("All Pharmacies");
   const [updatedPharmacyData, setUpdatedPharmacyData] = useState<any[]>([]);
+  const [sortDirection, setSortDirection] = useState<any>("asc");
 
   const handleModifyPharmacy = (pharmacy: any) => {
     console.log('Modify pharmacy:', pharmacy.id);
@@ -52,12 +55,24 @@ const AdminPharmacies: React.FC = () => {
 
   const filteredPharmacyData = useMemo(() => {
     const filterValue = globalFilter.toLowerCase();
-    return updatedPharmacyData.filter((item) =>
+    let data = updatedPharmacyData.filter((item) =>
       item.pharmacy?.toLowerCase().includes(filterValue) ||
       item.firstName?.toLowerCase().includes(filterValue) ||
       item.lastName?.toLowerCase().includes(filterValue)
     );
-  }, [updatedPharmacyData, globalFilter]);
+
+    // Add sorting logic
+    if (sortDirection) {
+      data.sort((a, b) => {
+        const nameA = a.firstName?.toLowerCase() || "";
+        const nameB = b.firstName?.toLowerCase() || "";
+        const result = nameA.localeCompare(nameB);
+        return sortDirection === "asc" ? result : -result;
+      });
+    }
+
+    return data;
+  }, [updatedPharmacyData, globalFilter, sortDirection]);
 
   const displayedPharmacies = useMemo(() => {
     if (activeTab === "All Pharmacies") return filteredPharmacyData;
@@ -99,11 +114,18 @@ const AdminPharmacies: React.FC = () => {
           className="w-full md:w-auto whitespace-nowrap overflow-x-auto scrollbar-hide border-quaternary-navy-blue-dark"
         />
         
-        <div className="w-full md:w-[200px]">
+        <div className="flex gap-2 w-full md:w-auto">
           <SearchField
             globalFilter={globalFilter}
             setGlobalFilter={setGlobalFilter}
             placeholder="Search pharmacies"
+            className="flex-1 min-w-[200px]"
+          />
+          <FilterField
+            label="Sort By"
+            columns={filterOptions}
+            selectedValue={sortDirection}
+            onChange={setSortDirection}
           />
         </div>
       </div>
