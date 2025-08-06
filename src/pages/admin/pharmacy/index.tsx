@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PharmacyCard from './PharmacyCard';
 import { RootState } from '../../../store';
 import { fetchAllPharmacies } from '../../../services/adminService';
@@ -12,6 +13,7 @@ const AdminPharmacies: React.FC = () => {
   const { pharmaciesData } = useSelector((state: RootState) => state.adminPharmacies);
   const isReqsFetched = useRef(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   
   const [isLoading, setIsLoading] = useState(false);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -31,7 +33,7 @@ const AdminPharmacies: React.FC = () => {
       })();
       isReqsFetched.current = true;
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const transformed = pharmaciesData.map((item: any) => ({
@@ -73,7 +75,7 @@ const AdminPharmacies: React.FC = () => {
 
   return (
     <div className="bg-primary-white rounded-lg theme-shadow p-4 h-full">
-      {/* Header Section - Maintains original positioning */}
+      {/* Header Section */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-medium tracking-tighter">
           All Pharmacies
@@ -82,12 +84,13 @@ const AdminPharmacies: React.FC = () => {
           className="min-w-[130px] !h-full rounded-lg py-2.5"
           variant="primary"
           type="button"
+          onClick={() => navigate('/admin/pharmacies/add')}
         >
           Add Pharmacy
         </ThemeButton>
       </div>
 
-      {/* Tabs and Search - Now in single line */}
+      {/* Tabs and Search */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
         <ThemeButtonTabs
           data={["All Pharmacies", "New York", "New Jersey", "Pennsylvania"]}
@@ -105,7 +108,7 @@ const AdminPharmacies: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Content - Unchanged from original */}
+      {/* Main Content */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {isLoading ? (
           <div className="col-span-full flex justify-center py-8">
