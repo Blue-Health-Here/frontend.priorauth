@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import InfoColumn from "@/components/common/InfoColumn";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import ProfileToolTipDropdown from "./ProfileToolTipDropdown";
+import ProfileToolTipDropdown from "./profileToolTipDropdown";
 
 interface Pharmacy {
   id: string;

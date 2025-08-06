@@ -24,7 +24,7 @@ const OTPVerification = lazy(() => import("./pages/auth/OTPVerification"));
 const AdminLayout = lazy(() => import("./layouts/AdminLayout"));
 const AdminDashboard = lazy(() => import("./pages/admin/dashboard"));
 const AdminPharmacies = lazy(() => import("./pages/admin/pharmacy"));
-const PharmacyDetailScreen = lazy(() => import("./pages/admin/pharmacy/PharmacyDetailScreen"));
+const PharmacyDetailScreen = lazy(() => import("./pages/admin/pharmacy/pharmacyDetailScreen"));
 const AddNewPharmacyScreen = lazy(() => import("./pages/admin/pharmacy/AddNewPharmacyScreen"));
 const AdminSettings = lazy(() => import("./pages/admin/settings"));
 const ChangePasswordPage = lazy(() => import("./pages/admin/settings/change-password"));

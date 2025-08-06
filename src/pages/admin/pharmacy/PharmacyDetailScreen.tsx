@@ -2,9 +2,9 @@ import React from 'react';
 import { useLocation, useParams } from 'react-router-dom'; 
 import PharmacyRequests from '@/pages/pharmacy/requests';
 import PharmacyProfileCard from './pharmacyProfileCard';
-import SummaryCard from './SummaryCard';
+import SummaryCard from './summaryCard';
+import TopPrescribersCard from './topPrescribersCard';
 
-import TopPrescribersCard from './TopPrescribersCard';
 
 const PharmacyDetailScreen: React.FC = () => {
   const { state } = useLocation();

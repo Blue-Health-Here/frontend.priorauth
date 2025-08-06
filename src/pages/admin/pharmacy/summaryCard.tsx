@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import SummaryItem from "./SummaryItem";
+import SummaryItem from "./summaryItem";
 
 interface Pharmacy {
   id: string;
