@@ -198,10 +198,10 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
       if (isAdmin) {
         await Promise.all([
           getAllReqStatuses(dispatch),
-          getAllPharmacyReqs(dispatch, prescriberId),
+          getAllPharmacyReqs(dispatch, prescriberId, user?.id),
         ]);
       } else {
-        await getAllPharmacyReqs(dispatch, prescriberId);
+        await getAllPharmacyReqs(dispatch, prescriberId, user?.id);
       }
     } finally {
       setIsLoading(false);
@@ -272,7 +272,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
         paStatus: value.name,
         notes: null,
       });
-      await getAllPharmacyReqs(dispatch, prescriberId);
+      await getAllPharmacyReqs(dispatch, prescriberId, user?.id);
     } catch (error: any) {
       toast.error(error?.message);
     }
