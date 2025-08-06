@@ -4,11 +4,12 @@ import InputField from "../../../components/common/form/InputField";
 import FileDropzone from "@/components/common/FileDropzone";
 import { pharmacyValidationSchema } from "../../../utils/validationSchema";
 import toast from "react-hot-toast";
-import { addNewPharmacy } from "../../../services/adminService";
+import { addNewUser } from "../../../services/adminService";
 import { useDispatch } from "react-redux";
 import { addNewPharmacyInitialVals } from "../../../utils/initialVals";
 import { useNavigate } from "react-router-dom";
 import ThemeButton from "@/components/common/ThemeButton";
+import { useSelector } from "react-redux"; 
 
 const LOCATION_OPTIONS = [
   { value: "new_york", label: "New York" },
@@ -21,6 +22,8 @@ const LOCATION_OPTIONS = [
 ];
 
 const AddNewPharmacyScreen: React.FC = () => {
+  const currentUser = useSelector((state: any) => state.auth.user); 
+  console.log(currentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isDragging, setIsDragging] = useState(false);
@@ -28,16 +31,26 @@ const AddNewPharmacyScreen: React.FC = () => {
 
   const handleSubmit = async (values: FormikValues) => {
     try {
-      const response = await addNewPharmacy(dispatch, {
-        companyId: "6414b19d-5a7e-4a8a-a632-f41b158839fe",
-        pharmacyLogo: files[0] || "",
-        ...values,
-      });
+      const userData = {
+        firstName: values.name,
+        lastName: "",
+        password: values.password,
+        roleCode: "pharmacyUser",
+        userName: values.userName,
+        email: values.email,
+        phone: values.phoneNumber,
+        location: values.location,
+        // pointOfContact: values.pointOfContact,
+        companyId: currentUser?.companyId
+      };
+
+      const response = await addNewUser(dispatch, userData);
       if (response) {
+        toast.success("Pharmacy user created successfully!");
         navigate("/admin/pharmacies");
       }
     } catch (error: any) {
-      toast.error(error?.message || "Something went wrong!!");
+      toast.error(error?.message || "Something went wrong while creating the pharmacy user!");
     }
   };
 
@@ -101,6 +114,8 @@ const AddNewPharmacyScreen: React.FC = () => {
           ...addNewPharmacyInitialVals,
           pointOfContact: "",
           location: "",
+          userName: "", 
+          password: "" 
         }}
         validationSchema={pharmacyValidationSchema}
         enableReinitialize={true}
@@ -158,7 +173,7 @@ const AddNewPharmacyScreen: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               <div>
                 <InputField
                   className="w-full"
@@ -168,6 +183,27 @@ const AddNewPharmacyScreen: React.FC = () => {
                   name="phoneNumber"
                 />
               </div>
+              <div>
+                <InputField
+                  className="w-full"
+                  type="text"
+                  label="Username"
+                  placeholder="Enter username"
+                  name="userName"
+                />
+              </div>
+              <div>
+                <InputField
+                  className="w-full"
+                  type="password"
+                  label="Password"
+                  placeholder="Enter password"
+                  name="password"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="">
                 <label className="block text-quaternary-white text-sm font-secondary mb-1">
                   Location
