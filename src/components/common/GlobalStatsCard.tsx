@@ -205,7 +205,7 @@ const GlobalStatsCard: React.FC<any> = ({
                 <div className="flex-1 md:ml-20">
                     <div className="mb-4">
                         <h4 className="text-sm md:text-base font-medium text-quaternary-white mb-1">Total Requests</h4>
-                        <div className="text-2xl md:text-3xl lg:text-5xl font-bold text-gray-900">
+                        <div className="totalrequests text-2xl md:text-3xl lg:text-5xl font-bold text-gray-900 ">
                             {currentData.totalRequests.toLocaleString()}
                         </div>
                     </div>

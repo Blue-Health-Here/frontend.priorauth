@@ -26,14 +26,32 @@ type TimeRange = "Today" | "W" | "M" | "Y";
 const InsuranceWiseChart = () => {
   const [range, setRange] = useState<TimeRange>("Today");
   const [isMobile, setIsMobile] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 640);
     };
+
+    // Check initial theme
+    setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    
+    // Watch for theme changes
+    const observer = new MutationObserver(() => {
+      setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const datasetsByRange: Record<TimeRange, number[][]> = {
@@ -89,88 +107,78 @@ const InsuranceWiseChart = () => {
     datasets: [
       {
         label: "Approval",
-        backgroundColor: "#5CE543",
+        backgroundColor: theme === 'dark' ? '#1FC001' : '#5CE543',
         data: approved,
         borderRadius: 10,
       },
       {
         label: "Denial",
-        backgroundColor: "#FF7E7E",
+        backgroundColor: theme === 'dark' ? '#D30000' : '#FF7E7E',
         data: denied,
         borderRadius: 10,
       },
     ],
   };
 
-  // Original desktop options (unchanged)
-  const desktopOptions: ChartOptions<"bar"> = {
+  // Common options
+  const baseOptions: ChartOptions<"bar"> = {
     indexAxis: "y",
     responsive: true,
     plugins: {
-      legend: { position: "top" },
+      legend: { 
+        position: "top",
+        labels: {
+          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666',
+          font: {
+            size: isMobile ? 9 : undefined,
+          },
+          boxWidth: 8,
+          padding: 10,
+        }
+      },
       title: { display: false },
     },
     scales: {
       x: {
-        grid: { display: true },
+        grid: { 
+          display: true,
+          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+        },
         border: { display: false },
+        ticks: {
+          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.7)' : '#666666',
+          font: {
+            size: isMobile ? 9 : undefined,
+          }
+        },
       },
       y: {
         grid: { display: false },
         border: { display: false },
+        ticks: {
+          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.7)' : '#666666',
+          font: {
+            size: isMobile ? 9 : undefined,
+          }
+        },
       },
     },
   };
 
-  // Mobile-specific adjustments (only changed layout margins)
+  // Mobile-specific adjustments
   const mobileOptions: ChartOptions<"bar"> = {
-    ...desktopOptions,
+    ...baseOptions,
     maintainAspectRatio: false,
     layout: {
       padding: {
-        left: 20, // Add left padding to ensure labels are visible
-      },
-    },
-    plugins: {
-      ...desktopOptions.plugins,
-      legend: {
-        ...desktopOptions.plugins?.legend,
-        labels: {
-          ...desktopOptions.plugins?.legend?.labels,
-          boxWidth: 8,
-          padding: 10,
-          font: {
-            size: 9,
-          },
-        },
-      },
-    },
-    scales: {
-      ...desktopOptions.scales,
-      y: {
-        ...desktopOptions.scales?.y,
-        ticks: {
-          ...desktopOptions.scales?.y?.ticks,
-          font: {
-            size: 9,
-          },
-        },
-      },
-      x: {
-        ...desktopOptions.scales?.x,
-        ticks: {
-          ...desktopOptions.scales?.x?.ticks,
-          font: {
-            size: 9,
-          },
-        },
+        left: 20,
       },
     },
   };
 
   return (
     <div
-      className="bg-primary-white rounded-2xl p-4 theme-shadow w-full border"
+      className="bg-primary-white dark:bg-dark-800 rounded-2xl p-4 theme-shadow w-full border"
       style={{
         borderColor: "var(--border-color)",
       }}
@@ -180,13 +188,13 @@ const InsuranceWiseChart = () => {
           isMobile ? "flex-col gap-1" : "justify-between items-center"
         } mb-2`}
       >
-        <h2 className={`${isMobile ? "text-sm" : "text-lg"} font-semibold`}>
+        <h2 className={`${isMobile ? "text-sm" : "text-lg"} font-semibold dark:text-gray-200`}>
           Insurance Analysis
         </h2>
         <div
           className={`flex ${
             isMobile ? "flex-wrap gap-1" : "space-x-2"
-          } text-xs border  rounded-lg p-0.5`}
+          } text-xs border rounded-lg p-0.5`}
           style={{
             borderColor: "var(--border-color)",
           }}
@@ -195,13 +203,19 @@ const InsuranceWiseChart = () => {
             <button
               key={period}
               onClick={() => setRange(period)}
-              className={`${
-                isMobile ? "px-2 py-1 text-[10px]" : "px-3 py-2"
-              } rounded-md ${
-                range === period
-                  ? 'bg-[var(--active-background-color)] '
-                  : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"
-              }`}
+              style={{
+                color: range === period ? '' : 'var(--period-selector-text)',
+                backgroundColor:
+                  range === period
+                    ? 'var(--active-background-color)'
+                    : 'transparent',
+              }}
+              className={`
+                ${isMobile ? "px-2 py-1 text-[10px]" : "px-3 py-2"}
+                rounded-md
+                ${range !== period ? "hover:bg-gray-50 dark:hover:bg-dark-700" : ""}
+                dark:text-gray-300
+              `}
             >
               {period}
             </button>
@@ -209,9 +223,10 @@ const InsuranceWiseChart = () => {
         </div>
       </div>
       <div className={isMobile ? "h-[300px] ml-4" : ""}>
-        {" "}
-        {/* Added ml-4 for mobile */}
-        <Bar data={data} options={isMobile ? mobileOptions : desktopOptions} />
+        <Bar 
+          data={data} 
+          options={isMobile ? mobileOptions : baseOptions} 
+        />
       </div>
     </div>
   );

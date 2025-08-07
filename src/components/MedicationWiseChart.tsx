@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -23,15 +23,32 @@ ChartJS.register(
 const MedicationWiseChart = () => {
   const [range, setRange] = useState("Today");
   const [isMobile, setIsMobile] = useState(false);
+  const [theme, setTheme] = useState(
+    document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+  );
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 640); // Only check for mobile
+      setIsMobile(window.innerWidth < 640);
     };
+
+    // Theme observer
+    const observer = new MutationObserver(() => {
+      setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
 
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const datasetsByRange: any = {
@@ -55,7 +72,17 @@ const MedicationWiseChart = () => {
 
   const [requests, approved] = datasetsByRange[range];
 
-  const data = {
+  // Get the correct color based on current theme
+  const getThemeColor = () => {
+    return theme === 'dark' ? '#0160c8' : '#007AFF';
+  };
+
+  // Get the correct approved color based on theme
+  const getApprovedColor = () => {
+    return theme === 'dark' ? '#1FC001' : '#5CE543';
+  };
+
+  const data = useMemo(() => ({
     labels: [
       "SLYND 4 MG O...",
       "ZEPBOUND 2.5...",
@@ -67,18 +94,24 @@ const MedicationWiseChart = () => {
     datasets: [
       {
         label: "Requests",
-        backgroundColor: "#007AFF",
+        backgroundColor: getThemeColor(),
+        borderColor: getThemeColor(),
+        borderWidth: 0,
+        hoverBackgroundColor: getThemeColor(),
         data: requests,
         borderRadius: { topLeft: 8, topRight: 8 },
       },
       {
         label: "Approved",
-        backgroundColor: "#5CE543",
+        backgroundColor: getApprovedColor(),
+        borderColor: getApprovedColor(),
+        borderWidth: 0,
+        hoverBackgroundColor: getApprovedColor(),
         data: approved,
         borderRadius: { topLeft: 8, topRight: 8 },
       },
     ],
-  };
+  }), [requests, approved, theme]); // Add theme to dependencies
 
   const options: any = {
     responsive: true,
@@ -97,28 +130,21 @@ const MedicationWiseChart = () => {
           maxRotation: 0,
           minRotation: 0,
           padding: 10,
-          callback: function (
-            this: any,
-            value: string | number,
-            index: number
-          ) {
-            const label =
-              typeof value === "number"
-                ? this.chart.data.labels?.[index] || ""
-                : value;
-
-            // More aggressive truncation for mobile only
-            if (isMobile) {
-              return label.length > 4 ? `${label.substring(0, 4)}..` : label;
-            }
-            // Keep original for tablet and desktop
-            return label.length > 10 ? `${label.substring(0, 10)}...` : label;
-          },
+          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666', // 80% opacity white
           font: {
-            size: isMobile ? 10 : 12, // Only change font size for mobile
+            size: isMobile ? 10 : 12,
+            weight: theme === 'dark' ? 'normal' : 'normal', // Remove bold in dark mode
+          },
+          callback: function (value: string | number, index: number) {
+            const label = typeof value === "number"
+              ? this.chart.data.labels?.[index] || ""
+              : value;
+            return isMobile 
+              ? (label.length > 4 ? `${label.substring(0, 4)}..` : label)
+              : (label.length > 10 ? `${label.substring(0, 10)}...` : label);
           },
         },
-        barThickness: 30, // Keep original for all screens
+        barThickness: 30,
         categoryPercentage: 0.8,
         barPercentage: 0.9,
       },
@@ -126,12 +152,17 @@ const MedicationWiseChart = () => {
         grid: {
           display: true,
           drawTicks: false,
+          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
         },
         border: {
           display: false,
         },
         ticks: {
           stepSize: 500,
+          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666', // 80% opacity white
+          font: {
+            weight: theme === 'dark' ? 'normal' : 'normal', // Remove bold in dark mode
+          },
           callback: function (value: string | number) {
             return Number(value).toString();
           },
@@ -149,6 +180,10 @@ const MedicationWiseChart = () => {
           padding: 10,
           usePointStyle: true,
           pointStyle: "rect",
+          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666', // 80% opacity white
+          font: {
+            weight: theme === 'dark' ? 'normal' : 'normal', // Remove bold in dark mode
+          },
         },
       },
       title: { display: false },
@@ -158,6 +193,10 @@ const MedicationWiseChart = () => {
             return `${context.dataset.label}: ${context.parsed.y}`;
           },
         },
+        backgroundColor: theme === 'dark' ? '#1E293B' : '#ffffff',
+        titleColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.9)' : '#333333', // Slightly transparent
+        bodyColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#333333', // More transparent
+        borderColor: theme === 'dark' ? '#475569' : '#e2e8f0',
       },
     },
   };
@@ -165,17 +204,13 @@ const MedicationWiseChart = () => {
   return (
     <div
       className="bg-primary-white rounded-2xl p-4 theme-shadow w-full border"
-      style={{
-        borderColor: "var(--border-color)",
-      }}
+      style={{ borderColor: "var(--border-color)" }}
     >
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold">Medication wise Analysis</h2>
         <div
-          className="flex space-x-2 text-xs border  rounded-lg p-0.5"
-          style={{
-            borderColor: "var(--border-color)",
-          }}
+          className="flex space-x-2 text-xs border rounded-lg p-0.5"
+          style={{ borderColor: "var(--border-color)" }}
         >
           {timeRanges.map((period) => (
             <button
@@ -184,7 +219,7 @@ const MedicationWiseChart = () => {
               onClick={() => setRange(period)}
               className={`px-3 py-2 cursor-pointer rounded-md transition-colors ${
                 range === period
-                  ? 'bg-[var(--active-background-color)] '
+                  ? 'bg-[var(--active-background-color)]'
                   : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"
               }`}
             >
@@ -193,7 +228,7 @@ const MedicationWiseChart = () => {
           ))}
         </div>
       </div>
-      <div className="w-full h-[calc(100%-50px)]">
+      <div className="medication-chart w-full h-[calc(100%-50px)]">
         <Bar data={data} options={options} />
       </div>
     </div>
