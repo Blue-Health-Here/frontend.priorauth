@@ -513,6 +513,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
     try {
       const response = await handleStartPortal(dispatch, { id: user.id, roleCode: user.roleCode });
       if (response) {
+        console.log(response, "res");
         // const data = await response.json();
         setVncSession({
           sessionId: response.session_id,

@@ -29,7 +29,7 @@ const PortalSession: React.FC<any> = ({
                     )}
                     {!isVncLoading && !isClosingSession && (
                         <iframe
-                            src={vncSession.vncUrl}
+                            src={import.meta.env.VITE_API_PORTAL_URL + vncSession.vncUrl}
                             className="w-full h-full"
                             style={{ border: 'none' }}
                             title="VNC Session"

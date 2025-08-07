@@ -18,7 +18,7 @@ export const axiosAdmin: AxiosInstance = axios.create({
 });
 
 export const axiosPortal: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_PORTAL_URL,
+  baseURL: import.meta.env.VITE_API_PORTAL_URL + "/api",
   headers: {
     "Content-Type": "application/json",
     "Access-Control-Allow-Credentials": "true"
