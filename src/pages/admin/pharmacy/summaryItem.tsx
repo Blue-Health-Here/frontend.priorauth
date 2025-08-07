@@ -13,7 +13,7 @@ const SummaryItem: React.FC<SummaryItemProps> = ({
   value,
 }) => {
   return (
-    <div className="flex items-center p-2 border border-quaternary-navy-blue rounded-lg mb-2 h-13">
+    <div className="flex items-center p-2 border border-quaternary-navy-blue rounded-lg">
       <div className="flex items-center justify-center w-6 h-6 mr-3 rounded-md bg-navy-blue-500">
         {icon}
       </div>

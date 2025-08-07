@@ -14,7 +14,7 @@ interface TopPrescribersCardProps {
 
 const TopPrescribersCard: React.FC<TopPrescribersCardProps> = ({ prescribers }) => {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 py-3 h-full">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 h-full">
       <div className="flex justify-between items-center mb-2">
         <h3 className="text-lg font-medium text-primary-black">Prescribers</h3>
         <button 
@@ -23,7 +23,7 @@ const TopPrescribersCard: React.FC<TopPrescribersCardProps> = ({ prescribers }) 
           View All
         </button>
       </div>
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         {prescribers.map((prescriber) => (
           <PrescriberRow
             key={prescriber.id}

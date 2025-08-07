@@ -10,7 +10,7 @@ interface PrescriberRowProps {
 
 const PrescriberRow: React.FC<PrescriberRowProps> = ({ name, totalRequests }) => {
   return (
-    <div className="flex items-center justify-between py-0.5 px-2 border border-quaternary-navy-blue rounded-lg last:border-b-0">
+    <div className="flex items-center justify-between p-2 border border-quaternary-navy-blue rounded-lg">
       <div className="flex items-center space-x-4">
         <NameBadge
           data={{ name, textColor: "#fff" }}

@@ -60,25 +60,27 @@ const PharmacyProfileCard: React.FC<PharmacyProfileCardProps> = ({
   }, []);
 
   return (
-    <div className="bg-primary-white rounded-lg shadow-sm border border-quaternary-navy-blue p-6 relative">
-      {/* Profile label at top left */}
-      <div className="absolute top-4 left-4 text-lg font-medium text-primary-black">
-        Profile
+    <div className="bg-primary-white rounded-lg shadow-sm border border-quaternary-navy-blue p-4 relative">
+      <div className="flex justify-between gap-4">
+        {/* Profile label at top left */}
+        <div className="text-lg font-medium text-primary-black">
+          Profile
+        </div>
+
+        {/* Dropdown button at top right */}
+        <div ref={dropdownRef} className="relative">
+          <button
+            type="button"
+            className="rounded-lg p-2 text-black cursor-pointer bg-tabs-active-body hover:bg-tabs-active-body"
+            onClick={toggleDropdown}
+          >
+            <BsThreeDotsVertical className="text-sm text-tabs-text" />
+          </button>
+          {isDropdownOpen && <ProfileToolTipDropdown />}
+        </div>
       </div>
 
-      {/* Dropdown button at top right */}
-      <div ref={dropdownRef} className="absolute top-4 right-4">
-        <button
-          type="button"
-          className="rounded-lg p-2 text-black cursor-pointer bg-tabs-active-body hover:bg-tabs-active-body"
-          onClick={toggleDropdown}
-        >
-          <BsThreeDotsVertical className="text-sm text-tabs-text" />
-        </button>
-        {isDropdownOpen && <ProfileToolTipDropdown />}
-      </div>
-
-      <div className="flex items-center mb-4 mt-9">
+      <div className="flex items-center py-4">
         <div className="w-14 h-14 rounded-full flex items-center justify-center mr-2 overflow-hidden">
           <img
             src={pharmacy.pictureUrl || "/pharmacy-profile-logo.svg"}

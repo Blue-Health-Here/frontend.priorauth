@@ -35,16 +35,10 @@ const PharmacyDetailScreen: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Cards row */}
-      <div className="flex flex-col md:flex-row gap-6">
-        <div className="flex-1 min-w-0">
-          <PharmacyProfileCard pharmacy={pharmacyData} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <SummaryCard pharmacy={summaryData} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <TopPrescribersCard prescribers={topPrescribers} />
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <PharmacyProfileCard pharmacy={pharmacyData} />
+        <SummaryCard pharmacy={summaryData} />
+        <TopPrescribersCard prescribers={topPrescribers} />
       </div>
       
       <PharmacyRequests pharmacyId={pharmacyId!} />
