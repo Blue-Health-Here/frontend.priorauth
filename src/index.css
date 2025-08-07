@@ -237,6 +237,8 @@
   --table-body-text: var(--black-700);
   --table-head-text: var(--stroke-900);
 
+  --border-color: var(--quaternary-navy-blue);
+
 
 }
 
@@ -351,12 +353,19 @@
   --table-body-text: var(--white-800);
   --table-head-text: var(--navy-blue-300);
 
+  --border-color: var(--dark-700);
+
+
+
 }
 
 @theme {
   /* Table Colors */
   --color-table-body-text: var(--table-body-text);
   --color-table-head-text: var(--table-head-text)
+
+  /* Dashboard Colors */
+  --color-border-color: var(--border-color)
     /* Icon Group Colors */
     --color-icon-group-bg: var(--icon-group-bg);
   --color-icon-group-icon: var(--icon-group-icon);

@@ -140,7 +140,11 @@ const CaseAnalysisCard = () => {
     };
 
     return (
-        <div className="bg-primary-white rounded-2xl p-4 theme-shadow w-full">
+        <div className="bg-primary-white rounded-2xl p-4 theme-shadow w-full border"
+        style={{ 
+      borderColor: 'var(--border-color)'
+    }}
+        >
             <div className="flex justify-between items-center mb-2">
                 <h2 className="text-lg font-semibold">Case Analysis</h2>
                 <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5">

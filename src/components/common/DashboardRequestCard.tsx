@@ -164,46 +164,57 @@ const DashboardRequestCard: React.FC<any> = ({
         };
     }, []);
 
-    return (
-        <div className="rounded-2xl p-4 theme-shadow bg-primary-white transition-colors min-h-[120px] w-full flex flex-col justify-between gap-2 request-graph">
-            <div className="flex items-start flex-wrap gap-3 justify-between">
-                <div className="font-secondary">
-                    <h3 className="text-sm md:text-base font-semibold text-primary-black">
-                        {title}
-                    </h3>
-                    <p className="text-xs mt-1 text-tertiary-black">
-                        {description}
-                    </p>
-                </div>
-                <div className="flex space-x-1 text-xs border border-quaternary-navy-blue rounded-lg p-0.5">
-                    {['Y', 'M', 'W'].map((period) => (
-                        <button
-                            key={period}
-                            type='button'
-                            onClick={() => handlePeriodChange(period)}
-                            className={`px-2 py-1 cursor-pointer rounded-md transition-colors ${activePeriod === period
-                                ? 'bg-quaternary-navy-blue text-primary-navy-blue'
-                                : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
-                                }`}
-                        >
-                            {period}
-                        </button>
-                    ))}
-                </div>
-            </div>
+   return (
+  <div 
+    className="rounded-2xl p-4 theme-shadow bg-primary-white dark:bg-dark-800 transition-colors min-h-[120px] w-full flex flex-col justify-between gap-2 request-graph border"
+    style={{ 
+      borderColor: 'var(--border-color)'
+    }}
+  >
+    <div className="flex items-start flex-wrap gap-3 justify-between">
+      <div className="font-secondary">
+        <h3 className="text-sm md:text-base font-semibold text-primary-black dark:text-white">
+          {title}
+        </h3>
+        <p className="text-xs mt-1 text-tertiary-black dark:text-gray-300">
+          {description}
+        </p>
+      </div>
+      <div 
+        className="flex space-x-1 text-xs rounded-lg p-0.5 border"
+        style={{ 
+          borderColor: 'var(--border-color)'
+        }}
+      >
+        {['Y', 'M', 'W'].map((period) => (
+          <button
+            key={period}
+            type='button'
+            onClick={() => handlePeriodChange(period)}
+            className={`px-2 py-1 cursor-pointer rounded-md transition-colors ${
+              activePeriod === period
+                ? 'bg-quaternary-navy-blue text-primary-navy-blue dark:bg-dark-700 dark:text-white'
+                : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-dark-700'
+            }`}
+          >
+            {period}
+          </button>
+        ))}
+      </div>
+    </div>
 
-            <div className="flex items-end justify-between gap-4">
-                <div className="text-xl md:text-5xl font-semibold text-primary-black">
-                    {value}
-                </div>
-                <div className="flex-1">
-                    <div className="h-24">
-                        <canvas ref={chartRef}></canvas>
-                    </div>
-                </div>
-            </div>
+    <div className="flex items-end justify-between gap-4">
+      <div className="text-xl md:text-5xl font-semibold text-primary-black dark:text-white">
+        {value}
+      </div>
+      <div className="flex-1">
+        <div className="h-24">
+          <canvas ref={chartRef}></canvas>
         </div>
-    );
+      </div>
+    </div>
+  </div>
+);
 };
 
 export default DashboardRequestCard;
