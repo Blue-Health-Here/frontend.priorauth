@@ -193,7 +193,7 @@ const DashboardRequestCard: React.FC<any> = ({
             onClick={() => handlePeriodChange(period)}
             className={`px-2 py-1 cursor-pointer rounded-md transition-colors ${
               activePeriod === period
-                ? 'bg-quaternary-navy-blue text-primary-navy-blue dark:bg-dark-700 dark:text-white'
+                ? 'bg-[var(--active-background-color)] '
                 : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-dark-700'
             }`}
           >

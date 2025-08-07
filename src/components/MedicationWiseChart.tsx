@@ -184,7 +184,7 @@ const MedicationWiseChart = () => {
               onClick={() => setRange(period)}
               className={`px-3 py-2 cursor-pointer rounded-md transition-colors ${
                 range === period
-                  ? "bg-quaternary-navy-blue text-primary-navy-blue"
+                  ? 'bg-[var(--active-background-color)] '
                   : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"
               }`}
             >

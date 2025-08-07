@@ -199,7 +199,7 @@ const InsuranceWiseChart = () => {
                 isMobile ? "px-2 py-1 text-[10px]" : "px-3 py-2"
               } rounded-md ${
                 range === period
-                  ? "bg-quaternary-navy-blue text-primary-navy-blue"
+                  ? 'bg-[var(--active-background-color)] '
                   : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"
               }`}
             >

@@ -37,8 +37,8 @@ const PARequestsSection = () => {
               onClick={() => handlePeriodChange(period)}
               className={`px-3 py-2 cursor-pointer rounded-md transition-colors ${
                 activePeriod === period
-                  ? "bg-quaternary-navy-blue text-primary-navy-blue dark:bg-dark-700 dark:text-white"
-                  : "text-gray-400 hover:text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-dark-700"
+                  ? "bg-[var(--active-background-color)] text:white "
+                  : "text-gray-400  hover:text-gray-600 hover:bg-gray-50   "
               }`}
             >
               {period}
