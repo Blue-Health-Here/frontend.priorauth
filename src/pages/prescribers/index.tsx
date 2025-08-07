@@ -119,7 +119,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
         practice_address: item.prescriberAddress,
         prescriber_fax: item.prescriberFax,
         prescriber_phone: item.prescriberPhone,
-        pharmacy_name,
+        pharmacy_name: "Apex LTC Pharmacy",
         prescriber_npi: item.npi,
       };
       const formData = new FormData();
@@ -131,7 +131,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
         setLoadingGenerateCPA(true);
         axios
           .post(
-            "https://backend.bluehealthhere.com/service-agreement",
+            import.meta.env.VITE_API_OLD_URL + "/service-agreement",
             formData,
             {
               responseType: "blob",
