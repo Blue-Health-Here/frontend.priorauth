@@ -71,18 +71,14 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ pharmacy }) => {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-quaternary-navy-blue p-4">
+    <div className="bg-primary-white rounded-lg border border-input-stroke p-4">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-medium text-primary-black">Summary</h3>
 
         <div className="relative" ref={dropdownRef}>
           <button
             type="button"
-            className="inline-flex justify-between items-center px-4 py-2 text-sm font-medium rounded-xl border border-tabs-border bg-tabs-active-body "
-            style={{
-              boxShadow: "inset 0 0 0 3px white",
-              color: "#1E3A8A",
-            }}
+            className="inline-flex justify-between items-center px-4 py-2 text-sm font-medium rounded-lg text-tabs-text border border-tabs-border bg-tabs-active-body"
             onClick={toggleDropdown}
           >
             {selectedPeriod}
@@ -131,13 +127,17 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ pharmacy }) => {
 
       <div className="space-y-2">
         <SummaryItem
-          icon={<img src="/profile-email.svg" alt="Total" className="w-4 h-4" />}
+          icon={<div className="w-7 h-7 rounded-md bg-quaternary-navy-blue flex items-center justify-center">
+            <img src="/profile-email.svg" alt="Total" className="w-4 h-4" />
+          </div>}
           label="Total Requests"
           value={pharmacy.totalRequests.toString()}
           status="neutral"
         />
         <SummaryItem
-          icon={<img src="/approved.svg" alt="Approved" className="w-4 h-4" />}
+          icon={<div className="w-7 h-7 rounded-md bg-quaternary-navy-blue flex items-center justify-center">
+            <img src="/approved.svg" alt="Approved" className="w-4 h-4" />
+          </div>}
           label="Approved"
           value={`${pharmacy.approvedRequests}${
             pharmacy.approvalRate ? ` (${pharmacy.approvalRate}%)` : ""
@@ -145,13 +145,17 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ pharmacy }) => {
           status="approved"
         />
         <SummaryItem
-          icon={<img src="/denied.svg" alt="Denied" className="w-4 h-4" />}
+          icon={<div className="w-7 h-7 rounded-md bg-quaternary-navy-blue flex items-center justify-center">
+            <img src="/denied.svg" alt="Denied" className="w-4 h-4" />
+          </div>}
           label="Denied"
           value={pharmacy.deniedRequests.toString()}
           status="denied"
         />
         <SummaryItem
-          icon={<img src="/pending.svg" alt="Pending" className="w-4 h-4 bg-" />}
+          icon={<div className="w-7 h-7 rounded-md bg-quaternary-navy-blue flex items-center justify-center">
+            <img src="/pending.svg" alt="Pending" className="w-4 h-4 bg-" />
+          </div>}
           label="Pending"
           value={pharmacy.pendingRequests.toString()}
           status="pending"

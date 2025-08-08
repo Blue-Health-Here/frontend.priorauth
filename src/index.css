@@ -236,6 +236,11 @@
   /* Table Colors */
   --table-body-text: var(--black-700);
   --table-head-text: var(--stroke-900);
+  /* Dashboard Colors */
+  --border-color: var(--quaternary-navy-blue);
+   --active-background-color: var(--quaternary-navy-blue);
+   --period-selector-text:var(--primary-navy-blue);
+   --chart-requests: var(--bars-blue-med);
 
 
 }
@@ -350,13 +355,26 @@
   /* Table Colors */
   --table-body-text: var(--white-800);
   --table-head-text: var(--navy-blue-300);
+  /* Dahboard Colors */
+  --border-color: var(--dark-700);
+  --active-background-color: var(--dark-500);
+  --period-selector-text:var(--white-500);
+  --chart-requests: var(--bars-blue-dark);
+
+
 
 }
 
 @theme {
   /* Table Colors */
   --color-table-body-text: var(--table-body-text);
-  --color-table-head-text: var(--table-head-text)
+  --color-table-head-text: var(--table-head-text);
+
+  /* Dashboard Colors */
+  --color-border-color: var(--border-color);
+  --color-active-background-color: var(--active-background-color);
+  --color-period-selector-text: var(--period-selector-text);
+  --color-chart-requests: var(--chart-requests);
     /* Icon Group Colors */
     --color-icon-group-bg: var(--icon-group-bg);
   --color-icon-group-icon: var(--icon-group-icon);
@@ -694,7 +712,15 @@ body {
     scrollbar-width: thin;
     scrollbar-color: var(--navy-blue-dark-800) var(--dark-800);
   }
-
+  .totalrequests {
+    color:#fff
+  }
+.approved-vs-denied{
+  color:#fff
+}
+.with-cn-vs-without-cn{
+  color:#fff
+}
 
 
 }
@@ -892,6 +918,11 @@ a:focus {
   font-weight: 300;
 }
 
+.p-breadcrumb .p-breadcrumb-list li.p-menuitem-separator {
+  margin: 0;
+  padding: 0 10px;
+}
+
 .dark {
   .custom-paginator .p-datatable-tbody tr {
     background: transparent;
@@ -900,6 +931,16 @@ a:focus {
   .custom-paginator .p-datatable-table tr:hover {
     background: transparent !important;
   }
+  
+  .p-breadcrumb .p-breadcrumb-list li.p-menuitem-separator {
+    background: var(--dark-800);
+  }
+
+  .p-breadcrumb .p-breadcrumb-list li.p-menuitem-separator svg {
+    stroke: #fff;
+    background: var(--dark-800);
+  }
+
 }
 
 .custom-paginator>.p-datatable-wrapper>.p-datatable-table>.p-datatable-thead {
@@ -1072,3 +1113,4 @@ a:focus {
   text-transform: capitalize;
   transition: opacity 0.6s ease-in-out;
 }
+

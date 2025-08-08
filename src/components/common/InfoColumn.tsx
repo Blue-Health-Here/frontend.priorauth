@@ -19,7 +19,7 @@ const InfoColumn: React.FC<InfoColumnProps> = ({
   const { isDark } = useTheme();
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      {icon && <div className={`w-6 h-6 rounded-md flex items-center justify-center ${isDark ? "bg-navy-dark-blue-600 text-white-800" : isArchived ? "bg-input-disabled-bg" : "bg-icon-group-bg text-icon-group-icon"}`}>
+      {icon && <div className={`w-7 h-7 rounded-md flex items-center justify-center ${isDark ? "bg-navy-dark-blue-600 text-white-800" : isArchived ? "bg-input-disabled-bg" : "bg-icon-group-bg text-icon-group-icon"}`}>
         {icon}
       </div>}
       <div className="flex-1">

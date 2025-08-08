@@ -15,8 +15,11 @@ const StatCard: React.FC<StatCardProps> = ({ description, title, value, classNam
       onClick={() => {
         navigate(`/admin/${title.toLowerCase()}`);
       }}
-      className={`cursor-pointer group min-h-[140px] w-full flex flex-col justify-between gap-3 rounded-lg p-5 theme-shadow bg-primary-white transition-colors ${className}
-        transition-background duration-700 ease-in-out`}
+      className={`cursor-pointer group min-h-[140px] w-full flex flex-col justify-between gap-3 rounded-lg p-5 theme-shadow bg-primary-white transition-colors border ${className}
+        transition-all duration-700 ease-in-out`}
+      style={{ 
+        borderColor: 'var(--border-color)',
+      }}
     >
       <div className="font-secondary">
         <h3 className={`text-sm md:text-base ${title === "Today's Request" && 'text-white'} text-primary-black lg:text-lg font-semibold transition-colors duration-800 ease-in-out`}>
