@@ -181,7 +181,7 @@ export const getAllReqStatuses = async (dispatch: AppDispatch) => {
 };
 
 // Requests
-export const getAllPharmacyReqs = async (dispatch: AppDispatch, prescriberId?: string, userId?: string) => {
+export const getAllPharmacyReqs = async (dispatch: AppDispatch, prescriberId?: string, pharmacyId?: string, userId?: string) => {
     if (prescriberId) {
         return apiHandler(dispatch, 'get', `/pa_request/get_by_id/requests/prescriber/${prescriberId}`, {
             onSuccess: (data) => {
@@ -194,7 +194,20 @@ export const getAllPharmacyReqs = async (dispatch: AppDispatch, prescriberId?: s
             },
             errorMessage: "Requests not found."
         })
-    }
+    };
+    if (pharmacyId) {
+        return apiHandler(dispatch, 'get', `/pa_request/get_by_id/requests/user/${pharmacyId}`, {
+            onSuccess: (data) => {
+                dispatch(setRequestsData(data))
+            },
+            onError: (error) => {
+                if (error.status === 404) {
+                    dispatch(setRequestsData([]));
+                }
+            },
+            errorMessage: "Requests not found."
+        });
+    };
     return apiHandler(dispatch, 'get', `/pa_request/get_by_id/requests/user/${userId}`, {
         onSuccess: (data) => {
             dispatch(setRequestsData(data))

@@ -72,7 +72,7 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
+  // console.log(location, "locatio");
   const breadcrumbItems = generateBreadcrumbItems(location.pathname, location.state);
 
   return (

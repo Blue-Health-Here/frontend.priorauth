@@ -35,12 +35,13 @@ const PharmacyProfileCard: React.FC<PharmacyProfileCardProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const formatEmail = (email: string) => {
-    if (!email) return "-";
-    const atIndex = email.indexOf("@");
-    if (atIndex === -1) return email;
-    return `${email.substring(0, atIndex)}\n@${email.substring(atIndex + 1)}`;
-  };
+  // const formatEmail = (email: string) => {
+  //   if (!email) return "-";
+  //   const atIndex = email.indexOf("@");
+  //   if (atIndex === -1) return email;
+  //   return `${email.substring(0, atIndex)}\n@${email.substring(atIndex + 1)}`;
+  // };
+  console.log(pharmacy, "pharmacy");
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -60,25 +61,25 @@ const PharmacyProfileCard: React.FC<PharmacyProfileCardProps> = ({
   }, []);
 
   return (
-    <div className="bg-primary-white rounded-lg shadow-sm border border-quaternary-navy-blue p-6 relative">
-      {/* Profile label at top left */}
-      <div className="absolute top-4 left-4 text-lg font-medium text-primary-black">
-        Profile
+    <div className="bg-primary-white rounded-lg border border-input-stroke p-4 relative">
+      <div className="flex justify-between gap-4">
+        <div className="text-lg font-medium text-primary-black">
+          Profile
+        </div>
+
+        <div ref={dropdownRef} className="relative">
+          <button
+            type="button"
+            className="rounded-lg p-2 text-black cursor-pointer bg-tabs-active-body hover:bg-tabs-active-body"
+            onClick={toggleDropdown}
+          >
+            <BsThreeDotsVertical className="text-sm text-tabs-text" />
+          </button>
+          {isDropdownOpen && <ProfileToolTipDropdown />}
+        </div>
       </div>
 
-      {/* Dropdown button at top right */}
-      <div ref={dropdownRef} className="absolute top-4 right-4">
-        <button
-          type="button"
-          className="rounded-lg p-2 text-black cursor-pointer bg-tabs-active-body hover:bg-tabs-active-body"
-          onClick={toggleDropdown}
-        >
-          <BsThreeDotsVertical className="text-sm text-tabs-text" />
-        </button>
-        {isDropdownOpen && <ProfileToolTipDropdown />}
-      </div>
-
-      <div className="flex items-center mb-4 mt-9">
+      <div className="flex items-center py-4">
         <div className="w-14 h-14 rounded-full flex items-center justify-center mr-2 overflow-hidden">
           <img
             src={pharmacy.pictureUrl || "/pharmacy-profile-logo.svg"}
@@ -97,18 +98,18 @@ const PharmacyProfileCard: React.FC<PharmacyProfileCardProps> = ({
       <div className="grid grid-cols-2 gap-5">
         <InfoColumn
           icon={
-            <div className="w-6 h-6 rounded-md bg-quaternary-navy-blue flex items-center justify-center">
+            <div className="w-7 h-7 rounded-md bg-quaternary-navy-blue flex items-center justify-center">
               <img src="/profile-email.svg" alt="Email" className="w-4 h-4 text-white" />
             </div>
           }
           label="Email"
-          data={formatEmail(pharmacy.email)}
+          data={pharmacy.email}
           className="whitespace-pre-line"
         />
 
         <InfoColumn
           icon={
-            <div className="w-6 h-6 rounded-md bg-quaternary-navy-blue flex items-center justify-center">
+            <div className="w-7 h-7 rounded-md bg-quaternary-navy-blue flex items-center justify-center">
               <img src="/phone.svg" alt="Phone" className="w-4 h-4 text-white" />
             </div>
           }
@@ -118,7 +119,7 @@ const PharmacyProfileCard: React.FC<PharmacyProfileCardProps> = ({
 
         <InfoColumn
           icon={
-            <div className="w-6 h-6 rounded-md bg-quaternary-navy-blue flex items-center justify-center">
+            <div className="w-7 h-7 rounded-md bg-quaternary-navy-blue flex items-center justify-center">
               <img src="/prescribers.svg" alt="Prescribers" className="w-4 h-4 text-white" />
             </div>
           }
@@ -128,7 +129,7 @@ const PharmacyProfileCard: React.FC<PharmacyProfileCardProps> = ({
 
         <InfoColumn
           icon={
-            <div className="w-6 h-6 rounded-md bg-quaternary-navy-blue flex items-center justify-center">
+            <div className="w-7 h-7 rounded-md bg-quaternary-navy-blue flex items-center justify-center">
               <img src="/profile-location.svg" alt="Location" className="w-4 h-4 text-white" />
             </div>
           }
@@ -138,16 +139,12 @@ const PharmacyProfileCard: React.FC<PharmacyProfileCardProps> = ({
 
         <InfoColumn
           icon={
-            <div className="w-6 h-6 rounded-md bg-quaternary-navy-blue flex items-center justify-center">
+            <div className="w-7 h-7 rounded-md bg-quaternary-navy-blue flex items-center justify-center">
               <img src="/address.svg" alt="Address" className="w-4 h-4 text-white" />
             </div>
           }
           label="Full Address"
-          data={
-            `${pharmacy.address || ""}, ${pharmacy.city || ""}, ${
-              pharmacy.zipCode || ""
-            }`.trim() || "-"
-          }
+          data={`${pharmacy.address || "-"}`}
           className="col-span-2"
         />
       </div>

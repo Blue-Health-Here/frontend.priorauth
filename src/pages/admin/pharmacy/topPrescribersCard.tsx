@@ -1,11 +1,13 @@
 import React from 'react';
 import PrescriberRow from './prescriberRow';
+import ThemeButton from '@/components/common/ThemeButton';
+import { useNavigate } from 'react-router-dom';
 
 interface PrescriberData {
   id: string;
-  name: string;
+  prescriber: string;
   totalRequests: number;
-  imageUrl?: string;
+  pictureUrl?: string;
 }
 
 interface TopPrescribersCardProps {
@@ -13,23 +15,27 @@ interface TopPrescribersCardProps {
 }
 
 const TopPrescribersCard: React.FC<TopPrescribersCardProps> = ({ prescribers }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 py-3 h-full">
-      <div className="flex justify-between items-center mb-2">
+    <div className="bg-primary-white rounded-lg border border-input-stroke p-4 h-full">
+      <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-medium text-primary-black">Prescribers</h3>
-        <button 
+        <ThemeButton 
+          variant="tertiary"
+          onClick={() => navigate("/admin/prescribers")}
           className="text-primary-navy-blue border border-navy-blue-600 rounded-md px-2 py-1 text-xs hover:bg-navy-blue-50 transition-colors"
         >
           View All
-        </button>
+        </ThemeButton>
       </div>
-      <div className="space-y-1.5">
+      <div className="space-y-2 max-h-[260px] overflow-auto">
         {prescribers.map((prescriber) => (
           <PrescriberRow
             key={prescriber.id}
-            name={prescriber.name}
+            name={prescriber.prescriber}
             totalRequests={prescriber.totalRequests}
-            imageUrl={prescriber.imageUrl}
+            imageUrl={prescriber.pictureUrl}
           />
         ))}
       </div>

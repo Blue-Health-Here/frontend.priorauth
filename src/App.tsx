@@ -32,6 +32,7 @@ const UserSettingPage = lazy(() => import("./pages/admin/settings/user-setting")
 const NotificationScreen = lazy(() => import("./pages/admin/notifications"));
 const AdminRolesAndPermissions = lazy(() => import("./pages/permissions"));
 
+
 // Pharmacy
 const PharmacyLayout = lazy(() => import("./layouts/PharmacyLayout"));
 const PharmacyDashboard = lazy(() => import("./pages/pharmacy/dashboard"));

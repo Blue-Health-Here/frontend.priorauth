@@ -203,6 +203,14 @@ export const getAllUserPrescribers = async (dispatch: AppDispatch) => {
     })
 };
 
+// ============= Create New User  =============
+export const addNewUser = async (dispatch: AppDispatch, data: any) => {
+    return apiHandler(dispatch, 'post', '/user/add', {
+        data,
+        successMessage: "User has been created successfully!",
+    })
+};
+
 // ============= Get User Requests   =============
 export const getUserRequests = async (dispatch: AppDispatch, id?: string) => {
     return apiHandler(dispatch, 'get', '/pa_request/get_by_id/requests/user/' + id, {

@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom'; 
 import PharmacyRequests from '@/pages/pharmacy/requests';
 import PharmacyProfileCard from './pharmacyProfileCard';
 import SummaryCard from './summaryCard';
 import TopPrescribersCard from './topPrescribersCard';
+import toast from 'react-hot-toast';
+import { getAllPrescribers } from '@/services/pharmacyService';
+import { useDispatch } from 'react-redux';
 
 
 const PharmacyDetailScreen: React.FC = () => {
+  const [topPrescribers, setTopPrescribers] = useState([]);
   const { state } = useLocation();
   const pharmacyData = state?.pharmacyData;
   const { pharmacyId } = useParams();
+  const dispatch = useDispatch();
 
   if (!pharmacyData) {
     return <div>No pharmacy data available</div>;
@@ -23,28 +28,28 @@ const PharmacyDetailScreen: React.FC = () => {
     approvalRate: pharmacyData.approvalRate
   };
 
-  // Mock data for top prescribers - replace with your actual data
-  const topPrescribers = [
-    { id: '1', name: 'Dr. John Smith', totalRequests: 42 },
-    { id: '2', name: 'Dr. Sarah Johnson', totalRequests: 38 },
-    { id: '3', name: 'Dr. Michael Brown', totalRequests: 35 },
-    { id: '4', name: 'Dr. Emily Davis', totalRequests: 28 },
-    { id: '5', name: 'Dr. Robert Wilson', totalRequests: 25 },
-  ];
+  const fetchPharmacyPrescribers = async () => {
+    try {
+      const response = await getAllPrescribers(dispatch, pharmacyId);
+      if (response) {
+        setTopPrescribers(response);
+      }
+    } catch (error: any) {
+      toast.error(error?.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchPharmacyPrescribers();
+  }, []);
 
   return (
     <div className="space-y-6">
       {/* Cards row */}
-      <div className="flex flex-col md:flex-row gap-6">
-        <div className="flex-1 min-w-0">
-          <PharmacyProfileCard pharmacy={pharmacyData} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <SummaryCard pharmacy={summaryData} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <TopPrescribersCard prescribers={topPrescribers} />
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <PharmacyProfileCard pharmacy={pharmacyData} />
+        <SummaryCard pharmacy={summaryData} />
+        <TopPrescribersCard prescribers={topPrescribers} />
       </div>
       
       <PharmacyRequests pharmacyId={pharmacyId!} />

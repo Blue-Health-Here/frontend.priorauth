@@ -918,6 +918,11 @@ a:focus {
   font-weight: 300;
 }
 
+.p-breadcrumb .p-breadcrumb-list li.p-menuitem-separator {
+  margin: 0;
+  padding: 0 10px;
+}
+
 .dark {
   .custom-paginator .p-datatable-tbody tr {
     background: transparent;
@@ -926,6 +931,16 @@ a:focus {
   .custom-paginator .p-datatable-table tr:hover {
     background: transparent !important;
   }
+  
+  .p-breadcrumb .p-breadcrumb-list li.p-menuitem-separator {
+    background: var(--dark-800);
+  }
+
+  .p-breadcrumb .p-breadcrumb-list li.p-menuitem-separator svg {
+    stroke: #fff;
+    background: var(--dark-800);
+  }
+
 }
 
 .custom-paginator>.p-datatable-wrapper>.p-datatable-table>.p-datatable-thead {
@@ -1098,3 +1113,4 @@ a:focus {
   text-transform: capitalize;
   transition: opacity 0.6s ease-in-out;
 }
+
