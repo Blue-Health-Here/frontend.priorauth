@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -130,7 +130,8 @@ const MedicationWiseChart = () => {
           font: {
             size: isMobile ? 10 : 12,
           },
-          callback: function(value, index) {
+          callback: function(value: any, index) {
+            console.log(value, "value");
             const label = this.getLabelForValue(index);
             return isMobile 
               ? (label.length > 4 ? `${label.substring(0, 4)}..` : label)
