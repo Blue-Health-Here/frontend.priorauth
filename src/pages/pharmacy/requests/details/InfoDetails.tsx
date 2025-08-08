@@ -17,9 +17,15 @@ const InfoDetails: React.FC<any> = ({ requestDetails, isAdmin }) => {
     const createRequestInfoTabs = () => {
         return details.length > 0 && details.map((tab: any) => {
             return (
-                <AccordionTab key={tab.label} header={(
-                    <CardHeader title={tab.label} className="rounded-lg" />
-                )}>
+                <AccordionTab 
+                    key={tab.label} 
+                    header={(
+                        <div className="border border-quaternary-navy-blue rounded-t-lg">
+                            <CardHeader title={tab.label} className="rounded-t-lg" />
+                        </div>
+                    )}
+                    contentClassName="border border-t-0 border-quaternary-navy-blue rounded-b-lg"
+                >
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                         {tab.data.map((row: any, rowIndex: any) => (
                             <div
