@@ -1,180 +1,217 @@
 import { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartOptions,
+  ChartData,
 } from "chart.js";
 import { timeRanges } from "@/utils/constants";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const MedicationWiseChart = () => {
-    const [range, setRange] = useState("Today");
-    const [isMobile, setIsMobile] = useState(false);
+  const [range, setRange] = useState("Today");
+  const [isMobile, setIsMobile] = useState(false);
+  const [theme, setTheme] = useState(
+    document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+  );
 
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth < 640); // Only check for mobile
-        };
-        
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    const datasetsByRange: any = {
-        Today: [
-            [1802, 1701, 1600, 1402, 1320, 910],
-            [1390, 1010, 1520, 1086, 954, 812],
-        ],
-        W: [
-            [1200, 1100, 1000, 900, 800, 700],
-            [1000, 900, 950, 850, 750, 650],
-        ],
-        M: [
-            [5000, 4700, 4500, 4200, 4100, 3900],
-            [4500, 4400, 4300, 4100, 4000, 3800],
-        ],
-        Y: [
-            [55000, 53000, 51000, 49000, 47000, 45000],
-            [52000, 51000, 50000, 47000, 46000, 44000],
-        ],
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640);
     };
 
-    const [requests, approved] = datasetsByRange[range];
+    const observer = new MutationObserver(() => {
+      setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
 
-    const data = {
-        labels: [
-            "SLYND 4 MG O...",
-            "ZEPBOUND 2.5...",
-            "VOQUEZNA 2...",
-            "SLYND 4MG TA...",
-            "NURTEC ODT 7...",
-            "XIFAXAN 550M...",
-        ],
-        datasets: [
-            {
-                label: "Requests",
-                backgroundColor: "#007AFF",
-                data: requests,
-                borderRadius: { topLeft: 8, topRight: 8 },
-            },
-            {
-                label: "Approved",
-                backgroundColor: "#5CE543",
-                data: approved,
-                borderRadius: { topLeft: 8, topRight: 8 },
-            },
-        ],
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", handleResize);
     };
+  }, []);
 
-    const options: any = {
-        responsive: true,
-        maintainAspectRatio: true,
-        scales: {
-            x: {
-                grid: {
-                    display: false,
-                },
-                border: {
-                    display: false,
-                },
-                ticks: {
-                    display: true,
-                    autoSkip: false,
-                    maxRotation: 0,
-                    minRotation: 0,
-                    padding: 10,
-                    callback: function(this: any, value: string | number, index: number) {
-                        const label = typeof value === 'number' 
-                            ? this.chart.data.labels?.[index] || ''
-                            : value;
-                        
-                        // More aggressive truncation for mobile only
-                        if (isMobile) {
-                            return label.length > 4 ? `${label.substring(0, 4)}..` : label;
-                        }
-                        // Keep original for tablet and desktop
-                        return label.length > 10 ? `${label.substring(0, 10)}...` : label;
-                    },
-                    font: {
-                        size: isMobile ? 10 : 12 // Only change font size for mobile
-                    }
-                },
-                barThickness: 30, // Keep original for all screens
-                categoryPercentage: 0.8,
-                barPercentage: 0.9,
-            },
-            y: {
-                grid: {
-                    display: true,
-                    drawTicks: false,
-                },
-                border: {
-                    display: false,
-                },
-                ticks: {
-                    stepSize: 500,
-                    callback: function(value: string | number) {
-                        return Number(value).toString();
-                    },
-                    padding: 10,
-                },
-                beginAtZero: true,
-            },
+  const datasetsByRange: Record<string, [number[], number[]]> = {
+    Today: [
+      [1802, 1701, 1600, 1402, 1320, 910],
+      [1390, 1010, 1520, 1086, 954, 812],
+    ],
+    W: [
+      [1200, 1100, 1000, 900, 800, 700],
+      [1000, 900, 950, 850, 750, 650],
+    ],
+    M: [
+      [5000, 4700, 4500, 4200, 4100, 3900],
+      [4500, 4400, 4300, 4100, 4000, 3800],
+    ],
+    Y: [
+      [55000, 53000, 51000, 49000, 47000, 45000],
+      [52000, 51000, 50000, 47000, 46000, 44000],
+    ],
+  };
+
+  const [requests, approved] = datasetsByRange[range];
+
+  const getThemeColor = () => theme === 'dark' ? '#0160c8' : '#007AFF';
+  const getApprovedColor = () => theme === 'dark' ? '#1FC001' : '#5CE543';
+
+  const labels = [
+    "SLYND 4 MG O...",
+    "ZEPBOUND 2.5...",
+    "VOQUEZNA 2...",
+    "SLYND 4MG TA...",
+    "NURTEC ODT 7...",
+    "XIFAXAN 550M...",
+  ];
+
+  const data: ChartData<"bar"> = {
+    labels,
+    datasets: [
+      {
+        label: "Requests",
+        backgroundColor: getThemeColor(),
+        borderColor: getThemeColor(),
+        borderWidth: 0,
+        hoverBackgroundColor: getThemeColor(),
+        data: requests,
+        borderRadius: 8,
+      },
+      {
+        label: "Approved",
+        backgroundColor: getApprovedColor(),
+        borderColor: getApprovedColor(),
+        borderWidth: 0,
+        hoverBackgroundColor: getApprovedColor(),
+        data: approved,
+        borderRadius: 8,
+      },
+    ],
+  };
+
+  const options: ChartOptions<"bar"> = {
+    responsive: true,
+    maintainAspectRatio: true,
+    scales: {
+      x: {
+        grid: {
+          display: false,
         },
-        plugins: {
-            legend: { 
-                position: 'top',
-                align: 'start',
-                labels: {
-                    boxWidth: 12,
-                    padding: 10,
-                    usePointStyle: true,
-                    pointStyle: 'rect',
-                }
-            },
-            title: { display: false },
-            tooltip: {
-                callbacks: {
-                    label: function(context: any) {
-                        return `${context.dataset.label}: ${context.parsed.y}`;
-                    }
-                }
-            }
+        border: {
+          display: false,
         },
-    };
+        ticks: {
+          display: true,
+          autoSkip: false,
+          maxRotation: 0,
+          minRotation: 0,
+          padding: 10,
+          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666',
+          font: {
+            size: isMobile ? 10 : 12,
+          },
+          callback: function(value: any, index) {
+            console.log(value, "value");
+            const label = this.getLabelForValue(index);
+            return isMobile 
+              ? (label.length > 4 ? `${label.substring(0, 4)}..` : label)
+              : (label.length > 10 ? `${label.substring(0, 10)}...` : label);
+          },
+        },
+      },
+      y: {
+        grid: {
+          display: true,
+          drawTicks: false,
+          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+        },
+        border: {
+          display: false,
+        },
+        ticks: {
+          stepSize: 500,
+          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666',
+          padding: 10,
+        },
+        beginAtZero: true,
+      },
+    },
+    plugins: {
+      legend: {
+        position: "top",
+        align: "start",
+        labels: {
+          boxWidth: 12,
+          padding: 10,
+          usePointStyle: true,
+          pointStyle: "rect",
+          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666',
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `${context.dataset.label}: ${context.parsed.y}`,
+        },
+        backgroundColor: theme === 'dark' ? '#1E293B' : '#ffffff',
+        titleColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.9)' : '#333333',
+        bodyColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#333333',
+        borderColor: theme === 'dark' ? '#475569' : '#e2e8f0',
+      },
+    },
+    datasets: {
+      bar: {
+        categoryPercentage: 0.8,
+        barPercentage: 0.9,
+      },
+    },
+  };
 
-    return (
-        <div className="bg-primary-white rounded-2xl p-4 theme-shadow w-full">
-            <div className="flex justify-between items-center">
-                <h2 className="text-lg font-semibold">Medication wise Analysis</h2>
-                <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5">
-                    {timeRanges.map((period) => (
-                        <button
-                            key={period}
-                            type='button'
-                            onClick={() => setRange(period)}
-                            className={`px-3 py-2 cursor-pointer rounded-md transition-colors ${range === period
-                                ? 'bg-quaternary-navy-blue text-primary-navy-blue'
-                                : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
-                                }`}
-                        >
-                            {period}
-                        </button>
-                    ))}
-                </div>
-            </div>
-            <div className="w-full h-[calc(100%-50px)]">
-                <Bar data={data} options={options} />
-            </div>
+  return (
+    <div className="bg-primary-white rounded-2xl p-4 theme-shadow w-full border" style={{ borderColor: "var(--border-color)" }}>
+      <div className="flex justify-between items-center">
+        <h2 className="text-lg font-semibold">Medication wise Analysis</h2>
+        <div className="flex space-x-2 text-xs border rounded-lg p-0.5" style={{ borderColor: "var(--border-color)" }}>
+          {timeRanges.map((period) => (
+            <button
+              key={period}
+              type="button"
+              onClick={() => setRange(period)}
+              className={`px-3 py-2 cursor-pointer rounded-md transition-colors ${
+                range === period
+                  ? 'bg-[var(--active-background-color)]'
+                  : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"
+              }`}
+            >
+              {period}
+            </button>
+          ))}
         </div>
-    );
+      </div>
+      <div className="medication-chart w-full h-[calc(100%-50px)]">
+        <Bar data={data} options={options} />
+      </div>
+    </div>
+  );
 };
 
 export default MedicationWiseChart;
