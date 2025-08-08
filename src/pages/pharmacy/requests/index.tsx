@@ -36,7 +36,7 @@ import PortalSession from "./PortalSession";
 import { handleFetchPortalStatus, handleSessionCleanup, handleStartPortal } from "@/services/portalService";
 import RequestDetailsSideDrawer from "./RequestDetailsSideDrawer";
 
-const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, pharmacyId, inviteCode }) => {
+const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, pharmacyId, inviteCode }) => {
 
   const { reqStatusesData } = useSelector(
     (state: RootState) => state.reqStatuses
@@ -46,10 +46,8 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, pharmacyId, in
   const [requestsData, setRequestsData] = useState<any>([]);
   const navigate = useNavigate();
   const location = useLocation();
-
   const prescriberName = location.state?.prescriberName || null;
-  console.log(inviteCode, "inviteCode");
-  // New state for status filter
+
   const [selectedStatusFilter, setSelectedStatusFilter] = useState<
     string | null
   >(null);
@@ -411,7 +409,8 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, pharmacyId, in
         <div className="flex justify-between items-center">
           <RequestTitle
             isAdmin={isAdmin}
-            prescriber={prescriberName || (prescriberId ? "Prescriber Requests" : null)}
+            showBackArrow={!pharmacyName}
+            prescriber={pharmacyName || prescriberName || (prescriberId ? "Prescriber Requests" : null)}
           />
           <button
             onClick={() => setIsModalOpen(true)}
@@ -750,8 +749,9 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, pharmacyId, in
 
         <div className="hidden md:flex justify-between gap-4 items-center pb-2 h-14 flex-wrap">
           <RequestTitle
-            isAdmin={isAdmin} inviteCode={inviteCode}
-            prescriber={prescriberName || (prescriberId ? "Prescriber Requests" : null)}
+            isAdmin={isAdmin} inviteCode={inviteCode} 
+            showBackArrow={!pharmacyName}
+            prescriber={pharmacyName || prescriberName || (prescriberId ? "Prescriber Requests" : null)}
           />
           {!prescriberId && (
             <div className="inline-flex h-full gap-2 sm:ml-auto">

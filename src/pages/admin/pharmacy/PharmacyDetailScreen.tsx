@@ -52,7 +52,7 @@ const PharmacyDetailScreen: React.FC = () => {
         <TopPrescribersCard prescribers={topPrescribers} />
       </div>
       
-      <PharmacyRequests pharmacyId={pharmacyId!} />
+      <PharmacyRequests pharmacyName={pharmacyData?.firstName} pharmacyId={pharmacyId!} />
     </div>
   );
 };

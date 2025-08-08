@@ -24,6 +24,7 @@ interface PrescriberCardProps {
     prescriberAddress: string;
     prescriberCity: string;
     isArchived: boolean;
+    active?: boolean;
   };
   isAdmin: boolean;
   onArchiveToggle: (id: any, status: boolean) => void;
@@ -37,8 +38,8 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
   prescriber,
   isAdmin,
   onArchiveToggle,
-  onModify, 
-  onGenerateCPA, 
+  onModify,
+  onGenerateCPA,
   loadingGenerateCPA,
   onInviteClick
 }) => {
@@ -145,9 +146,9 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
           />
           <InfoColumn
             icon={<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12.6666 4.33398L5.66659 11.6673L3.33325 9.33398" 
-                stroke={isDark ? "#fff" : !prescriber.isActive ? "#525252" : "#3961B2"} 
-                strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M12.6666 4.33398L5.66659 11.6673L3.33325 9.33398"
+                stroke={isDark ? "#fff" : !prescriber.isActive ? "#525252" : "#3961B2"}
+                strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>}
             label="Approved"
             data={`${approvedPercentage}%`}
@@ -168,14 +169,13 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
         </div>
       </div>
       <div className="flex justify-end gap-2 p-4 border-t border-quaternary-navy-blue">
-        
-<Link 
-  to={pageLink} 
-  state={{ prescriberName: prescriber.prescriber }} // Add this line
->
-  <ThemeButton variant="tertiary">View</ThemeButton>
-</Link>
-        {!prescriber.isActive && (
+        <Link
+          to={pageLink}
+          state={{ prescriberName: prescriber.prescriber }}
+        >
+          <ThemeButton variant="tertiary">View</ThemeButton>
+        </Link>
+        {!prescriber.isActive || !prescriber.active && (
           <ThemeButton
             variant="primary"
             className="bg-primary-navy-blue text-primary-white"
