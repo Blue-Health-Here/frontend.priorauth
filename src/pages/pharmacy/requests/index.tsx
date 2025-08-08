@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import FilterField from "@/components/common/FilterField";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import ThemeButton from "@/components/common/ThemeButton";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AddRequestModal from "./AddRequestModal";
 import {
   getAllPharmacyReqs,
@@ -36,7 +36,7 @@ import PortalSession from "./PortalSession";
 import { handleFetchPortalStatus, handleSessionCleanup, handleStartPortal } from "@/services/portalService";
 import RequestDetailsSideDrawer from "./RequestDetailsSideDrawer";
 
-const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) => {
+const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, pharmacyId, inviteCode }) => {
 
   const { reqStatusesData } = useSelector(
     (state: RootState) => state.reqStatuses
@@ -198,10 +198,10 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
       if (isAdmin) {
         await Promise.all([
           getAllReqStatuses(dispatch),
-          getAllPharmacyReqs(dispatch, prescriberId, user?.id),
+          getAllPharmacyReqs(dispatch, prescriberId, pharmacyId, user?.id),
         ]);
       } else {
-        await getAllPharmacyReqs(dispatch, prescriberId, user?.id);
+        await getAllPharmacyReqs(dispatch, prescriberId, pharmacyId, user?.id);
       }
     } finally {
       setIsLoading(false);
@@ -272,7 +272,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
         paStatus: value.name,
         notes: null,
       });
-      await getAllPharmacyReqs(dispatch, prescriberId, user?.id);
+      await getAllPharmacyReqs(dispatch, prescriberId, pharmacyId, user?.id);
     } catch (error: any) {
       toast.error(error?.message);
     }
@@ -313,7 +313,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
 
     try {
       await updateRequestNotes(dispatch, data.id, { notes: data.notes });
-      await getAllPharmacyReqs(dispatch, prescriberId);
+      await getAllPharmacyReqs(dispatch, prescriberId, pharmacyId, user?.id);
 
       setRequestsData((prevData: any[]) =>
         prevData.map((item: any) =>
@@ -628,7 +628,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) 
         />
       )}
 
-      <div className="bg-primary-white rounded-lg theme-datatable theme-shadow px-4 py-4">
+      <div className="bg-primary-white rounded-lg theme-datatable theme-shadow border border-input-stroke px-4 py-4">
 
         {isModalOpen && (
           <AddRequestModal

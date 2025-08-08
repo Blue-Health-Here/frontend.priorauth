@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom'; 
 import PharmacyRequests from '@/pages/pharmacy/requests';
 import PharmacyProfileCard from './pharmacyProfileCard';
 import SummaryCard from './summaryCard';
 import TopPrescribersCard from './topPrescribersCard';
+import toast from 'react-hot-toast';
+import { getAllPrescribers } from '@/services/pharmacyService';
+import { useDispatch } from 'react-redux';
 
 
 const PharmacyDetailScreen: React.FC = () => {
+  const [topPrescribers, setTopPrescribers] = useState([]);
   const { state } = useLocation();
   const pharmacyData = state?.pharmacyData;
   const { pharmacyId } = useParams();
+  const dispatch = useDispatch();
 
   if (!pharmacyData) {
     return <div>No pharmacy data available</div>;
@@ -23,14 +28,20 @@ const PharmacyDetailScreen: React.FC = () => {
     approvalRate: pharmacyData.approvalRate
   };
 
-  // Mock data for top prescribers - replace with your actual data
-  const topPrescribers = [
-    { id: '1', name: 'Dr. John Smith', totalRequests: 42 },
-    { id: '2', name: 'Dr. Sarah Johnson', totalRequests: 38 },
-    { id: '3', name: 'Dr. Michael Brown', totalRequests: 35 },
-    { id: '4', name: 'Dr. Emily Davis', totalRequests: 28 },
-    { id: '5', name: 'Dr. Robert Wilson', totalRequests: 25 },
-  ];
+  const fetchPharmacyPrescribers = async () => {
+    try {
+      const response = await getAllPrescribers(dispatch, pharmacyId);
+      if (response) {
+        setTopPrescribers(response);
+      }
+    } catch (error: any) {
+      toast.error(error?.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchPharmacyPrescribers();
+  }, []);
 
   return (
     <div className="space-y-6">
