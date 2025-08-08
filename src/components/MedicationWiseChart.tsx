@@ -8,6 +8,8 @@ import {
   Title,
   Tooltip,
   Legend,
+  ChartOptions,
+  ChartData,
 } from "chart.js";
 import { timeRanges } from "@/utils/constants";
 
@@ -32,7 +34,6 @@ const MedicationWiseChart = () => {
       setIsMobile(window.innerWidth < 640);
     };
 
-    // Theme observer
     const observer = new MutationObserver(() => {
       setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
     });
@@ -51,7 +52,7 @@ const MedicationWiseChart = () => {
     };
   }, []);
 
-  const datasetsByRange: any = {
+  const datasetsByRange: Record<string, [number[], number[]]> = {
     Today: [
       [1802, 1701, 1600, 1402, 1320, 910],
       [1390, 1010, 1520, 1086, 954, 812],
@@ -72,25 +73,20 @@ const MedicationWiseChart = () => {
 
   const [requests, approved] = datasetsByRange[range];
 
-  // Get the correct color based on current theme
-  const getThemeColor = () => {
-    return theme === 'dark' ? '#0160c8' : '#007AFF';
-  };
+  const getThemeColor = () => theme === 'dark' ? '#0160c8' : '#007AFF';
+  const getApprovedColor = () => theme === 'dark' ? '#1FC001' : '#5CE543';
 
-  // Get the correct approved color based on theme
-  const getApprovedColor = () => {
-    return theme === 'dark' ? '#1FC001' : '#5CE543';
-  };
+  const labels = [
+    "SLYND 4 MG O...",
+    "ZEPBOUND 2.5...",
+    "VOQUEZNA 2...",
+    "SLYND 4MG TA...",
+    "NURTEC ODT 7...",
+    "XIFAXAN 550M...",
+  ];
 
-  const data = useMemo(() => ({
-    labels: [
-      "SLYND 4 MG O...",
-      "ZEPBOUND 2.5...",
-      "VOQUEZNA 2...",
-      "SLYND 4MG TA...",
-      "NURTEC ODT 7...",
-      "XIFAXAN 550M...",
-    ],
+  const data: ChartData<"bar"> = {
+    labels,
     datasets: [
       {
         label: "Requests",
@@ -99,7 +95,7 @@ const MedicationWiseChart = () => {
         borderWidth: 0,
         hoverBackgroundColor: getThemeColor(),
         data: requests,
-        borderRadius: { topLeft: 8, topRight: 8 },
+        borderRadius: 8,
       },
       {
         label: "Approved",
@@ -108,12 +104,12 @@ const MedicationWiseChart = () => {
         borderWidth: 0,
         hoverBackgroundColor: getApprovedColor(),
         data: approved,
-        borderRadius: { topLeft: 8, topRight: 8 },
+        borderRadius: 8,
       },
     ],
-  }), [requests, approved, theme]); // Add theme to dependencies
+  };
 
-  const options: any = {
+  const options: ChartOptions<"bar"> = {
     responsive: true,
     maintainAspectRatio: true,
     scales: {
@@ -130,23 +126,17 @@ const MedicationWiseChart = () => {
           maxRotation: 0,
           minRotation: 0,
           padding: 10,
-          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666', // 80% opacity white
+          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666',
           font: {
             size: isMobile ? 10 : 12,
-            weight: theme === 'dark' ? 'normal' : 'normal', // Remove bold in dark mode
           },
-          callback: function (value: string | number, index: number) {
-            const label = typeof value === "number"
-              ? this.chart.data.labels?.[index] || ""
-              : value;
+          callback: function(value, index) {
+            const label = this.getLabelForValue(index);
             return isMobile 
               ? (label.length > 4 ? `${label.substring(0, 4)}..` : label)
               : (label.length > 10 ? `${label.substring(0, 10)}...` : label);
           },
         },
-        barThickness: 30,
-        categoryPercentage: 0.8,
-        barPercentage: 0.9,
       },
       y: {
         grid: {
@@ -159,13 +149,7 @@ const MedicationWiseChart = () => {
         },
         ticks: {
           stepSize: 500,
-          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666', // 80% opacity white
-          font: {
-            weight: theme === 'dark' ? 'normal' : 'normal', // Remove bold in dark mode
-          },
-          callback: function (value: string | number) {
-            return Number(value).toString();
-          },
+          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666',
           padding: 10,
         },
         beginAtZero: true,
@@ -180,38 +164,32 @@ const MedicationWiseChart = () => {
           padding: 10,
           usePointStyle: true,
           pointStyle: "rect",
-          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666', // 80% opacity white
-          font: {
-            weight: theme === 'dark' ? 'normal' : 'normal', // Remove bold in dark mode
-          },
+          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666',
         },
       },
-      title: { display: false },
       tooltip: {
         callbacks: {
-          label: function (context: any) {
-            return `${context.dataset.label}: ${context.parsed.y}`;
-          },
+          label: (context) => `${context.dataset.label}: ${context.parsed.y}`,
         },
         backgroundColor: theme === 'dark' ? '#1E293B' : '#ffffff',
-        titleColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.9)' : '#333333', // Slightly transparent
-        bodyColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#333333', // More transparent
+        titleColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.9)' : '#333333',
+        bodyColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#333333',
         borderColor: theme === 'dark' ? '#475569' : '#e2e8f0',
+      },
+    },
+    datasets: {
+      bar: {
+        categoryPercentage: 0.8,
+        barPercentage: 0.9,
       },
     },
   };
 
   return (
-    <div
-      className="bg-primary-white rounded-2xl p-4 theme-shadow w-full border"
-      style={{ borderColor: "var(--border-color)" }}
-    >
+    <div className="bg-primary-white rounded-2xl p-4 theme-shadow w-full border" style={{ borderColor: "var(--border-color)" }}>
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold">Medication wise Analysis</h2>
-        <div
-          className="flex space-x-2 text-xs border rounded-lg p-0.5"
-          style={{ borderColor: "var(--border-color)" }}
-        >
+        <div className="flex space-x-2 text-xs border rounded-lg p-0.5" style={{ borderColor: "var(--border-color)" }}>
           {timeRanges.map((period) => (
             <button
               key={period}
