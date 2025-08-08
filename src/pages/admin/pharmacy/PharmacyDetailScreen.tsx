@@ -33,6 +33,8 @@ const PharmacyDetailScreen: React.FC = () => {
       const response = await getAllPrescribers(dispatch, pharmacyId);
       if (response) {
         setTopPrescribers(response);
+      } else {
+        setTopPrescribers([]);
       }
     } catch (error: any) {
       toast.error(error?.message);

@@ -30,14 +30,18 @@ const TopPrescribersCard: React.FC<TopPrescribersCardProps> = ({ prescribers }) 
         </ThemeButton>
       </div>
       <div className="space-y-2 max-h-[260px] overflow-auto">
-        {prescribers.map((prescriber) => (
+        {prescribers?.length > 0 ? prescribers.map((prescriber) => (
           <PrescriberRow
             key={prescriber.id}
             name={prescriber.prescriber}
             totalRequests={prescriber.totalRequests}
             imageUrl={prescriber.pictureUrl}
           />
-        ))}
+        )) : (
+          <div className="text-left text-gray-500 text-sm">
+            No prescribers found
+          </div>
+        )}
       </div>
     </div>
   );
