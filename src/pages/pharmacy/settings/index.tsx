@@ -45,7 +45,7 @@ const PharmacySettings = () => {
 
   const loadProfileData = async () => {
     try {
-      const data = await fetchProfileData(dispatch);
+      const data = await fetchProfileData(dispatch, user?.id);
       return data;
     } catch (error) {
       console.error("Failed to fetch profile data:", error);
@@ -63,10 +63,10 @@ const PharmacySettings = () => {
               name: data.userName || "-",
               joinedDate: data.joinedDate?.split("T")[0] || "-",
               lastRequest: data.lastRequestDate?.split("T")[0] || "-",
-              phoneNumber: data.phoneNumber || "-",
+              phoneNumber: data.phoneNumber || data.phone || "-",
               email: data.email || "-",
               location: data.location || "-",
-              fullAddress: data.fullAddress || "-",
+              fullAddress: data.fullAddress || data.address || "-",
               approvedRequests: data.approvedRequestCount?.toString() || "0",
               deniedRequests: data.deniedRequestCount?.toString() || "0",
               prescribers: data.prescriberCount?.toString() || "0",
