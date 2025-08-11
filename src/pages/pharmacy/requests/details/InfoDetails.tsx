@@ -40,9 +40,9 @@ const InfoDetails: React.FC<any> = ({ requestDetails, isAdmin }) => {
 
     return (
         <div className="sm:col-span-1 lg:col-span-2 space-y-4">
-            {requestDetails && <div className="p-4 rounded-xl border border-quaternary-navy-blue lg:sticky lg:top-6">
+            {requestDetails && <div className="p-4 rounded-xl border border-body-stroke lg:sticky lg:top-6">
                 {/* Modified grid for mobile (2 columns) and desktop (3 columns) */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-header">
                     {[
                         { label: "DOS", value: requestDetails.createdAt?.split("T")[0] || '-' },
                         { label: "CMM Key", value: requestDetails?.key },
@@ -52,10 +52,10 @@ const InfoDetails: React.FC<any> = ({ requestDetails, isAdmin }) => {
                         if (typeof item === 'object') {
                             return (
                                 <div key={index}>
-                                    <p className="text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                    <p className="text-[12px] sm:text-xs font-semibold text-header-text uppercase tracking-wider">
                                         {item.label}
                                     </p>
-                                    <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">{item.value}</p>
+                                    <p className="text-[12px] sm:text-sm font-medium text-header-text mt-1">{item.value}</p>
                                 </div>
                             );
                         }
@@ -64,7 +64,7 @@ const InfoDetails: React.FC<any> = ({ requestDetails, isAdmin }) => {
                 </div>
             </div>}
             <Accordion multiple activeIndex={[0]} 
-                collapseIcon={<LiaAngleUpSolid className="w-4 h-4 text-primary-black absolute right-3" />} 
+                collapseIcon={<LiaAngleUpSolid className=" w-4 h-4 text-primary-black absolute right-3" />} 
                 expandIcon={<LiaAngleDownSolid className="w-4 h-4 text-primary-black absolute right-3" />} 
                 className='theme-accordion'>
                 {createRequestInfoTabs()}

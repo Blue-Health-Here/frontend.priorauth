@@ -155,7 +155,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
         <RequestDetailsContent initialTab="Status & Notes"
           onClose={() => setIsDrawerOpen(false)} isAdmin={isAdmin} />
       </SideDrawer>
-      <div className="p-4 bg-primary-white rounded-xl theme-shadow relative">
+      <div className="p-4 bg-primary-white border border-body-stroke rounded-xl theme-shadow relative">
         {isLoading ? (
           <Loading />
         ) : (
@@ -164,7 +164,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
               prescriberId={prescriberId} inviteCode={inviteCode} />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="col-span-1 lg:col-span-2 space-y-4">
-                <div className="bg-primary-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
+                <div className="bg-primary-white rounded-xl overflow-hidden border border-body-stroke">
                   <CardHeader title="Status" />
                   <StatusTimeline
                     isAdmin={isAdmin}
@@ -196,7 +196,7 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
                   title="Progress Notes"
                   handleOpenProgressNotesModal={handleOpenProgressNotesModal}
                 />
-                <div className="bg-primary-white rounded-xl border border-quaternary-navy-blue relative overflow-hidden">
+                <div className="bg-primary-white rounded-xl border border-body-stroke relative overflow-hidden">
                   <CardHeader title="Other Files" />
                   <div className="p-4 flex flex-col gap-4 relative">
                     <div className="inline-flex flex-col gap-2">
@@ -248,10 +248,10 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
                           removeFile={(id: any) => removeFile(id)}
                           handleAddTag={handleAddTag}
                         />
-                        <ThemeButton className="flex items-center justify-center gap-2 sm:mx-auto mt-2" variant="tertiary">
+                        <ThemeButton className="flex items-center justify-center gap-2 sm:mx-auto mt-2 " variant="tertiary">
                           <span className="flex items-center gap-2 text-xs">
                             View All
-                            <img src="/view-all.svg" alt="View All" className="w-4 h-4" />
+                            <img src="/view-all.svg" alt="View All" className="view-all w-4 h-4" />
                           </span>
                         </ThemeButton>
                       </div>

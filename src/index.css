@@ -237,6 +237,17 @@
   --table-body-text: var(--black-700);
   --table-head-text: var(--stroke-900);
 
+  --body-stroke: var(--quaternary-navy-blue);
+  --header-text: var(--primary-black);
+  --button-bg: var(--primary-navy-blue);
+  --button-text: var(--primary-white);
+  --check-notes-text: var(--primary-navy-blue);
+  --tag-bg: var(--quaternary-navy-blue);
+  --upload-files-border: var(--quaternary-navy-blue-dark);
+  --revision-history-bg: var(--primary-background);
+  --revision-history-border: var(--light-stroke);
+  --back-button-bg: var(--secondary-background);
+
 
 }
 
@@ -351,6 +362,18 @@
   --table-body-text: var(--white-800);
   --table-head-text: var(--navy-blue-300);
 
+  --body-stroke: var(--dark-700);
+  --header-text: #fffff;
+  --button-bg: var(--link-active);
+  --button-text: var(--primary-white);
+  --blue-navigation-link-button: #007aff;
+  --check-notes-text: var(#fffff);
+  --tag-bg: var(--navy-dark-blue-600);
+  --upload-files-border: var(--dark-700);
+  --revision-history-bg: var(--dark-750);
+  --revision-history-border: var(--dark-500);
+  --back-button-bg: var(--dark-600);
+
 }
 
 @theme {
@@ -360,6 +383,17 @@
     /* Icon Group Colors */
     --color-icon-group-bg: var(--icon-group-bg);
   --color-icon-group-icon: var(--icon-group-icon);
+
+  --color-body-stroke: var(--body-stroke);
+  --color-header-text: var(--header-text);
+  --color-button-bg: var(--button-bg);
+  --color-check-notes-text: var(--check-notes-text);
+  --color-tag-bg : var(--tag-bg);
+  --color-upload-files-border: var(--upload-files-border);
+  --color-revision-history-bg: var(--revision-history-bg);
+  --color-revision-history-border: var(--revision-history-border);
+  --color-back-button-bg: var(--back-button-bg);
+
 
   /* Buttons Colors */
   --color-btn-primary-bg: var(--btn-primary-bg);
@@ -694,9 +728,36 @@ body {
     scrollbar-width: thin;
     scrollbar-color: var(--navy-blue-dark-800) var(--dark-800);
   }
-
-
-
+  .accordion{
+    background: var(--black-900);
+  }
+  .comments-button{
+    color:#FFEFEF
+  }
+  .comments-section{
+    background: var(--dark-700);
+  }
+  .p-accordion-content{
+    background: var(--dark-800);
+  }
+  .check-notes,.upload-files{
+    color: #ffffff
+  }
+  .file-tag{
+    color: #ffffff
+  }
+  .view-all , .upload-file, .revision-files{
+      filter: brightness(0) invert(1); 
+  }
+ .back-button{
+  background: #24262B;
+ }
+ .submit-progress-notes{
+  background: #00216D;
+ }
+ .p-accordion-header-text{
+  color: #ffffff
+ }
 }
 
 .dark {

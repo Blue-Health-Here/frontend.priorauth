@@ -27,7 +27,7 @@ const RequestTitle: React.FC<RequestTitleProps> = ({ isAdmin, prescriber, invite
           onClick={() => navigate(isAdmin ? "/admin/prescribers" : "/pharmacy/prescribers")} 
           src='/header-left-logo-arrow.svg'
           alt='header left logo arrow' 
-          className={`w-8 h-8 bg-gray-100 p-2 rounded-lg cursor-pointer`} 
+          className={`back-button w-8 h-8 bg-gray-100 p-2 rounded-lg cursor-pointer`} 
         />
       )}
       <span>
