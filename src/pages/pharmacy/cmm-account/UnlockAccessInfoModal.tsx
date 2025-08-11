@@ -59,7 +59,7 @@ const UnlockAccessInfoModal: React.FC<UnlockAccessInfoModalProps> = ({ isOpen, o
                                 <div className="mb-4 p-4">
                                     <label
                                         htmlFor="password"
-                                        className="block text-sm text-[#7A7A7A] mb-1"
+                                        className="block text-sm text-quaternary-white mb-1"
                                     >
                                         Password
                                     </label>
