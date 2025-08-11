@@ -123,7 +123,7 @@ const RequestDetails: React.FC = () => {
             </div>
             <div className="space-y-6 px-4 pb-4 pt-6">
               <div className="border-l-2 border-gray-300 pl-3">
-                <span className="inline-block bg-secondary-background text-sm font-medium text-[#7A7A7A] px-3 py-1 rounded-md">
+                <span className="inline-block bg-secondary-background text-sm font-medium text-quaternary-white px-3 py-1 rounded-md">
                   Process Appeal
                 </span>
               </div>
@@ -163,7 +163,7 @@ const RequestDetails: React.FC = () => {
             </div>
             <div className="p-4">
               <div className="mb-2">
-                <p className="text-sm font-medium text-[#7A7A7A]">Notes</p>
+                <p className="text-sm font-medium text-quaternary-white">Notes</p>
               </div>
               <textarea
                 className="w-full h-32 p-3 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -177,7 +177,7 @@ const RequestDetails: React.FC = () => {
               <h3 className="text-sm sm:text-md font-semibold text-gray-800">Files</h3>
             </div>
             <div className="p-4 space-y-4">
-              <p className="text-sm font-medium text-[#7A7A7A]">Upload</p>
+              <p className="text-sm font-medium text-quaternary-white">Upload</p>
 
               <div className="border border-gray-300 rounded-lg p-2 sm:p-4 text-center ">
                 <p className="text-sm text-gray-500">
@@ -228,7 +228,7 @@ const RequestDetails: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <p className="text-sm text-[#7A7A7A]">
+                <p className="text-sm text-quaternary-white">
                   Fax Form To Be Signed By MD
                 </p>
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
@@ -257,7 +257,7 @@ const RequestDetails: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <p className="text-sm text-[#7A7A7A]">
+                <p className="text-sm text-quaternary-white">
                   Letter of Medical Necessity
                 </p>
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">

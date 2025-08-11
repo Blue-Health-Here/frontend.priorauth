@@ -21,7 +21,7 @@ export const inputStyles = {
   contactInput:
     "w-full bg-transparent border-b border-primary-white py-2 text-primary-white placeholder-primary-white font-secondary focus:outline-none focus:border-primary-white placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base",
   defaultInput:
-    "w-full h-10 border border-light-stroke rounded-lg px-4 pr-12 font-secondary text-primary-black text-sm font-medium placeholder:text-tertiary-black placeholder:text-sm focus:outline-none focus:border-gray-400 transition-colors duration-200",
+    "w-full h-10 border border-light-stroke rounded-lg px-4 pr-12 font-secondary text-primary-black text-sm font-medium placeholder:text-tertiary-black placeholder:text-sm focus:outline-none transition-colors duration-200",
 };
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -112,7 +112,7 @@ const InputField: React.FC<InputFieldProps> = ({
             setIsFocused(false);
             field.onBlur(e);
           }}
-          className={`w-full h-[40px] border rounded-lg px-4 font-secondary text-primary-black text-sm font-medium placeholder:text-[#9E9E9E] placeholder:text-sm focus:outline-none ${className}`}
+          className={`w-full h-[40px] border rounded-lg px-4 font-secondary border-input-stroke text-primary-black text-sm font-medium placeholder:text-[#9E9E9E] placeholder:text-sm focus:outline-none ${className}`}
         />
 
         {meta.touched && meta.error && (

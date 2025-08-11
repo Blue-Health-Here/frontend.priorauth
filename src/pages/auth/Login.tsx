@@ -8,14 +8,15 @@ import { signInValidationSchema } from "../../utils/validationSchema";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { submitLogin } from "../../services/authService";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+import ThemeButton from "@/components/common/ThemeButton";
+import { useTheme } from "@/hooks/useTheme";
 
 const Login: React.FC = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [loginError, setLoginError] = useState<boolean>(false);
-  const [showPassword, setShowPassword] = useState<boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isDark } = useTheme();
 
   const handleSubmit = async (values: FormikValues) => {
     try {
@@ -38,7 +39,7 @@ const Login: React.FC = () => {
           <div className="mt-10 mb-5 w-max">
             <Link to="/" className="w-max">
               <img
-                src="/images/updated-logo.svg"
+                src={isDark ? "/icons/logo-login-light.svg" : "/images/updated-logo.svg"}
                 alt="Prior Auth Support Logo"
                 className="h-12 sm:h-14 md:h-12 w-max"
               />
@@ -50,7 +51,7 @@ const Login: React.FC = () => {
             </h1>
             <p
               className={`text-xs sm:text-sm md:text-base font-secondary ${
-                loginError ? "text-[#FF2E37]" : "text-secondary-black"
+                loginError ? "text-error-clip" : "text-secondary-black"
               }`}
             >
               {loginError
@@ -65,10 +66,10 @@ const Login: React.FC = () => {
           >
             {() => (
               <Form>
-                <div className="mb-6">
+                <div className="mb-4">
                   <label
                     htmlFor="userName"
-                    className="block text-sm text-[#7A7A7A] mb-1"
+                    className="block text-sm text-quaternary-white mb-1"
                   >
                     Username
                   </label>
@@ -77,48 +78,26 @@ const Login: React.FC = () => {
                     type="text"
                     placeholder="Enter username"
                     variant="FloatingLabel"
-                    className={`w-full max-w-[466px] h-[40px] border ${
-                      loginError ? "border-[#FF2E37]" : "border-[#EBEBEB]"
-                    } rounded-lg px-4 text-gray-900 placeholder:text-[#9E9E9E] placeholder:text-sm focus:outline-none ${
-                      loginError ? "border-[#FF2E37]" : ""
-                    }`}
+                    className="w-full"
                   />
                 </div>
 
                 <div className="mb-4">
                   <label
                     htmlFor="password"
-                    className="block text-sm text-[#7A7A7A] mb-1"
+                    className="block text-sm text-quaternary-white mb-1"
                   >
                     Password
                   </label>
-                  <div className="relative w-full max-w-[466px]">
-                    <InputField
-                      name="password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter password"
-                      variant="FloatingLabel"
-                      className={`w-full h-[40px] border ${
-                        loginError ? "border-[#FF2E37]" : "border-[#EBEBEB]"
-                      } rounded-lg px-4 pr-10 text-gray-900 placeholder:text-[#9E9E9E] placeholder:text-sm focus:outline-none ${
-                        loginError ? "border-[#FF2E37]" : ""
-                      }`}
-                    />
-                    <button
-                      type="button"
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? (
-                        <FiEyeOff size={18} className="text-[#525252]" />
-                      ) : (
-                        <FiEye size={15} className="text-[#525252]" />
-                      )}
-                    </button>
-                  </div>
+                  <InputField
+                    name="password"
+                    isPassword={true}
+                    placeholder="Enter your password"
+                    className="!px-4 !py-2 w-full"
+                  />
                 </div>
 
-                <div className="flex items-center justify-between mb-8 w-full max-w-[466px]">
+                <div className="flex items-center justify-between mb-8 w-full">
                   <label
                     htmlFor="remember"
                     className="inline-flex items-center cursor-pointer"
@@ -140,13 +119,8 @@ const Login: React.FC = () => {
                   </Link>
                 </div>
 
-                <div className="flex justify-center mb-6">
-                  <button
-                    type="submit"
-                    className="w-full max-w-[360px] cursor-pointer text-xs sm:text-sm bg-primary-navy-blue text-white py-3.5 rounded-lg"
-                  >
-                    Login
-                  </button>
+                <div className="flex justify-center mb-4">
+                  <ThemeButton variant="primary" type="submit" className="max-w-[360px] !py-3.5 cursor-pointer sm:min-w-[400px]">Login</ThemeButton>
                 </div>
 
                 <div className="text-center text-xs sm:text-sm md:text-base text-secondary-black">
@@ -161,7 +135,7 @@ const Login: React.FC = () => {
         </div>
       </div>
 
-      <div className="hidden md:block w-1/2 p-10 bg-[#EBF1FF]">
+      <div className="hidden md:block w-1/2 p-10 bg-tabs-active-body">
         <img
           src="/images/contact-section.png"
           alt="Hands holding each other"
