@@ -98,7 +98,12 @@ const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescriber }
       const response = await handleSendInvite(dispatch, data);
       if (response) {
         toast.success(response.message);
-        setIsSent(true);
+        navigator.clipboard.writeText(response.inviteLink);
+        if (activeTab === "By Link") {
+          onClose();
+        } else {
+          setIsSent(true);
+        }
       }
     } catch (error: any) {
       toast.error(error?.message);
@@ -195,14 +200,14 @@ const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescriber }
                     <ThemeButton
                       onClick={onClose}
                       type="button"
-                      className="w-24 border border-quaternary-navy-blue text-primary-navy-blue"
-                      variant="outline"
+                      className="w-24 cursor-pointer"
+                      variant="tertiary"
                     >
                       Cancel
                     </ThemeButton>
                     <ThemeButton
                       type="submit"
-                      className={`w-24 whitespace-nowrap overflow-hidden text-ellipsis ${
+                      className={`min-w-24 whitespace-nowrap overflow-hidden text-ellipsis ${
                         !values.password ? 'text-quaternary-white' : ''
                       }`}
                       variant="primary"
@@ -211,7 +216,7 @@ const InviteLinkModal: React.FC<InviteLinkModalProps> = ({ onClose, prescriber }
                         backgroundColor: !values.password ? "var(--secondary-background)" : ""
                       }}
                     >
-                      {activeTab === "By Link" ? "Send Invite" : "Send Invite"}
+                      {activeTab === "By Link" ? "Save & Copy Link" : "Send Invite"}
                     </ThemeButton>
                   </div>
                 </Form>

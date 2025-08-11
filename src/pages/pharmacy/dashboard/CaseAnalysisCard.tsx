@@ -18,6 +18,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 const CaseAnalysisCard = () => {
     const [range, setRange] = useState("Y");
     const [screenSize, setScreenSize] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
+    const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
     useEffect(() => {
         const handleResize = () => {
@@ -31,9 +32,24 @@ const CaseAnalysisCard = () => {
             }
         };
 
+        // Theme detection
+        const checkTheme = () => {
+            setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        };
+
+        const observer = new MutationObserver(checkTheme);
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+
         handleResize();
+        checkTheme();
         window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        return () => {
+            observer.disconnect();
+            window.removeEventListener('resize', handleResize);
+        };
     }, []);
 
     const datasetsByRange: any = {
@@ -49,7 +65,7 @@ const CaseAnalysisCard = () => {
         datasets: [
             {
                 label: "Denial",
-                backgroundColor: "#FF4040",
+                backgroundColor: theme === 'dark' ? '#D30000' : '#FF4040',
                 data: denied,
                 barThickness: screenSize === 'mobile' ? 12 : screenSize === 'tablet' ? 30 : 90,
                 categoryPercentage: screenSize === 'mobile' ? 0.6 : screenSize === 'tablet' ? 0.8 : 1,
@@ -57,7 +73,7 @@ const CaseAnalysisCard = () => {
             },
             {
                 label: "Plan Exclusion",
-                backgroundColor: "#F9A538",
+                backgroundColor: theme === 'dark' ? '#CE7500' : '#F9A538',
                 data: planExclusion,
                 barThickness: screenSize === 'mobile' ? 12 : screenSize === 'tablet' ? 30 : 90,
                 categoryPercentage: screenSize === 'mobile' ? 0.6 : screenSize === 'tablet' ? 0.8 : 1,
@@ -65,7 +81,7 @@ const CaseAnalysisCard = () => {
             },
             {
                 label: "Approval",
-                backgroundColor: "#5CE543",
+                backgroundColor: theme === 'dark' ? '#1FC001' : '#5CE543',
                 data: approved,
                 barThickness: screenSize === 'mobile' ? 12 : screenSize === 'tablet' ? 30 : 90,
                 categoryPercentage: screenSize === 'mobile' ? 0.6 : screenSize === 'tablet' ? 0.8 : 1,
@@ -83,11 +99,13 @@ const CaseAnalysisCard = () => {
                 stacked: true,
                 grid: {
                     display: false,
+                    color: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : undefined,
                 },
                 border: {
                     display: false,
                 },
                 ticks: {
+                    color: theme === 'dark' ? 'rgba(255, 255, 255, 0.7)' : '#666',
                     font: {
                         size: screenSize === 'mobile' ? 10 : screenSize === 'tablet' ? 11 : 12,
                     },
@@ -100,12 +118,13 @@ const CaseAnalysisCard = () => {
                 stacked: true,
                 grid: {
                     display: true,
+                    color: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : undefined,
                 },
                 border: {
                     display: false,
                 },
                 ticks: {
-                    color: "#666",
+                    color: theme === 'dark' ? 'rgba(255, 255, 255, 0.7)' : '#666',
                     font: {
                         size: screenSize === 'mobile' ? 10 : 12,
                     },
@@ -117,6 +136,7 @@ const CaseAnalysisCard = () => {
                 position: 'top',
                 align: 'start',
                 labels: {
+                    color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : undefined,
                     boxWidth: 12,
                     padding: 20,
                     usePointStyle: true,
@@ -130,6 +150,12 @@ const CaseAnalysisCard = () => {
                     }
                 }
             },
+            tooltip: {
+                backgroundColor: theme === 'dark' ? '#1E293B' : '#FFFFFF',
+                titleColor: theme === 'dark' ? '#FFFFFF' : '#333333',
+                bodyColor: theme === 'dark' ? '#FFFFFF' : '#333333',
+                borderColor: theme === 'dark' ? '#475569' : '#E2E8F0',
+            }
         },
         layout: {
             padding: {
@@ -140,18 +166,22 @@ const CaseAnalysisCard = () => {
     };
 
     return (
-        <div className="bg-primary-white rounded-2xl p-4 theme-shadow w-full">
+        <div className="bg-primary-white dark:bg-dark-800 rounded-2xl p-4 theme-shadow w-full border"
+            style={{ 
+                borderColor: 'var(--border-color)'
+            }}
+        >
             <div className="flex justify-between items-center mb-2">
-                <h2 className="text-lg font-semibold">Case Analysis</h2>
-                <div className="flex space-x-2 text-xs border border-quaternary-navy-blue rounded-lg p-0.5">
+                <h2 className="text-lg font-semibold dark:text-gray-200">Case Analysis</h2>
+                <div className="flex space-x-2 text-xs border border-quaternary-navy-blue dark:border-gray-600 rounded-lg p-0.5">
                     {["W", "M", "Y"].map((period) => (
                         <button
                             key={period}
                             type='button'
                             onClick={() => setRange(period)}
                             className={`px-3 py-2 cursor-pointer rounded-md transition-colors ${range === period
-                                    ? 'bg-quaternary-navy-blue text-primary-navy-blue'
-                                    : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
+                                    ? 'bg-[var(--active-background-color)]'
+                                    : 'text-gray-400 dark:text-gray-300 hover:text-gray-600 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
                                 }`}
                         >
                             {period}

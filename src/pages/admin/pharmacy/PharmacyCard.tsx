@@ -46,21 +46,21 @@ const PharmacyCard: React.FC<PharmacyCardProps> = ({
     : `/pharmacy/pharmacies/${pharmacy.id}/pharmacy-details`;
 
   const handleViewClick = async (e: React.MouseEvent) => {
-  e.preventDefault();
-  try {
-    await getUserRequests(dispatch, pharmacy.id);
-    navigate(pageLink, {
-      state: { 
-        pharmacyData: pharmacy // Pass the entire pharmacy object
-      }
-    });
-  } catch (error) {
-    console.error("Failed to fetch user requests:", error);
-    navigate(pageLink, {
-      state: { pharmacyData: pharmacy } // Still pass data even if API fails
-    });
-  }
-};
+    e.preventDefault();
+    try {
+      await getUserRequests(dispatch, pharmacy.id);
+      navigate(pageLink, {
+        state: {
+          pharmacyData: pharmacy // Pass the entire pharmacy object
+        }
+      });
+    } catch (error) {
+      console.error("Failed to fetch user requests:", error);
+      navigate(pageLink, {
+        state: { pharmacyData: pharmacy } // Still pass data even if API fails
+      });
+    }
+  };
   return (
     <div className="bg-primary-white rounded-lg relative border border-quaternary-navy-blue w-full">
       <div className="p-4">
@@ -81,7 +81,7 @@ const PharmacyCard: React.FC<PharmacyCardProps> = ({
 
           <button
             type='button'
-            className="rounded-lg p-2 text-black cursor-pointer bg-tabs-active-body hover:bg-tabs-active-body flex-shrink-0" 
+            className="rounded-lg p-2 text-black cursor-pointer bg-tabs-active-body hover:bg-tabs-active-body flex-shrink-0"
             onClick={onModify}
           >
             <BsThreeDotsVertical className="text-sm text-tabs-text" />
@@ -145,7 +145,7 @@ const PharmacyCard: React.FC<PharmacyCardProps> = ({
         </div>
       </div>
       <div className="flex justify-end gap-2 p-4 border-t border-quaternary-navy-blue">
-        <ThemeButton 
+        <ThemeButton
           variant="tertiary"
           onClick={handleViewClick}
         >

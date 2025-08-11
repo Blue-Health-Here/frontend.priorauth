@@ -15,13 +15,13 @@ const PrescribersViewOnly: React.FC<any> = () => {
 
     useEffect(() => {
         // @ts-ignore
-        const user: any | null = JSON.parse(localStorage?.getItem("user"));
-        if (!user?.token && !user.inviteCode) {
-            // Do nothing or handle unauthorized state if needed
-            return;
-        } else {
+        // const user: any | null = JSON.parse(localStorage?.getItem("user"));
+        // if (!user?.token && !user.inviteCode) {
+        //     // Do nothing or handle unauthorized state if needed
+        //     return;
+        // } else {
             setShowModal(true);
-        }
+        // }
     }, []);
 
     const handleSubmit = async (values: any) => {

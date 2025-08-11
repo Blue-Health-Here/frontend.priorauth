@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ThemeButton from '@/components/common/ThemeButton';
 
 interface SettingsCardProps {
@@ -10,6 +10,7 @@ interface SettingsCardProps {
 }
 
 const SettingsCard: React.FC<SettingsCardProps> = ({ icon, title, description, path }) => {
+    const navigate = useNavigate();
     return (
         <div className="bg-primary-white rounded-lg p-4 border border-light-stroke h-full flex flex-col gap-4">
             <div className="bg-information-chip-bg-color rounded-lg w-20 h-20 flex items-center justify-center">
@@ -27,10 +28,8 @@ const SettingsCard: React.FC<SettingsCardProps> = ({ icon, title, description, p
                     {description}
                 </p>
             </div>
-            <div className="mt-auto">
-                <Link to={path} className='w-20'>
-                    <ThemeButton className="px-6" variant="secondary">View More</ThemeButton>
-                </Link>
+            <div>
+                <ThemeButton onClick={() => navigate(path)} className="px-6 !h-11" variant="secondary">View More</ThemeButton>
             </div>
         </div>
     );

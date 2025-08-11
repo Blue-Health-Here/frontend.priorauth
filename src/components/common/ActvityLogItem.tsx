@@ -52,9 +52,9 @@ const ActivityLogItem: React.FC<ActivityLogItemProps> = ({
 
             <div className="flex-1">
                 <div className="flex items-baseline gap-2">
-                    <p className="text-sm text-body-text">{actor || action}</p>
-                    {actor && <span className="text-sm text-[#7A7A7A]">{action}</span>}
-                    <span className="text-xs text-[#7A7A7A] ml-auto">{timestamp}</span>
+                    <p className="text-sm text-[#1E1E1E]">{actor || action}</p>
+                    {actor && <span className="text-sm text-quaternary-white">{action}</span>}
+                    <span className="text-xs text-quaternary-white ml-auto">{timestamp}</span>
                 </div>
 
                 {(statusBadges || file || notes || info) && (

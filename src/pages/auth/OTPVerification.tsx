@@ -106,7 +106,7 @@ const OTPVerification: React.FC = () => {
               ) : (
                 <p className="text-[#A3A3A3] text-sm">
                   Your link expires in{" "}
-                  <span className="text-[#7A7A7A]">14:59</span>
+                  <span className="text-quaternary-white">14:59</span>
                 </p>
               )}
             </div>

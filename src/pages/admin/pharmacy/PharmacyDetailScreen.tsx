@@ -33,6 +33,8 @@ const PharmacyDetailScreen: React.FC = () => {
       const response = await getAllPrescribers(dispatch, pharmacyId);
       if (response) {
         setTopPrescribers(response);
+      } else {
+        setTopPrescribers([]);
       }
     } catch (error: any) {
       toast.error(error?.message);
@@ -52,7 +54,7 @@ const PharmacyDetailScreen: React.FC = () => {
         <TopPrescribersCard prescribers={topPrescribers} />
       </div>
       
-      <PharmacyRequests pharmacyId={pharmacyId!} />
+      <PharmacyRequests pharmacyName={pharmacyData?.firstName} pharmacyId={pharmacyId!} />
     </div>
   );
 };
