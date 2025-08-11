@@ -758,6 +758,9 @@ body {
  .p-accordion-header-text{
   color: #ffffff
  }
+ .label-text{
+  color:#ffffff
+ }
 }
 
 .dark {

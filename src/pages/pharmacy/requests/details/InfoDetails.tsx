@@ -52,7 +52,7 @@ const InfoDetails: React.FC<any> = ({ requestDetails, isAdmin }) => {
                         if (typeof item === 'object') {
                             return (
                                 <div key={index}>
-                                    <p className="text-[12px] sm:text-xs font-semibold text-header-text uppercase tracking-wider">
+                                    <p className="label-text text-[12px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                         {item.label}
                                     </p>
                                     <p className="text-[12px] sm:text-sm font-medium text-header-text mt-1">{item.value}</p>
