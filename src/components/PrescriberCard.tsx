@@ -175,7 +175,7 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
         >
           <ThemeButton variant="tertiary">View</ThemeButton>
         </Link>
-        {!prescriber.isActive || !prescriber.active && (
+        {(!prescriber.isActive || !prescriber.active) && prescriber.isArchived && (
           <ThemeButton
             variant="primary"
             className="bg-primary-navy-blue text-primary-white"

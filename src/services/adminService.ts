@@ -129,8 +129,8 @@ const apiHandler = async <T = any>(
 
 // ============= Dashboard & Profile =============
 
-export const fetchProfileData = async (dispatch: AppDispatch) => {
-    return apiHandler(dispatch, 'get', '/auth/profile', {
+export const fetchProfileData = async (dispatch: AppDispatch, userId?: string) => {
+    return apiHandler(dispatch, 'get', `/user/get_by_id/${userId}`, {
         successMessage: "Profile has fetched successfully!",
         onSuccess: (data) => {
             dispatch(setProfileData(data))
