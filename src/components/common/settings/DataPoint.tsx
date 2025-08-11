@@ -22,17 +22,17 @@ export default function DataPoint({
     const [field, meta] = useField(name)
 
     return (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 ">
             {icon && (
                 <div 
-                    className="w-8 h-8 rounded-md flex items-center justify-center p-0.5"
-                    style={{ backgroundColor: '#EBF1FF' }} 
+                    className="w-8 h-8 rounded-md flex items-center justify-center p-0.5 bg-settings-info-icons-bg"
+                 
                 >
                     {icon}
                 </div>
             )}
             <div className="flex-1">
-                {label && <p className="text-sm text-muted-foreground text-[#525252]">{label}</p>}
+                {label && <p className="text-sm text-muted-foreground text-settings-info-label-text">{label}</p>}
                 {isEditing ? (
                     <>
                         <div className="max-w-full sm:w-[456px]">

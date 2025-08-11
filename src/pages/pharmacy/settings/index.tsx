@@ -128,7 +128,7 @@ const PharmacySettings = () => {
   }
 
   return (
-    <div className="bg-primary-white rounded-xl theme-shadow">
+    <div className="bg-primary-white rounded-xl theme-shadow border border-border-color">
       <div className="px-6 pt-6">
         <h1 className="text-xl font-medium tracking-tighter">
           Profile Settings

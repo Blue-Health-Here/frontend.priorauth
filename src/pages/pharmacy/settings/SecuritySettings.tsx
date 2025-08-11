@@ -42,7 +42,7 @@ const SecuritySettings = ({ userId }: { userId: string }) => {
   };
 
   return (
-    <div className="bg-primary-white rounded-lg border border-[#CBDAFF] p-3 sm:p-4">
+    <div className="bg-primary-white rounded-lg border border-border-color p-3 sm:p-4">
       <h3 className="text-base font-semibold text-foreground mb-4">
         Security Settings
       </h3>
@@ -80,11 +80,11 @@ const SecuritySettings = ({ userId }: { userId: string }) => {
             <Form onSubmit={handleSubmit}>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-md bg-[#EBF1FF] flex items-center justify-center p-1">
+                  <div className="w-8 h-8 rounded-md bg-settings-info-icons-bg flex items-center justify-center p-1">
                     <img
                       src="/Vector (13).svg"
                       alt="Password"
-                      className="w-5 h-5"
+                      className="settings-button w-5 h-5"
                     />
                   </div>
                   <div>
@@ -98,7 +98,7 @@ const SecuritySettings = ({ userId }: { userId: string }) => {
                   <button
                     type="button"
                     onClick={() => setIsEditing(true)}
-                    className="flex items-center justify-center bg-[#EBF1FF] text-[#163066] text-sm font-semibold rounded-lg px-2.5 py-2 min-w-[120px] sm:min-w-0 sm:px-4 whitespace-nowrap transition-colors hover:bg-[#EBF1FF]/90"
+                    className="flex items-center justify-center bg-settings-button-bg text-settings-button-text text-sm font-semibold rounded-lg px-2.5 py-2 min-w-[120px] sm:min-w-0 sm:px-4 whitespace-nowrap transition-colors hover:bg-[#EBF1FF]/90"
                   >
                     Change Password
                   </button>
