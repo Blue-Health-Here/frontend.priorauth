@@ -91,7 +91,7 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
   };
 
   return (
-    <div className="border border-quaternary-navy-blue rounded-xl p-2.5 relative">
+    <div className="border border-body-stroke rounded-xl p-2.5 relative">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <img
@@ -124,7 +124,7 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
               </div>
             )}
             {file.tag && (
-              <div className="px-2 py-1 mt-1 w-max rounded-lg text-xs font-medium bg-quaternary-navy-blue text-secondary-navy-blue truncate">
+              <div className="file-tag px-2 py-1 mt-1 w-max rounded-lg text-xs font-medium bg-tag-bg text-secondary-navy-blue truncate">
                 {file.tag}
               </div>
             )}

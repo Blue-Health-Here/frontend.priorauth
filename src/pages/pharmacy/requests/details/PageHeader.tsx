@@ -32,12 +32,12 @@ const PageHeader: React.FC<any> = ({ requestDetails, isAdmin, prescriberId, invi
 
     return (
         <div className="flex justify-between items-center flex-wrap gap-4 mb-4">
-            <h2 className="text-lg font-bold text-gray-800 inline-flex gap-2 items-center">
+            <h2 className="text-lg font-bold text-header-text inline-flex gap-2 items-center">
                 {!inviteCode && <img 
                     onClick={() => navigate(inviteCode ? `/pharmacy/prescriber-invite/${prescriberId}/${inviteCode}` : isAdmin ? "/admin/requests" : "/pharmacy/requests")} 
                     src='/header-left-logo-arrow.svg'
                     alt='header left logo arrow' 
-                    className="w-8 h-8 bg-gray-100 p-2 rounded-lg cursor-pointer" 
+                    className="back-button w-8 h-8 bg-gray-100 p-2 rounded-lg cursor-pointer" 
                 />}
                 <span>{requestDetails && requestDetails.patientName}</span>
             </h2>
@@ -46,7 +46,7 @@ const PageHeader: React.FC<any> = ({ requestDetails, isAdmin, prescriberId, invi
                     {/* Desktop Buttons - hidden on mobile */}
                     <div className="hidden sm:flex gap-3 self-end sm:self-auto flex-wrap">
                         <ThemeButton className="h-full min-h-12" variant="secondary">Open Portal</ThemeButton>
-                        <ThemeButton className="h-full min-h-12 !flex gap-2 items-center" variant="primary">
+                        <ThemeButton className="submit-progress-notes h-full min-h-12 !flex gap-2 items-center bg-button-bg" variant="primary">
                             <span>Submit Progress Notes</span>
                             <img src="/images/next-arrow.svg" alt="next arrow" className="" loading="lazy" />
                         </ThemeButton>

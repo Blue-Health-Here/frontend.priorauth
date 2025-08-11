@@ -26,9 +26,9 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({ isAdmin }) => {
       >
         <RequestDetailsContent isAdmin={isAdmin} />
       </SideDrawer>
-      <div className="w-full rounded-lg border border-quaternary-navy-blue">
+      <div className="w-full rounded-lg border border-body-stroke">
         {/* Header row - adjusted button width */}
-        <div className="flex items-center justify-between p-3 border-b border-quaternary-navy-blue">
+        <div className="flex items-center justify-between p-3 border-b border-body-stroke">
           <h2 className="text-base font-medium">Comments</h2>
           <ThemeButton
             type="button"

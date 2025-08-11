@@ -106,7 +106,7 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
   return (
     <>
       {!inviteCode && (
-        <div className="bg-primary-white rounded-xl overflow-hidden border border-quaternary-navy-blue">
+        <div className="bg-primary-white rounded-xl overflow-hidden border border-body-stroke">
           {title && <CardHeader title={title} />}
           {!isAnalysisComplete && !isAnalysisStarted && uploadedFiles.length === 0 && (
             <div className="p-4">
@@ -298,7 +298,7 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
                     {uploadedFiles.map((file) => (
                       <div
                         key={file.id}
-                        className="border border-quaternary-navy-blue rounded-lg p-2 hover:shadow-sm transition-shadow"
+                        className="border border-body-stroke rounded-lg p-2 hover:shadow-sm transition-shadow"
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2 min-w-0">
@@ -338,13 +338,13 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
                     <button
                       type="button"
                       onClick={handleUploadClick}
-                      className="border border-quaternary-navy-blue-dark text-primary-navy-blue rounded-lg px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm hover:bg-gray-50 transition-colors flex items-center justify-center gap-1 sm:gap-2 font-medium"
+                      className="upload-files border border-upload-files-border text-check-notes-text rounded-lg px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm hover:bg-gray-50 transition-colors flex items-center justify-center gap-1 sm:gap-2 font-medium"
                     >
                       Upload Files
                       <img
                         src="/upload-files.svg"
                         alt="Upload icon"
-                        className="w-3.5 h-3.5 sm:w-4 sm:h-4"
+                        className="w-3.5 h-3.5 sm:w-4 sm:h-4 upload-file"
                       />
                     </button>
 
