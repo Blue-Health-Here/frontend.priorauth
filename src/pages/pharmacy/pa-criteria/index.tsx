@@ -43,7 +43,7 @@ const PharmacyPACriteria = () => {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
             <div className="bg-primary-white theme-shadow border border-quaternary-navy-blue p-4 rounded-lg flex flex-col gap-4 sm:col-span-1 xl:col-span-2 max-h-[300px] sm:max-h-content">
-                <h1 className="text-xl font-medium tracking-tighter">Get PA Criteria</h1>
+                <h1 className="text-xl font-medium tracking-tighter">Fetch PA Criteria</h1>
                 <PACriteriaForm handleSubmit={handleSubmit} />
             </div>
             {isLoading ? (
