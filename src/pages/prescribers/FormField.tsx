@@ -11,20 +11,25 @@ const FormField: React.FC<any> = ({
   name, 
   value, 
   className = '',
-  iconBgColor = 'bg-quaternary-navy-blue',
+  iconBgColor = 'bg-settings-info-icons-bg',
   inputComponent: InputComponent = InputField,
   ...inputProps 
 }) => {
   return (
-    <div className={`space-y-2 ${className}`}>
-      <div className="flex items-start gap-3"> {/* Changed from items-center to items-start */}
-        <div className={`${iconBgColor} rounded-md p-1.5`}> {/* Added mt-[2px] */}
-          <img src={iconSrc} alt={iconAlt} className="w-5 h-5" />
+    <div className="space-y-2"> {/* Removed className from this container */}
+      <div className="flex items-start gap-3">
+        <div className={`${iconBgColor} rounded-md p-1.5`}>
+          <img src={iconSrc} alt={iconAlt} className="settings-button w-5 h-5" />
         </div>
-        <Label className="text-quaternary-white text-sm font-normal -mt-[1px]">{label}</Label> {/* Added -mt-[1px] */}
+        <Label className="text-settings-info-label-text text-sm font-normal -mt-[1px]">{label}</Label>
       </div>
-      <div className="ml-12 -mt-2">
-        <InputComponent name={name} value={value} {...inputProps} />
+      <div className="input-field ml-12 -mt-2">
+        <InputComponent 
+          name={name} 
+          value={value} 
+          className={className} // Pass className directly to the input
+          {...inputProps} 
+        />
       </div>
     </div>
   );

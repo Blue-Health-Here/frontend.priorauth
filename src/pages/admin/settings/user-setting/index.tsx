@@ -134,6 +134,7 @@ const UserSettingPage: React.FC = () => {
                     label="Email"
                     name="email"
                     value={values.email}
+                    className="bg-email-field-bg !text-[#7A7A7A]"
                   />
                 </div>
 
