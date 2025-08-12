@@ -25,7 +25,7 @@ const FileDropzone: React.FC<FileDropzoneProps> = ({
 }) => (
   <div
     className={`relative px-3 sm:px-4 py-3 sm:py-4 border-2 border-dashed rounded-xl overflow-hidden ${className} ${
-      isDragging ? "border-blue-500" : "border-[#a8ddf3]"
+      isDragging ? "border-blue-500" : "border-[#1594CC]"
     } ${isPharmacyRequest ? "bg-transparent" : "bg-navy-blue-400"}`}
     onDragOver={onDragOver}
     onDragLeave={onDragLeave}

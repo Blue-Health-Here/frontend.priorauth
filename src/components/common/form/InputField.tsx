@@ -39,7 +39,7 @@ const InputField: React.FC<InputFieldProps> = ({
   const [field, meta] = useField(name);
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const inputType = isPassword ? (showPassword ? "text" : "password") : "text";
+  const inputType = isPassword ? (showPassword ? "text" : "password") : type;
   const showLabelUp = isFocused || field.value;
 
   // defualt & password field

@@ -76,7 +76,8 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   }, [filteredPresData, isArchiveTab]);
 
   const handleArchiveToggle = async (prescriber: any, status: boolean) => {
-    const response = await updatePrescriberDetails(dispatch, { id: prescriber.id, isActive: status });
+    const response = await updatePrescriberDetails(dispatch, isAdmin ? 
+      { id: prescriber.id, active: status } : { id: prescriber.id, isActive: status }, isAdmin);
     if (response) {
       await fetchAllPrescribers();
     }
@@ -88,23 +89,29 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   };
 
   const handleModifyPrescriber = async (prescriber: any) => {
-    const response = await fetchPrescriberDetails(dispatch, prescriber?.id);
+    const response = await fetchPrescriberDetails(dispatch, prescriber?.id, isAdmin);
 
     if (response) {
       const formValues = {
-        id: response.id,
-        prescriber: response.prescriber || "",
-        prescriberPhone: response.prescriberPhone || "",
-        prescriberAddress: response.prescriberAddress || "",
-        prescriberCity: response.prescriberCity || "",
-        prescriberZipCode: response.prescriberZipCode || "",
-        prescriberFax: response.prescriberFax || "",
-        npi: response.npi || "",
-        dea: response.dea || "",
-        isActive: response.isActive || false,
-        pictureUrl: response.pictureUrl
+        ...response,
+        // prescriberPhone: isAdmin ? response.phone : response.prescriberPhone || "",
+        // prescriberAddress: isAdmin ? response.address : response.prescriberAddress || "",
+        // prescriberCity: isAdmin ? response.city : response.prescriberCity || "",
+        // prescriberZipCode: isAdmin ? response.zipCode : response.prescriberZipCode || "",
+        // prescriberFax: isAdmin ? response.faxNumber : response.prescriberFax || "",
+        // id: response.id,
+        // prescriber: response.prescriber || "",
+        // prescriberPhone: response.prescriberPhone || "",
+        // prescriberAddress: response.prescriberAddress || "",
+        // prescriberCity: response.prescriberCity || "",
+        // prescriberZipCode: response.prescriberZipCode || "",
+        // prescriberFax: response.prescriberFax || "",
+        // npi: response.npi || "",
+        // dea: response.dea || "",
+        isActive: isAdmin ? response.active : response.isActive || false,
+        // pictureUrl: response.pictureUrl
       };
-      setSelectedPrescriber(formValues);
+      setSelectedPrescriber(isAdmin ? { ...formValues, dateOfBirth: formValues.dateOfBirth.split("T")[0] } : formValues);
       setIsModifying(true);
     } else {
       setSelectedPrescriber(updatePrescriberInitialVals);
@@ -157,7 +164,11 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
   };
 
   const handleSavePrescriber = async (values: any) => {
-    const response = await updatePrescriberDetails(dispatch, values);
+    const response = await updatePrescriberDetails(dispatch, isAdmin ? {
+      id: values.id, firstName: values.firstName, lastName: values.lastName, email: values.email,
+      npi: values.npi, phone: values.phone, faxNumber: values.faxNumber, city: values.city,
+      address: values.address, dateOfBirth: new Date(values.dateOfBirth).toISOString()
+    } : values, isAdmin);
     if (response) {
       setIsModifying(false);
       await fetchAllPrescribers();
@@ -239,7 +250,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
       {/* Main Content */}
       {isModifying ? (
         <EditPrescriberForm 
-          selectedPrescriber={selectedPrescriber} 
+          selectedPrescriber={selectedPrescriber} isAdmin={isAdmin}
           handleSavePrescriber={(values: FormikValues) => handleSavePrescriber(values)} />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

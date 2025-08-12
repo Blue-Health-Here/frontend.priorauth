@@ -49,10 +49,10 @@ const SideDrawer: React.FC<any> = ({
                             <div className="inline-flex gap-2 items-center w-full">
                                 <button
                                     onClick={onClose}
-                                    className="p-1 transition-colors"
+                                    className=" p-1 transition-colors"
                                 >
                                     <img alt="header left logo arrow" 
-                                        className={`w-8 h-8 bg-gray-100 p-2 rounded-lg cursor-pointer ${arrowClass}`} 
+                                        className={`back-button w-8 h-8 bg-gray-100 p-2 rounded-lg cursor-pointer ${arrowClass}`} 
                                         src="/header-left-logo-arrow.svg" />
                                 </button>
                                 {title && <h2 className="md:text-lg font-semibold text-primary-black">{title}</h2>}

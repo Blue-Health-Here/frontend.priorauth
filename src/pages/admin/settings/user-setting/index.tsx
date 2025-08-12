@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import { fetchProfileData } from '../../../../services/adminService';
-import { updateProfileData } from '@/services/pharmacyService';
+import { updateProfileData, uploadProfileImage } from '@/services/pharmacyService';
 import { userValidationSchema } from '../../../../utils/validationSchema';
 import FormField from '@/pages/prescribers/FormField';
 import ThemeButton from '@/components/common/ThemeButton';
@@ -44,16 +44,19 @@ const UserSettingPage: React.FC = () => {
     }
   }, [profileData]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result) {
-          setProfileImage(e.target.result as string);
-        }
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+    try {
+      const formData = new FormData();
+      formData.append("profile-pic", file);
+
+      const res = await uploadProfileImage(dispatch, user?.id, formData);
+      if (res) {
+        setProfileImage(res.pictureUrl);
+      }
+    } catch (error) {
+      console.error("Image upload failed", error);
     }
   };
 
@@ -100,7 +103,6 @@ const UserSettingPage: React.FC = () => {
     setProfileImage("/setting-profile-image.png");
   };
 
-  console.log(profileData, "profileData");
   return (
     <div className="flex flex-col lg:flex-row gap-4">
       <div className="w-full lg:w-2/3 space-y-2 p-4 rounded-lg bg-primary-white border border-input-stroke">
@@ -111,15 +113,15 @@ const UserSettingPage: React.FC = () => {
           enableReinitialize
         >
           {({ values }) => (
-            <Form id="prescriber-form" className="space-y-2">
+            <Form id="prescriber-form">
               <div className='flex justify-between items-start gap-4'>
-                <h2 className="text-md font-medium">Basic Information</h2>
+                <h2 className="text-md font-medium">Account Settings</h2>
                 <div className='inline-flex gap-4 items-center h-10'>
                   <ThemeButton variant="tertiary" type="button" onClick={() => navigate("/admin/settings")}>Cancel</ThemeButton>
                   <ThemeButton variant="primary" type="submit">Update</ThemeButton>
                 </div>
               </div>
-              <div>
+              <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField
                     iconSrc="/prescriber (2).svg"
@@ -129,7 +131,7 @@ const UserSettingPage: React.FC = () => {
                     value={values.name}
                   />
                   <FormField
-                    iconSrc="/npi.svg"
+                    iconSrc="/Email.svg"
                     iconAlt="Email"
                     label="Email"
                     name="email"

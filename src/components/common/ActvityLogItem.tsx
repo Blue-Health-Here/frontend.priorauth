@@ -58,10 +58,10 @@ const ActivityLogItem: React.FC<ActivityLogItemProps> = ({
                 </div>
 
                 {(statusBadges || file || notes || info) && (
-                    <div className="bg-[#F5F8FF] rounded-lg p-2 mt-1 border border-[#EBF1FF]">
+                    <div className="bg-revision-history-bg rounded-lg p-2 mt-1 border border-revision-history-border">
                         {statusBadges && (
                             <>
-                                <div className="text-xs text-[#525252] mb-1">Status</div>
+                                <div className="text-xs text-body-text mb-1">Status</div>
                                 <div className="flex items-center gap-2">
                                     {statusBadges.map((badge, index) => (
                                         <div
@@ -81,21 +81,20 @@ const ActivityLogItem: React.FC<ActivityLogItemProps> = ({
 
                         {file && (
                             <>
-                                <div className="text-xs text-[#525252] mb-1">File</div>
-                                <div className="flex items-center gap-2 bg-primary-white rounded-lg p-2 border border-[#EBF1FF]">
+                                <div className="flex items-center gap-2 bg-header rounded-lg p-2 border border-body-stroke">
                                     <img
-                                        src={file.icon || "/file.svg"}
+                                        src={file.icon || "/uploaded-files.svg"}
                                         alt="File"
-                                        className="w-4 h-4"
+                                        className=" w-6 h-6"
                                     />
-                                    <span className="text-xs text-[#1E1E1E]">{file.name}</span>
+                                    <span className="text-xs text-header-text">{file.name}</span>
                                 </div>
                             </>
                         )}
 
                         {notes && (
                             <>
-                                <div className="text-xs text-[#525252] mb-1">Notes</div>
+                                <div className="text-xs text-body-text mb-1">Notes</div>
                                 <div className="text-xs text-[#525252]">{notes}</div>
                             </>
                         )}
@@ -104,10 +103,10 @@ const ActivityLogItem: React.FC<ActivityLogItemProps> = ({
                             <div className="flex gap-4">
                                 {info.map((item, index) => (
                                     <div key={index} className="flex-1">
-                                        <div className="text-xs text-[#525252] mb-1">
+                                        <div className="text-xs text- mb-1">
                                             {item.label}
                                         </div>
-                                        <div className="text-sm text-gray-800">{item.value}</div>
+                                        <div className="text-sm ">{item.value}</div>
                                     </div>
                                 ))}
                             </div>

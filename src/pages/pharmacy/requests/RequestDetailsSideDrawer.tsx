@@ -78,7 +78,7 @@ const RequestDetailsSideDrawer: React.FC<any> = ({
                     />
                     {isLoading ? <Loading /> : (
                         <div className="p-4 mb-[71px] flex gap-4 w-full flex-col overflow-y-auto" style={{ maxHeight: `calc(100% - 144px)` }}>
-                            <div className="p-4 rounded-xl border border-navy-blue-500 grid grid-cols-2 gap-4">
+                            <div className="p-4 rounded-xl border border-body-stroke grid grid-cols-2 gap-4">
                                 {[
                                     { label: "Last Modified", value: requestDetails?.modifiedAt ? formatDateTime(requestDetails?.createdAt) : "5/5/2025" },
                                     { label: "Submitted on", value: formatDateTime(requestDetails?.createdAt) },
@@ -91,7 +91,7 @@ const RequestDetailsSideDrawer: React.FC<any> = ({
                                                 <p className="text-sm text-secondary-black">
                                                     {item.label}
                                                 </p>
-                                                <p className="text-[12px] sm:text-sm font-medium text-gray-900 mt-1">{item.value}</p>
+                                                <p className="text-[12px] sm:text-sm font-medium text-header-text mt-1">{item.value}</p>
                                             </div>
                                         );
                                     }
@@ -115,7 +115,7 @@ const RequestDetailsSideDrawer: React.FC<any> = ({
                                         </ThemeButton>
                                     )}
                                 </div>
-                                <div className="rounded-xl border border-navy-blue-500">
+                                <div className="rounded-xl border border-body-stroke">
                                     <StatusTimeline
                                         isAdmin={false}
                                         showCheckNotesBtn={false}

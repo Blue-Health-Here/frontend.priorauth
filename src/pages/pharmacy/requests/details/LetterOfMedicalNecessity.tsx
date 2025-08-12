@@ -61,7 +61,7 @@ const LetterOfMedicalNecessity: React.FC<any> = ({ requestDetails }) => {
     };
 
     return (
-        <div className="inline-flex flex-col gap-4 p-4 max-w-[400px] border border-quaternary-navy-blue rounded-lg">
+        <div className="inline-flex flex-col gap-4 p-4 max-w-[400px] border border-body-stroke rounded-lg">
             <img src="/AI_PDF_large.svg" alt="pdf icon" className="w-10 h-10 sm:w-12 sm:h-12" />
             <div className="">
                 <h3 className="text-sm sm:text-base font-medium text-primary-black whitespace-nowrap sm:whitespace-normal">

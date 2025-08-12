@@ -89,7 +89,7 @@ const CommentsWidget: React.FC<any> = ({ showTwo = false, showActions = true }) 
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Write a comment"
-            className="flex-1 resize-none rounded-lg border border-light-stroke bg-primary-white p-3 text-sm focus:outline-none focus:border-dark-stroke"
+            className="comments-section flex-1 resize-none rounded-lg border border-light-stroke bg-primary-white p-3 text-sm focus:outline-none focus:border-dark-stroke"
             rows={3}
           />
         </div>
@@ -97,7 +97,7 @@ const CommentsWidget: React.FC<any> = ({ showTwo = false, showActions = true }) 
           <ThemeButton
             onClick={handleAdd}
             disabled={!input.trim()}
-            className="w-full sm:w-auto px-6 !bg-primary-navy-blue !text-primary-white"
+            className="comments-button w-full sm:w-auto px-6 !bg-button-bg "
             variant="primary" // Force primary variant
           >
             Post Comment

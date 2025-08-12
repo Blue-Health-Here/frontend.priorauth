@@ -132,7 +132,7 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
         <>
           <div className={`${height} overflow-auto w-full`}>
             <div className="relative flex flex-col gap-4 w-full">
-              <div className="absolute left-2.5 top-0 bottom-0 w-1.5 bg-gray-200"></div>
+              <div className="absolute left-2.5 top-0 bottom-0 w-1.5 bg-body-stroke"></div>
 
               {statusItems.map((item: any, index: number) => (
                 <div

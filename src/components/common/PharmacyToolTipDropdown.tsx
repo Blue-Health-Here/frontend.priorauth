@@ -4,6 +4,7 @@ import InviteLinkModal from "@/pages/prescribers/InviteLinkModal";
 interface PharmacyToolTipDropdownProps {
   onModify?: () => void;
   isArchived?: boolean;
+  isAdmin?: boolean;
   onArchiveToggle?: () => void;
   onGenerateCPA?: () => void;
   loadingGenerateCPA?: boolean;
@@ -21,7 +22,7 @@ const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({
   onModify, 
   loadingGenerateCPA,
   prescriber,
-  onInviteClick
+  onInviteClick, isAdmin
 }) => {
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
 
@@ -46,7 +47,7 @@ const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({
         </button>
 
         {/* Generate CPA */}
-        <button
+        {!isAdmin && <button
           className="group flex w-full items-center gap-x-1.5 px-3 py-2 cursor-pointer transition font-secondary text-secondary-black hover:bg-gray-50"
           onClick={() => onGenerateCPA && onGenerateCPA()}
           disabled={loadingGenerateCPA}
@@ -55,16 +56,16 @@ const PharmacyToolTipDropdown: React.FC<PharmacyToolTipDropdownProps> = ({
           <span className="text-xs md:text-sm">
             {loadingGenerateCPA ? "Generating..." : "Generate CPA"}
           </span>
-        </button>
+        </button>}
         
         {/* Invite Link Option */}
-        <button
+        {!isAdmin && <button
           className="group flex w-full items-center gap-x-1.5 px-3 py-2 cursor-pointer transition font-secondary text-secondary-black hover:bg-gray-50"
           onClick={handleInviteClick}
         >
           <img src="/link (1).svg" alt="invite icon" className="w-4 h-4" />
           <span className="text-xs md:text-sm">Invite Link</span>
-        </button>
+        </button>}
         
         <div className="border-t border-light-stroke"></div>
         

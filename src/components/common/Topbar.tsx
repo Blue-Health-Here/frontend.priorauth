@@ -22,7 +22,7 @@ interface UserData {
 
 const Topbar: React.FC<any> = ({ isAdmin }) => {
  
-  const { isSidebarOpen, isSidebarCollapsed } = useSelector((state: RootState) => state.global);
+  const { isSidebarOpen, isSidebarCollapsed, profileData } = useSelector((state: RootState) => state.global);
   const [isNotifDropdownOpen, setIsNotifDropdownOpen] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserData>({
@@ -45,11 +45,11 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
       try {
         const parsedData = JSON.parse(storedUser);
         setUserData({
-          userName: parsedData.userName || '',
-          email: parsedData.email || '',
-          firstName: parsedData.firstName || '',
-          lastName: parsedData.lastName || '',
-          pictureUrl: parsedData.pictureUrl || null
+          userName: profileData?.userName || parsedData.userName || '',
+          email: profileData?.email || parsedData.email || '',
+          firstName: profileData?.firstName || parsedData.firstName || '',
+          lastName: profileData?.lastName || parsedData.lastName || '',
+          pictureUrl: profileData?.pictureUrl || parsedData.pictureUrl || null
         });
       } catch (error) {
         console.error('Error parsing user data:', error);
