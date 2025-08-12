@@ -322,11 +322,20 @@ export const getAllPrescribers = async (dispatch: AppDispatch, id?: string) => {
     })
 };
 
-export const fetchPrescriberDetails = async (dispatch: AppDispatch, id?: string) => {
+export const fetchPrescriberDetails = async (dispatch: AppDispatch, id?: string, isAdmin?: boolean) => {
+    if (isAdmin) {
+        return apiHandler(dispatch, 'get', `/user/get_by_id/${id}`, {});
+    }
     return apiHandler(dispatch, 'get', `/pa-request-prescriber/get_by_id/${id}`, {});
 };
 
-export const updatePrescriberDetails = async (dispatch: AppDispatch, data?: any) => {
+export const updatePrescriberDetails = async (dispatch: AppDispatch, data?: any, isAdmin?: boolean) => {
+    if (isAdmin) {
+        return apiHandler(dispatch, 'put', `/user/update/${data.id}`, {
+            data,
+            successMessage: "Prescriber updated successfully!"
+        });
+    }
     return apiHandler(dispatch, 'put', `/pa-request-prescriber/update/${data.id}`, {
         data,
         successMessage: "Prescriber updated successfully!"

@@ -9,6 +9,7 @@ const FormField: React.FC<any> = ({
   iconAlt, 
   label, 
   name, 
+  type,
   value, 
   className = '',
   iconBgColor = 'bg-quaternary-navy-blue',
@@ -22,7 +23,7 @@ const FormField: React.FC<any> = ({
       </div>
       <div className="w-full">
         <Label className="text-quaternary-white text-sm font-normal -mt-[1px]">{label}</Label> {/* Added -mt-[1px] */}
-        <InputComponent name={name} value={value} {...inputProps} />
+        <InputComponent type={type} name={name} value={value} {...inputProps} />
       </div>
     </div>
   );

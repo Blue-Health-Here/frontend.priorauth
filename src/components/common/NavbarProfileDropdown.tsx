@@ -19,7 +19,6 @@ const NavbarProfileDropdown: React.FC<NavbarProfileDropdownProps> = ({
           <NavLink
             to={item.path}
             key={index}
-            onClick={onClose}
             className={({ isActive }) =>
               `group flex items-center gap-x-2 p-2 h-9 md:h-11 mb-1 rounded-lg cursor-pointer transition font-secondary ${
                 isActive
