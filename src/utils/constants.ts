@@ -184,9 +184,13 @@ export const brands = [
 ];
 
 export const adminSidebarItems = [
-  { name: "Requests", icon: "/sidebar-requets.svg", path: "/admin/requests" },
+  { name: "Requests", icon: "/sidebar-requets.svg", path: "/admin/requests", subItems: [
+      { name: "All Requests", path: "/admin/requests" },
+    ] },
   { name: "Analytics", icon: "/sidebar-dashboard.svg", path: "/admin/analytics" },
-  { name: "Pharmacies", icon: "/sidebar-pharmacy.svg", path: "/admin/pharmacies" },
+  { name: "Pharmacies", icon: "/sidebar-pharmacy.svg", path: "/admin/pharmacies",  subItems: [
+      { name: "All Pharmacies",  path: "/admin/pharmacies" },
+    ] },
   { name: "Prescribers", icon: "/sidebar-Prescribers.svg", path: "/admin/prescribers" },
   { name: "Initiations", icon: "/sidebar-Initiations.svg", path: "/admin/initiations" },
   { name: "Send To Plan", icon: "/sidebar-sent-to-plan.svg", path: "/g" },
@@ -195,6 +199,7 @@ export const adminSidebarItems = [
   { name: "Tasks", icon: "/sidebar-task-01.svg", path: "/d" },
   { name: "Permissions", icon: "/sidebar-role&permission.svg", path: "/admin/permissions" },
 ];
+
 
 export const pharmacySidebarItems = [
   { name: "Requests", icon: "/pharmacy-requests.png", path: "/pharmacy/requests" },
