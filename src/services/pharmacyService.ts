@@ -144,6 +144,15 @@ export const fetchProfileData = async (dispatch: AppDispatch, userId?: string) =
         onError: () => dispatch(setProfileData(null))
     })
 }
+
+export const uploadProfileImage = async (dispatch: AppDispatch, id?: string, formData?: any) => {
+    return apiHandler(dispatch, 'patch', `/user/update/${id}/profile-pic`, {
+        isFormData: true,
+        data: formData,
+        successMessage: "Picture have been updated."
+    });
+};
+
 // ============= Update Profile =============
 
 export const updateProfileData = async (dispatch: AppDispatch, userId: string, data: any) => {
