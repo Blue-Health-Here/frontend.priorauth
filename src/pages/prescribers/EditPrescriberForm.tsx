@@ -51,7 +51,7 @@ const EditPrescriberForm: React.FC<any> = ({ selectedPrescriber, handleSavePresc
                     }}
                 >
                     {({ values }) => (
-                        <Form id="prescriber-form" className="space-y-2 mt-6">
+                        <Form id="prescriber-form" className="space-y-4 mt-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <FormField
                                     iconSrc="/prescriber (2).svg"
