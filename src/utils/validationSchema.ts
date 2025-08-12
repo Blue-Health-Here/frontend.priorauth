@@ -82,8 +82,12 @@ export const userValidationSchema = Yup.object().shape({
 export const modifyPrescriberSchema = Yup.object().shape({
   prescriber: Yup.string().required("Name is required"),
   prescriberPhone: Yup.string().required("Phone is required"),
-  prescriberCity: Yup.string().required("City is required"),
   npi: Yup.string().required("NPI is required"),
-  prescriberFax: Yup.string(),
   prescriberAddress: Yup.string().required("Address is required"),
+});
+
+export const modifyPrescriberSchemaForAdmin = Yup.object().shape({
+  firstName: Yup.string().required("First Name is required"),
+  npi: Yup.string().required("NPI is required"),
+  address: Yup.string().required("Address is required"),
 });

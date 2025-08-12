@@ -1,4 +1,4 @@
-import { modifyPrescriberSchema } from "@/utils/validationSchema";
+import { modifyPrescriberSchema, modifyPrescriberSchemaForAdmin } from "@/utils/validationSchema";
 import { Form, Formik } from "formik";
 import React, { useRef, useState } from "react";
 import FormField from "./FormField";
@@ -6,7 +6,7 @@ import ThemeButton from "@/components/common/ThemeButton";
 import { uploadPrescriberImage } from "@/services/pharmacyService";
 import { useDispatch } from "react-redux";
 
-const EditPrescriberForm: React.FC<any> = ({ selectedPrescriber, handleSavePrescriber }) => {
+const EditPrescriberForm: React.FC<any> = ({ selectedPrescriber, handleSavePrescriber, isAdmin }) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [imagePreview, setImagePreview] = useState<string>(selectedPrescriber?.pictureUrl || "/images/Abstergo Ltd..png");
     const [uploadedImageUrl, setUploadedImageUrl] = useState<string>(selectedPrescriber?.pictureUrl || "");
@@ -35,6 +35,7 @@ const EditPrescriberForm: React.FC<any> = ({ selectedPrescriber, handleSavePresc
         setImagePreview("/images/Abstergo Ltd..png");
         setUploadedImageUrl("");
     };
+    console.log(selectedPrescriber, "Das")
 
     return (
         <div className="flex flex-col lg:flex-row">
@@ -42,7 +43,7 @@ const EditPrescriberForm: React.FC<any> = ({ selectedPrescriber, handleSavePresc
                 <h2 className="text-md font-medium">Basic Information</h2>
                 <Formik
                     initialValues={selectedPrescriber}
-                    validationSchema={modifyPrescriberSchema}
+                    validationSchema={isAdmin ? modifyPrescriberSchemaForAdmin : modifyPrescriberSchema}
                     onSubmit={(values) => {
                         handleSavePrescriber({
                             ...values,
@@ -53,13 +54,39 @@ const EditPrescriberForm: React.FC<any> = ({ selectedPrescriber, handleSavePresc
                     {({ values }) => (
                         <Form id="prescriber-form" className="space-y-4 mt-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <FormField
-                                    iconSrc="/prescriber (2).svg"
-                                    iconAlt="Name"
-                                    label="Prescriber Name"
-                                    name="prescriber"
-                                    value={values.prescriber}
-                                />
+                                {isAdmin ? (
+                                    <>
+                                        <FormField
+                                            iconSrc="/prescriber (2).svg"
+                                            iconAlt="First Name"
+                                            label="First Name"
+                                            name="firstName"
+                                            value={values.firstName}
+                                        />
+                                        <FormField
+                                            iconSrc="/prescriber (2).svg"
+                                            iconAlt="Last Name"
+                                            label="Last Name"
+                                            name="lastName"
+                                            value={values.lastName}
+                                        />
+                                        <FormField
+                                            iconSrc="/Email.svg"
+                                            iconAlt="Email"
+                                            label="Email"
+                                            name="email"
+                                            value={values.email}
+                                        />
+                                    </>
+                                ) : (
+                                    <FormField
+                                        iconSrc="/prescriber (2).svg"
+                                        iconAlt="Name"
+                                        label="Prescriber Name"
+                                        name="prescriber"
+                                        value={values.prescriber}
+                                    />
+                                )}
                                 <FormField
                                     iconSrc="/npi.svg"
                                     iconAlt="NPI"
@@ -70,35 +97,43 @@ const EditPrescriberForm: React.FC<any> = ({ selectedPrescriber, handleSavePresc
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {isAdmin && (    
+                                    <FormField
+                                        iconSrc="/phone.svg"
+                                        iconAlt="dateOfBirth"
+                                        label="Date of Birth"
+                                        name="dateOfBirth"
+                                        type="date"
+                                        value={values.dateOfBirth}
+                                    />
+                                )}
                                 <FormField
                                     iconSrc="/phone.svg"
                                     iconAlt="Phone"
                                     label="Phone"
-                                    name="prescriberPhone"
+                                    name={isAdmin ? "phone" : "prescriberPhone"}
                                     value={values.prescriberPhone}
                                 />
                                 <FormField
                                     iconSrc="/phone.svg"
                                     iconAlt="Fax"
                                     label="Fax"
-                                    name="prescriberFax"
+                                    name={isAdmin ? "faxNumber" : "prescriberFax"}
                                     value={values.prescriberFax}
                                 />
-                            </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <FormField
                                     iconSrc="/city.svg"
                                     iconAlt="City"
                                     label="City"
-                                    name="prescriberCity"
+                                    name={isAdmin ? "city" : "prescriberCity"}
                                     value={values.prescriberCity}
                                 />
                                 <FormField
                                     iconSrc="/address.svg"
                                     iconAlt="Address"
                                     label="Address"
-                                    name="prescriberAddress"
+                                    name={isAdmin ? "address" : "prescriberAddress"}
                                     value={values.prescriberAddress}
                                 />
                             </div>

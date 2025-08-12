@@ -109,6 +109,7 @@ const PrescriberCard: React.FC<PrescriberCardProps> = ({
                 onGenerateCPA={onGenerateCPA}
                 loadingGenerateCPA={loadingGenerateCPA}
                 onInviteClick={onInviteClick}
+                isAdmin={isAdmin}
               />
             )}
           </div>
