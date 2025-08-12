@@ -158,7 +158,7 @@ export default function EditableFormSection({
                   />
                 </button>
               ) : (
-                <div className="hidden sm:flex gap-2">
+                <div className=" hidden sm:flex gap-2">
                   <ThemeButton
                     type="submit"
                     disabled={isSubmitting}
@@ -244,7 +244,7 @@ export default function EditableFormSection({
               <SectionTitleGrid title="Contact Information">
                 <DataPoint
                   icon={
-                    <div className="p-0.5 rounded-md]">
+                    <div className="p-0.5 rounded-md">
                       <img
                         src="/Vector (9).svg"
                         alt="Phone Number"
@@ -260,22 +260,22 @@ export default function EditableFormSection({
                 />
 
                 {isEditingProfile ? (
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    <div className=" p-0.5 rounded-md shrink-0">
+                  <div className="flex items-center gap-3 sm:gap-4 ">
+                    <div className=" p-2 rounded-md shrink-0 bg-settings-info-icons-bg ">
                       <img
                         src="/Email.svg"
                         alt="Email"
-                        className="w-3.5 h-3.5 sm:w-4 sm:h-4"
+                        className="settings-button w-3.5 h-3.5 sm:w-4 sm:h-4 "
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <label className="text-xs text-gray-500">Email</label>
+                      <label className="text-xs text-settings-info-label-tex">Email</label>
                       <div className="w-full sm:w-[456px]">
                         <Field
                           type="email"
                           name="email"
                           disabled
-                          className="w-full text-[#A8A8A8] bg-[#EBEBEB] border border-[#E5E7EB] rounded-md px-3 py-1.5 sm:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent h-[36px] sm:h-[38px] "
+                          className="w-full text-quaternary-white bg-email-field-bg border border-input-stroke rounded-md px-3 py-1.5 sm:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent h-[36px] sm:h-[38px] "
                         />
                       </div>
                     </div>
@@ -283,7 +283,7 @@ export default function EditableFormSection({
                 ) : (
                   <DataPoint
                     icon={
-                      <div className="p-0.5 rounded-md">
+                      <div className="p-0.5 rounded-md ">
                         <img
                           src="/Email.svg"
                           alt="Email"

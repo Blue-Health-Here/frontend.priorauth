@@ -245,6 +245,9 @@
    --settings-button-text: var(--primary-navy-blue);
    --settings-info-icons-bg: var(--quaternary-navy-blue);
    --settings-info-label-text: var(--secondary-black);
+   --email-field-bg: var(--secondary-background);
+   --mini-squares-bg:var(--quaternary-navy-blue);
+   --update-password-btn-bg: var(--secondary-background);
 
 
 }
@@ -368,6 +371,10 @@
   --settings-button-text: #FFFFFF;
   --settings-info-icons-bg: var(--navy-blue-dark-800);
   --settings-info-label-text: var(--white-800);
+  --email-field-bg: var(--dark-600);
+  --mini-squares-bg:var(--navy-dark-blue-600);
+  --update-password-btn-bg: var(--dark-500);
+  --cancel-btn-bg: var();
 
 
 
@@ -389,6 +396,9 @@
   --color-settings-button-text: var(--settings-button-text);
   --color-settings-info-icons-bg: var(--settings-info-icons-bg);
   --color-settings-info-label-text: var(--settings-info-label-text);
+  --color-email-field-bg: var(--email-field-bg);
+  --color-mini-squares-bg: var(--mini-squares-bg);
+  --color-update-password-btn-bg: var(--update-password-btn-bg);
 
     /* Icon Group Colors */
     --color-icon-group-bg: var(--icon-group-bg);
@@ -730,16 +740,22 @@ body {
   .totalrequests {
     color:#fff
   }
-.approved-vs-denied{
+  .approved-vs-denied{
   color:#fff
-}
-.with-cn-vs-without-cn{
+  }
+  .with-cn-vs-without-cn{
   color:#fff
-}
-.settings-button {
+  }
+  .settings-button {
     filter: brightness(0) invert(1);
   }
-  
+  .input-field{
+    background: var(--dark-700);
+    border-radius: 8px;
+  }
+  .cancel-button{
+    background: #1B1B1E;
+  }  
 
 }
 

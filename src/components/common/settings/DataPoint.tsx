@@ -35,7 +35,7 @@ export default function DataPoint({
                 {label && <p className="text-sm text-muted-foreground text-settings-info-label-text">{label}</p>}
                 {isEditing ? (
                     <>
-                        <div className="max-w-full sm:w-[456px]">
+                        <div className="input-field max-w-full sm:w-[456px]">
                             <Input
                                 type={type}
                                 {...field}
