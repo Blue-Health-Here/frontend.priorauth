@@ -13,11 +13,11 @@ const SettingsCard: React.FC<SettingsCardProps> = ({ icon, title, description, p
     const navigate = useNavigate();
     return (
         <div className="bg-primary-white rounded-lg p-4 border border-light-stroke h-full flex flex-col gap-4">
-            <div className="bg-information-chip-bg-color rounded-lg w-20 h-20 flex items-center justify-center">
+            <div className="bg-settings-info-icons-bg rounded-lg w-20 h-20 flex items-center justify-center">
                 <img
                     src={icon}
                     alt={`Icon`}
-                    className='w-6 h-6'
+                    className='settings-button w-6 h-6'
                 />
             </div>
             <div>

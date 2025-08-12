@@ -239,6 +239,14 @@
   /* Dashboard Colors */
   --border-color: var(--quaternary-navy-blue);
   --active-background-color: var(--quaternary-navy-blue);
+  --settings-button-bg: var(--quaternary-navy-blue);
+  --settings-button-text: var(--primary-navy-blue);
+  --settings-info-icons-bg: var(--quaternary-navy-blue);
+  --settings-info-label-text: var(--secondary-black);
+  --email-field-bg: var(--secondary-background);
+  --mini-squares-bg: var(--quaternary-navy-blue);
+  --update-password-btn-bg: var(--secondary-background);
+  --active-background-color: var(--quaternary-navy-blue);
   --period-selector-text: var(--primary-navy-blue);
   --chart-requests: var(--bars-blue-med);
 
@@ -371,6 +379,15 @@
   --active-background-color: var(--dark-500);
   --period-selector-text: var(--white-500);
   --chart-requests: var(--bars-blue-dark);
+  --settings-button-bg: var(--btn-secondary-bg);
+  --settings-button-text: #FFFFFF;
+  --settings-info-icons-bg: var(--navy-blue-dark-800);
+  --settings-info-label-text: var(--white-800);
+  --email-field-bg: var(--dark-600);
+  --mini-squares-bg: var(--navy-dark-blue-600);
+  --update-password-btn-bg: var(--dark-500);
+  --cancel-btn-bg: var();
+
 
 
 
@@ -398,6 +415,15 @@
   --color-active-background-color: var(--active-background-color);
   --color-period-selector-text: var(--period-selector-text);
   --color-chart-requests: var(--chart-requests);
+  /* Settings Colors */
+  --color-settings-button-bg: var(--settings-button-bg);
+  --color-settings-button-text: var(--settings-button-text);
+  --color-settings-info-icons-bg: var(--settings-info-icons-bg);
+  --color-settings-info-label-text: var(--settings-info-label-text);
+  --color-email-field-bg: var(--email-field-bg);
+  --color-mini-squares-bg: var(--mini-squares-bg);
+  --color-update-password-btn-bg: var(--update-password-btn-bg);
+
   /* Icon Group Colors */
   --color-icon-group-bg: var(--icon-group-bg);
   --color-icon-group-icon: var(--icon-group-icon);
@@ -806,6 +832,26 @@ body {
     color: #fff
   }
 
+  .approved-vs-denied {
+    color: #fff
+  }
+
+  .with-cn-vs-without-cn {
+    color: #fff
+  }
+
+  .settings-button {
+    filter: brightness(0) invert(1);
+  }
+
+  .input-field {
+    background: var(--dark-700);
+    border-radius: 8px;
+  }
+
+  .cancel-button {
+    background: #1B1B1E;
+  }
 
 }
 

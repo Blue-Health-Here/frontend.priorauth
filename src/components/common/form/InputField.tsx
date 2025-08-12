@@ -21,7 +21,7 @@ export const inputStyles = {
   contactInput:
     "w-full bg-transparent border-b border-primary-white py-2 text-primary-white placeholder-primary-white font-secondary focus:outline-none focus:border-primary-white placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base",
   defaultInput:
-    "w-full h-10 border border-light-stroke rounded-lg px-4 pr-12 font-secondary text-primary-black text-sm font-medium placeholder:text-tertiary-black placeholder:text-sm focus:outline-none transition-colors duration-200",
+    "w-full h-10 border border-input-stroke rounded-lg px-4 pr-12 font-secondary text-primary-black text-sm font-medium placeholder:text-tertiary-black placeholder:text-sm focus:outline-none transition-colors duration-200",
 };
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -47,11 +47,11 @@ const InputField: React.FC<InputFieldProps> = ({
     return (
       <div className="space-y-1">
         {label && (
-          <Label className="text-quaternary-white text-sm font-secondary">
+          <Label className="text-settings-info-label-text text-sm font-secondary">
             {label}
           </Label>
         )}
-        <div className="relative">
+        <div className="input-field relative ">
           <input
             id={id}
             {...rest}

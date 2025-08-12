@@ -88,7 +88,7 @@ export default function EditableFormSection({
                     <img
                       src={currentImage || "/Ellipse 431.png"}
                       alt="Profile"
-                      className="w-14 h-14 sm:w-18 sm:h-18 rounded-full border border-light-stroke theme-shadow object-cover"
+                      className="w-14 h-14 sm:w-18 sm:h-18 rounded-full  theme-shadow object-cover"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = "/Ellipse 431.png";
                       }}
@@ -148,17 +148,17 @@ export default function EditableFormSection({
                 <button
                   type="button"
                   onClick={onEdit}
-                  className="hidden sm:flex items-center justify-center bg-[#EBF1FF] text-[#163066] rounded-lg p-2 sm:px-4 sm:py-2.5 transition-colors hover:bg-[#EBF1FF]/90"
+                  className="hidden sm:flex items-center justify-center bg-settings-button-bg text-settings-button-text rounded-lg p-2 sm:px-4 sm:py-2.5 transition-colors"
                 >
-                  <span className="mr-2 text-sm font-bold">Edit Details</span>
+                  <span className="mr-2 text-sm font-bold ">Edit Details</span>
                   <img
                     src="/Vector (12).svg"
                     alt="Edit"
-                    className="w-4 h-4"
+                    className="settings-button w-4 h-4"
                   />
                 </button>
               ) : (
-                <div className="hidden sm:flex gap-2">
+                <div className=" hidden sm:flex gap-2">
                   <ThemeButton
                     type="submit"
                     disabled={isSubmitting}
@@ -213,11 +213,11 @@ export default function EditableFormSection({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <DataPoint
                   icon={
-                    <div className="bg-[#EBF1FF] p-0.5 rounded-md">
+                    <div className="p-0.5 rounded-md">
                       <img
                         src="/joining-date.svg"
                         alt="Joined Date"
-                        className="w-4 h-4 sm:w-5 sm:h-5"
+                        className="settings-button w-4 h-4 sm:w-5 sm:h-5"
                       />
                     </div>
                   }
@@ -227,11 +227,11 @@ export default function EditableFormSection({
                 />
                 <DataPoint
                   icon={
-                    <div className="bg-[#EBF1FF] p-0.5 rounded-md">
+                    <div className="p-0.5 rounded-md">
                       <img
                         src="/last-request.svg"
                         alt="Last Request"
-                        className="w-4 h-4 sm:w-5 sm:h-5"
+                        className="settings-button w-4 h-4 sm:w-5 sm:h-5"
                       />
                     </div>
                   }
@@ -244,11 +244,11 @@ export default function EditableFormSection({
               <SectionTitleGrid title="Contact Information">
                 <DataPoint
                   icon={
-                    <div className="bg-[#EBF1FF] p-0.5 rounded-md]">
+                    <div className="p-0.5 rounded-md">
                       <img
                         src="/Vector (9).svg"
                         alt="Phone Number"
-                        className="w-4 h-3 sm:w-5 sm:h-4"
+                        className="settings-button w-4 h-3 sm:w-5 sm:h-4"
                       />
                     </div>
                   }
@@ -260,22 +260,22 @@ export default function EditableFormSection({
                 />
 
                 {isEditingProfile ? (
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="bg-[#EBF1FF] p-0.5 rounded-md shrink-0">
+                  <div className="flex items-center gap-3 sm:gap-4 ">
+                    <div className=" p-2 rounded-md shrink-0 bg-settings-info-icons-bg ">
                       <img
                         src="/Email.svg"
                         alt="Email"
-                        className="w-3.5 h-3.5 sm:w-4 sm:h-4"
+                        className="settings-button w-3.5 h-3.5 sm:w-4 sm:h-4 "
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <label className="text-xs text-gray-500">Email</label>
+                      <label className="text-xs text-settings-info-label-tex">Email</label>
                       <div className="w-full sm:w-[456px]">
                         <Field
                           type="email"
                           name="email"
                           disabled
-                          className="w-full text-[#A8A8A8] bg-[#EBEBEB] border border-[#E5E7EB] rounded-md px-3 py-1.5 sm:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent h-[36px] sm:h-[38px] "
+                          className="w-full text-quaternary-white bg-email-field-bg border border-input-stroke rounded-md px-3 py-1.5 sm:py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent h-[36px] sm:h-[38px] "
                         />
                       </div>
                     </div>
@@ -283,11 +283,11 @@ export default function EditableFormSection({
                 ) : (
                   <DataPoint
                     icon={
-                      <div className="bg-[#EBF1FF] p-0.5 rounded-md">
+                      <div className="p-0.5 rounded-md ">
                         <img
                           src="/Email.svg"
                           alt="Email"
-                          className="w-3.5 h-3.5 sm:w-4 sm:h-4"
+                          className="settings-button w-3.5 h-3.5 sm:w-4 sm:h-4"
                         />
                       </div>
                     }
@@ -300,11 +300,11 @@ export default function EditableFormSection({
 
                 <DataPoint
                   icon={
-                    <div className="bg-[#EBF1FF] p-0.5 rounded-md">
+                    <div className="p-0.5 rounded-md">
                       <img
                         src="/Location1.svg"
                         alt="Location"
-                        className="w-4 h-4 sm:w-5 sm:h-5"
+                        className="settings-button w-4 h-4 sm:w-5 sm:h-5"
                       />
                     </div>
                   }
@@ -315,11 +315,11 @@ export default function EditableFormSection({
                 />
                 <DataPoint
                   icon={
-                    <div className="bg-[#EBF1FF] p-0.5 rounded-md">
+                    <div className=" p-0.5 rounded-md">
                       <img
                         src="/Location1.svg"
                         alt="Full Address"
-                        className="w-4 h-4 sm:w-5 sm:h-5"
+                        className="settings-button w-4 h-4 sm:w-5 sm:h-5"
                       />
                     </div>
                   }
@@ -333,11 +333,11 @@ export default function EditableFormSection({
               <SectionTitleGrid title="Account Statistics">
                 <DataPoint
                   icon={
-                    <div className="bg-[#EBF1FF] p-0.5 rounded-md">
+                    <div className="p-0.5 rounded-md">
                       <img
                         src="/Vector 6663.svg"
                         alt="Approved Request"
-                        className="w-3.5 h-3.5 sm:w-4 sm:h-4"
+                        className="settings-button w-3.5 h-3.5 sm:w-4 sm:h-4"
                       />
                     </div>
                   }
@@ -347,11 +347,11 @@ export default function EditableFormSection({
                 />
                 <DataPoint
                   icon={
-                    <div className="bg-[#EBF1FF] p-0.5 rounded-md">
+                    <div className="p-0.5 rounded-md">
                       <img
                         src="/Vector (10).svg"
                         alt="Rejected Request"
-                        className="w-3 h-3 sm:w-3.5 sm:h-3.5"
+                        className="settings-button w-3 h-3 sm:w-3.5 sm:h-3.5"
                       />
                     </div>
                   }
@@ -361,11 +361,11 @@ export default function EditableFormSection({
                 />
                 <DataPoint
                   icon={
-                    <div className="bg-[#EBF1FF] p-0.5 rounded-md">
+                    <div className="p-0.5 rounded-md">
                       <img
                         src="/user group.svg"
                         alt="Prescribers"
-                        className="w-4 h-4 sm:w-5 sm:h-5"
+                        className="settings-button w-4 h-4 sm:w-5 sm:h-5"
                       />
                     </div>
                   }
