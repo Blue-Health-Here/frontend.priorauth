@@ -202,7 +202,9 @@ export const adminSidebarItems = [
 
 
 export const pharmacySidebarItems = [
-  { name: "Requests", icon: "/pharmacy-requests.png", path: "/pharmacy/requests" },
+  { name: "Requests", icon: "/pharmacy-requests.png", path: "/pharmacy/requests" ,subItems: [
+      { name: "All Requests", path: "/pharmacy/requests" },
+    ]},
   { name: "Prescribers", icon: "/sidebar-Prescribers.svg", path: "/pharmacy/prescribers" },
   { name: "CMM Account Database", icon: "/cmm-account-database.png", path: "/pharmacy/cmm-account-database" },
    { name: "PA Criteria", icon: "/sidebar-dashboard.svg", path: "/pharmacy/pa-criteria" },

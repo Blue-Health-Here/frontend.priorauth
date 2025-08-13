@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { adminSidebarItems, pharmacySidebarItems } from "../../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,25 +29,14 @@ const Sidebar: React.FC = () => {
   const { isSidebarCollapsed, isSidebarOpen } = useSelector(
     (state: RootState) => state.global
   );
-  
+
   const sidebarItems: SidebarItem[] = pathName.startsWith("/pharmacy")
     ? pharmacySidebarItems
     : adminSidebarItems;
 
-  const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
-
-  // Auto-open dropdown if current path matches a subitem
-  useEffect(() => {
-    const newOpenDropdowns: Record<string, boolean> = {};
-    sidebarItems.forEach(item => {
-      if (item.subItems) {
-        newOpenDropdowns[item.name] = item.subItems.some(
-          subItem => pathName.startsWith(subItem.path)
-        );
-      }
-    });
-    setOpenDropdowns(newOpenDropdowns);
-  }, [pathName, sidebarItems]);
+  const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>(
+    {}
+  );
 
   useEffect(() => {
     if (window.innerWidth < 1024) {
@@ -72,16 +61,19 @@ const Sidebar: React.FC = () => {
   };
 
   const toggleDropdown = (itemName: string) => {
-    setOpenDropdowns(prev => ({
+    setOpenDropdowns((prev) => ({
       ...prev,
-      [itemName]: !prev[itemName]
+      [itemName]: !prev[itemName],
     }));
   };
 
-  const isItemActive = (itemPath: string | undefined, subItems?: SidebarSubItem[]) => {
+  const isItemActive = (
+    itemPath: string | undefined,
+    subItems?: SidebarSubItem[]
+  ) => {
     if (itemPath && pathName === itemPath) return true;
     if (subItems) {
-      return subItems.some(subItem => pathName.startsWith(subItem.path));
+      return subItems.some((subItem) => pathName.startsWith(subItem.path));
     }
     return false;
   };
@@ -97,7 +89,7 @@ const Sidebar: React.FC = () => {
       {isSidebarOpen && (
         <div className="fixed inset-0 z-[98] bg-black bg-opacity-50 lg:hidden" />
       )}
-      <aside className={asideClass + ' theme-sidebar'}>
+      <aside className={asideClass + " theme-sidebar"}>
         <div
           className={`p-4 flex h-[71px] bg-transparent gap-4 sm:gap-6 lg:gap-8 items-center ${
             isSidebarCollapsed ? "px-2 justify-center" : "justify-between"
@@ -107,7 +99,9 @@ const Sidebar: React.FC = () => {
             <img
               src={isSidebarCollapsed ? "/Group.svg" : "/updated-logo (2).svg"}
               alt="PriorAuth Logo"
-              className={`h-6 sm:h-7 lg:h-8 ${isSidebarCollapsed ? "brightness-0 invert" : ""}`}
+              className={`h-6 sm:h-7 lg:h-8 ${
+                isSidebarCollapsed ? "brightness-0 invert" : ""
+              }`}
             />
           </Link>
           {isSidebarOpen ? (
@@ -129,23 +123,29 @@ const Sidebar: React.FC = () => {
           )}
         </div>
 
-        {/* Main content */}
         <div className="flex flex-col h-[calc(100%-68px)] overflow-hidden bg-transparent">
-          {/* Content area */}
           <div className="flex-1 px-3 py-3">
             <ul className="flex flex-col gap-y-2 text-[14px]">
               {sidebarItems.map((item, index) => (
                 <React.Fragment key={index}>
-                  <li className={isSidebarCollapsed ? "flex justify-center" : ""}>
+                  <li
+                    className={isSidebarCollapsed ? "flex justify-center" : ""}
+                  >
                     {item.subItems ? (
                       <>
                         <div
-                          onClick={() => !isSidebarCollapsed && toggleDropdown(item.name)}
+                          onClick={() =>
+                            !isSidebarCollapsed && toggleDropdown(item.name)
+                          }
                           className={`group flex items-center gap-x-2 rounded cursor-pointer transition font-secondary ${
                             isItemActive(item.path, item.subItems)
                               ? "bg-sidebar-link-active text-white"
                               : "text-white hover:bg-sidebar-link-active"
-                          } ${isSidebarCollapsed ? "p-2 px-3" : "p-2 w-full justify-between"}`}
+                          } ${
+                            isSidebarCollapsed
+                              ? "p-2 px-3"
+                              : "p-2 w-full justify-between"
+                          }`}
                         >
                           <div className="flex items-center gap-x-2">
                             <img
@@ -153,13 +153,17 @@ const Sidebar: React.FC = () => {
                               alt={`${item.name} Icon`}
                               title={item.name}
                               className={`transition duration-200 w-4 h-4 brightness-0 invert ${
-                                isItemActive(item.path, item.subItems) ? "opacity-100" : "opacity-80"
+                                isItemActive(item.path, item.subItems)
+                                  ? "opacity-100"
+                                  : "opacity-80"
                               }`}
                             />
                             {!isSidebarCollapsed && (
                               <span
                                 className={`text-sm transition-colors duration-200 font-semibold ${
-                                  isItemActive(item.path, item.subItems) ? "opacity-100" : "opacity-80"
+                                  isItemActive(item.path, item.subItems)
+                                    ? "opacity-100"
+                                    : "opacity-80"
                                 }`}
                               >
                                 {item.name}
@@ -167,9 +171,13 @@ const Sidebar: React.FC = () => {
                             )}
                           </div>
                           {!isSidebarCollapsed && (
-                            <span className="text-white">
-                              {openDropdowns[item.name] ? <FiChevronDown size={16} /> : <FiChevronRight size={16} />}
-                            </span>
+                            <img
+                              src="/arrow.svg"
+                              alt="dropdown arrow"
+                              className={`w-2.5 h-2.5 brightness-0 invert transition-transform duration-200 ${
+                                openDropdowns[item.name] ? "rotate-90" : ""
+                              }`}
+                            />
                           )}
                         </div>
                         {!isSidebarCollapsed && openDropdowns[item.name] && (
@@ -233,7 +241,6 @@ const Sidebar: React.FC = () => {
             </ul>
           </div>
 
-          {/* Bottom section */}
           <div className="px-3 py-4 mt-auto border-t border-sidebar-stroke">
             <div className={isSidebarCollapsed ? "flex justify-center" : ""}>
               <NavLink
@@ -273,7 +280,6 @@ const Sidebar: React.FC = () => {
               </NavLink>
             </div>
 
-            {/* Copyright section */}
             <div
               className={`${
                 isSidebarCollapsed ? "flex justify-center mt-4" : "mt-6"
