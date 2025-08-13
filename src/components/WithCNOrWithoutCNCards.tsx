@@ -101,10 +101,7 @@ const WithCNOrWithoutCNCards = () => {
 
   return (
     <div
-      className="bg-primary-white dark:bg-dark-800 p-6 rounded-2xl theme-shadow w-full mx-auto border"
-      style={{
-        borderColor: "var(--border-color)",
-      }}
+      className="bg-primary-white dark:bg-dark-800 p-6 rounded-2xl theme-shadow w-full mx-auto border border-quaternary-navy-blue"
     >
       <h2 className="with-cn-vs-without-cn text-xl font-semibold text-gray-800 dark:text-white mb-6">
         With CN vs Without CN

@@ -89,7 +89,7 @@ const CommentsWidget: React.FC<any> = ({ showTwo = false, showActions = true }) 
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Write a comment"
-            className="comments-section flex-1 resize-none rounded-lg border border-light-stroke bg-primary-white p-3 text-sm focus:outline-none focus:border-dark-stroke"
+            className="comments-section flex-1 resize-none rounded-lg border text-primary-black border-light-stroke bg-primary-white p-3 text-sm focus:outline-none focus:border-dark-stroke"
             rows={3}
           />
         </div>

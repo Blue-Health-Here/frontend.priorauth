@@ -47,7 +47,7 @@ export default function DataPoint({
                         ) : null}
                     </>
                 ) : (
-                    <p className="text-md font-medium">{data}</p>
+                    <p className="text-md font-medium text-primary-black">{data}</p>
                 )}
             </div>
         </div>

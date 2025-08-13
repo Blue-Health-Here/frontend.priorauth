@@ -114,8 +114,8 @@ const UserSettingPage: React.FC = () => {
         >
           {({ values }) => (
             <Form id="prescriber-form">
-              <div className='flex justify-between items-start gap-4'>
-                <h2 className="text-md font-medium">Account Settings</h2>
+              <div className='flex justify-between items-start gap-4 mb-2'>
+                <h2 className="text-md font-medium text-primary-black">Account Settings</h2>
                 <div className='inline-flex gap-4 items-center h-10'>
                   <ThemeButton variant="tertiary" type="button" onClick={() => navigate("/admin/settings")}>Cancel</ThemeButton>
                   <ThemeButton variant="primary" type="submit">Update</ThemeButton>
@@ -136,7 +136,6 @@ const UserSettingPage: React.FC = () => {
                     label="Email"
                     name="email"
                     value={values.email}
-                    className="bg-email-field-bg !text-[#7A7A7A]"
                   />
                 </div>
 
@@ -180,7 +179,7 @@ const UserSettingPage: React.FC = () => {
       </div>
 
       <div className="w-full lg:w-1/3 space-y-6 p-4 rounded-lg bg-primary-white border border-input-stroke">
-        <h2 className="text-md font-medium">Display Picture</h2>
+        <h2 className="text-md font-medium text-primary-black">Display Picture</h2>
         <div className="flex flex-col items-center gap-4">
           <div className="w-32 h-32 rounded-full bg-gray-100 overflow-hidden border-2 border-gray-200">
             <img

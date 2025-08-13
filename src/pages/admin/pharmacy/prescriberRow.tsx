@@ -16,9 +16,9 @@ const PrescriberRow: React.FC<PrescriberRowProps> = ({ name, totalRequests }) =>
           data={{ name, textColor: "#fff" }}
           showName={false}
         />
-        <span className="text-sm font-medium">{name}</span>
+        <span className="text-sm font-medium text-primary-black">{name}</span>
       </div>
-      <div className="flex items-center space-x-1">
+      <div className="flex items-center space-x-1 text-primary-black">
         <span className="text-sm font-medium">{totalRequests}</span>
         <span className="text-xs">Total Requests</span>
       </div>

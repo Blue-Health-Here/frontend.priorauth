@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as Chart from 'chart.js';
+import ThemeButtonTabs from '../ThemeButtonTabs';
 
 // Register Chart.js components
 Chart.Chart.register(
@@ -118,8 +119,7 @@ const GlobalStatsCard: React.FC<GlobalStatsCardProps> = ({ title, description, d
   }, [activePeriod, isDarkMode]);
 
   return (
-    <div className="rounded-2xl p-5 theme-shadow bg-primary-white dark:bg-dark-800 transition-colors min-h-full w-full flex flex-col justify-between border"
-         style={{ borderColor: 'var(--border-color)' }}>
+    <div className="rounded-lg p-5 theme-shadow bg-primary-white dark:bg-dark-800 transition-colors min-h-full w-full flex flex-col justify-between border border-quaternary-navy-blue">
       {/* Header */}
       <div className="flex items-start flex-wrap justify-between mb-2">
         <div>
@@ -128,21 +128,12 @@ const GlobalStatsCard: React.FC<GlobalStatsCardProps> = ({ title, description, d
             {description || 'Total no. of Sessions/sessions Doctors need to attend'}
           </p>
         </div>
-        <div className="flex space-x-2 text-xs border rounded-lg p-0.5"
-             style={{ borderColor: 'var(--border-color)' }}>
-          {['Y', 'M', 'W'].map((period) => (
-            <button
-              key={period}
-              onClick={() => setActivePeriod(period as 'Y' | 'M' | 'W')}
-              className={`px-3 py-2 cursor-pointer rounded-md transition-colors ${activePeriod === period
-                ? 'bg-[var(--active-background-color)] dark:text-white'
-                : 'text-gray-400 dark:text-gray-300 hover:text-gray-600 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
-                }`}
-            >
-              {period}
-            </button>
-          ))}
-        </div>
+        <ThemeButtonTabs
+          data={["Y", "M", "W"]}
+          activeTab={activePeriod}
+          setActiveTab={setActivePeriod}
+          className="w-full border-quaternary-navy-blue-dark !flex-0"
+        />
       </div>
 
       {/* Chart */}

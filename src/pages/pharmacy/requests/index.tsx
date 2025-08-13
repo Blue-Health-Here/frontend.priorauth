@@ -627,7 +627,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
         />
       )}
 
-      <div className="bg-primary-white rounded-lg theme-datatable theme-shadow border border-input-stroke px-4 py-4">
+      <div className="bg-primary-white rounded-lg theme-datatable theme-shadow border border-navbar-stroke px-4 py-4">
 
         {isModalOpen && (
           <AddRequestModal

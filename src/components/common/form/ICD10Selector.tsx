@@ -114,7 +114,7 @@ const ICD10Selector: React.FC<any> = ({ name, icdCodes }) => {
                                             }
                                         }}
                                         onChange={(e) => setCustomCode(e.target.value)} 
-                                        className="text-xs !border !border-light-stroke focus:outline-none !px-3 !py-2 w-full h-full rounded-lg" autoFocus />
+                                        className="text-xs !border border-light-stroke focus:outline-none !px-3 !py-2 w-full h-full rounded-lg" autoFocus />
                                     <ThemeButton type="button" onClick={handleAddCustomCode} className="w-full sm:w-20 rounded-lg" variant="primary">
                                         Add
                                     </ThemeButton>

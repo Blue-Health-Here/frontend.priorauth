@@ -54,7 +54,7 @@ const ToggleColumnsField: React.FC<ToggleColumnsFieldProps> = ({
         <Button
           severity="secondary"
           outlined
-          className="!text-sm !rounded-xl !border-light-stroke !text-secondary-black !font-medium whitespace-nowrap !px-3 md:!px-4"
+          className="!text-sm !rounded-xl !border-light-stroke dark:!border-[#2a2a2a] text-secondary-black !font-medium whitespace-nowrap !px-3 md:!px-4"
           onClick={() => setShowColumnDropdown(!showColumnDropdown)}
         >
           <span className="flex items-center gap-2">

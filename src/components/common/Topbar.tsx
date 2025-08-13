@@ -10,7 +10,7 @@ import { BreadCrumb } from 'primereact/breadcrumb';
 import { generateBreadcrumbItems } from '@/utils/helper';
 import { HiOutlineSlash } from "react-icons/hi2";
 import { useTheme } from "@/hooks/useTheme";
-import { InputText } from "primereact/inputtext";
+import { Input } from "../ui/input";
 
 interface UserData {
   userName: string;
@@ -157,9 +157,9 @@ const Topbar: React.FC<any> = ({ isAdmin }) => {
 
         <div className="flex items-center justify-center flex-1">
           <div className="relative mx-2 w-[324px]">
-            <InputText
+            <Input
               placeholder={"Search here"}
-              className="!pl-10 !rounded-full !bg-input-bg !border-input-stroke !text-sm w-full"
+              className="!pl-10 !rounded-full bg-input-bg border-input-stroke dark:!border-dark-500 !text-sm w-full"
             />
             <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
               <img src="/search-icon.svg" alt="search icon" className="w-4 h-4" />

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as Chart from 'chart.js';
+import ThemeButtonTabs from '../ThemeButtonTabs';
 
 // Register Chart.js components
 Chart.Chart.register(
@@ -161,10 +162,7 @@ const DashboardRequestCard: React.FC<any> = ({
 
   return (
     <div 
-      className="rounded-2xl p-4 theme-shadow bg-primary-white dark:bg-dark-800 transition-colors min-h-[120px] w-full flex flex-col justify-between gap-2 request-graph border"
-      style={{ 
-        borderColor: 'var(--border-color)'
-      }}
+      className="rounded-lg p-4 theme-shadow bg-primary-white dark:bg-dark-800 transition-colors min-h-[120px] w-full flex flex-col justify-between gap-2 request-graph border border-quaternary-navy-blue"
     >
       <div className="flex items-start flex-wrap gap-3 justify-between">
         <div className="font-secondary">
@@ -175,7 +173,13 @@ const DashboardRequestCard: React.FC<any> = ({
             {description}
           </p>
         </div>
-        <div 
+        <ThemeButtonTabs
+          data={['Y', 'M', 'W']}
+          activeTab={activePeriod}
+          setActiveTab={handlePeriodChange}
+          className="w-full border-quaternary-navy-blue-dark !flex-0"
+        />
+        {/* <div 
           className="flex space-x-1 text-xs rounded-lg p-0.5 border"
           style={{ 
             borderColor: 'var(--border-color)'
@@ -195,7 +199,7 @@ const DashboardRequestCard: React.FC<any> = ({
               {period}
             </button>
           ))}
-        </div>
+        </div> */}
       </div>
 
       <div className="flex items-end justify-between gap-4">

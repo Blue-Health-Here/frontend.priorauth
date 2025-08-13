@@ -18,7 +18,7 @@ const TopPrescribersCard: React.FC<TopPrescribersCardProps> = ({ prescribers }) 
   const navigate = useNavigate();
 
   return (
-    <div className="bg-primary-white rounded-lg border border-input-stroke p-4 h-full">
+    <div className="bg-primary-white rounded-lg border border-navbar-stroke p-4 h-full">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-medium text-primary-black">Prescribers</h3>
         <ThemeButton 

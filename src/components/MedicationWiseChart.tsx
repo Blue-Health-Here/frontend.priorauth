@@ -13,6 +13,7 @@ import {
 } from "chart.js";
 import { timeRanges } from "@/utils/constants";
 import { useTheme } from "@/hooks/useTheme";
+import ThemeButtonTabs from "./ThemeButtonTabs";
 
 ChartJS.register(
   CategoryScale,
@@ -175,10 +176,16 @@ const MedicationWiseChart = () => {
   };
 
   return (
-    <div className="bg-primary-white rounded-2xl p-4 theme-shadow w-full border" style={{ borderColor: "var(--border-color)" }}>
+    <div className="bg-primary-white rounded-2xl p-4 theme-shadow w-full border border-quaternary-navy-blue">
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold">Medication wise Analysis</h2>
-        <div className="flex space-x-2 text-xs border rounded-lg p-0.5" style={{ borderColor: "var(--border-color)" }}>
+        <ThemeButtonTabs
+          data={timeRanges}
+          activeTab={range}
+          setActiveTab={setRange}
+          className="w-full border-quaternary-navy-blue-dark !flex-0"
+        />
+        {/* <div className="flex space-x-2 text-xs border rounded-lg p-0.5 border-quaternary-navy-blue">
           {timeRanges.map((period) => (
             <button
               key={period}
@@ -193,7 +200,7 @@ const MedicationWiseChart = () => {
               {period}
             </button>
           ))}
-        </div>
+        </div> */}
       </div>
       <div className="medication-chart w-full h-[calc(100%-50px)]">
         <Bar data={data} options={options} />

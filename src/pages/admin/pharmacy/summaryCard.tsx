@@ -71,7 +71,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ pharmacy }) => {
   }
 
   return (
-    <div className="bg-primary-white rounded-lg border border-input-stroke p-4">
+    <div className="bg-primary-white rounded-lg border border-navbar-stroke p-4">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-medium text-primary-black">Summary</h3>
 

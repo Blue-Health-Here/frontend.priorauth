@@ -179,7 +179,7 @@ const Prescribers: React.FC<any> = ({ isAdmin }) => {
     <div className="bg-primary-white rounded-lg theme-shadow p-4 h-full">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-medium tracking-tighter">
+        <h1 className="text-xl font-medium tracking-tighter text-primary-black dark:text-white">
           {isModifying ? "Modify Prescribers" : "Prescribers List"}
         </h1>
         {isModifying && <div className="flex gap-2">
