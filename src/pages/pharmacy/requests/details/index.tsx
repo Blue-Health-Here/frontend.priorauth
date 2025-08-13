@@ -34,8 +34,6 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
   const { id: reqId } = useParams();
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isDragging, setIsDragging] = useState<boolean>(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  
   const fileUploadsObj = useFileUploadProgressNotes(reqId || "", requestDetails);
   const { setIsAnalysisStarted, setIsAnalysisComplete } = fileUploadsObj;
 
@@ -50,12 +48,6 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
 
   const handleOpenProgressNotesModal = () => {
     setIsModalOpen(true);
-  };
-
-  const handleUploadClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
   };
 
   const handleUploadFiles = async (files: any) => {
@@ -129,18 +121,20 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
     setUploadedFiles(updateFn);
   };
 
-  const fileUploadSectionProps = {
-    ...fileUploadsObj,
-    fileInputRef,
-    handleFileChange,
-  };
-
-  const memoizedChartNotes = useMemo(() => requestDetails?.chartNotes, [requestDetails?.chartNotes.length]);
+  useRequestData({
+    reqId,
+    setRequestDetails,
+    setUploadedFiles,
+    setIsLoading,
+    setIsAnalysisStarted,
+    setIsAnalysisComplete,
+  });
   
   const handleCheckNotes = () => {
     setIsDrawerOpen(true);
   };
-
+  
+  const memoizedChartNotes = useMemo(() => requestDetails?.chartNotes, [requestDetails?.chartNotes.length]);
   return (
     <>
       <ProgressNotesModal
@@ -166,13 +160,8 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
           <Loading />
         ) : (
           <>
-            <PageHeader 
-              requestDetails={requestDetails} 
-              isAdmin={isAdmin}
-              prescriberId={prescriberId} 
-              inviteCode={inviteCode}
-              handleUploadClick={handleUploadClick}
-            />
+            <PageHeader requestDetails={requestDetails} isAdmin={isAdmin} 
+              prescriberId={prescriberId} inviteCode={inviteCode} />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="col-span-1 lg:col-span-2 space-y-4">
                 <div className="bg-primary-white rounded-xl overflow-hidden border border-body-stroke">
@@ -183,11 +172,26 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
                     showCheckNotesBtn={true}
                   />
                 </div>
+                {/* <FileUploadSection
+                  uploadedFiles={uploadedFiles}
+                  setUploadedFiles={setUploadedFiles}
+                  reqId={reqId || ""}
+                  isAnalysisStarted={isAnalysisStarted}
+                  setIsAnalysisStarted={setIsAnalysisStarted}
+                  isAnalysisComplete={isAnalysisComplete}
+                  setIsAnalysisComplete={setIsAnalysisComplete}
+                  isAnalysisFailed={isAnalysisFailed}
+                  setIsAnalysisFailed={setIsAnalysisFailed}
+                  startAnalysis={startAnalysis}
+                  restartAnalysis={startAnalysis}
+                  handleOpenProgressNotesModal={handleOpenProgressNotesModal}
+                  handleDownload={handleDownloadReport}
+                /> */}
                 <FileUploadSection
                   uploadedFiles={uploadedFiles}
                   setUploadedFiles={setUploadedFiles}
                   reqId={reqId || ""}
-                  {...fileUploadSectionProps}
+                  {...fileUploadsObj}
                   inviteCode={inviteCode}
                   title="Progress Notes"
                   handleOpenProgressNotesModal={handleOpenProgressNotesModal}
