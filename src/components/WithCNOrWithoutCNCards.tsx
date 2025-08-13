@@ -1,29 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import * as Chart from "chart.js";
+import { useTheme } from "@/hooks/useTheme";
 
 const WithCNOrWithoutCNCards = () => {
   const approvedChartRef = useRef<any>(null);
   const deniedChartRef = useRef<any>(null);
   const approvedChartInstance = useRef<any>(null);
   const deniedChartInstance = useRef<any>(null);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
-  useEffect(() => {
-    // Theme detection
-    const checkTheme = () => {
-      setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-    };
-
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
-
-    checkTheme();
-
-    return () => observer.disconnect();
-  }, []);
+  const { isDark } = useTheme();
 
   useEffect(() => {
     // Register Chart.js components
@@ -48,7 +32,7 @@ const WithCNOrWithoutCNCards = () => {
           datasets: [
             {
               data: [65, 35],
-              backgroundColor: theme === 'dark' ? ["#D30000", "#1FC001"] : ["#FF4040", "#5CE543"],
+              backgroundColor: isDark === 'dark' ? ["#D30000", "#1FC001"] : ["#FF4040", "#5CE543"],
               borderWidth: 0,
               spacing: 4,
             },
@@ -83,7 +67,7 @@ const WithCNOrWithoutCNCards = () => {
           datasets: [
             {
               data: [62, 38],
-              backgroundColor: theme === 'dark' ? ["#1FC001", "#D30000"] : ["#5CE543", "#FF4040"],
+              backgroundColor: isDark === 'dark' ? ["#1FC001", "#D30000"] : ["#5CE543", "#FF4040"],
               borderWidth: 0,
               spacing: 4,
             },
@@ -113,7 +97,7 @@ const WithCNOrWithoutCNCards = () => {
         deniedChartInstance.current.destroy();
       }
     };
-  }, [theme]);
+  }, [isDark]);
 
   return (
     <div

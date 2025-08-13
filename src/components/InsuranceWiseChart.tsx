@@ -11,6 +11,7 @@ import {
 } from "chart.js";
 import { useState, useEffect } from "react";
 import { timeRanges } from "@/utils/constants";
+import { useTheme } from "@/hooks/useTheme";
 
 ChartJS.register(
   CategoryScale,
@@ -26,30 +27,16 @@ type TimeRange = "Today" | "W" | "M" | "Y";
 const InsuranceWiseChart = () => {
   const [range, setRange] = useState<TimeRange>("Today");
   const [isMobile, setIsMobile] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const { isDark } = useTheme();
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 640);
     };
 
-    // Check initial theme
-    setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-    
-    // Watch for theme changes
-    const observer = new MutationObserver(() => {
-      setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-    });
-    
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
-
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => {
-      observer.disconnect();
       window.removeEventListener("resize", handleResize);
     };
   }, []);
@@ -107,13 +94,13 @@ const InsuranceWiseChart = () => {
     datasets: [
       {
         label: "Approval",
-        backgroundColor: theme === 'dark' ? '#1FC001' : '#5CE543',
+        backgroundColor: isDark === 'dark' ? '#1FC001' : '#5CE543',
         data: approved,
         borderRadius: 10,
       },
       {
         label: "Denial",
-        backgroundColor: theme === 'dark' ? '#D30000' : '#FF7E7E',
+        backgroundColor: isDark === 'dark' ? '#D30000' : '#FF7E7E',
         data: denied,
         borderRadius: 10,
       },
@@ -128,7 +115,7 @@ const InsuranceWiseChart = () => {
       legend: { 
         position: "top",
         labels: {
-          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666',
+          color: isDark === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666',
           font: {
             size: isMobile ? 9 : undefined,
           },
@@ -142,11 +129,11 @@ const InsuranceWiseChart = () => {
       x: {
         grid: { 
           display: true,
-          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+          color: isDark === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
         },
         border: { display: false },
         ticks: {
-          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.7)' : '#666666',
+          color: isDark === 'dark' ? 'rgba(255, 255, 255, 0.7)' : '#666666',
           font: {
             size: isMobile ? 9 : undefined,
           }
@@ -156,7 +143,7 @@ const InsuranceWiseChart = () => {
         grid: { display: false },
         border: { display: false },
         ticks: {
-          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.7)' : '#666666',
+          color: isDark === 'dark' ? 'rgba(255, 255, 255, 0.7)' : '#666666',
           font: {
             size: isMobile ? 9 : undefined,
           }

@@ -265,7 +265,7 @@
 }
 
 /* Dark Mode Colors */
-:root.dark {
+.dark {
   --primary-navy-blue: #85acff;
   --secondary-navy-blue: #66d0ff;
   --tertiary-navy-blue: #3961b2;

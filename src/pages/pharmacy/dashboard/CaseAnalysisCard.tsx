@@ -12,13 +12,14 @@ import {
     ChartOptions,
 } from "chart.js";
 import { generateDatasetForCaseAnalysis } from "@/utils/helper";
+import { useTheme } from "@/hooks/useTheme";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const CaseAnalysisCard = () => {
     const [range, setRange] = useState("Y");
     const [screenSize, setScreenSize] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
-    const [theme, setTheme] = useState<'light' | 'dark'>('light');
+    const { isDark: theme } = useTheme();
 
     useEffect(() => {
         const handleResize = () => {
@@ -32,22 +33,9 @@ const CaseAnalysisCard = () => {
             }
         };
 
-        // Theme detection
-        const checkTheme = () => {
-            setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-        };
-
-        const observer = new MutationObserver(checkTheme);
-        observer.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ['class']
-        });
-
         handleResize();
-        checkTheme();
         window.addEventListener('resize', handleResize);
         return () => {
-            observer.disconnect();
             window.removeEventListener('resize', handleResize);
         };
     }, []);

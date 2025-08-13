@@ -12,6 +12,7 @@ import {
   ChartData,
 } from "chart.js";
 import { timeRanges } from "@/utils/constants";
+import { useTheme } from "@/hooks/useTheme";
 
 ChartJS.register(
   CategoryScale,
@@ -25,29 +26,17 @@ ChartJS.register(
 const MedicationWiseChart = () => {
   const [range, setRange] = useState("Today");
   const [isMobile, setIsMobile] = useState(false);
-  const [theme, setTheme] = useState(
-    document.documentElement.classList.contains('dark') ? 'dark' : 'light'
-  );
+  const { isDark } = useTheme();
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 640);
     };
 
-    const observer = new MutationObserver(() => {
-      setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-    });
-    
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
-
     handleResize();
     window.addEventListener("resize", handleResize);
     
     return () => {
-      observer.disconnect();
       window.removeEventListener("resize", handleResize);
     };
   }, []);
@@ -73,8 +62,8 @@ const MedicationWiseChart = () => {
 
   const [requests, approved] = datasetsByRange[range];
 
-  const getThemeColor = () => theme === 'dark' ? '#0160c8' : '#007AFF';
-  const getApprovedColor = () => theme === 'dark' ? '#1FC001' : '#5CE543';
+  const getThemeColor = () => isDark === 'dark' ? '#0160c8' : '#007AFF';
+  const getApprovedColor = () => isDark === 'dark' ? '#1FC001' : '#5CE543';
 
   const labels = [
     "SLYND 4 MG O...",
@@ -126,12 +115,11 @@ const MedicationWiseChart = () => {
           maxRotation: 0,
           minRotation: 0,
           padding: 10,
-          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666',
+          color: isDark === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666',
           font: {
             size: isMobile ? 10 : 12,
           },
-          callback: function(value: any, index) {
-            console.log(value, "value");
+          callback: function(_, index) {
             const label = this.getLabelForValue(index);
             return isMobile 
               ? (label.length > 4 ? `${label.substring(0, 4)}..` : label)
@@ -143,14 +131,14 @@ const MedicationWiseChart = () => {
         grid: {
           display: true,
           drawTicks: false,
-          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+          color: isDark === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
         },
         border: {
           display: false,
         },
         ticks: {
           stepSize: 500,
-          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666',
+          color: isDark === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666',
           padding: 10,
         },
         beginAtZero: true,
@@ -165,17 +153,17 @@ const MedicationWiseChart = () => {
           padding: 10,
           usePointStyle: true,
           pointStyle: "rect",
-          color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666',
+          color: isDark === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#666666',
         },
       },
       tooltip: {
         callbacks: {
           label: (context) => `${context.dataset.label}: ${context.parsed.y}`,
         },
-        backgroundColor: theme === 'dark' ? '#1E293B' : '#ffffff',
-        titleColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.9)' : '#333333',
-        bodyColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#333333',
-        borderColor: theme === 'dark' ? '#475569' : '#e2e8f0',
+        backgroundColor: isDark === 'dark' ? '#1E293B' : '#ffffff',
+        titleColor: isDark === 'dark' ? 'rgba(255, 255, 255, 0.9)' : '#333333',
+        bodyColor: isDark === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#333333',
+        borderColor: isDark === 'dark' ? '#475569' : '#e2e8f0',
       },
     },
     datasets: {

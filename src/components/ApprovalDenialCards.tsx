@@ -1,29 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import * as Chart from "chart.js";
+import { useTheme } from "@/hooks/useTheme";
 
 const ApprovalDenialCards = () => {
   const approvedChartRef = useRef<any>(null);
   const deniedChartRef = useRef<any>(null);
   const approvedChartInstance = useRef<any>(null);
   const deniedChartInstance = useRef<any>(null);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
-  useEffect(() => {
-    // Theme detection
-    const checkTheme = () => {
-      setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-    };
-
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
-
-    checkTheme();
-
-    return () => observer.disconnect();
-  }, []);
+  const { isDark } = useTheme();
 
   useEffect(() => {
     // Register Chart.js components
@@ -48,7 +32,7 @@ const ApprovalDenialCards = () => {
           datasets: [
             {
               data: [80, 20],
-              backgroundColor: theme === 'dark' ? ["#1FC001", "#0E8000"] : ["#5CE543", "#62C051"],
+              backgroundColor: isDark === 'dark' ? ["#1FC001", "#0E8000"] : ["#5CE543", "#62C051"],
               borderWidth: 0,
               spacing: 4,
             },
@@ -83,7 +67,7 @@ const ApprovalDenialCards = () => {
           datasets: [
             {
               data: [62, 38],
-              backgroundColor: theme === 'dark' ? ["#D30000", "#A00000"] : ["#ef4444", "#f87171"],
+              backgroundColor: isDark === 'dark' ? ["#D30000", "#A00000"] : ["#ef4444", "#f87171"],
               borderWidth: 0,
               spacing: 4,
             },
@@ -113,7 +97,7 @@ const ApprovalDenialCards = () => {
         deniedChartInstance.current.destroy();
       }
     };
-  }, [theme]);
+  }, [isDark]);
 
   return (
     <div
