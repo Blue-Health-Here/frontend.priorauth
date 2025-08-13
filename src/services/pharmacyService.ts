@@ -7,6 +7,7 @@ import { setRequestsData } from "@/store/features/pharmacy/requests/requestsSlic
 import { setProfileData } from "../store/features/global/globalSlice";
 import { setPrescribersData } from "@/store/features/pharmacy/prescribers/prescribersSlice";
 import { setProfilePassword } from "../store/features/global/globalSlice";
+import axios from "axios";
 
 // Types
 type ApiMethod = 'get' | 'post' | 'put' | 'delete' | 'patch';
@@ -285,8 +286,39 @@ export const fetchAiAnalysis = async (dispatch: AppDispatch, id?: string) => {
     return apiHandler(dispatch, 'get', `/pa_request/get_by_id/chartNotesAnalysis/${id}`, {});
 };
 
-export const deleteReqUploadedFile = async (dispatch: AppDispatch, reqId?: string,  id?: string) => {
+export const deleteReqUploadedFile = async (dispatch: AppDispatch, reqId?: string, id?: string) => {
     return apiHandler(dispatch, 'delete', `/pa_request/delete/${reqId}/file/${id}`, {});
+};
+
+export const handleDownloadReqFile = async (reqId?: string, id?: string, token?: string, file?: any) => {
+    try {
+        const response = await axios.get(import.meta.env.VITE_API_BASE_URL + `/pa_request/get_by_id/request/${reqId}/files/${id}/download`, {
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+            responseType: "blob", // 🔹 This is important for binary files
+        });
+
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+
+        // Extract filename from Content-Disposition header
+        const contentDisposition = response.headers["content-disposition"];
+        let filename = file?.fileName || "download.pdf";
+        if (contentDisposition) {
+            const match = contentDisposition.match(/filename="(.+)"/);
+            if (match?.[1]) filename = match[1];
+        }
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+    } catch (error) {
+        console.error("Error downloading PDF:", error);
+    }
 };
 
 // Request Notes
@@ -378,16 +410,16 @@ export const updateProfilePassword = async (dispatch: AppDispatch, userId: strin
 
 
 export const updateProfilePicture = async (
-  dispatch: AppDispatch, 
-  userId: string, 
-  formData: FormData
+    dispatch: AppDispatch,
+    userId: string,
+    formData: FormData
 ) => {
-  return apiHandler(dispatch, 'patch', `/user/update/${userId}/profile-pic`, {
-    data: formData,
-    isFormData: true, 
-    successMessage: "Profile picture updated successfully!",
-    onSuccess: (updatedData) => {
-      dispatch(setProfileData(updatedData));
-    }
-  });
+    return apiHandler(dispatch, 'patch', `/user/update/${userId}/profile-pic`, {
+        data: formData,
+        isFormData: true,
+        successMessage: "Profile picture updated successfully!",
+        onSuccess: (updatedData) => {
+            dispatch(setProfileData(updatedData));
+        }
+    });
 };
