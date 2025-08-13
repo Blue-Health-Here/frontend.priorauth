@@ -40,7 +40,7 @@ const EditPrescriberForm: React.FC<any> = ({ selectedPrescriber, handleSavePresc
     return (
         <div className="flex flex-col lg:flex-row">
             <div className="w-full lg:w-2/3 space-y-2 pr-0 lg:pr-4">
-                <h2 className="text-md font-medium">Basic Information</h2>
+                <h2 className="text-md font-medium text-primary-black">Basic Information</h2>
                 <Formik
                     initialValues={selectedPrescriber}
                     validationSchema={isAdmin ? modifyPrescriberSchemaForAdmin : modifyPrescriberSchema}
@@ -147,7 +147,7 @@ const EditPrescriberForm: React.FC<any> = ({ selectedPrescriber, handleSavePresc
             <div className="hidden lg:block w-px bg-[#EBEBEB] flex-shrink-0"></div>
 
             <div className="w-full lg:w-1/3 space-y-6 pl-6">
-                <h2 className="text-md font-medium">Display Picture</h2>
+                <h2 className="text-md font-medium text-primary-black">Display Picture</h2>
                 <div className="flex flex-col items-center gap-4">
                     <div className="w-32 h-32 rounded-full bg-gray-100 overflow-hidden border-2 border-gray-200">
                         <img

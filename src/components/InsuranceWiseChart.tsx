@@ -12,6 +12,7 @@ import {
 import { useState, useEffect } from "react";
 import { timeRanges } from "@/utils/constants";
 import { useTheme } from "@/hooks/useTheme";
+import ThemeButtonTabs from "./ThemeButtonTabs";
 
 ChartJS.register(
   CategoryScale,
@@ -165,10 +166,7 @@ const InsuranceWiseChart = () => {
 
   return (
     <div
-      className="bg-primary-white dark:bg-dark-800 rounded-2xl p-4 theme-shadow w-full border"
-      style={{
-        borderColor: "var(--border-color)",
-      }}
+      className="bg-primary-white dark:bg-dark-800 rounded-2xl p-4 theme-shadow w-full border border-quaternary-navy-blue"
     >
       <div
         className={`flex ${
@@ -178,13 +176,16 @@ const InsuranceWiseChart = () => {
         <h2 className={`${isMobile ? "text-sm" : "text-lg"} font-semibold dark:text-gray-200`}>
           Insurance Analysis
         </h2>
-        <div
+        <ThemeButtonTabs
+          data={timeRanges}
+          activeTab={range}
+          setActiveTab={setRange}
+          className="w-full border-quaternary-navy-blue-dark !flex-0"
+        />
+        {/* <div
           className={`flex ${
             isMobile ? "flex-wrap gap-1" : "space-x-2"
-          } text-xs border rounded-lg p-0.5`}
-          style={{
-            borderColor: "var(--border-color)",
-          }}
+          } text-xs border rounded-lg p-0.5 border-quaternary-navy-blue`}
         >
           {(timeRanges as TimeRange[]).map((period) => (
             <button
@@ -207,7 +208,7 @@ const InsuranceWiseChart = () => {
               {period}
             </button>
           ))}
-        </div>
+        </div> */}
       </div>
       <div className={isMobile ? "h-[300px] ml-4" : ""}>
         <Bar 
