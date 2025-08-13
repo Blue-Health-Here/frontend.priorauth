@@ -3,7 +3,21 @@ import { User } from "@/utils/types";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const PageHeader: React.FC<any> = ({ requestDetails, isAdmin, prescriberId, inviteCode }) => {
+interface PageHeaderProps {
+  requestDetails: any;
+  isAdmin: boolean;
+  prescriberId: string;
+  inviteCode?: string;
+  handleUploadClick: () => void;
+}
+
+const PageHeader: React.FC<PageHeaderProps> = ({ 
+  requestDetails, 
+  isAdmin, 
+  prescriberId, 
+  inviteCode,
+  handleUploadClick
+}) => {
     const navigate = useNavigate();
     const storedUser = localStorage.getItem("user");
     let user: User | null = null;
@@ -46,7 +60,11 @@ const PageHeader: React.FC<any> = ({ requestDetails, isAdmin, prescriberId, invi
                     {/* Desktop Buttons - hidden on mobile */}
                     <div className="hidden sm:flex gap-3 self-end sm:self-auto flex-wrap">
                         <ThemeButton className="h-full min-h-12" variant="secondary">Open Portal</ThemeButton>
-                        <ThemeButton className="submit-progress-notes h-full min-h-12 !flex gap-2 items-center bg-button-bg" variant="primary">
+                        <ThemeButton 
+                            className="submit-progress-notes h-full min-h-12 !flex gap-2 items-center bg-button-bg" 
+                            variant="primary"
+                            onClick={handleUploadClick}
+                        >
                             <span>Submit Progress Notes</span>
                             <img src="/images/next-arrow.svg" alt="next arrow" className="" loading="lazy" />
                         </ThemeButton>

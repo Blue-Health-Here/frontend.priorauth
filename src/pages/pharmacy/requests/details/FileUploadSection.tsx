@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import CardHeader from "@/components/common/CardHeader";
 import { UploadedFile } from "@/utils/types";
 import { useDispatch } from "react-redux";
@@ -22,6 +22,8 @@ interface FileUploadSectionProps {
   handleDownload: () => void;
   title?: string;
   inviteCode?: any;
+  fileInputRef: React.RefObject<HTMLInputElement>;
+  handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const FileUploadSection: React.FC<FileUploadSectionProps> = ({
@@ -31,17 +33,22 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
   isAnalysisStarted,
   setIsAnalysisStarted,
   isAnalysisComplete,
+  setIsAnalysisComplete,
   isAnalysisFailed,
+  setIsAnalysisFailed,
   startAnalysis,
   restartAnalysis,
   handleOpenProgressNotesModal,
-  handleDownload, title, inviteCode
+  handleDownload,
+  title,
+  inviteCode,
+  fileInputRef,
+  handleFileChange
 }) => {
   const dispatch = useDispatch();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const analysisTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const analysisTimerRef = React.useRef<NodeJS.Timeout | null>(null);
 
-  const handleFileChange = async (files: FileList | null) => {
+  const handleFileUpload = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
     const fileArray = Array.from(files);
     try {
@@ -49,19 +56,26 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
       fileArray.forEach((file: any) => {
         formData.append("chartNotes", file);
       });
-      const response = await postChartNotesFiles(dispatch, reqId, formData)
+      const response = await postChartNotesFiles(dispatch, reqId, formData);
       if (response) {
         setUploadedFiles((prev: any) => [...prev, ...response?.chartNotes?.map((item: any) => {
           return {
             ...item,
             name: item.fileName,
             type: item.mimeType,
-          }
+          };
         })]);
       }
     } catch (error: any) {
       console.log(error?.message);
       setUploadedFiles([]);
+    }
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleFileChange(e);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -73,7 +87,7 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
 
   const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    handleFileChange(e.dataTransfer.files);
+    handleFileUpload(e.dataTransfer.files);
   };
 
   const removeFile = async (id: string) => {
@@ -93,13 +107,6 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
   const handleUploadClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
-    }
-  };
-
-  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    handleFileChange(e.target.files);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
     }
   };
 
@@ -145,7 +152,6 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
               {isAnalysisStarted ? (
                 <div className="rounded-lg p-4 sm:p-6 flex justify-center">
                   <div className="flex flex-col sm:flex-row items-center gap-4 max-w-md w-full">
-                    {/* Icon container with overlay */}
                     <div className="relative">
                       {isAnalysisComplete ? (
                         <div className="relative">
@@ -182,7 +188,6 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
                       )}
                     </div>
 
-                    {/* Content section */}
                     <div className="space-y-3 text-center sm:text-left">
                       {!isAnalysisComplete && !isAnalysisFailed && (
                         <div className="space-y-1">
@@ -193,12 +198,13 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
                       )}
 
                       <h3
-                        className={`text-lg sm:text-2xl font-semibold ${isAnalysisComplete
-                          ? "text-[#19AD4B]"
-                          : isAnalysisFailed
+                        className={`text-lg sm:text-2xl font-semibold ${
+                          isAnalysisComplete
+                            ? "text-[#19AD4B]"
+                            : isAnalysisFailed
                             ? "text-[#FF2E37] sm:text-lg"
                             : "text-transparent bg-clip-text bg-gradient-to-r from-[#F66568] via-[#C0489D] via-50% to-[#A16CF9]"
-                          }`}
+                        }`}
                       >
                         {isAnalysisComplete
                           ? "Analysis Completed"
@@ -214,7 +220,6 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
                         </p>
                       )}
 
-                      {/* Buttons section */}
                       <div className="flex flex-wrap justify-center sm:justify-start gap-2 mt-2">
                         {isAnalysisComplete ? (
                           <>
@@ -238,16 +243,18 @@ const FileUploadSection: React.FC<FileUploadSectionProps> = ({
                                 <img src="/view-analysis.svg" alt="View" className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                               </span>
                             </ThemeButton>
-                            {!inviteCode && <ThemeButton
-                              onClick={restartAnalysis}
-                              variant="tertiary"
-                              className="text-xs sm:text-sm"
-                            >
-                              <span className="flex items-center gap-1 sm:gap-2">
-                                Restart
-                                <img src="/restart.svg" alt="Restart" className="w-3 h-3 sm:w-4 sm:h-4" />
-                              </span>
-                            </ThemeButton>}
+                            {!inviteCode && (
+                              <ThemeButton
+                                onClick={restartAnalysis}
+                                variant="tertiary"
+                                className="text-xs sm:text-sm"
+                              >
+                                <span className="flex items-center gap-1 sm:gap-2">
+                                  Restart
+                                  <img src="/restart.svg" alt="Restart" className="w-3 h-3 sm:w-4 sm:h-4" />
+                                </span>
+                              </ThemeButton>
+                            )}
                           </>
                         ) : isAnalysisFailed ? (
                           <button
