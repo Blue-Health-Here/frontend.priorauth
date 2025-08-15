@@ -130,7 +130,7 @@ const PharmacySettings = () => {
   return (
     <div className="bg-primary-white rounded-xl theme-shadow border border-border-color">
       <div className="px-6 pt-6">
-        <h1 className="text-xl font-medium tracking-tighter">
+        <h1 className="text-xl font-medium tracking-tighter text-primary-black">
           Profile Settings
         </h1>
       </div>

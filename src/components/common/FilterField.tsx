@@ -75,7 +75,7 @@ const FilterField: React.FC<FilterFieldProps> = ({
         <Button
           severity="secondary"
           outlined
-          className={"!text-sm !rounded-xl !border-light-stroke !text-secondary-black !font-medium !px-3" + (selectedValue ? " !py-2" : "")}
+          className={"!text-sm !rounded-xl !border-light-stroke dark:!border-[#2a2a2a] text-secondary-black !font-medium !px-3" + (selectedValue ? " !py-2" : "")}
           onClick={() => setShowFiltersDropdown(!showFiltersDropdown)}
         >
           <span className="flex items-center gap-2 whitespace-nowrap">

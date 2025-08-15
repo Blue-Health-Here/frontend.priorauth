@@ -151,7 +151,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
                                         label="Rejection Claim"
                                         placeholder="Enter rejection claim details..."
                                         rows={4}
-                                        className="w-full rounded-lg !border !border-light-stroke bg-background !px-4 focus:outline-none focus:!border-gray-400 !py-2 text-base placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                                        className="w-full rounded-lg !border border-light-stroke bg-background !px-4 focus:outline-none focus:!border-gray-400 !py-2 text-base placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                                         onChange={(e: any) => handleChangeRejectionClaim(e, setFieldValue)}
                                         disabled={isLoading}
                                     />

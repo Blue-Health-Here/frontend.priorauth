@@ -61,7 +61,7 @@ const PharmacyProfileCard: React.FC<PharmacyProfileCardProps> = ({
   }, []);
 
   return (
-    <div className="bg-primary-white rounded-lg border border-input-stroke p-4 relative">
+    <div className="bg-primary-white rounded-lg border border-navbar-stroke p-4 relative">
       <div className="flex justify-between gap-4">
         <div className="text-lg font-medium text-primary-black">
           Profile

@@ -43,7 +43,7 @@ const SecuritySettings = ({ userId }: { userId: string }) => {
 
   return (
     <div className="bg-primary-white rounded-lg border border-border-color p-3 sm:p-4">
-      <h3 className="text-base font-semibold text-foreground mb-4">
+      <h3 className="text-base font-semibold text-primary-black mb-4">
         Security Settings
       </h3>
 
@@ -115,7 +115,7 @@ const SecuritySettings = ({ userId }: { userId: string }) => {
                         placeholder="Enter current password"
                         variant="default"
                         isPassword={true}
-                        className="input-field !w-full !h-10 border !border-input-stroke"
+                        className="input-field !w-full !h-10 border border-input-stroke"
                       />
                     </div>
 
@@ -128,7 +128,7 @@ const SecuritySettings = ({ userId }: { userId: string }) => {
                           placeholder="Enter new password"
                           variant="default"
                           isPassword={true}
-                          className="input-field !w-full !h-10 border !border-input-stroke"
+                          className="input-field !w-full !h-10 border border-input-stroke"
                         />
                         {currentPasswordMatchesNew && (
                           <div className="flex items-center gap-2 mt-2">
@@ -153,7 +153,7 @@ const SecuritySettings = ({ userId }: { userId: string }) => {
                           placeholder="Confirm new password"
                           variant="default"
                           isPassword={true}
-                          className="input-field !w-full !h-10 border !border-input-stroke"
+                          className="input-field !w-full !h-10 border border-input-stroke"
                         />
                         {values.confirmPassword.length > 0 && (
                           <div className="flex items-center gap-2 mt-2">

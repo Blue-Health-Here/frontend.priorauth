@@ -266,7 +266,7 @@ const PharmacyRequestDetails: React.FC<any> = ({
                         </h3>
                         <UploadFileList
                           className="grid grid-cols-1 md:grid-cols-2 gap-4"
-                          files={uploadedFiles}
+                          files={uploadedFiles} showDownload={true}
                           removeFile={(id: any) => removeFile(id)}
                           handleAddTag={handleAddTag}
                         />

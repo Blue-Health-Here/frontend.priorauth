@@ -43,7 +43,7 @@ const PharmacyPACriteria = () => {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
             <div className="bg-primary-white theme-shadow border border-quaternary-navy-blue p-4 rounded-lg flex flex-col gap-4 sm:col-span-1 xl:col-span-2 max-h-[300px] sm:max-h-content">
-                <h1 className="text-xl font-medium tracking-tighter">Fetch PA Criteria</h1>
+                <h1 className="text-xl font-medium tracking-tighter text-primary-black">Fetch PA Criteria</h1>
                 <PACriteriaForm handleSubmit={handleSubmit} />
             </div>
             {isLoading ? (
@@ -54,7 +54,7 @@ const PharmacyPACriteria = () => {
             ) : response && (
                 <div style={{ minHeight: 'calc(100vh - 120px)' }}
                     className="sm:col-span-2 xl:col-span-3 bg-primary-white theme-shadow rounded-lg border border-quaternary-navy-blue flex flex-col gap-4 justify-center p-4 md:p-6">
-                    <h1 className="text-xl font-medium tracking-tighter">PA Criteria</h1>
+                    <h1 className="text-xl font-medium tracking-tighter text-primary-black">PA Criteria</h1>
                     <div className="p-4 md:p-6 rounded-lg bg-quaternary-navy-blue text-left h-full">
                         {Array.isArray(response) && response[0]?.fields?.["PA Criteria"] ? (
                             <pre
@@ -64,9 +64,9 @@ const PharmacyPACriteria = () => {
                                 }}
                             >
                                 {formatPACriteria(response[0].fields["PA Criteria"]).map((section: any, index: number) => (
-                                    <div key={index}>
+                                    <div key={index} className="dark:text-white">
                                         <h3 className="py-2 text-lg font-normal"><strong>{section.title}</strong></h3>
-                                        <ul>
+                                        <ul className="dark:text-[#a3a3a3]">
                                             {section.items.map((item: any, idx: number) => (
                                                 <li className="py-1" key={idx}>{item}</li>
                                             ))}

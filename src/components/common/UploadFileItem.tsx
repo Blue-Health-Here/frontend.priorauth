@@ -3,6 +3,7 @@ import { UploadedFile } from "../../utils/types";
 import CustomCheckbox from "./form/CustomCheckbox";
 import ThemeButton from "./ThemeButton";
 import { Link } from "react-router-dom";
+import { LuDownload } from "react-icons/lu";
 
 const predefinedTags = [
   "Denial Letter",
@@ -15,7 +16,9 @@ const predefinedTags = [
 interface UploadFileItemProps {
   file: UploadedFile;
   isAddTags?: boolean;
+  showDownload?: boolean;
   removeFile: (id: string) => void;
+  downloadFile?: (id: any) => void;
   handleAddTag: (
     updateFn: (prevFiles: UploadedFile[]) => UploadedFile[]
   ) => void;
@@ -25,6 +28,7 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
   file,
   removeFile,
   handleAddTag,
+  showDownload, downloadFile
   // isAddTags,
 }) => {
   const [customTag, setCustomTag] = useState("");
@@ -131,7 +135,7 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
           </div>
         </div>
 
-        <div className="flex items-end gap-2 flex-col-reverse">
+        <div className="flex items-end gap-2">
           {/* {isAddTags && (
             <button
               type="button"
@@ -141,6 +145,14 @@ const UploadFileItem: React.FC<UploadFileItemProps> = ({
               {file.showTagDropdown ? "Hide Tags" : "Add Tags"}
             </button>
           )} */}
+          {showDownload && (
+            <button
+              onClick={() => downloadFile && downloadFile(file)}
+              className={file.status === "uploading" ? "text-black cursor-pointer" : "text-primary-navy-blue hover:text-red-700 cursor-pointer"}
+            >
+              <LuDownload />
+            </button>
+          )}
           <button
             onClick={() => removeFile(file.id)}
             className={file.status === "uploading" ? "text-black cursor-pointer" : "text-red-500 hover:text-red-700 cursor-pointer"}

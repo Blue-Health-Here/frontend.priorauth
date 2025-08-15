@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { formatNumberWithUnits } from "../../../utils/helper";
+import ThemeButtonTabs from "@/components/ThemeButtonTabs";
 
 const PARequestsSection = () => {
   const [activePeriod, setActivePeriod] = useState<any>("Y");
@@ -17,16 +18,19 @@ const PARequestsSection = () => {
 
   return (
     <div
-      className="p-4 rounded-2xl bg-primary-white theme-shadow flex flex-col gap-4 border"
-      style={{
-        borderColor: "var(--border-color)",
-      }}
+      className="p-4 rounded-2xl bg-primary-white theme-shadow flex flex-col gap-4 border border-navbar-stroke"
     >
       <div className="flex justify-between items-center gap-4 flex-wrap">
         <h3 className="font-semibold text-base text-primary-black">
           PA Requests
         </h3>
-        <div
+        <ThemeButtonTabs
+          data={["Today", "Y", "M", "W"]}
+          activeTab={activePeriod}
+          setActiveTab={handlePeriodChange}
+          className="w-full border-quaternary-navy-blue-dark !flex-0"
+        />
+        {/* <div
           className="flex space-x-2 text-xs border rounded-lg p-0.5"
           style={{ borderColor: "var(--border-color)" }}
         >
@@ -44,14 +48,13 @@ const PARequestsSection = () => {
               {period}
             </button>
           ))}
-        </div>
+        </div> */}
       </div>
       <div className="flex flex-wrap gap-4 items-center justify-center">
         {paReqStats.map((item: any, index: number) => (
           <div
             key={index}
-            className="rounded-2xl border p-4 pt-2 flex flex-col gap-5 flex-1 min-w-[150px] h-[120px] justify-center"
-            style={{ borderColor: "var(--border-color)" }}
+            className="rounded-2xl border border-quaternary-navy-blue p-4 pt-2 flex flex-col gap-5 flex-1 min-w-[150px] h-[120px] justify-center"
           >
             <p className="flex gap-2 items-center text-sm dark:text-white">
               <span

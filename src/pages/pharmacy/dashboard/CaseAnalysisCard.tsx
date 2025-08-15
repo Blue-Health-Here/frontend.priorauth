@@ -13,6 +13,7 @@ import {
 } from "chart.js";
 import { generateDatasetForCaseAnalysis } from "@/utils/helper";
 import { useTheme } from "@/hooks/useTheme";
+import ThemeButtonTabs from "@/components/ThemeButtonTabs";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -154,28 +155,16 @@ const CaseAnalysisCard = () => {
     };
 
     return (
-        <div className="bg-primary-white dark:bg-dark-800 rounded-2xl p-4 theme-shadow w-full border"
-            style={{ 
-                borderColor: 'var(--border-color)'
-            }}
+        <div className="bg-primary-white dark:bg-dark-800 rounded-2xl p-4 theme-shadow w-full border border-quaternary-navy-blue"
         >
             <div className="flex justify-between items-center mb-2">
                 <h2 className="text-lg font-semibold dark:text-gray-200">Case Analysis</h2>
-                <div className="flex space-x-2 text-xs border border-quaternary-navy-blue dark:border-gray-600 rounded-lg p-0.5">
-                    {["W", "M", "Y"].map((period) => (
-                        <button
-                            key={period}
-                            type='button'
-                            onClick={() => setRange(period)}
-                            className={`px-3 py-2 cursor-pointer rounded-md transition-colors ${range === period
-                                    ? 'bg-[var(--active-background-color)]'
-                                    : 'text-gray-400 dark:text-gray-300 hover:text-gray-600 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
-                                }`}
-                        >
-                            {period}
-                        </button>
-                    ))}
-                </div>
+                <ThemeButtonTabs
+                    data={["W", "M", "Y"]}
+                    activeTab={range}
+                    setActiveTab={setRange}
+                    className="w-full border-quaternary-navy-blue-dark !flex-0"
+                />
             </div>
             <div className={`h-[${screenSize === 'mobile' ? '320px' : screenSize === 'tablet' ? '380px' : '400px'}] w-full`}>
                 <Bar data={data} options={options} className="w-full max-h-[400px]" />
