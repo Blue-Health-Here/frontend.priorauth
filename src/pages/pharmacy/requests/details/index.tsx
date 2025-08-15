@@ -4,14 +4,9 @@ import { UploadedFile } from "@/utils/types";
 import ProgressNotesModal from "@/components/ProgressNotesModal";
 import PageHeader from "./PageHeader";
 import InfoDetails from "./InfoDetails";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import {
-  getRequestStatuses,
-  postRequestUploadFiles,
-  deleteReqUploadedFile,
-  postChartNotesFiles,
-} from "@/services/pharmacyService";
+import { useDeleteRequestFile, useUploadChartNotes, useUploadRequestFiles } from "@/hooks/useRequestDetails";
 import Loading from "@/components/common/Loading";
 import StatusTimeline from "./StatusTimeline";
 import SideDrawer from "@/components/SideDrawer";
@@ -35,8 +30,12 @@ const PharmacyRequestDetails: React.FC<any> = ({
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const canvasRef = useRef(null);
   const [requestDetails, setRequestDetails] = useState<any>(null);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { id: reqId } = useParams();
+  const uploadFilesMutation = useUploadRequestFiles(reqId);
+  const uploadChartNotesMutation = useUploadChartNotes(reqId);
+  const deleteFileMutation = useDeleteRequestFile(reqId);
+
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -84,7 +83,7 @@ const PharmacyRequestDetails: React.FC<any> = ({
       files.forEach((file: any) => {
         formData.append("files", file);
       });
-      const response = await postRequestUploadFiles(dispatch, reqId, formData);
+      const response = await uploadFilesMutation.mutateAsync(formData);
       if (response) {
         setUploadedFiles(
           response?.files?.map((item: any) => {
@@ -109,6 +108,7 @@ const PharmacyRequestDetails: React.FC<any> = ({
   };
 
   const handleFileChangeForChartNotes = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e, "Dasdas");
     if (e.target.files && e.target.files.length > 0) {
       const fileArray = Array.from(e.target.files);
       try {
@@ -116,7 +116,7 @@ const PharmacyRequestDetails: React.FC<any> = ({
         fileArray.forEach((file: any) => {
           formData.append("chartNotes", file);
         });
-        const response = await postChartNotesFiles(dispatch, reqId, formData)
+        const response = await uploadChartNotesMutation.mutateAsync(formData)
         if (response) {
           setUploadedFiles((prev: any) => [...prev, ...response?.chartNotes?.map((item: any) => {
             return {
@@ -154,8 +154,8 @@ const PharmacyRequestDetails: React.FC<any> = ({
 
   const removeFile = async (id: string) => {
     try {
-      const response = await deleteReqUploadedFile(dispatch, reqId, id);
-      if (response.success) {
+      const response: any = await deleteFileMutation.mutateAsync(id);
+      if (response?.success) {
         setUploadedFiles((prev: any) =>
           prev.filter((file: any) => file.id !== id)
         );
@@ -173,7 +173,6 @@ const PharmacyRequestDetails: React.FC<any> = ({
   const fileUploadSectionProps = {
     ...fileUploadsObj,
     fileInputRef: fileInputRef as React.RefObject<HTMLInputElement>,
-    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => handleFileChangeForChartNotes(e),
     restartAnalysis,
   };
 
@@ -190,9 +189,8 @@ const PharmacyRequestDetails: React.FC<any> = ({
     <>
       <ProgressNotesModal
         isOpen={isModalOpen}
-        onClose={(isAdded?: boolean) => {
+        onClose={() => {
           setIsModalOpen(false);
-          if (isAdded) getRequestStatuses(dispatch, reqId);
         }}
         chartNotes={memoizedChartNotes || []}
       />
@@ -238,6 +236,7 @@ const PharmacyRequestDetails: React.FC<any> = ({
                   setUploadedFiles={setUploadedFiles}
                   reqId={reqId || ""}
                   {...fileUploadSectionProps}
+                  handleFileChange={handleFileChangeForChartNotes}
                   inviteCode={inviteCode}
                   title="Progress Notes"
                   handleOpenProgressNotesModal={handleOpenProgressNotesModal}

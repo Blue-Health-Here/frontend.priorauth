@@ -11,7 +11,7 @@ import AddRequestModal from "./AddRequestModal";
 //   updateRequestNotes,
 //   updateRequestStatus,
 // } from "@/services/pharmacyService";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import {
   filterRequestsByStatus,
@@ -42,11 +42,15 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
   const { user } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
   const prescriberName = location.state?.prescriberName || null;
 
   // React Query hooks
-  const { data: requestsData = [], 
-    isLoading: isRequestsLoading } = usePharmacyRequests(prescriberId, pharmacyId, user?.id);
+  const { 
+    data: requestsData = [], 
+    isLoading: isRequestsLoading,
+    isFetching: isRequestsFetching
+  } = usePharmacyRequests(prescriberId, pharmacyId, user?.id);
   const { data: reqStatusesData = [] } = useRequestStatuses();
 
   // Mutations
@@ -498,7 +502,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
 
     setIsStartingRequest(true);
     try {
-      const response = await handleStartPortal({} as any, { id: user.id, roleCode: user.roleCode });
+      const response = await handleStartPortal(dispatch, { id: user.id, roleCode: user.roleCode });
       if (response) {
         console.log(response, "res");
         // const data = await response.json();
@@ -525,7 +529,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
 
     setIsClosingSession(true);
     try {
-      const response = await handleSessionCleanup({} as any, vncSession.sessionId);
+      const response = await handleSessionCleanup(dispatch, vncSession.sessionId);
       if (response) {
         setVncSession(null);
       } else {
@@ -548,7 +552,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
         // Check VNC session status by account type and ID
         // const res = await fetch(`/api/vnc/status/pharmacy/${user.id}`);
         // const data = await res.json();
-        const data = await handleFetchPortalStatus({} as any, user.id);
+        const data = await handleFetchPortalStatus(dispatch, user.id);
 
         if (data.status === 'active') {
           // VNC session is active
@@ -770,11 +774,22 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
               </ThemeButton>
             </div>
           )}
+          {/* Subtle loading indicator for refetches */}
+          {isRequestsFetching && requestsData.length > 0 && (
+            <div className="flex items-center gap-2 text-sm text-gray-500">
+              <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+              <span>Updating...</span>
+            </div>
+          )}
         </div>
 
-        {isRequestsLoading ? (
+        {isRequestsLoading && !requestsData.length ? (
           <div className="text-center py-4 w-10 text-gray-500">
             <Loading />
+          </div>
+        ) : requestsData.length === 0 && !isRequestsLoading ? (
+          <div className="text-center py-4 text-gray-500">
+            <p>No requests found.</p>
           </div>
         ) : (
           <ThemeDataTable

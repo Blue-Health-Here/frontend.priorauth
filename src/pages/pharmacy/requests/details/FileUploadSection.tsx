@@ -1,9 +1,9 @@
 import React from "react";
 import CardHeader from "@/components/common/CardHeader";
 import { UploadedFile } from "@/utils/types";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import { deleteReqUploadedFile, postChartNotesFiles } from "@/services/pharmacyService";
+import { useUploadChartNotes, useDeleteRequestFile } from "@/hooks/useRequestDetails";
 import ThemeButton from "@/components/common/ThemeButton";
 
 interface FileUploadSectionProps {
@@ -46,8 +46,10 @@ const FileUploadSection = React.forwardRef<{ restartAnalysis: () => void }, File
       handleFileChange
     } = props;
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const analysisTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+    const uploadChartNotesMutation = useUploadChartNotes(reqId);
+    const deleteFileMutation = useDeleteRequestFile(reqId);
 
     // Expose the restartAnalysis function via ref
     React.useImperativeHandle(ref, () => ({
@@ -62,7 +64,7 @@ const FileUploadSection = React.forwardRef<{ restartAnalysis: () => void }, File
         fileArray.forEach((file: any) => {
           formData.append("chartNotes", file);
         });
-        const response = await postChartNotesFiles(dispatch, reqId, formData);
+        const response = await uploadChartNotesMutation.mutateAsync(formData);
         if (response) {
           setUploadedFiles((prev: any) => [...prev, ...response?.chartNotes?.map((item: any) => {
             return {
@@ -79,7 +81,7 @@ const FileUploadSection = React.forwardRef<{ restartAnalysis: () => void }, File
     };
 
     const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      handleFileChange && handleFileChange(e);
+      if (handleFileChange) handleFileChange(e);
       if (fileInputRef && fileInputRef.current) {
         fileInputRef.current.value = "";
       }
@@ -98,8 +100,8 @@ const FileUploadSection = React.forwardRef<{ restartAnalysis: () => void }, File
 
     const removeFile = async (id: string) => {
       try {
-        const response = await deleteReqUploadedFile(dispatch, reqId, id);
-        if (response.success) {
+        const response: any = await deleteFileMutation.mutateAsync(id);
+        if (response?.success) {
           setUploadedFiles((prev: any) =>
             prev.filter((file: any) => file.id !== id)
           );
@@ -244,7 +246,7 @@ const FileUploadSection = React.forwardRef<{ restartAnalysis: () => void }, File
                                 variant="secondary"
                                 className="text-xs sm:text-sm"
                               >
-                                <span className="flex items-center gap-1 sm:gap-2">
+                                <span className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
                                   View
                                   <img src="/view-analysis.svg" alt="View" className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                                 </span>

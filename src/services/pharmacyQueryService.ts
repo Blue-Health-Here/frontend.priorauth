@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { axiosAdmin } from "../api/instance";
 
 // Types
@@ -6,11 +7,11 @@ type ApiResponse<T = any> = {
     data: T & { success?: boolean };
     status?: number;
 };
-// type ErrorResponse = {
-//     message?: string;
-//     status?: number;
-//     response?: { data?: { detail?: string } };
-// };
+type ErrorResponse = {
+    message?: string;
+    status?: number;
+    response?: { data?: { detail?: string } };
+};
 
 // Generic API handler that centralizes common logic
 const apiHandler = async <T = any>(
@@ -19,12 +20,20 @@ const apiHandler = async <T = any>(
     options: {
         data?: any;
         params?: Record<string, string | undefined>;
+        successMessage?: string;
+        errorMessage?: string;
+        onSuccess?: (data: T) => void;
+        onError?: (error: ErrorResponse) => void;
         isFormData?: boolean;
     }
 ): Promise<T | null> => {
     const {
         data,
         params,
+        successMessage,
+        errorMessage = "Something went wrong",
+        onSuccess,
+        onError,
         isFormData = false,
     } = options;
     
@@ -73,13 +82,41 @@ const apiHandler = async <T = any>(
             (response && response.data && response.data.success) ||
             (response && response.status === 201)
         ) {
-            return response.data;
+            if (successMessage) {
+                toast.success(successMessage);
+            }
+
+            if (onSuccess && response.data) {
+                onSuccess(response.data);
+            }
+
+            return response.data || null;
         }
 
         return null;
     } catch (error: any) {
-        console.error('API Error:', error);
-        throw new Error(error?.response?.data?.detail || error?.message || 'Something went wrong');
+        console.log(error, "error");
+        // Handle 404 differently in some cases
+        if (error?.status === 404) {
+            if (errorMessage) {
+                toast.success(errorMessage);
+            }
+        } else if (error?.status === 409) {
+            if (error?.response?.data?.detail) {
+                toast.success(error.response.data.detail);
+            }
+        } else if (error?.status === 400) {
+            toast.error(error?.response.data.error || error?.message);
+        } else {
+            // Handle other errors
+            toast.error(error?.message);
+        }
+
+        if (onError) {
+            onError(error);
+        }
+
+        return null;
     }
 };
 
@@ -124,4 +161,44 @@ export const extractMedsICDCodes = async (data: any) => {
 
 export const handleAddNewRequest = async (data: any) => {
     return apiHandler('post', `/pa_request/add`, { data })
+};
+
+// Request Details and Status History
+export const getRequestDetailsQuery = async (id?: string) => {
+    return apiHandler('get', `/pa_request/get_by_id/${id}`, {});
+};
+
+export const getStatusHistoryByRequestQuery = async (id?: string) => {
+    return apiHandler('get', `/status-history/get_by_id/${id}/statuses`, {});
+};
+
+// Request Files
+export const postRequestUploadFilesQuery = async (id?: string, formData?: FormData) => {
+    return apiHandler('patch', `/pa_request/update/${id}/files/upload`, {
+        isFormData: true,
+        data: formData,
+    });
+};
+
+export const postChartNotesFilesQuery = async (id?: string, formData?: FormData) => {
+    return apiHandler('patch', `/pa_request/update/${id}/chartNotes`, {
+        isFormData: true,
+        data: formData,
+    });
+};
+
+export const deleteReqUploadedFileQuery = async (reqId?: string, id?: string) => {
+    return apiHandler('delete', `/pa_request/delete/${reqId}/file/${id}`, {});
+};
+
+export const postStartAiAnalysisQuery = async (id?: string) => {
+    return apiHandler('post', `/pa_request/add/${id}/chartNotesAnalyzer`, {});
+};
+
+export const fetchAiAnalysisQuery = async (id?: string) => {
+    return apiHandler('get', `/pa_request/get_by_id/chartNotesAnalysis/${id}`, {});
+};
+
+export const postGenerateMedicalNecessityQuery = async (id?: string) => {
+    return apiHandler('post', `/pa_request/add/${id}/generate-letter-of-medical-necessity`, {});
 };

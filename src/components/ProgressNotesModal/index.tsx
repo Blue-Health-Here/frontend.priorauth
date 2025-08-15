@@ -3,9 +3,9 @@ import RenderFilePreview from "./RenderFilePreview";
 import { UploadedFile } from "@/utils/types";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import ModalHeader from "@/components/common/ModalHeader";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchAiAnalysis } from "@/services/pharmacyService";
+import { useFetchAiAnalysis } from "@/hooks/useRequestDetails";
 import ProgressNotesAnalysis from "./ProgressNotesAnalysis";
 
 interface ProgressNotesModalProps {
@@ -30,9 +30,10 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   const [analysisStarted, setAnalysisStarted] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const canvasRef = useRef(null);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { id: requestId } = useParams();
   const [analysisDetails, setAnalysisDetails] = useState<any>(null);
+  const { data: aiAnalysisData } = useFetchAiAnalysis(requestId);
 
   useEffect(() => {
     if (chartNotes?.length > 0 && isOpen) {
@@ -53,9 +54,8 @@ const ProgressNotesModal: React.FC<ProgressNotesModalProps> = ({
   }, [chartNotes]);
 
   const handleFetchAiAnalysis = async () => {
-    const response = await fetchAiAnalysis(dispatch, requestId);
-    if (response) {
-      setAnalysisDetails(response);
+    if (aiAnalysisData) {
+      setAnalysisDetails(aiAnalysisData);
       setAnalysisStarted(true);
       setSelectedFile(chartNotes[0]);
     }

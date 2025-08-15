@@ -1,5 +1,4 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { FiEdit, FiFileText } from "react-icons/fi";
@@ -8,7 +7,7 @@ import { FaPlus } from "react-icons/fa6";
 import ThemeButton from "@/components/common/ThemeButton";
 import { Input } from "@/components/ui/input";
 // import { formatDateTime, getStatusClass } from "@/utils/helper";
-import { updateRequestNotes } from "@/services/pharmacyService";
+import { useUpdateRequestNotes } from "@/hooks/usePharmacyRequests";
 import { RootState } from "@/store";
 import { setStatusItems } from "@/store/features/pharmacy/requests/requestsSlice";
 
@@ -33,7 +32,7 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
     (state: RootState) => state.pharmacyReqs
   );
   const dispatch = useDispatch();
-  const { id: reqId } = useParams();
+  const updateNotesMutation = useUpdateRequestNotes();
 
   const handleAddNotes = (index: number) => {
     const updated = [...statusItems];
@@ -51,7 +50,7 @@ const StatusTimeline: React.FC<StatusTimelineProps> = ({
   const handleSubmitNote = async (item: any, index: number) => {
     if (!item.note?.trim()) return;
     try {
-      await updateRequestNotes(dispatch, reqId, { notes: item.note, id: item.id });
+      await updateNotesMutation.mutateAsync({ requestId: item.id, notes: item.note });
       const updated = [...statusItems];
       updated[index].isEditing = false;
       updated[index].showNotesButton = false;

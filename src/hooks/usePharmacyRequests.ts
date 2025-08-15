@@ -20,14 +20,21 @@ export const usePharmacyRequests = (
   pharmacyId?: string,
   userId?: string
 ) => {
+  // Filter out undefined values for consistent query keys
+  const filters = {
+    ...(prescriberId && { prescriberId }),
+    ...(pharmacyId && { pharmacyId }),
+    ...(userId && { userId })
+  };
+  
   return useQuery({
-    queryKey: pharmacyRequestsKeys.list({ prescriberId, pharmacyId, userId }),
+    queryKey: pharmacyRequestsKeys.list(filters),
     queryFn: async () => {
       return await getPharmacyRequests(prescriberId, pharmacyId, userId);
     },
-    staleTime: 1 * 60 * 1000, // 5 minutes
-    gcTime: 1 * 60 * 1000, // 10 minutes
-    refetchOnWindowFocus: true,
+    staleTime: 10 * 60 * 1000, // 5 minutes
+    gcTime: 15 * 60 * 1000, // 10 minutes
+    refetchOnWindowFocus: false,
     refetchOnReconnect: true,
   });
 };
@@ -39,9 +46,9 @@ export const useRequestStatuses = () => {
     queryFn: async () => {
       return await getRequestStatuses();
     },
-    staleTime: 1 * 60 * 1000, // 10 minutes
-    gcTime: 1 * 60 * 1000, // 20 minutes
-    refetchOnWindowFocus: true,
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    gcTime: 20 * 60 * 1000, // 20 minutes
+    refetchOnWindowFocus: false,
     refetchOnReconnect: true,
   });
 };
@@ -80,7 +87,7 @@ export const useAddRequest = () => {
 
 // Hook to update request status
 export const useUpdateRequestStatus = () => {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   
   return useMutation({
     mutationFn: async ({ 
@@ -93,8 +100,7 @@ export const useUpdateRequestStatus = () => {
       return await updateRequestStatusQuery(requestId, statusData);
     },
     onSuccess: () => {
-      // Invalidate and refetch pharmacy requests
-      queryClient.invalidateQueries({ queryKey: pharmacyRequestsKeys.lists() });
+      // Don't invalidate the main list - status updates don't affect the list
       toast.success('Status has been updated successfully!');
     },
     onError: (error: any) => {
@@ -105,7 +111,7 @@ export const useUpdateRequestStatus = () => {
 
 // Hook to update request notes
 export const useUpdateRequestNotes = () => {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   
   return useMutation({
     mutationFn: async ({ 
@@ -118,8 +124,7 @@ export const useUpdateRequestNotes = () => {
       return await updateRequestNotesQuery(requestId, { notes });
     },
     onSuccess: () => {
-      // Invalidate and refetch pharmacy requests
-      queryClient.invalidateQueries({ queryKey: pharmacyRequestsKeys.lists() });
+      // Don't invalidate the main list - notes updates don't affect the list
       toast.success('Notes updated successfully!');
     },
     onError: (error: any) => {

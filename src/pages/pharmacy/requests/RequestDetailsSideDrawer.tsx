@@ -9,8 +9,8 @@ import { useFileUploadProgressNotes } from "@/hooks/useFileUploadProgressNotes";
 import { useRequestData } from "@/hooks/useRequestData";
 import CommentsWidget from "./details/CommentsWidget";
 import ProgressNotesModal from "@/components/ProgressNotesModal";
-import { getRequestStatuses, postChartNotesFiles } from "@/services/pharmacyService";
-import { useDispatch } from "react-redux";
+import { useUploadChartNotes } from "@/hooks/useRequestDetails";
+// import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { formatDateTime } from "@/utils/helper";
 
@@ -27,9 +27,10 @@ const RequestDetailsSideDrawer: React.FC<any> = ({
     const fileUploadsObj = useFileUploadProgressNotes(reqId, requestDetails);
     const { setIsAnalysisStarted, setIsAnalysisComplete, restartAnalysis } = fileUploadsObj;
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
+    const uploadChartNotesMutation = useUploadChartNotes(reqId);
 
     useRequestData({
         reqId,
@@ -48,13 +49,6 @@ const RequestDetailsSideDrawer: React.FC<any> = ({
         setIsModalOpen(true);
     };
 
-    const fileUploadSectionProps = {
-        ...fileUploadsObj,
-        fileInputRef: fileInputRef as React.RefObject<HTMLInputElement>,
-        handleChange: (e: React.ChangeEvent<HTMLInputElement>) => handleFileChangeForChartNotes(e),
-        restartAnalysis,
-    };
-
     const handleFileChangeForChartNotes = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             const fileArray = Array.from(e.target.files);
@@ -63,7 +57,7 @@ const RequestDetailsSideDrawer: React.FC<any> = ({
                 fileArray.forEach((file: any) => {
                     formData.append("chartNotes", file);
                 });
-                const response = await postChartNotesFiles(dispatch, reqId, formData)
+                const response = await uploadChartNotesMutation.mutateAsync(formData)
                 if (response) {
                     setUploadedFiles((prev: any) => [...prev, ...response?.chartNotes?.map((item: any) => {
                         return {
@@ -79,6 +73,14 @@ const RequestDetailsSideDrawer: React.FC<any> = ({
             }
         }
     };
+    
+    const fileUploadSectionProps = {
+        ...fileUploadsObj,
+        fileInputRef: fileInputRef as React.RefObject<HTMLInputElement>,
+        handleChange: handleFileChangeForChartNotes,
+        restartAnalysis,
+    };
+
     const memoizedChartNotes = useMemo(() => requestDetails?.chartNotes, [requestDetails?.chartNotes.length]);
 
     const handleOpenReqDetails = async () => {
@@ -104,9 +106,8 @@ const RequestDetailsSideDrawer: React.FC<any> = ({
                 >
                     <ProgressNotesModal
                         isOpen={isModalOpen}
-                        onClose={(isAdded?: boolean) => {
+                        onClose={() => {
                             setIsModalOpen(false);
-                            if (isAdded) getRequestStatuses(dispatch, reqId);
                         }}
                         chartNotes={memoizedChartNotes || []}
                     />

@@ -1,20 +1,20 @@
 import api from "@/api/instance";
 import ThemeButton from "@/components/common/ThemeButton";
-import { postGenerateMedicalNecessity } from "@/services/pharmacyService";
+import { useGenerateMedicalNecessity } from "@/hooks/useRequestDetails";
 import { RootState } from "@/store";
 import React, { useEffect, useState } from "react";
 import { FiDownload } from "react-icons/fi";
 import { TfiReload } from "react-icons/tfi";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 const LetterOfMedicalNecessity: React.FC<any> = ({ requestDetails }) => {
     const [isLoadingMedicalNecessity, setIsLoadingMedicalNecessity] = useState<boolean>(false);
     const [isReGenerateAgain, setIsReGenerateAgain] = useState<boolean>(false);
     const [medicalNecessityFile, setMedicalNecessityFile] = useState<null>(null);
-    const dispatch = useDispatch();
     const { id: reqId, inviteCode } = useParams();
     const { user } = useSelector((state: RootState) => state.auth);
+    const generateMedicalNecessityMutation = useGenerateMedicalNecessity(reqId);
 
     useEffect(() => {
         if (requestDetails) {
@@ -27,7 +27,7 @@ const LetterOfMedicalNecessity: React.FC<any> = ({ requestDetails }) => {
     const generateMedicalNecessity = async () => {
         setIsLoadingMedicalNecessity(true);
         try {
-            const response = await postGenerateMedicalNecessity(dispatch, reqId);
+            const response = await generateMedicalNecessityMutation.mutateAsync();
             if (response) {
                 setMedicalNecessityFile(response);
             };

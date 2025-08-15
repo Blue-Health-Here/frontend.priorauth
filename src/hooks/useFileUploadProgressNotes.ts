@@ -1,12 +1,11 @@
 // hooks/useFileUploadProgressNotes.ts
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { postStartAiAnalysis } from "@/services/pharmacyService";
+import { useStartAiAnalysis } from "@/hooks/useRequestDetails";
 import api from "@/api/instance";
 import toast from "react-hot-toast";
 
 export const useFileUploadProgressNotes = (reqId: string, requestDetails: any) => {
-    const dispatch = useDispatch();
+    const startAnalysisMutation = useStartAiAnalysis(reqId);
 
     const [isAnalysisStarted, setIsAnalysisStarted] = useState(false);
     const [isAnalysisComplete, setIsAnalysisComplete] = useState(false);
@@ -24,7 +23,7 @@ export const useFileUploadProgressNotes = (reqId: string, requestDetails: any) =
         setIsAnalysisComplete(false);
         setIsAnalysisFailed(false);
 
-        const response = await postStartAiAnalysis(dispatch, reqId);
+        const response = await startAnalysisMutation.mutateAsync();
         if (response) {
             setIsAnalysisComplete(true);
             setIsAnalysisFailed(false);

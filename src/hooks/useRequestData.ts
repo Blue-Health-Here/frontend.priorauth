@@ -1,8 +1,8 @@
-import { getRequestDetails, getRequestStatuses } from "@/services/pharmacyService";
 import { setRequestComments, setStatusItems } from "@/store/features/pharmacy/requests/requestsSlice";
 import { formatDateTime, getStatusClass } from "@/utils/helper";
 import { useEffect, useRef, useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { getRequestDetailsQuery, getStatusHistoryByRequestQuery } from "@/services/pharmacyQueryService";
 
 export const useRequestData = ({
     reqId,
@@ -23,7 +23,7 @@ export const useRequestData = ({
     const hasFetched = useRef(false);
 
     const fetchRequestStatuses = useCallback(async () => {
-        const response = await getRequestStatuses(dispatch, reqId);
+        const response = await getStatusHistoryByRequestQuery(reqId);
         if (!response?.currentStatus) {
             dispatch(setStatusItems([]));
             return;
@@ -60,7 +60,7 @@ export const useRequestData = ({
 
     const fetchRequestDetailsData = useCallback(async () => {
         setIsLoading(true);
-        const details = await getRequestDetails(dispatch, reqId);
+        const details = await getRequestDetailsQuery(reqId);
 
         if (details) {
             setRequestDetails(details);
