@@ -10,6 +10,7 @@ import {
   getRequestStatuses,
   postRequestUploadFiles,
   deleteReqUploadedFile,
+  postChartNotesFiles,
 } from "@/services/pharmacyService";
 import Loading from "@/components/common/Loading";
 import StatusTimeline from "./StatusTimeline";
@@ -24,7 +25,11 @@ import ThemeButton from "@/components/common/ThemeButton";
 import { useRequestData } from "@/hooks/useRequestData";
 import { useFileUploadProgressNotes } from "@/hooks/useFileUploadProgressNotes";
 
-const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCode }) => {
+const PharmacyRequestDetails: React.FC<any> = ({
+  isAdmin,
+  prescriberId,
+  inviteCode,
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -34,8 +39,19 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
   const { id: reqId } = useParams();
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isDragging, setIsDragging] = useState<boolean>(false);
-  const fileUploadsObj = useFileUploadProgressNotes(reqId || "", requestDetails);
-  const { setIsAnalysisStarted, setIsAnalysisComplete } = fileUploadsObj;
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileUploadSectionRef = useRef<{ restartAnalysis: () => void }>(null);
+
+  const fileUploadsObj = useFileUploadProgressNotes(
+    reqId || "",
+    requestDetails
+  );
+  const { 
+    setIsAnalysisStarted, 
+    setIsAnalysisComplete,
+    isAnalysisComplete,
+    restartAnalysis
+  } = fileUploadsObj;
 
   useRequestData({
     reqId,
@@ -50,17 +66,25 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
     setIsModalOpen(true);
   };
 
+  const handleUploadClick = () => {
+    if (isAnalysisComplete) {
+      // If analysis is complete, restart it
+      fileUploadSectionRef.current?.restartAnalysis();
+    } else {
+      // Otherwise proceed with normal file upload
+      if (fileInputRef.current) {
+        fileInputRef.current.click();
+      }
+    }
+  };
+
   const handleUploadFiles = async (files: any) => {
     try {
       const formData = new FormData();
       files.forEach((file: any) => {
         formData.append("files", file);
       });
-      const response = await postRequestUploadFiles(
-        dispatch,
-        reqId,
-        formData
-      );
+      const response = await postRequestUploadFiles(dispatch, reqId, formData);
       if (response) {
         setUploadedFiles(
           response?.files?.map((item: any) => {
@@ -81,6 +105,31 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
     if (e.target.files && e.target.files.length > 0) {
       const fileArray = Array.from(e.target.files);
       handleUploadFiles(fileArray);
+    }
+  };
+
+  const handleFileChangeForChartNotes = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const fileArray = Array.from(e.target.files);
+      try {
+        const formData = new FormData();
+        fileArray.forEach((file: any) => {
+          formData.append("chartNotes", file);
+        });
+        const response = await postChartNotesFiles(dispatch, reqId, formData)
+        if (response) {
+          setUploadedFiles((prev: any) => [...prev, ...response?.chartNotes?.map((item: any) => {
+            return {
+              ...item,
+              name: item.fileName,
+              type: item.mimeType,
+            }
+          })]);
+        }
+      } catch (error: any) {
+        console.log(error?.message);
+        setUploadedFiles([]);
+      }
     }
   };
 
@@ -121,20 +170,22 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
     setUploadedFiles(updateFn);
   };
 
-  useRequestData({
-    reqId,
-    setRequestDetails,
-    setUploadedFiles,
-    setIsLoading,
-    setIsAnalysisStarted,
-    setIsAnalysisComplete,
-  });
-  
+  const fileUploadSectionProps = {
+    ...fileUploadsObj,
+    fileInputRef: fileInputRef as React.RefObject<HTMLInputElement>,
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => handleFileChangeForChartNotes(e),
+    restartAnalysis,
+  };
+
+  const memoizedChartNotes = useMemo(
+    () => requestDetails?.chartNotes,
+    [requestDetails?.chartNotes]
+  );
+
   const handleCheckNotes = () => {
     setIsDrawerOpen(true);
   };
-  
-  const memoizedChartNotes = useMemo(() => requestDetails?.chartNotes, [requestDetails?.chartNotes.length]);
+
   return (
     <>
       <ProgressNotesModal
@@ -152,16 +203,25 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
         width="w-[500px]"
         position="right"
       >
-        <RequestDetailsContent initialTab="Status & Notes"
-          onClose={() => setIsDrawerOpen(false)} isAdmin={isAdmin} />
+        <RequestDetailsContent
+          initialTab="Status & Notes"
+          onClose={() => setIsDrawerOpen(false)}
+          isAdmin={isAdmin}
+        />
       </SideDrawer>
       <div className="p-4 bg-primary-white border border-body-stroke rounded-xl theme-shadow relative">
         {isLoading ? (
           <Loading />
         ) : (
           <>
-            <PageHeader requestDetails={requestDetails} isAdmin={isAdmin} 
-              prescriberId={prescriberId} inviteCode={inviteCode} />
+            <PageHeader
+              requestDetails={requestDetails}
+              isAdmin={isAdmin}
+              prescriberId={prescriberId}
+              inviteCode={inviteCode}
+              handleUploadClick={handleUploadClick}
+              isAnalysisComplete={isAnalysisComplete}
+            />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="col-span-1 lg:col-span-2 space-y-4">
                 <div className="bg-primary-white rounded-xl overflow-hidden border border-body-stroke">
@@ -172,26 +232,12 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
                     showCheckNotesBtn={true}
                   />
                 </div>
-                {/* <FileUploadSection
-                  uploadedFiles={uploadedFiles}
-                  setUploadedFiles={setUploadedFiles}
-                  reqId={reqId || ""}
-                  isAnalysisStarted={isAnalysisStarted}
-                  setIsAnalysisStarted={setIsAnalysisStarted}
-                  isAnalysisComplete={isAnalysisComplete}
-                  setIsAnalysisComplete={setIsAnalysisComplete}
-                  isAnalysisFailed={isAnalysisFailed}
-                  setIsAnalysisFailed={setIsAnalysisFailed}
-                  startAnalysis={startAnalysis}
-                  restartAnalysis={startAnalysis}
-                  handleOpenProgressNotesModal={handleOpenProgressNotesModal}
-                  handleDownload={handleDownloadReport}
-                /> */}
                 <FileUploadSection
+                  ref={fileUploadSectionRef}
                   uploadedFiles={uploadedFiles}
                   setUploadedFiles={setUploadedFiles}
                   reqId={reqId || ""}
-                  {...fileUploadsObj}
+                  {...fileUploadSectionProps}
                   inviteCode={inviteCode}
                   title="Progress Notes"
                   handleOpenProgressNotesModal={handleOpenProgressNotesModal}
@@ -248,15 +294,24 @@ const PharmacyRequestDetails: React.FC<any> = ({ isAdmin, prescriberId, inviteCo
                           removeFile={(id: any) => removeFile(id)}
                           handleAddTag={handleAddTag}
                         />
-                        <ThemeButton className="flex items-center justify-center gap-2 sm:mx-auto mt-2 " variant="tertiary">
+                        <ThemeButton
+                          className="flex items-center justify-center gap-2 sm:mx-auto mt-2 "
+                          variant="tertiary"
+                        >
                           <span className="flex items-center gap-2 text-xs">
                             View All
-                            <img src="/view-all.svg" alt="View All" className="view-all w-4 h-4" />
+                            <img
+                              src="/view-all.svg"
+                              alt="View All"
+                              className="view-all w-4 h-4"
+                            />
                           </span>
                         </ThemeButton>
                       </div>
                     ) : (
-                      <p className="text-sm text-secondary-black">No Files Uploaded.</p>
+                      <p className="text-sm text-secondary-black">
+                        No Files Uploaded.
+                      </p>
                     )}
                   </div>
                 </div>
