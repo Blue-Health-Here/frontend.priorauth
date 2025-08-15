@@ -142,9 +142,10 @@ const OTPVerification: React.FC = () => {
       {/* Right side - Image */}
       <div className="hidden md:block w-1/2 p-10 bg-[#EBF1FF]">
         <img
-          src="/images/contact-section.png"
+          src="/login-img.jpg"
           alt="Hands holding each other"
           className="w-full h-full object-cover rounded-3xl"
+          style={{ maxHeight: 'calc(100vh - 5rem)' }}
         />
       </div>
     </div>
