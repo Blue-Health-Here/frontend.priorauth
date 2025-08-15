@@ -8,10 +8,13 @@ import App from './App.tsx'
 import 'primereact/resources/themes/lara-light-indigo/theme.css'; 
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import QueryProvider from './providers/QueryProvider';
 AOS.init();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <QueryProvider>
+      <App />
+    </QueryProvider>
   </StrictMode>,
 )

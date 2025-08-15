@@ -1,17 +1,17 @@
 import ThemeDataTable from "@/components/common/ThemeDataTable";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import FilterField from "@/components/common/FilterField";
 import ToggleColumnsField from "@/components/common/ToggleColumnsField";
 import ThemeButton from "@/components/common/ThemeButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import AddRequestModal from "./AddRequestModal";
-import {
-  getAllPharmacyReqs,
-  getAllReqStatuses,
-  updateRequestNotes,
-  updateRequestStatus,
-} from "@/services/pharmacyService";
-import { useDispatch, useSelector } from "react-redux";
+// import {
+//   getAllPharmacyReqs,
+//   getAllReqStatuses,
+//   updateRequestNotes,
+//   updateRequestStatus,
+// } from "@/services/pharmacyService";
+import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import {
   filterRequestsByStatus,
@@ -35,18 +35,23 @@ import { VncSession } from "@/utils/types";
 import PortalSession from "./PortalSession";
 import { handleFetchPortalStatus, handleSessionCleanup, handleStartPortal } from "@/services/portalService";
 import RequestDetailsSideDrawer from "./RequestDetailsSideDrawer";
+import { usePharmacyRequests, useRequestStatuses, useUpdateRequestStatus, useUpdateRequestNotes } from "@/hooks/usePharmacyRequests";
 
 const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, pharmacyId, inviteCode }) => {
 
-  const { reqStatusesData } = useSelector(
-    (state: RootState) => state.reqStatuses
-  );
-  const { reqsData } = useSelector((state: RootState) => state.pharmacyReqs);
   const { user } = useSelector((state: RootState) => state.auth);
-  const [requestsData, setRequestsData] = useState<any>([]);
   const navigate = useNavigate();
   const location = useLocation();
   const prescriberName = location.state?.prescriberName || null;
+
+  // React Query hooks
+  const { data: requestsData = [], 
+    isLoading: isRequestsLoading } = usePharmacyRequests(prescriberId, pharmacyId, user?.id);
+  const { data: reqStatusesData = [] } = useRequestStatuses();
+
+  // Mutations
+  const updateStatusMutation = useUpdateRequestStatus();
+  const updateNotesMutation = useUpdateRequestNotes();
 
   const [selectedStatusFilter, setSelectedStatusFilter] = useState<
     string | null
@@ -149,7 +154,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
         sortable: true,
       },
     ],
-    [requestsData, location.pathname, navigate]
+    [location.pathname, navigate]
   );
 
   const [visibleColumns, setVisibleColumns] = useState(
@@ -163,10 +168,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
   const [activeRequestTab, setActiveRequestTab] =
     useState<string>("Active Requests");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const dispatch = useDispatch();
-  const isFetchedStatuses = useRef(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [filteredStatuses, setFilteredStatuses] = useState([]);
+  const [filteredStatuses, setFilteredStatuses] = useState<any[]>([]);
   const [selectedFilterField, setSelectedFilterField] = useState("");
   const [filteredRequests, setFilteredRequests] = useState<any[]>([]);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -180,58 +182,38 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
   const [firefoxStatusMsg, setFirefoxStatusMsg] = useState('');
   const [reqId, setReqId] = useState<string | null>(null);
 
+  // Transform requests data when it changes
+  const transformedRequests = useMemo(() => {
+    if (!requestsData || !Array.isArray(requestsData)) return [];
+    return requestsData.map((item: any) =>
+      transformPharmacyRequest(item, isAdmin)
+    );
+  }, [requestsData, isAdmin]);
+
   // Get unique statuses for the filters dropdown
   const uniqueStatuses = useMemo(() => {
     const statuses = new Set<string>();
-    requestsData.forEach((req: any) => {
+    transformedRequests.forEach((req: any) => {
       if (req.statusName) statuses.add(req.statusName);
     });
     return Array.from(statuses).sort();
-  }, [requestsData]);
-  // console.log(requestsData);
+  }, [transformedRequests]);
 
-  const fetchInitialData = async () => {
-    setIsLoading(true);
-    try {
-      if (isAdmin) {
-        await Promise.all([
-          getAllReqStatuses(dispatch),
-          getAllPharmacyReqs(dispatch, prescriberId, pharmacyId, user?.id),
-        ]);
-      } else {
-        await getAllPharmacyReqs(dispatch, prescriberId, pharmacyId, user?.id);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  // Update filtered statuses when requests data changes
   useEffect(() => {
-    if (!isFetchedStatuses.current) {
-      fetchInitialData();
-      isFetchedStatuses.current = true;
-    }
-  }, []);
-
-  useEffect(() => {
-    if (reqsData.length > 0) {
-      // const filteredData = reqsData;
-      const updatedArr = reqsData.map((item: any) =>
-        transformPharmacyRequest(item, isAdmin)
-      );
-      setRequestsData(updatedArr);
+    if (requestsData && Array.isArray(requestsData)) {
       setFilteredStatuses(
-        reqsData.map((item: any) => ({
+        requestsData.map((item: any) => ({
           id: item.request_status,
           name: item.paStatus,
           statusClass: getStatusClass(item.paStatus),
         }))
       );
     }
-  }, [reqsData]);
+  }, [requestsData]);
 
   useEffect(() => {
-    let filtered = [...requestsData];
+    let filtered = [...transformedRequests];
 
     if (selectedStatusFilter) {
       filtered = filtered.filter(
@@ -239,45 +221,47 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
       );
     }
     if (globalFilter && selectedFilterField) {
-      filtered = filtered.filter((item) => {
-        if (selectedFilterField === "patient") {
-          return item.patient?.name
-            ?.toLowerCase()
-            .includes(globalFilter.toLowerCase());
-        } else if (selectedFilterField === "prescriber") {
-          return item.prescriber?.name
-            ?.toLowerCase()
-            .includes(globalFilter.toLowerCase());
-        } else if (typeof item[selectedFilterField] === "string") {
-          return item[selectedFilterField]
-            ?.toLowerCase()
-            .includes(globalFilter.toLowerCase());
-        }
-        return true;
-      });
+              filtered = filtered.filter((item: any) => {
+          if (selectedFilterField === "patient") {
+            return item.patient?.name
+              ?.toLowerCase()
+              .includes(globalFilter.toLowerCase());
+          } else if (selectedFilterField === "prescriber") {
+            return item.prescriber?.name
+              ?.toLowerCase()
+              .includes(globalFilter.toLowerCase());
+          } else if (typeof item[selectedFilterField as keyof typeof item] === "string") {
+            return (item[selectedFilterField as keyof typeof item] as string)
+              ?.toLowerCase()
+              .includes(globalFilter.toLowerCase());
+          }
+          return true;
+        });
     }
     if (!selectedFilterField) {
       setFilteredRequests(filtered);
     } else {
       setFilteredRequests(groupByField(filtered, selectedFilterField));
     }
-  }, [requestsData, selectedStatusFilter, globalFilter, selectedFilterField]);
+  }, [transformedRequests, selectedStatusFilter, globalFilter, selectedFilterField]);
 
   const handleSubmitStatusChange = async (value: any, rowData: any) => {
     try {
-      await updateRequestStatus(dispatch, rowData?.id, {
-        statusId: value.code,
-        paStatus: value.name,
-        notes: null,
+      await updateStatusMutation.mutateAsync({
+        requestId: rowData?.id,
+        statusData: {
+          statusId: value.code,
+          paStatus: value.name,
+          notes: null,
+        }
       });
-      await getAllPharmacyReqs(dispatch, prescriberId, pharmacyId, user?.id);
     } catch (error: any) {
       toast.error(error?.message);
     }
   };
 
   const handleChangeNotes = (value: string, rowData: any) => {
-    const updatedRequests = requestsData.map((item: any) => {
+    const updatedRequests = transformedRequests.map((item: any) => {
       if (item.id === rowData.id) {
         return {
           ...item,
@@ -287,13 +271,14 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
       return item;
     });
 
-    setRequestsData(updatedRequests);
+    // Update local state for immediate UI feedback
+    setFilteredRequests(updatedRequests);
   };
 
   const handleEditNote = (e: any, rowData: any) => {
     e?.preventDefault();
 
-    const updatedRequests = requestsData.map((item: any) => {
+    const updatedRequests = transformedRequests.map((item: any) => {
       if (item.id === rowData.id) {
         return {
           ...item,
@@ -303,21 +288,24 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
       return item;
     });
 
-    setRequestsData(updatedRequests);
+    // Update local state for immediate UI feedback
+    setFilteredRequests(updatedRequests);
   };
 
   const handleSubmitNote = async (data: any) => {
     if (!data.notes || !data.notes.trim()) return;
 
     try {
-      await updateRequestNotes(dispatch, data.id, { notes: data.notes });
-      await getAllPharmacyReqs(dispatch, prescriberId, pharmacyId, user?.id);
+      await updateNotesMutation.mutateAsync({
+        requestId: data.id,
+        notes: data.notes
+      });
 
-      setRequestsData((prevData: any[]) =>
-        prevData.map((item: any) =>
-          item.id === data.id ? { ...item, isEditing: false } : item
-        )
+      // Update local state to remove editing mode
+      const updatedRequests = transformedRequests.map((item: any) =>
+        item.id === data.id ? { ...item, isEditing: false } : item
       );
+      setFilteredRequests(updatedRequests);
     } catch (error: any) {
       toast.error(error?.message);
     }
@@ -389,12 +377,12 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
   const handleStatusChange = (status: any) => {
     if (status?.length > 0) {
       const filteredData = filterRequestsByStatus(
-        groupByField(requestsData, selectedFilterField),
+        groupByField(transformedRequests, selectedFilterField),
         status
       );
       setFilteredRequests(filteredData);
     } else {
-      setFilteredRequests(groupByField(requestsData, selectedFilterField));
+      setFilteredRequests(groupByField(transformedRequests, selectedFilterField));
     }
   };
 
@@ -510,7 +498,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
 
     setIsStartingRequest(true);
     try {
-      const response = await handleStartPortal(dispatch, { id: user.id, roleCode: user.roleCode });
+      const response = await handleStartPortal({} as any, { id: user.id, roleCode: user.roleCode });
       if (response) {
         console.log(response, "res");
         // const data = await response.json();
@@ -537,7 +525,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
 
     setIsClosingSession(true);
     try {
-      const response = await handleSessionCleanup(dispatch, vncSession.sessionId);
+      const response = await handleSessionCleanup({} as any, vncSession.sessionId);
       if (response) {
         setVncSession(null);
       } else {
@@ -560,7 +548,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
         // Check VNC session status by account type and ID
         // const res = await fetch(`/api/vnc/status/pharmacy/${user.id}`);
         // const data = await res.json();
-        const data = await handleFetchPortalStatus(dispatch, user.id);
+        const data = await handleFetchPortalStatus({} as any, user.id);
 
         if (data.status === 'active') {
           // VNC session is active
@@ -615,6 +603,9 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
     return () => { if (pollInterval) clearTimeout(pollInterval); };
   }, [isVncLoading, vncSession, user]);
 
+  // Show loading state only on initial load, not on refetch
+  // const isLoading = isRequestsLoading && !requestsData;
+
   return (
     <>
       {vncSession && (
@@ -632,9 +623,9 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
         {isModalOpen && (
           <AddRequestModal
             isOpen={isModalOpen}
-            onClose={(isAdded?: boolean) => {
+            onClose={() => {
               setIsModalOpen(false);
-              if (isAdded) fetchInitialData();
+              // React Query will automatically refetch the data
             }}
           />
         )}
@@ -781,7 +772,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
           )}
         </div>
 
-        {isLoading ? (
+        {isRequestsLoading ? (
           <div className="text-center py-4 w-10 text-gray-500">
             <Loading />
           </div>
@@ -791,7 +782,7 @@ const PharmacyRequests: React.FC<any> = ({ isAdmin, pharmacyName, prescriberId, 
             data={
               selectedStatusFilter || selectedFilterField
                 ? filteredRequests
-                : requestsData.sort(
+                : transformedRequests.sort(
                   (a: any, b: any) =>
                     new Date(b.submittedOn).getTime() -
                     new Date(a.submittedOn).getTime()

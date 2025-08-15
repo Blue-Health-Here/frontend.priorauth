@@ -8,10 +8,10 @@ import { Formik, Form, FormikValues } from "formik";
 import * as Yup from "yup";
 import TextareaField from "@/components/common/form/TextareaField";
 import ICD10Selector from "@/components/common/form/ICD10Selector";
-import { extractMedsICDCodes, handleAddNewRequest } from "@/services/pharmacyService";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import toast from "react-hot-toast";
+import { useExtractCodes, useAddRequest } from "@/hooks/usePharmacyRequests";
 
 interface AddRequestModalProps {
     isOpen: boolean;
@@ -28,11 +28,12 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
     const [medications, setMedications] = useState<any[]>([]);
     const [rejectionclaim, setRejectionClaim] = useState<any>("");
     const [icdCodes, setICDCodes] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isExtractingCodes, setIsExtractingCodes] = useState(false);
     const [apiError, setApiError] = useState<string | null>(null);
     const { user } = useSelector((state: RootState) => state.auth);
-    const dispatch = useDispatch();
+
+    // React Query hooks
+    const extractCodesMutation = useExtractCodes();
+    const addRequestMutation = useAddRequest();
 
     const handleChangeRejectionClaim = async (e: any, setFieldValue: any) => {
         if (e.target.value !== "") {
@@ -59,8 +60,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
 
     const postRClaimToGetMedsICDCodes = async (rejectionclaim: string) => {
         try {
-            setIsExtractingCodes(true);
-            const response = await extractMedsICDCodes(dispatch, { rejectionclaim });
+            const response = await extractCodesMutation.mutateAsync(rejectionclaim);
             
             if (response?.medications && response?.medications?.length > 0) {
                 setMedications(response.medications);
@@ -74,9 +74,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
                 setICDCodes([]);
             }
         } catch (error) {
-            toast.error("Failed to extract medication and ICD codes");
-        } finally {
-            setIsExtractingCodes(false);
+            // Error is handled by the mutation hook
         }
     }
     
@@ -89,36 +87,29 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
         }
     
         try {
-            setIsLoading(true);
             setApiError(null); // Clear previous errors
             
-            const response = await handleAddNewRequest(dispatch, {
+            await addRequestMutation.mutateAsync({
                 key: values.key,
                 rejectionclaim: values.rejectionClaim,
                 medication,
                 icd10Code: values.icd10Code,
                 from: user.firstName + " " + user.lastName,
             });
-    
-            if (response) {
-                toast.success("Request added successfully");
-                onClose(true);
-                setMedications([]);
-                setICDCodes([]);
-                setRejectionClaim("");
-            }
+
+            onClose(true);
+            setMedications([]);
+            setICDCodes([]);
+            setRejectionClaim("");
         } catch (error: any) {
             const errorMessage = error.response?.data?.message || error.message || "Failed to add request";
             setApiError(errorMessage);
-            toast.error(errorMessage);
-        } finally {
-            setIsLoading(false);
         }
     };
 
     return (
         <ModalWrapper>
-            <ModalHeader title="Add Request" onClose={() => !isLoading && onClose(false)} />
+            <ModalHeader title="Add Request" onClose={() => !addRequestMutation.isPending && onClose(false)} />
             <div className="flex flex-col gap-4 md:min-w-lg">
                 <Formik
                     initialValues={formData}
@@ -140,7 +131,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
                                         label="Key"
                                         placeholder="Enter key"
                                         className="!px-4 !py-2"
-                                        disabled={isLoading}
+                                        disabled={addRequestMutation.isPending}
                                     />
                                 </div>
 
@@ -153,9 +144,9 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
                                         rows={4}
                                         className="w-full rounded-lg !border border-light-stroke bg-background !px-4 focus:outline-none focus:!border-gray-400 !py-2 text-base placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                                         onChange={(e: any) => handleChangeRejectionClaim(e, setFieldValue)}
-                                        disabled={isLoading}
+                                        disabled={addRequestMutation.isPending}
                                     />
-                                    {isExtractingCodes && (
+                                    {extractCodesMutation.isPending && (
                                         <div className="flex items-center text-sm text-gray-500">
                                             <svg className="animate-spin mr-2 h-4 w-4 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -187,7 +178,7 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
                                             <div className="text-gray bg-gray-200 text-sm px-3 py-2 rounded-md m-0">
                                                 Medications will appear here when detected in rejection claim
                                             </div>
-                                            {values.rejectionClaim && !isExtractingCodes && (
+                                            {values.rejectionClaim && !extractCodesMutation.isPending && (
                                                 <div className="text-red-500 text-xs font-secondary">
                                                     No medication detected. Please provide more details in your rejection claim.
                                                 </div>
@@ -201,14 +192,14 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
                                     <ICD10Selector 
                                         name="icd10Code" 
                                         icdCodes={icdCodes} 
-                                        disabled={isLoading || isExtractingCodes}
+                                        disabled={addRequestMutation.isPending || extractCodesMutation.isPending}
                                     />
                                     {apiError && (
                                         <div className="text-error-clip text-xs font-secondary mt-3 border border-error-clip py-2 rounded-md px-2 bg-error-chip-bg-color ">
                                             {apiError}
                                         </div>
                                     )}
-                                    {icdCodes.length === 0 && values.rejectionClaim && !isExtractingCodes && !apiError && (
+                                                                         {icdCodes.length === 0 && values.rejectionClaim && !extractCodesMutation.isPending && !apiError && (
                                         <div className="text-yellow-600 text-xs font-secondary">
                                             No ICD codes detected. Please select one manually.
                                         </div>
@@ -217,11 +208,11 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
                             </div>
                             <div className="flex justify-end items-center gap-2 border-t border-light-stroke px-4 py-4">
                                 <ThemeButton 
-                                    onClick={() => onClose(false)} 
+                                    onClick={() => !addRequestMutation.isPending && onClose(false)} 
                                     type="button" 
                                     className="w-full sm:w-40 rounded-lg cursor-pointer border border-light-stroke max-w-max" 
                                     variant="outline"
-                                    disabled={isLoading}
+                                    disabled={addRequestMutation.isPending}
                                 >
                                     Cancel
                                 </ThemeButton>
@@ -229,9 +220,9 @@ const AddRequestModal: React.FC<AddRequestModalProps> = ({ onClose }) => {
                                     type="submit" 
                                     className="w-full sm:w-24 max-w-[130px] md:max-w-full md:min-w-max rounded-lg flex justify-center items-center" 
                                     variant="primary"
-                                    disabled={isLoading || isExtractingCodes}
+                                    disabled={addRequestMutation.isPending || extractCodesMutation.isPending}
                                 >
-                                    {isLoading ? (
+                                    {addRequestMutation.isPending ? (
                                         <>
                                             <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
