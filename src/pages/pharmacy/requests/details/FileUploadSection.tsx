@@ -22,8 +22,8 @@ interface FileUploadSectionProps {
   handleDownload: () => void;
   title?: string;
   inviteCode?: any;
-  fileInputRef: React.RefObject<HTMLInputElement>;
-  handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  fileInputRef?: React.RefObject<HTMLInputElement>;
+  handleFileChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const FileUploadSection = React.forwardRef<{ restartAnalysis: () => void }, FileUploadSectionProps>(
@@ -35,9 +35,7 @@ const FileUploadSection = React.forwardRef<{ restartAnalysis: () => void }, File
       isAnalysisStarted,
       setIsAnalysisStarted,
       isAnalysisComplete,
-      setIsAnalysisComplete,
       isAnalysisFailed,
-      setIsAnalysisFailed,
       startAnalysis,
       restartAnalysis,
       handleOpenProgressNotesModal,
@@ -81,8 +79,8 @@ const FileUploadSection = React.forwardRef<{ restartAnalysis: () => void }, File
     };
 
     const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      handleFileChange(e);
-      if (fileInputRef.current) {
+      handleFileChange && handleFileChange(e);
+      if (fileInputRef && fileInputRef.current) {
         fileInputRef.current.value = "";
       }
     };
@@ -113,7 +111,7 @@ const FileUploadSection = React.forwardRef<{ restartAnalysis: () => void }, File
     };
 
     const handleUploadClick = () => {
-      if (fileInputRef.current) {
+      if (fileInputRef && fileInputRef.current) {
         fileInputRef.current.click();
       }
     };

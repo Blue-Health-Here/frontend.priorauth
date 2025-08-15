@@ -1,5 +1,5 @@
 import SideDrawer from "@/components/SideDrawer";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import StatusTimeline from "./details/StatusTimeline";
 import Loading from "@/components/common/Loading";
 import ThemeButton from "@/components/common/ThemeButton";
@@ -9,21 +9,24 @@ import { useFileUploadProgressNotes } from "@/hooks/useFileUploadProgressNotes";
 import { useRequestData } from "@/hooks/useRequestData";
 import CommentsWidget from "./details/CommentsWidget";
 import ProgressNotesModal from "@/components/ProgressNotesModal";
-import { getRequestStatuses } from "@/services/pharmacyService";
+import { getRequestStatuses, postChartNotesFiles } from "@/services/pharmacyService";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { formatDateTime } from "@/utils/helper";
 
-const RequestDetailsSideDrawer: React.FC<any> = ({ 
-    openSideDrawer, setOpenSideDrawer, reqId, 
+const RequestDetailsSideDrawer: React.FC<any> = ({
+    openSideDrawer, setOpenSideDrawer, reqId,
     inviteCode, isAdmin
 }) => {
     const [requestDetails, setRequestDetails] = useState<any>(null);
     const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const fileUploadSectionRef = useRef<{ restartAnalysis: () => void }>(null);
     const fileUploadsObj = useFileUploadProgressNotes(reqId, requestDetails);
-    const { setIsAnalysisStarted, setIsAnalysisComplete } = fileUploadsObj;
+    const { setIsAnalysisStarted, setIsAnalysisComplete, restartAnalysis } = fileUploadsObj;
+
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
@@ -45,6 +48,37 @@ const RequestDetailsSideDrawer: React.FC<any> = ({
         setIsModalOpen(true);
     };
 
+    const fileUploadSectionProps = {
+        ...fileUploadsObj,
+        fileInputRef: fileInputRef as React.RefObject<HTMLInputElement>,
+        handleChange: (e: React.ChangeEvent<HTMLInputElement>) => handleFileChangeForChartNotes(e),
+        restartAnalysis,
+    };
+
+    const handleFileChangeForChartNotes = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const fileArray = Array.from(e.target.files);
+            try {
+                const formData = new FormData();
+                fileArray.forEach((file: any) => {
+                    formData.append("chartNotes", file);
+                });
+                const response = await postChartNotesFiles(dispatch, reqId, formData)
+                if (response) {
+                    setUploadedFiles((prev: any) => [...prev, ...response?.chartNotes?.map((item: any) => {
+                        return {
+                            ...item,
+                            name: item.fileName,
+                            type: item.mimeType,
+                        }
+                    })]);
+                }
+            } catch (error: any) {
+                console.log(error?.message);
+                setUploadedFiles([]);
+            }
+        }
+    };
     const memoizedChartNotes = useMemo(() => requestDetails?.chartNotes, [requestDetails?.chartNotes.length]);
 
     const handleOpenReqDetails = async () => {
@@ -128,11 +162,12 @@ const RequestDetailsSideDrawer: React.FC<any> = ({
                                     <h2 className="text-base font-medium text-primary-black">Progress Notes</h2>
                                 </div>
                                 <FileUploadSection
+                                    ref={fileUploadSectionRef}
                                     inviteCode={inviteCode}
                                     uploadedFiles={uploadedFiles}
                                     setUploadedFiles={setUploadedFiles}
                                     reqId={reqId || ""}
-                                    {...fileUploadsObj}
+                                    {...fileUploadSectionProps}
                                     handleOpenProgressNotesModal={handleOpenProgressNotesModal}
                                 />
                             </div>

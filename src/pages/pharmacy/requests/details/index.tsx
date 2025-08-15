@@ -10,6 +10,7 @@ import {
   getRequestStatuses,
   postRequestUploadFiles,
   deleteReqUploadedFile,
+  postChartNotesFiles,
 } from "@/services/pharmacyService";
 import Loading from "@/components/common/Loading";
 import StatusTimeline from "./StatusTimeline";
@@ -49,8 +50,6 @@ const PharmacyRequestDetails: React.FC<any> = ({
     setIsAnalysisStarted, 
     setIsAnalysisComplete,
     isAnalysisComplete,
-    isAnalysisStarted,
-    isAnalysisFailed,
     restartAnalysis
   } = fileUploadsObj;
 
@@ -109,6 +108,31 @@ const PharmacyRequestDetails: React.FC<any> = ({
     }
   };
 
+  const handleFileChangeForChartNotes = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const fileArray = Array.from(e.target.files);
+      try {
+        const formData = new FormData();
+        fileArray.forEach((file: any) => {
+          formData.append("chartNotes", file);
+        });
+        const response = await postChartNotesFiles(dispatch, reqId, formData)
+        if (response) {
+          setUploadedFiles((prev: any) => [...prev, ...response?.chartNotes?.map((item: any) => {
+            return {
+              ...item,
+              name: item.fileName,
+              type: item.mimeType,
+            }
+          })]);
+        }
+      } catch (error: any) {
+        console.log(error?.message);
+        setUploadedFiles([]);
+      }
+    }
+  };
+
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(true);
@@ -149,7 +173,7 @@ const PharmacyRequestDetails: React.FC<any> = ({
   const fileUploadSectionProps = {
     ...fileUploadsObj,
     fileInputRef: fileInputRef as React.RefObject<HTMLInputElement>,
-    handleFileChange,
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => handleFileChangeForChartNotes(e),
     restartAnalysis,
   };
 
